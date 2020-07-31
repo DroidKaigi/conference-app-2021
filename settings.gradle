@@ -1,0 +1,2 @@
+rootProject.name = "connference-app-2021-news"
+include ':app'
