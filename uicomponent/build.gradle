@@ -1,0 +1,20 @@
+// TODO: make this library Kotlin MPP when accompanist become Kotlin MPP
+plugins {
+    id("com.android.library")
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+    }
+}
+
+dependencies {
+    api project(":model")
+    implementation "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.7"
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.7"
+}
