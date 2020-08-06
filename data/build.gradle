@@ -1,0 +1,31 @@
+import io.github.droidkaigi.confsched2021.news.Dep
+
+plugins {
+    id("com.android.library")
+    id("kotlin-multiplatform")
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.0"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+    }
+}
+
+kotlin {
+    targets {
+        fromPreset(presets.android, 'android')
+    }
+    android()
+    sourceSets {
+        android
+        commonMain.dependencies {
+            implementation Dep.ktor
+            api project(":model")
+        }
+        android {}
+    }
+}

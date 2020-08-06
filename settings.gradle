@@ -4,3 +4,4 @@ rootProject.name = "connference-app-2021-news"
 include ':app'
 include ':model'
 include ':uicomponent'
+include ':data'
