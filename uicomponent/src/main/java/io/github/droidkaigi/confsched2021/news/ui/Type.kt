@@ -1,18 +1,11 @@
 package io.github.droidkaigi.confsched2021.news.ui
 
-import androidx.ui.material.Typography
-import androidx.ui.text.TextStyle
-import androidx.ui.text.font.FontFamily
-import androidx.ui.text.font.FontWeight
-import androidx.ui.unit.sp
+import androidx.compose.material.Typography
+
 
 // Set of Material typography styles to start with
-val typography = Typography(
-        body1 = TextStyle(
-                fontFamily = FontFamily.Default,
-                fontWeight = FontWeight.Normal,
-                fontSize = 16.sp
-        )
+val typography = Typography()
+
         /* Other default text styles to override
     button = TextStyle(
         fontFamily = FontFamily.Default,
@@ -25,4 +18,3 @@ val typography = Typography(
         fontSize = 12.sp
     )
     */
-)

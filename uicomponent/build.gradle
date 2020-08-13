@@ -1,6 +1,7 @@
-// TODO: make this library Kotlin MPP when accompanist become Kotlin MPP
+// TODO: make this library Kotlin MPP
 plugins {
-    id("com.android.library")
+    id 'com.android.library'
+    id 'kotlin-android'
 }
 
 android {
@@ -11,10 +12,44 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
     }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "${compose_version}"
+        kotlinCompilerVersion "1.4.0-dev-withExperimentalGoogleExtensions-20200720"
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+    }
 }
 
 dependencies {
     api project(":model")
-    implementation "dev.chrisbanes.accompanist:accompanist-mdc-theme:0.1.7"
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.7"
+
+    implementation 'androidx.appcompat:appcompat:1.1.0'
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.8"
+
+    // Write here to get from JetNews
+    // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.ui:ui-tooling:$compose_version"
 }

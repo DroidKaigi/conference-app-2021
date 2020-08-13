@@ -1,10 +1,10 @@
 package io.github.droidkaigi.confsched2021.news
 
-import com.soywiz.klock.Date
+import com.soywiz.klock.DateTimeTz
 
 class Article(
     val id: String,
-    val date: Date,
+    val date: DateTimeTz,
     val collection: String,
     val image: Image,
     val media: String,
