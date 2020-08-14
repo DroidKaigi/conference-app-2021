@@ -1,10 +1,10 @@
 package io.github.droidkaigi.confsched2021.news
 
 import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.lazy.LazyColumnFor
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
+import androidx.compose.material.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
@@ -21,25 +21,40 @@ fun ComponentActivity.setup(viewModel: INewsViewModel) {
 }
 
 @Composable
-fun NewsApp() {
+fun NewsApp(
+    scaffoldState: ScaffoldState = rememberScaffoldState(),
+) {
     Conferenceapp2021newsTheme {
-        Surface(color = MaterialTheme.colors.background) {
-            val newsViewModel = newsViewModel()
-            val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-            Row {
-                LazyColumnFor(articles.allArticles) {
-                    ArticleItem(it)
+        Scaffold(
+            scaffoldState = scaffoldState,
+            drawerContent = {
+                Text("this is drawer")
+            },
+            topBar = {
+                TopAppBar(
+                    title = { Text("DroidKaigi News") },
+                    navigationIcon = {
+                        IconButton(onClick = { scaffoldState.drawerState.open() }) {
+//                            Icon(vectorResource(R.drawable))
+                        }
+                    }
+                )
+            },
+            bodyContent = {
+                Surface(color = MaterialTheme.colors.background) {
+                    val newsViewModel = newsViewModel()
+                    val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
+                    Row {
+                        LazyColumnFor(articles.allArticles) {
+                            ArticleItem(it)
+                        }
+                    }
+
                 }
             }
-
-        }
+        )
     }
 }
-
-val NewsViewModelAmbient = ambientOf<INewsViewModel>()
-
-@Composable
-fun newsViewModel() = NewsViewModelAmbient.current
 
 @Preview(showBackground = true)
 @Composable
