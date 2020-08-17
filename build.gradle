@@ -1,8 +1,8 @@
 buildscript {
     ext {
-        compose_version = '0.1.0-dev16'
+        compose_version = '1.0.0-SNAPSHOT'
     }
-    ext.kotlin_version = "1.4.0-rc"
+    ext.kotlin_version = "1.4.0"
     repositories {
         google()
         jcenter()
@@ -19,6 +19,7 @@ allprojects {
     repositories {
         google()
         jcenter()
+        maven { url 'https://androidx.dev/snapshots/builds/6767375/artifacts/ui/repository' }
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
         maven { url = uri("https://dl.bintray.com/korlibs/korlibs/") }
         maven { url "https://dl.bintray.com/kotlin/kotlinx" }

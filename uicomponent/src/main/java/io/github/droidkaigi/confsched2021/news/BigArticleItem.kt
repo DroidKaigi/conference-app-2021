@@ -14,22 +14,21 @@ import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.typography
 
 @Composable
-fun ArticleItem(article: Article) {
+fun BigArticleItem(article: Article) {
     ConstraintLayout(
         Modifier
             .clickable {
-                TODO()
             }
-            .height(120.dp)
             .fillMaxWidth()
             .padding(16.dp)
     ) {
         val (title, image, section) = createRefs()
         val url = article.image.url
         val modifier = Modifier.constrainAs(image) {
-            width = Dimension.value(80.dp)
-            height = Dimension.value(80.dp)
+            width = Dimension.fillToConstraints
+            height = Dimension.wrapContent
             top.linkTo(parent.top)
+            start.linkTo(parent.start)
             end.linkTo(parent.end)
             bottom.linkTo(parent.bottom)
         }
@@ -38,12 +37,12 @@ fun ArticleItem(article: Article) {
         Text(article.collection, Modifier.constrainAs(section) {
             width = Dimension.fillToConstraints
             linkTo(
-                top = parent.top,
+                top = image.bottom,
                 bottom = title.top,
                 bias = 0F
             )
-            start.linkTo(parent.start)
-            end.linkTo(image.start)
+            start.linkTo(image.start)
+            end.linkTo(image.end)
         })
         Text(
             text = article.localedContents.getContents(Locale("ja")).title,
@@ -65,30 +64,10 @@ fun ArticleItem(article: Article) {
     }
 }
 
-@Composable
-fun Image(
-    url: String,
-    modifier: Modifier,
-    contentScale: ContentScale.Companion
-) {
-    Text("(image waiting for update)", modifier = modifier)
-//    CoilImage(
-//        data = url,
-//        modifier = modifier,
-//        contentScale = contentScale.Crop,
-//        onRequestCompleted = {
-//            result->
-//            when (result) {
-//                is ErrorResult -> result.throwable.printStackTrace()
-//            }
-//        }
-//    )
-}
-
 
 @Preview
 @Composable
-fun ArticleItemPreview() {
+fun BigArticleItemPreview() {
     Conferenceapp2021newsTheme {
         val article = Article(
             id = "id",
@@ -102,6 +81,6 @@ fun ArticleItemPreview() {
                 )
             )
         )
-        ArticleItem(article)
+        BigArticleItem(article)
     }
 }

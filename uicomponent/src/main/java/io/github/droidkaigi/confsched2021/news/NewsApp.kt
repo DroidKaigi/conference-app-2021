@@ -2,10 +2,13 @@ package io.github.droidkaigi.confsched2021.news
 
 import androidx.activity.ComponentActivity
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.lazy.LazyColumnFor
+import androidx.compose.foundation.lazy.ExperimentalLazyDsl
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.setContent
 import androidx.ui.tooling.preview.Preview
 import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
@@ -20,6 +23,7 @@ fun ComponentActivity.setup(viewModel: INewsViewModel) {
     }
 }
 
+@OptIn(ExperimentalLazyDsl::class)
 @Composable
 fun NewsApp(
     scaffoldState: ScaffoldState = rememberScaffoldState(),
@@ -44,12 +48,14 @@ fun NewsApp(
                 Surface(color = MaterialTheme.colors.background) {
                     val newsViewModel = newsViewModel()
                     val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-                    Row {
-                        LazyColumnFor(articles.allArticles) {
-                            ArticleItem(it)
+                    LazyColumn {
+                        item {
+                            BigArticleItem(articles.bigArticle)
+                        }
+                        items(articles.remainArticles) { item ->
+                            ArticleItem(item)
                         }
                     }
-
                 }
             }
         )
