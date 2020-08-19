@@ -15,19 +15,10 @@ import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-fun ComponentActivity.setup(viewModel: INewsViewModel) {
-    setContent {
-        Providers(NewsViewModelAmbient provides viewModel) {
-            NewsApp()
-        }
-    }
-}
-
 @OptIn(ExperimentalLazyDsl::class)
 @Composable
-fun NewsApp(
-    scaffoldState: ScaffoldState = rememberScaffoldState(),
-) {
+fun NewsApp() {
+    val scaffoldState: ScaffoldState = rememberScaffoldState()
     Conferenceapp2021newsTheme {
         Scaffold(
             scaffoldState = scaffoldState,

@@ -31,7 +31,7 @@ android {
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies", "-Xskip-prerelease-check"]
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
     }
 }
 
@@ -39,7 +39,7 @@ dependencies {
     api project(":model")
 
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.8"
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.9-SNAPSHOT"
 
     // Write here to get from JetNews
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
