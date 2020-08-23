@@ -57,19 +57,6 @@ fun BigArticleItem(article: Article) {
             }
         val contentScale = ContentScale.FillWidth
         UrlImage(url, modifier, contentScale)
-        ProvideEmphasis(EmphasisAmbient.current.medium) {
-            Text(article.collection, Modifier.constrainAs(section) {
-                width = Dimension.fillToConstraints
-                linkTo(
-                    top = image.bottom,
-                    bottom = title.top,
-                    bias = 0F,
-                    topMargin = 4.dp
-                )
-                start.linkTo(image.start)
-                end.linkTo(favorite.start)
-            })
-        }
         Text(
             text = article.localedContents.getContents(Locale("ja")).title,
             style = typography.h5,
@@ -78,8 +65,8 @@ fun BigArticleItem(article: Article) {
             modifier = Modifier.constrainAs(title) {
                 width = Dimension.fillToConstraints
                 linkTo(
-                    top = section.bottom,
-                    bottom = parent.bottom,
+                    top = image.bottom,
+                    bottom = section.bottom,
                     bias = 0F,
                     topMargin = 4.dp
                 )
@@ -87,13 +74,26 @@ fun BigArticleItem(article: Article) {
                 end.linkTo(section.end)
             }
         )
+        ProvideEmphasis(EmphasisAmbient.current.medium) {
+            Text(article.collection, Modifier.constrainAs(section) {
+                width = Dimension.fillToConstraints
+                linkTo(
+                    top = title.bottom,
+                    bottom = parent.bottom,
+                    bias = 0F,
+                    topMargin = 4.dp
+                )
+                start.linkTo(image.start)
+                end.linkTo(favorite.start)
+            })
+        }
         IconToggleButton(
             checked = false,
             icon = { Icon(vectorResource(R.drawable.ic_baseline_favorite_24)) },
             onCheckedChange = {
             },
             modifier = Modifier.constrainAs(favorite) {
-                top.linkTo(section.top)
+                top.linkTo(title.top)
                 bottom.linkTo(parent.bottom)
                 end.linkTo(parent.end)
             }
