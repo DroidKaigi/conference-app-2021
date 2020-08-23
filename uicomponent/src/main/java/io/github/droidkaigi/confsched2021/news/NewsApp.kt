@@ -7,8 +7,21 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.material.BottomNavigation
+import androidx.compose.material.BottomNavigationItem
+import androidx.compose.material.Divider
+import androidx.compose.material.IconButton
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Scaffold
+import androidx.compose.material.ScaffoldState
+import androidx.compose.material.Surface
+import androidx.compose.material.TopAppBar
+import androidx.compose.material.rememberScaffoldState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
+import androidx.compose.runtime.ambientOf
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.res.vectorResource
@@ -82,17 +95,17 @@ private fun Scaffold() {
                 color = MaterialTheme.colors.background,
                 modifier = Modifier.fillMaxHeight()
             ) {
-                    val newsViewModel = newsViewModel()
-                    val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-                    LazyColumn(Modifier.padding(bottom = padding.bottom)) {
-                        item {
-                            BigArticleItem(articles.bigArticle)
-                        }
-                        items(articles.remainArticles) { item ->
-                            Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                            ArticleItem(item)
-                        }
+                val newsViewModel = newsViewModel()
+                val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
+                LazyColumn(Modifier.padding(bottom = padding.bottom)) {
+                    item {
+                        BigArticleItem(articles.bigArticle)
                     }
+                    items(articles.remainArticles) { item ->
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                        ArticleItem(item)
+                    }
+                }
             }
         }
     )
