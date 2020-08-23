@@ -1,56 +1,101 @@
 package io.github.droidkaigi.confsched2021.news
 
-import androidx.activity.ComponentActivity
+import androidx.compose.foundation.Icon
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.ui.platform.setContent
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.imageResource
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.uicomponent.R
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flowOf
 
-@OptIn(ExperimentalLazyDsl::class)
+val ScaffoldStateAmbient = ambientOf<ScaffoldState>()
+
 @Composable
 fun NewsApp() {
-    val scaffoldState: ScaffoldState = rememberScaffoldState()
     Conferenceapp2021newsTheme {
-        Scaffold(
-            scaffoldState = scaffoldState,
-            drawerContent = {
-                Text("this is drawer")
-            },
-            topBar = {
-                TopAppBar(
-                    title = { Text("DroidKaigi News") },
-                    navigationIcon = {
-                        IconButton(onClick = { scaffoldState.drawerState.open() }) {
-//                            Icon(vectorResource(R.drawable))
-                        }
+        Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
+            Scaffold()
+        }
+    }
+}
+
+@OptIn(ExperimentalLazyDsl::class)
+@Composable
+private fun Scaffold() {
+    val scaffoldState = ScaffoldStateAmbient.current
+    Scaffold(
+        scaffoldState = scaffoldState,
+        drawerContent = {
+            Text("this is drawer")
+        },
+        topBar = {
+            TopAppBar(
+                title = { Text("DroidKaigi News") },
+                navigationIcon = {
+                    IconButton(onClick = { scaffoldState.drawerState.open() }) {
+                        Icon(imageResource(R.drawable.ic_logo))
+                    }
+                }
+            )
+        },
+        bottomBar = {
+            BottomNavigation {
+                BottomNavigationItem(
+                    icon = {
+                        Image(vectorResource(R.drawable.ic_baseline_home_24))
+                    },
+                    label = {
+                        Text("Home")
+                    },
+                    selected = true,
+                    onSelect = {
+
                     }
                 )
-            },
-            bodyContent = {
-                Surface(color = MaterialTheme.colors.background) {
+                BottomNavigationItem(
+                    icon = {
+                        Image(vectorResource(R.drawable.ic_baseline_favorite_24))
+                    },
+                    label = {
+                        Text("Favorite")
+                    },
+                    selected = false,
+                    onSelect = {
+
+                    }
+                )
+            }
+        },
+        bodyContent = { padding ->
+            Surface(
+                color = MaterialTheme.colors.background,
+                modifier = Modifier.fillMaxHeight()
+            ) {
                     val newsViewModel = newsViewModel()
                     val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-                    LazyColumn {
+                    LazyColumn(Modifier.padding(bottom = padding.bottom)) {
                         item {
                             BigArticleItem(articles.bigArticle)
                         }
                         items(articles.remainArticles) { item ->
+                            Divider(modifier = Modifier.padding(horizontal = 16.dp))
                             ArticleItem(item)
                         }
                     }
-                }
             }
-        )
-    }
+        }
+    )
 }
 
 @Preview(showBackground = true)

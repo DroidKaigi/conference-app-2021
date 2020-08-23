@@ -38,8 +38,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 dependencies {
     api project(":model")
 
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.9-SNAPSHOT"
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.9"
 
     // Write here to get from JetNews
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
