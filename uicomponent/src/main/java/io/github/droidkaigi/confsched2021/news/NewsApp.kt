@@ -3,8 +3,11 @@ package io.github.droidkaigi.confsched2021.news
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BottomNavigation
@@ -50,7 +53,22 @@ private fun Scaffold() {
     Scaffold(
         scaffoldState = scaffoldState,
         drawerContent = {
-            Text("this is drawer")
+            DrawerButton(
+                icon = vectorResource(id = R.drawable.ic_baseline_list_alt_24),
+                label = "Articles",
+                isSelected = true,
+                {
+
+                }
+            )
+            DrawerButton(
+                icon = vectorResource(id = R.drawable.ic_baseline_info_24),
+                label = "About this app",
+                isSelected = false,
+                {
+
+                }
+            )
         },
         topBar = {
             TopAppBar(
