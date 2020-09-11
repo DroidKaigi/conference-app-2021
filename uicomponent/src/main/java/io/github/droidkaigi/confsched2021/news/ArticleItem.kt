@@ -10,7 +10,9 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ListItem
+import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +47,7 @@ fun ArticleItem(article: Article) {
                 .width(64.dp)
                 .clip(RoundedCornerShape(4.dp))
                 .aspectRatio(16F / 9F)
-            UrlImage(url, modifier, ContentScale.Inside)
+            NetworkImage(url, modifier, ContentScale.Inside)
         },
         secondaryText = {
             Text(
@@ -73,7 +75,7 @@ fun ArticleItem(article: Article) {
 }
 
 @Composable
-fun UrlImage(
+fun NetworkImage(
     url: String,
     modifier: Modifier,
     contentScale: ContentScale
@@ -91,23 +93,25 @@ fun UrlImage(
     )
 }
 
-
+@Preview(showBackground = true)
 @Preview
 @Composable
 fun ArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        val article = Article(
-            id = "id",
-            date = DateTimeTz.nowLocal(),
-            collection = "collection",
-            image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
-            media = "BLOG",
-            LocaledContents(
-                mapOf(
-                    Locale("ja") to LocaledContents.Contents("title", "link")
+        Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
+            val article = Article(
+                id = "id",
+                date = DateTimeTz.nowLocal(),
+                collection = "collection",
+                image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
+                media = "BLOG",
+                LocaledContents(
+                    mapOf(
+                        Locale("ja") to LocaledContents.Contents("title", "link")
+                    )
                 )
             )
-        )
-        ArticleItem(article)
+            ArticleItem(article)
+        }
     }
 }

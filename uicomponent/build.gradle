@@ -39,7 +39,7 @@ dependencies {
     api project(":model")
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.1.9"
+    implementation "dev.chrisbanes.accompanist:accompanist-coil:0.2.1"
 
     // Write here to get from JetNews
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66

@@ -3,11 +3,8 @@ package io.github.droidkaigi.confsched2021.news
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BottomNavigation
@@ -40,93 +37,93 @@ val ScaffoldStateAmbient = ambientOf<ScaffoldState>()
 @Composable
 fun NewsApp() {
     Conferenceapp2021newsTheme {
-        Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
-            Scaffold()
-        }
+        Scaffold()
     }
 }
 
 @OptIn(ExperimentalLazyDsl::class)
 @Composable
 private fun Scaffold() {
-    val scaffoldState = ScaffoldStateAmbient.current
-    Scaffold(
-        scaffoldState = scaffoldState,
-        drawerContent = {
-            DrawerButton(
-                icon = vectorResource(id = R.drawable.ic_baseline_list_alt_24),
-                label = "Articles",
-                isSelected = true,
-                {
-
-                }
-            )
-            DrawerButton(
-                icon = vectorResource(id = R.drawable.ic_baseline_info_24),
-                label = "About this app",
-                isSelected = false,
-                {
-
-                }
-            )
-        },
-        topBar = {
-            TopAppBar(
-                title = { Text("DroidKaigi News") },
-                navigationIcon = {
-                    IconButton(onClick = { scaffoldState.drawerState.open() }) {
-                        Icon(imageResource(R.drawable.ic_logo))
-                    }
-                }
-            )
-        },
-        bottomBar = {
-            BottomNavigation {
-                BottomNavigationItem(
-                    icon = {
-                        Image(vectorResource(R.drawable.ic_baseline_home_24))
-                    },
-                    label = {
-                        Text("Home")
-                    },
-                    selected = true,
-                    onSelect = {
+    Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
+        val scaffoldState = ScaffoldStateAmbient.current
+        Scaffold(
+            scaffoldState = scaffoldState,
+            drawerContent = {
+                DrawerButton(
+                    icon = vectorResource(id = R.drawable.ic_baseline_list_alt_24),
+                    label = "Articles",
+                    isSelected = true,
+                    {
 
                     }
                 )
-                BottomNavigationItem(
-                    icon = {
-                        Image(vectorResource(R.drawable.ic_baseline_favorite_24))
-                    },
-                    label = {
-                        Text("Favorite")
-                    },
-                    selected = false,
-                    onSelect = {
+                DrawerButton(
+                    icon = vectorResource(id = R.drawable.ic_baseline_info_24),
+                    label = "About this app",
+                    isSelected = false,
+                    {
 
                     }
                 )
-            }
-        },
-        bodyContent = { padding ->
-            Surface(
-                color = MaterialTheme.colors.background,
-                modifier = Modifier.fillMaxHeight()
-            ) {
-                val newsViewModel = newsViewModel()
-                val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-                LazyColumn(Modifier.padding(bottom = padding.bottom)) {
-                    item {
-                        BigArticleItem(articles.bigArticle)
+            },
+            topBar = {
+                TopAppBar(
+                    title = { Text("DroidKaigi News") },
+                    navigationIcon = {
+                        IconButton(onClick = { scaffoldState.drawerState.open() }) {
+                            Icon(imageResource(R.drawable.ic_logo))
+                        }
                     }
-                    items(articles.remainArticles) { item ->
-                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                        ArticleItem(item)
+                )
+            },
+            bottomBar = {
+                BottomNavigation {
+                    BottomNavigationItem(
+                        icon = {
+                            Image(vectorResource(R.drawable.ic_baseline_home_24))
+                        },
+                        label = {
+                            Text("Home")
+                        },
+                        selected = true,
+                        onSelect = {
+
+                        }
+                    )
+                    BottomNavigationItem(
+                        icon = {
+                            Image(vectorResource(R.drawable.ic_baseline_favorite_24))
+                        },
+                        label = {
+                            Text("Favorite")
+                        },
+                        selected = false,
+                        onSelect = {
+
+                        }
+                    )
+                }
+            },
+            bodyContent = { padding ->
+                Surface(
+                    color = MaterialTheme.colors.background,
+                    modifier = Modifier.fillMaxHeight()
+                ) {
+                    val newsViewModel = newsViewModel()
+                    val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
+                    LazyColumn(Modifier.padding(bottom = padding.bottom)) {
+                        item {
+                            BigArticleItem(articles.bigArticle)
+                        }
+                        items(articles.remainArticles) { item ->
+                            Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                            ArticleItem(item)
+                        }
                     }
                 }
             }
-        }
-    )
+        )
+    }
 }
 
 @Preview(showBackground = true)
