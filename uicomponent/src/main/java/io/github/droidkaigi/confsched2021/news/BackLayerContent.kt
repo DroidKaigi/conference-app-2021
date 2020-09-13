@@ -40,24 +40,28 @@ fun BackLayerContent() {
 @Composable
 private fun Input(text: String, onClick: () -> Unit) {
     Surface(
-        color = MaterialTheme.colors.primaryVariant,
         modifier = Modifier
             .padding(all = 12.dp)
-            .clickable(onClick = onClick)
-            .fillMaxWidth()
     ) {
-        Row(
-            Modifier.padding(all = 12.dp)
+        Surface(
+            color = MaterialTheme.colors.primaryVariant,
+            modifier = Modifier
+                .clickable(onClick = onClick)
+                .fillMaxWidth()
         ) {
-            Image(vectorResource(R.drawable.ic_baseline_favorite_24))
-            Spacer(Modifier.preferredWidth(8.dp))
-            Text(
-                modifier = Modifier
-                    .gravity(Alignment.CenterVertically),
-                text = text,
-                style = MaterialTheme.typography.body1
-            )
-            Spacer(Modifier.preferredWidth(8.dp))
+            Row(
+                Modifier.padding(all = 12.dp)
+            ) {
+                Image(vectorResource(R.drawable.ic_baseline_favorite_24))
+                Spacer(Modifier.preferredWidth(8.dp))
+                Text(
+                    modifier = Modifier
+                        .gravity(Alignment.CenterVertically),
+                    text = text,
+                    style = MaterialTheme.typography.body1
+                )
+                Spacer(Modifier.preferredWidth(8.dp))
+            }
         }
     }
 }
