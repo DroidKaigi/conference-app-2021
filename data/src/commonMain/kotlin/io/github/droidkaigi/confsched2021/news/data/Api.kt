@@ -8,7 +8,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
 
-class Api {
+open class Api {
     @OptIn(ExperimentalStdlibApi::class)
     suspend fun fetch(): Articles {
         val response = """[

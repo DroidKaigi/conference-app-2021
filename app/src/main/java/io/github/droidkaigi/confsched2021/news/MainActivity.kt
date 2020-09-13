@@ -6,7 +6,9 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Providers
 import androidx.compose.ui.platform.setContent
+import dagger.hilt.android.AndroidEntryPoint
 
+@AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
     val viewModel by viewModels<NewsViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
