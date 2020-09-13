@@ -33,6 +33,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ArticleItem(article: Article) {
+    val newsViewModel = newsViewModel()
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = ScaffoldStateAmbient.current.snackbarHostState
     ListItem(
@@ -73,6 +74,7 @@ fun ArticleItem(article: Article) {
                     )
                 },
                 onCheckedChange = {
+                    newsViewModel.toggleFavorite(article)
                 }
             )
         }

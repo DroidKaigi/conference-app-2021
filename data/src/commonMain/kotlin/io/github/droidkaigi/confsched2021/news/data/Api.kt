@@ -15,7 +15,7 @@ import kotlin.random.Random
 
 open class Api {
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun fetch(): Articles {
+    suspend fun fetch(): List<Article> {
         val response = """[
   {
     "id": "2020-07-22-droidkaigi2020",
@@ -140,7 +140,7 @@ open class Api {
                 Article(
                     id = response.id,
                     date = DateFormat("yyyy-MM-dd").parse(response.date),
-                    isFavorited = Random.nextInt() % 2 == 0,
+                    isFavorited = false,
                     collection = response.collection,
                     image = Image.of(response.image),
                     media = response.media,
@@ -165,7 +165,7 @@ open class Api {
 
                 )
             }
-        return Articles(articles)
+        return articles
     }
 
     @Serializable

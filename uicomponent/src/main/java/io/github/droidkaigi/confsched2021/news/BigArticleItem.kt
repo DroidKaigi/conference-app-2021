@@ -34,6 +34,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun BigArticleItem(article: Article) {
+    val newsViewModel = newsViewModel()
     val coroutineScope = rememberCoroutineScope()
     val snackbarHostState = ScaffoldStateAmbient.current.snackbarHostState
     ConstraintLayout(
@@ -110,6 +111,7 @@ fun BigArticleItem(article: Article) {
                 )
             },
             onCheckedChange = {
+                newsViewModel.toggleFavorite(article)
             },
             modifier = Modifier.constrainAs(favorite) {
                 top.linkTo(title.top)

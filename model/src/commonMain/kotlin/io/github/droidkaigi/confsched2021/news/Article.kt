@@ -2,7 +2,7 @@ package io.github.droidkaigi.confsched2021.news
 
 import com.soywiz.klock.DateTimeTz
 
-class Article(
+data class Article(
     val id: String,
     val isFavorited: Boolean = false,
     val date: DateTimeTz,
