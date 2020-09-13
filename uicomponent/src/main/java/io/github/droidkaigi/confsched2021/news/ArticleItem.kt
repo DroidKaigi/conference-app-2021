@@ -7,10 +7,11 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ListItem
-import androidx.compose.material.rememberScaffoldState
+import androidx.compose.material.rememberBackdropState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.rememberCoroutineScope
@@ -93,12 +94,13 @@ fun NetworkImage(
     )
 }
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Preview
 @Composable
 fun ArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
+        Providers(ScaffoldStateAmbient provides rememberBackdropState(BackdropValue.Concealed)) {
             val article = Article(
                 id = "id",
                 date = DateTimeTz.nowLocal(),

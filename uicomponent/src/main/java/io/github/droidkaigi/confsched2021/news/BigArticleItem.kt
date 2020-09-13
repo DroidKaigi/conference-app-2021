@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BackdropValue
 import androidx.compose.material.EmphasisAmbient
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.rememberBackdropState
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -108,26 +110,25 @@ fun BigArticleItem(article: Article) {
 }
 
 
+@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Composable
 fun BigArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
-            Providers(ScaffoldStateAmbient provides rememberScaffoldState()) {
-                val article = Article(
-                    id = "id",
-                    date = DateTimeTz.nowLocal(),
-                    collection = "collection",
-                    image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
-                    media = "BLOG",
-                    LocaledContents(
-                        mapOf(
-                            Locale("ja") to LocaledContents.Contents("title", "link")
-                        )
+        Providers(ScaffoldStateAmbient provides rememberBackdropState(initialValue = BackdropValue.Concealed)) {
+            val article = Article(
+                id = "id",
+                date = DateTimeTz.nowLocal(),
+                collection = "collection",
+                image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
+                media = "BLOG",
+                LocaledContents(
+                    mapOf(
+                        Locale("ja") to LocaledContents.Contents("title", "link")
                     )
                 )
-                BigArticleItem(article)
-            }
+            )
+            BigArticleItem(article)
         }
     }
 }
