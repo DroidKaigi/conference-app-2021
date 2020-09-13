@@ -20,6 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.flowOf
 
 
@@ -76,15 +78,10 @@ private val splashTransitionDefinition = transitionDefinition<SplashState> {
 fun DefaultPreview() {
     Conferenceapp2021newsTheme {
         Providers(NewsViewModelAmbient provides object : INewsViewModel {
-            override val articles: Flow<Articles>
-                get() = flowOf(
-                    Articles(
-                        listOf(
-
-                        )
-                    )
-                )
-
+            override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
+            override val articles: StateFlow<Articles> = MutableStateFlow(Articles())
+            override fun onFilterChanged(filters: Filters) {
+            }
         }) {
             NewsApp()
         }

@@ -59,9 +59,20 @@ fun ArticleItem(article: Article) {
         trailing = {
             IconToggleButton(
                 checked = false,
-                icon = { Icon(vectorResource(R.drawable.ic_baseline_favorite_24)) },
+                icon = {
+                    Icon(
+                        vectorResource(
+                            if (article.isFavorited) {
+                                R.drawable
+                                    .ic_baseline_favorite_24
+                            } else {
+                                R.drawable
+                                    .ic_baseline_favorite_border_24
+                            }
+                        )
+                    )
+                },
                 onCheckedChange = {
-
                 }
             )
         }
@@ -107,7 +118,7 @@ fun ArticleItemPreview() {
                 collection = "collection",
                 image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
                 media = "BLOG",
-                LocaledContents(
+                localedContents = LocaledContents(
                     mapOf(
                         Locale("ja") to LocaledContents.Contents("title", "link")
                     )

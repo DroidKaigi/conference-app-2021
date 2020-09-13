@@ -4,4 +4,4 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class AndroidApi @Inject constructor():Api()
+internal class AndroidApi @Inject constructor() : Api()

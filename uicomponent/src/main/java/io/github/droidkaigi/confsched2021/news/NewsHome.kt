@@ -67,13 +67,15 @@ fun NewsHome(modifier: Modifier) {
                     ) {
                         val newsViewModel = newsViewModel()
                         val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-                        LazyColumn {
-                            item {
-                                BigArticleItem(articles.bigArticle)
-                            }
-                            items(articles.remainArticles) { item ->
-                                Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                                ArticleItem(item)
+                        if (articles.size > 0) {
+                            LazyColumn {
+                                item {
+                                    BigArticleItem(articles.bigArticle)
+                                }
+                                items(articles.remainArticles) { item ->
+                                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                                    ArticleItem(item)
+                                }
                             }
                         }
                     }

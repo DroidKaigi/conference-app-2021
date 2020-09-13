@@ -15,7 +15,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.material.rememberBackdropState
-import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.rememberCoroutineScope
@@ -97,7 +96,19 @@ fun BigArticleItem(article: Article) {
         }
         IconToggleButton(
             checked = false,
-            icon = { Icon(vectorResource(R.drawable.ic_baseline_favorite_24)) },
+            icon = {
+                Icon(
+                    vectorResource(
+                        if (article.isFavorited) {
+                            R.drawable
+                                .ic_baseline_favorite_24
+                        } else {
+                            R.drawable
+                                .ic_baseline_favorite_border_24
+                        }
+                    )
+                )
+            },
             onCheckedChange = {
             },
             modifier = Modifier.constrainAs(favorite) {
@@ -122,7 +133,7 @@ fun BigArticleItemPreview() {
                 collection = "collection",
                 image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
                 media = "BLOG",
-                LocaledContents(
+                localedContents = LocaledContents(
                     mapOf(
                         Locale("ja") to LocaledContents.Contents("title", "link")
                     )

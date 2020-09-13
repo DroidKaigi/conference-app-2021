@@ -3,9 +3,12 @@ package io.github.droidkaigi.confsched2021.news
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.ambientOf
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.StateFlow
 
 interface INewsViewModel {
-    val articles: Flow<Articles>
+    val filter: StateFlow<Filters>
+    val articles: StateFlow<Articles>
+    fun onFilterChanged(filters: Filters)
 }
 
 val NewsViewModelAmbient = ambientOf<INewsViewModel>()

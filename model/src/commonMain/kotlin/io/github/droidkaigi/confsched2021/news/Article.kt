@@ -4,6 +4,7 @@ import com.soywiz.klock.DateTimeTz
 
 class Article(
     val id: String,
+    val isFavorited: Boolean = false,
     val date: DateTimeTz,
     val collection: String,
     val image: Image,

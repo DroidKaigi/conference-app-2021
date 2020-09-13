@@ -12,28 +12,27 @@ import androidx.compose.foundation.layout.preferredWidth
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 enum class FilterState(val text: String) {
     All("All"), Favorite("Favorites")
 }
 
+@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun BackLayerContent() {
-    var filterState by remember { mutableStateOf(FilterState.All) }
-    Input(text = filterState.text) {
-        filterState = when (filterState) {
-            FilterState.All -> FilterState.Favorite
-            FilterState.Favorite -> FilterState.All
-        }
+    val viewModel = NewsViewModelAmbient.current
+    val filterState by viewModel.filter.collectAsState()
+    val filters = viewModel.filter.value
+    Input(text = if (filterState.filterFavorite) "Favorites" else "All") {
+        viewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
     }
     Spacer(Modifier.preferredHeight(8.dp))
 }

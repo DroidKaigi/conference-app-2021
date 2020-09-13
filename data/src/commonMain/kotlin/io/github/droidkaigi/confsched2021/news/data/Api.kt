@@ -2,10 +2,15 @@ package io.github.droidkaigi.confsched2021.news.data
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.parse
-import io.github.droidkaigi.confsched2021.news.*
+import io.github.droidkaigi.confsched2021.news.Article
+import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.Image
+import io.github.droidkaigi.confsched2021.news.Locale
+import io.github.droidkaigi.confsched2021.news.LocaledContents
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import kotlin.random.Random
 
 
 open class Api {
@@ -135,6 +140,7 @@ open class Api {
                 Article(
                     id = response.id,
                     date = DateFormat("yyyy-MM-dd").parse(response.date),
+                    isFavorited = Random.nextInt() % 2 == 0,
                     collection = response.collection,
                     image = Image.of(response.image),
                     media = response.media,
