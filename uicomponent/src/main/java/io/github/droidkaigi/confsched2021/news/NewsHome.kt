@@ -17,7 +17,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawerLayout
 import androidx.compose.material.Surface
 import androidx.compose.material.TopAppBar
-import androidx.compose.material.rememberBackdropState
+import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -27,25 +27,36 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import androidx.ui.tooling.preview.Preview
+import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 
 @OptIn(ExperimentalMaterialApi::class)
 val ScaffoldStateAmbient = ambientOf<BackdropScaffoldState>()
 
 @OptIn(ExperimentalLazyDsl::class, ExperimentalMaterialApi::class)
 @Composable
-fun NewsHome(modifier: Modifier) {
-    val drawerState = rememberDrawerState(DrawerValue.Closed)
+fun NewsHome(
+    modifier: Modifier = Modifier,
+    firstDrawerValue: DrawerValue = DrawerValue.Closed,
+    firstBackdropValue: BackdropValue = BackdropValue.Concealed
+) {
+    val drawerState = rememberDrawerState(firstDrawerValue)
+    val scaffoldState =
+        ScaffoldStateAmbient provides rememberBackdropScaffoldState(firstBackdropValue)
     ModalDrawerLayout(
         modifier = modifier,
         drawerState = drawerState,
         drawerContent = { DrawerContent() }
     ) {
-        Providers(ScaffoldStateAmbient provides rememberBackdropState(BackdropValue.Concealed)) {
+        Providers(scaffoldState) {
             val scaffoldState = ScaffoldStateAmbient.current
             BackdropScaffold(
                 backLayerBackgroundColor = MaterialTheme.colors.primary,
-                backdropScaffoldState = scaffoldState,
+                scaffoldState = scaffoldState,
                 backLayerContent = {
                     BackLayerContent()
                 },
@@ -67,8 +78,8 @@ fun NewsHome(modifier: Modifier) {
                     ) {
                         val newsViewModel = newsViewModel()
                         val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
-                        if (articles.size > 0) {
-                            LazyColumn {
+                        LazyColumn {
+                            if (articles.size > 0) {
                                 item {
                                     BigArticleItem(articles.bigArticle)
                                 }
@@ -81,6 +92,44 @@ fun NewsHome(modifier: Modifier) {
                     }
                 }
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Preview(showBackground = true)
+@Composable
+fun NewsHomePreview() {
+    Conferenceapp2021newsTheme {
+        ProvideNewsViewModel(viewModel = object : INewsViewModel {
+            override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
+            override val articles: StateFlow<Articles> = MutableStateFlow(Articles())
+            override fun onFilterChanged(filters: Filters) {
+            }
+
+            override fun toggleFavorite(article: Article) {
+            }
+        }) {
+            NewsHome(firstBackdropValue = BackdropValue.Revealed)
+        }
+    }
+}
+
+@OptIn(ExperimentalCoroutinesApi::class)
+@Preview(showBackground = true)
+@Composable
+fun DarkThemeNewsHomePreview() {
+    Conferenceapp2021newsTheme(true) {
+        ProvideNewsViewModel(viewModel = object : INewsViewModel {
+            override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
+            override val articles: StateFlow<Articles> = MutableStateFlow(Articles())
+            override fun onFilterChanged(filters: Filters) {
+            }
+
+            override fun toggleFavorite(article: Article) {
+            }
+        }) {
+            NewsHome(firstBackdropValue = BackdropValue.Revealed)
         }
     }
 }

@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2021.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,7 +29,7 @@ enum class FilterState(val text: String) {
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun BackLayerContent() {
-    val viewModel = NewsViewModelAmbient.current
+    val viewModel = newsViewModel()
     val filterState by viewModel.filter.collectAsState()
     val filters = viewModel.filter.value
     Input(text = if (filterState.filterFavorite) "Favorites" else "All") {
@@ -41,6 +42,7 @@ fun BackLayerContent() {
 private fun Input(text: String, onClick: () -> Unit) {
     Surface(
         modifier = Modifier
+            .background(MaterialTheme.colors.surface)
             .padding(all = 12.dp)
     ) {
         Surface(
@@ -56,7 +58,7 @@ private fun Input(text: String, onClick: () -> Unit) {
                 Spacer(Modifier.preferredWidth(8.dp))
                 Text(
                     modifier = Modifier
-                        .gravity(Alignment.CenterVertically),
+                        .align(Alignment.CenterVertically),
                     text = text,
                     style = MaterialTheme.typography.body1
                 )

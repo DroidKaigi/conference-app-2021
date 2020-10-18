@@ -9,12 +9,12 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.AmbientEmphasisLevels
 import androidx.compose.material.BackdropValue
-import androidx.compose.material.EmphasisAmbient
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ProvideEmphasis
-import androidx.compose.material.rememberBackdropState
+import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.rememberCoroutineScope
@@ -82,7 +82,7 @@ fun BigArticleItem(article: Article) {
                 end.linkTo(section.end)
             }
         )
-        ProvideEmphasis(EmphasisAmbient.current.medium) {
+        ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
             Text(article.collection, Modifier.constrainAs(section) {
                 width = Dimension.fillToConstraints
                 linkTo(
@@ -128,7 +128,7 @@ fun BigArticleItem(article: Article) {
 @Composable
 fun BigArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        Providers(ScaffoldStateAmbient provides rememberBackdropState(initialValue = BackdropValue.Concealed)) {
+        Providers(ScaffoldStateAmbient provides rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed)) {
             val article = Article(
                 id = "id",
                 date = DateTimeTz.nowLocal(),

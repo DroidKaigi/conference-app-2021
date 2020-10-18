@@ -7,9 +7,8 @@ import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.transitionDefinition
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.transition
-import androidx.compose.foundation.layout.Stack
+import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -19,18 +18,18 @@ import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.flowOf
 
 
 @Composable
-fun NewsApp() {
+fun NewsApp(firstSplashScreenState: SplashState = SplashState.Shown) {
     Conferenceapp2021newsTheme {
-        var splashShown by remember { mutableStateOf(SplashState.Shown) }
+        var splashShown by remember {
+            mutableStateOf(firstSplashScreenState)
+        }
         val transition = transition(splashTransitionDefinition, splashShown)
-        Stack{
+        Box {
             LandingScreen(
                 modifier = Modifier.drawOpacity(transition[splashAlphaKey]),
             ) {
@@ -77,13 +76,16 @@ private val splashTransitionDefinition = transitionDefinition<SplashState> {
 @Composable
 fun DefaultPreview() {
     Conferenceapp2021newsTheme {
-        Providers(NewsViewModelAmbient provides object : INewsViewModel {
+        ProvideNewsViewModel(viewModel = object : INewsViewModel {
             override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
             override val articles: StateFlow<Articles> = MutableStateFlow(Articles())
             override fun onFilterChanged(filters: Filters) {
             }
+
+            override fun toggleFavorite(article: Article) {
+            }
         }) {
-            NewsApp()
+            NewsApp(SplashState.Completed)
         }
     }
 }
