@@ -2,16 +2,18 @@ package io.github.droidkaigi.confsched2021.news
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.vectorResource
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.navigate
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @Composable
-fun DrawerContent() {
+fun DrawerContent(navController: NavHostController) {
     DrawerButton(
         icon = vectorResource(id = R.drawable.ic_baseline_list_alt_24),
         label = "Articles",
         isSelected = true,
         {
-
+            navController.navigate("articles")
         }
     )
     DrawerButton(
@@ -19,7 +21,7 @@ fun DrawerContent() {
         label = "About this app",
         isSelected = false,
         {
-
+            navController.navigate("about_this_app")
         }
     )
 }

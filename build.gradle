@@ -1,6 +1,6 @@
 buildscript {
     ext {
-        compose_version = '1.0.0-alpha05'
+        compose_version = '1.0.0-alpha06'
         kotlin_version = "1.4.10"
     }
     repositories {
@@ -9,7 +9,7 @@ buildscript {
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:4.2.0-alpha13'
+        classpath 'com.android.tools.build:gradle:4.2.0-alpha15'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.29.1-alpha'
