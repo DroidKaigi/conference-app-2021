@@ -36,7 +36,7 @@ fun NewsApp(firstSplashScreenState: SplashState = SplashState.Shown) {
                 splashShown = SplashState.Completed
             }
         }
-        NewsHome(
+        AppContent(
             modifier = Modifier.drawOpacity(transition[contentAlphaKey]),
         )
     }

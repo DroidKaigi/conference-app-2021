@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confsched2021.news.article
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.Text
@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched2021.news.newsViewModel
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

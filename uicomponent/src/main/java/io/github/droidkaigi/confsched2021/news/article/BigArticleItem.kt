@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confsched2021.news.article
 
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
@@ -10,13 +10,10 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.AmbientEmphasisLevels
-import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ProvideEmphasis
-import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,24 +23,23 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.soywiz.klock.DateTimeTz
+import io.github.droidkaigi.confsched2021.news.Article
+import io.github.droidkaigi.confsched2021.news.Image
+import io.github.droidkaigi.confsched2021.news.Locale
+import io.github.droidkaigi.confsched2021.news.LocaledContents
+import io.github.droidkaigi.confsched2021.news.newsViewModel
 import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
-import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BigArticleItem(article: Article) {
+fun BigArticleItem(article: Article, onClick: () -> Unit) {
     val newsViewModel = newsViewModel()
     val coroutineScope = rememberCoroutineScope()
-    val snackbarHostState = ScaffoldStateAmbient.current.snackbarHostState
     ConstraintLayout(
         Modifier
-            .clickable {
-                coroutineScope.launch {
-                    snackbarHostState.showSnackbar("TODO: waiting navigation component")
-                }
-            }
+            .clickable(onClick = onClick)
             .fillMaxWidth()
             .padding(16.dp)
     ) {
@@ -128,20 +124,19 @@ fun BigArticleItem(article: Article) {
 @Composable
 fun BigArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        Providers(ScaffoldStateAmbient provides rememberBackdropScaffoldState(initialValue = BackdropValue.Concealed)) {
-            val article = Article(
-                id = "id",
-                date = DateTimeTz.nowLocal(),
-                collection = "collection",
-                image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
-                media = "BLOG",
-                localedContents = LocaledContents(
-                    mapOf(
-                        Locale("ja") to LocaledContents.Contents("title", "link")
-                    )
+        val article = Article(
+            id = "id",
+            date = DateTimeTz.nowLocal(),
+            collection = "collection",
+            image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
+            media = "BLOG",
+            localedContents = LocaledContents(
+                mapOf(
+                    Locale("ja") to LocaledContents.Contents("title", "link")
                 )
             )
-            BigArticleItem(article)
+        )
+        BigArticleItem(article) {
         }
     }
 }
