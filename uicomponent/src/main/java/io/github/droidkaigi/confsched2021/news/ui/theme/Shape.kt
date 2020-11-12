@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.ui
+package io.github.droidkaigi.confsched2021.news.ui.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.article
+package io.github.droidkaigi.confsched2021.news.ui.article
 
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
@@ -25,18 +25,18 @@ import io.github.droidkaigi.confsched2021.news.Article
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
-import io.github.droidkaigi.confsched2021.news.newsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
-import io.github.droidkaigi.confsched2021.news.ui.typography
+import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun ArticleItem(article: Article, onClick:()->Unit) {
+fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: (Article) -> Unit) {
     val newsViewModel = newsViewModel()
     ListItem(
         modifier = Modifier
-            .clickable(onClick = onClick),
+            .clickable(onClick = { onClick(article) }),
         icon = {
             val url = article.image.url
             val modifier = Modifier
@@ -107,18 +107,18 @@ fun NetworkImage(
 @Composable
 fun ArticleItemPreview() {
     Conferenceapp2021newsTheme {
-            val article = Article(
-                id = "id",
-                date = DateTimeTz.nowLocal(),
-                collection = "collection",
-                image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
-                media = "BLOG",
-                localedContents = LocaledContents(
-                    mapOf(
-                        Locale("ja") to LocaledContents.Contents("title", "link")
-                    )
+        val article = Article(
+            id = "id",
+            date = DateTimeTz.nowLocal(),
+            collection = "collection",
+            image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
+            media = "BLOG",
+            localedContents = LocaledContents(
+                mapOf(
+                    Locale("ja") to LocaledContents.Contents("title", "link")
                 )
             )
-            ArticleItem(article) { }
+        )
+        ArticleItem(article, { }, {})
     }
 }

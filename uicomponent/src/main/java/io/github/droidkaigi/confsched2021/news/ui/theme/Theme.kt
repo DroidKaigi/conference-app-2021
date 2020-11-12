@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.ui
+package io.github.droidkaigi.confsched2021.news.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

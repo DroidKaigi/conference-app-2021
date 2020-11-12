@@ -1,8 +1,11 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confsched2021.news.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.ambientOf
+import io.github.droidkaigi.confsched2021.news.Article
+import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.Filters
 import kotlinx.coroutines.flow.StateFlow
 
 interface INewsViewModel {

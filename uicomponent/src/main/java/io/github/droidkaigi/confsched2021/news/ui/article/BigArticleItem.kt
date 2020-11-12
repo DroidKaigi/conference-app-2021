@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.article
+package io.github.droidkaigi.confsched2021.news.ui.article
 
 import androidx.compose.foundation.Icon
 import androidx.compose.foundation.Text
@@ -14,7 +14,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ProvideEmphasis
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -27,19 +26,20 @@ import io.github.droidkaigi.confsched2021.news.Article
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
-import io.github.droidkaigi.confsched2021.news.newsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
-import io.github.droidkaigi.confsched2021.news.ui.typography
+import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @OptIn(ExperimentalMaterialApi::class)
 @Composable
-fun BigArticleItem(article: Article, onClick: () -> Unit) {
-    val newsViewModel = newsViewModel()
-    val coroutineScope = rememberCoroutineScope()
+fun BigArticleItem(
+    article: Article,
+    onClick: (Article) -> Unit,
+    onFavoriteChange: (Article) -> Unit
+) {
     ConstraintLayout(
         Modifier
-            .clickable(onClick = onClick)
+            .clickable(onClick = { onClick(article) })
             .fillMaxWidth()
             .padding(16.dp)
     ) {
@@ -106,9 +106,7 @@ fun BigArticleItem(article: Article, onClick: () -> Unit) {
                     )
                 )
             },
-            onCheckedChange = {
-                newsViewModel.toggleFavorite(article)
-            },
+            onCheckedChange = { onFavoriteChange(article) },
             modifier = Modifier.constrainAs(favorite) {
                 top.linkTo(title.top)
                 bottom.linkTo(parent.bottom)
@@ -136,7 +134,6 @@ fun BigArticleItemPreview() {
                 )
             )
         )
-        BigArticleItem(article) {
-        }
+        BigArticleItem(article, { }, {})
     }
 }

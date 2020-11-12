@@ -1,8 +1,7 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confsched2021.news.ui
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.lazy.ExperimentalLazyDsl
-import androidx.compose.material.BackdropValue
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalDrawerLayout
@@ -13,8 +12,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import io.github.droidkaigi.confsched2021.news.article.ArticleScreen
-import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.Article
+import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.Filters
+import io.github.droidkaigi.confsched2021.news.ui.article.ArticleScreen
+import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confsched2021.news.ui
 
 import androidx.compose.animation.DpPropKey
 import androidx.compose.animation.core.FloatPropKey
@@ -17,7 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import io.github.droidkaigi.confsched2021.news.ui.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.Article
+import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.Filters
+import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 

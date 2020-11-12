@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.article
+package io.github.droidkaigi.confsched2021.news.ui.article
 
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -24,8 +24,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched2021.news.Article
 import io.github.droidkaigi.confsched2021.news.Articles
-import io.github.droidkaigi.confsched2021.news.newsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 import kotlinx.coroutines.launch
 
@@ -42,7 +43,7 @@ fun ArticleScreen(
     val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(firstBackdropValue)
-    val onClickArticle: () -> Unit = {
+    val onClickArticle: (Article) -> Unit = {
         coroutineScope.launch {
             scaffoldState.snackbarHostState.showSnackbar(
                 "TODO: waiting " +
@@ -52,7 +53,16 @@ fun ArticleScreen(
         }
     }
     val onNavigationIconClick = { drawerState.open() }
-    ArticleScreen(articles, scaffoldState, onNavigationIconClick, onClickArticle)
+    val onFavoriteChange: (Article) -> Unit = {
+        newsViewModel.toggleFavorite(articles.bigArticle)
+    }
+    ArticleScreen(
+        articles = articles,
+        scaffoldState = scaffoldState,
+        onNavigationIconClick = onNavigationIconClick,
+        onClickArticle = onClickArticle,
+        onFavoriteChange = onFavoriteChange
+    )
 }
 
 /**
@@ -64,7 +74,8 @@ private fun ArticleScreen(
     articles: Articles,
     scaffoldState: BackdropScaffoldState,
     onNavigationIconClick: () -> Unit,
-    onClickArticle: () -> Unit
+    onClickArticle: (Article) -> Unit,
+    onFavoriteChange: (Article) -> Unit
 ) {
     BackdropScaffold(
         backLayerBackgroundColor = MaterialTheme.colors.primary,
@@ -91,11 +102,19 @@ private fun ArticleScreen(
                 LazyColumn {
                     if (articles.size > 0) {
                         item {
-                            BigArticleItem(articles.bigArticle, onClick = onClickArticle)
+                            BigArticleItem(
+                                articles.bigArticle,
+                                onClick = onClickArticle,
+                                onFavoriteChange = onFavoriteChange
+                            )
                         }
                         items(articles.remainArticles) { item ->
                             Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                            ArticleItem(item, onClickArticle)
+                            ArticleItem(
+                                article = item,
+                                onClick = onClickArticle,
+                                onFavoriteChange = onFavoriteChange
+                            )
                         }
                     }
                 }
