@@ -1,4 +1,4 @@
-package com.example.data
+package io.github.droidkaigi.confsched2021.news.data
 
 import dagger.Module
 import dagger.Provides
