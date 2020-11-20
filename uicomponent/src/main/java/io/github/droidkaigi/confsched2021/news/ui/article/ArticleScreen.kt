@@ -99,26 +99,36 @@ private fun ArticleScreen(
                 color = MaterialTheme.colors.background,
                 modifier = Modifier.fillMaxHeight()
             ) {
-                LazyColumn {
-                    if (articles.size > 0) {
-                        item {
-                            BigArticleItem(
-                                articles.bigArticle,
-                                onClick = onClickArticle,
-                                onFavoriteChange = onFavoriteChange
-                            )
-                        }
-                        items(articles.remainArticles) { item ->
-                            Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                            ArticleItem(
-                                article = item,
-                                onClick = onClickArticle,
-                                onFavoriteChange = onFavoriteChange
-                            )
-                        }
-                    }
-                }
+                ArticleList(articles, onClickArticle, onFavoriteChange)
             }
         }
     )
+}
+
+@OptIn(ExperimentalLazyDsl::class, ExperimentalMaterialApi::class)
+@Composable
+private fun ArticleList(
+    articles: Articles,
+    onClickArticle: (Article) -> Unit,
+    onFavoriteChange: (Article) -> Unit
+) {
+    LazyColumn {
+        if (articles.size > 0) {
+            item {
+                BigArticleItem(
+                    articles.bigArticle,
+                    onClick = onClickArticle,
+                    onFavoriteChange = onFavoriteChange
+                )
+            }
+            items(articles.remainArticles) { item ->
+                Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                ArticleItem(
+                    article = item,
+                    onClick = onClickArticle,
+                    onFavoriteChange = onFavoriteChange
+                )
+            }
+        }
+    }
 }
