@@ -1,14 +1,14 @@
 package io.github.droidkaigi.confsched2021.news.ui.article
 
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ListItem
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -45,7 +45,7 @@ fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: 
         },
         secondaryText = {
             Text(
-                article.collection,
+                text = article.collection,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         },

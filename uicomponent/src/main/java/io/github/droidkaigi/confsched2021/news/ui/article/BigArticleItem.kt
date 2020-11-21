@@ -1,7 +1,5 @@
 package io.github.droidkaigi.confsched2021.news.ui.article
 
-import androidx.compose.foundation.Icon
-import androidx.compose.foundation.Text
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
@@ -9,10 +7,13 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.AmbientEmphasisLevels
+import androidx.compose.material.AmbientContentAlpha
+import androidx.compose.material.ContentAlpha
+import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
-import androidx.compose.material.ProvideEmphasis
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Providers
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
@@ -76,19 +77,22 @@ fun BigArticleItem(
                 end.linkTo(section.end)
             }
         )
-        ProvideEmphasis(AmbientEmphasisLevels.current.medium) {
-            Text(article.collection, Modifier.constrainAs(section) {
-                width = Dimension.fillToConstraints
-                linkTo(
-                    top = title.bottom,
-                    bottom = parent.bottom,
-                    bias = 0F,
-                    topMargin = 4.dp
-                )
-                start.linkTo(image.start)
-                end.linkTo(favorite.start)
-            })
-        }
+        Providers(AmbientContentAlpha provides ContentAlpha.high, children = {
+            Text(
+                article.collection,
+                Modifier.constrainAs(section) {
+                    width = Dimension.fillToConstraints
+                    linkTo(
+                        top = title.bottom,
+                        bottom = parent.bottom,
+                        bias = 0F,
+                        topMargin = 4.dp
+                    )
+                    start.linkTo(image.start)
+                    end.linkTo(favorite.start)
+                }
+            )
+        })
         IconToggleButton(
             checked = false,
             icon = {

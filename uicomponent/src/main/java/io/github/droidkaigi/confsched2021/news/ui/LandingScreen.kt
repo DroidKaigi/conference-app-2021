@@ -16,6 +16,7 @@ private const val SplashWaitTime: Long = 2000
 @Composable
 fun LandingScreen(modifier: Modifier = Modifier, onTimeout: () -> Unit) {
     Box(modifier = modifier.fillMaxSize(), alignment = Alignment.Center) {
+        // FIXME Deprecated
         LaunchedTask {
             delay(SplashWaitTime)
             onTimeout()
