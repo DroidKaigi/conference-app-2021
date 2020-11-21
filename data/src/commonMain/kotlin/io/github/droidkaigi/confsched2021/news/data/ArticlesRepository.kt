@@ -6,11 +6,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 
-open class ArticlesRepository(val api: Api, val store: UserStore) {
+open class ArticlesRepository(private val api: Api, private val dataStore: UserDataStore) {
     fun article(): Flow<Articles> {
         return flow {
             val apiArticles = api.fetch()
-            store.favorites().collect { favorites ->
+            dataStore.favorites().collect { favorites ->
                 val favoriteAppliedArticles = apiArticles.map { article: Article ->
                     if (favorites.contains(article.id)) {
                         article.copy(isFavorited = true)
@@ -24,10 +24,10 @@ open class ArticlesRepository(val api: Api, val store: UserStore) {
     }
 
     suspend fun addFavorite(article: Article) {
-        store.addFavorite(article.id)
+        dataStore.addFavorite(article.id)
     }
 
     suspend fun removeFavorite(article: Article) {
-        store.removeFavorite(article.id)
+        dataStore.removeFavorite(article.id)
     }
 }

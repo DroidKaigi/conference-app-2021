@@ -13,9 +13,9 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataStoreUserStore @Inject constructor(
+class DataStoreUserDataStore @Inject constructor(
     @ApplicationContext val appContext: Context
-) : UserStore {
+) : UserDataStore {
 
     val dataStore: DataStore<Preferences> = appContext.createDataStore(
         name = "user_preferences"
