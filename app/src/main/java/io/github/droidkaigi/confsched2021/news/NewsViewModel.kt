@@ -28,7 +28,7 @@ class NewsViewModel @ViewModelInject constructor(
         filter.value = filters
     }
 
-    override fun toggleFavorite(article: Article) {
+    override fun onToggleFavorite(article: Article) {
         viewModelScope.launch {
             if (article.isFavorited) {
                 repository.removeFavorite(article)

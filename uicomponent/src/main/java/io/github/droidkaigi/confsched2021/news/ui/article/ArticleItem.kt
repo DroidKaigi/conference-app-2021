@@ -66,7 +66,7 @@ fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: 
                     )
                 },
                 onCheckedChange = {
-                    newsViewModel.toggleFavorite(article)
+                    newsViewModel.onToggleFavorite(article)
                 }
             )
         }

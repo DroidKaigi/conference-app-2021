@@ -85,7 +85,7 @@ fun DefaultPreview() {
             override fun onFilterChanged(filters: Filters) {
             }
 
-            override fun toggleFavorite(article: Article) {
+            override fun onToggleFavorite(article: Article) {
             }
         }) {
             NewsApp(SplashState.Completed)

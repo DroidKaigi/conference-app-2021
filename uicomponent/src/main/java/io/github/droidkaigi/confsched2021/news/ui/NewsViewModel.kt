@@ -12,7 +12,7 @@ interface INewsViewModel {
     val filter: StateFlow<Filters>
     val articles: StateFlow<Articles>
     fun onFilterChanged(filters: Filters)
-    fun toggleFavorite(article: Article)
+    fun onToggleFavorite(article: Article)
 }
 
 private val NewsViewModelAmbient = ambientOf<INewsViewModel>()

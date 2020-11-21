@@ -51,7 +51,7 @@ fun NewsHomePreview() {
             override fun onFilterChanged(filters: Filters) {
             }
 
-            override fun toggleFavorite(article: Article) {
+            override fun onToggleFavorite(article: Article) {
             }
         }) {
             AppContent()
@@ -69,7 +69,7 @@ fun DarkThemeNewsHomePreview() {
             override fun onFilterChanged(filters: Filters) {
             }
 
-            override fun toggleFavorite(article: Article) {
+            override fun onToggleFavorite(article: Article) {
             }
         }) {
             AppContent()

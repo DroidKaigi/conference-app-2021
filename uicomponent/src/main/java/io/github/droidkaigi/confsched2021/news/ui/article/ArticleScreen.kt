@@ -51,7 +51,7 @@ fun ArticleScreen(
     }
     val onNavigationIconClick = { drawerState.open() }
     val onFavoriteChange: (Article) -> Unit = {
-        newsViewModel.toggleFavorite(articles.bigArticle)
+        newsViewModel.onToggleFavorite(articles.bigArticle)
     }
     ArticleScreen(
         articles = articles,
