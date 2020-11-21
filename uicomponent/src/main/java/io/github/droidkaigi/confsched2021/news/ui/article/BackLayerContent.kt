@@ -21,13 +21,11 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 enum class FilterState(val text: String) {
     All("All"), Favorite("Favorites")
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun BackLayerContent() {
     val viewModel = newsViewModel()

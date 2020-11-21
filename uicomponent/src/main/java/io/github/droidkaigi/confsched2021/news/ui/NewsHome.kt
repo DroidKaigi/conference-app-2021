@@ -1,9 +1,7 @@
 package io.github.droidkaigi.confsched2021.news.ui
 
 import androidx.compose.foundation.Text
-import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.material.DrawerValue
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalDrawerLayout
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
@@ -17,11 +15,9 @@ import io.github.droidkaigi.confsched2021.news.Articles
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.ui.article.ArticleScreen
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 
-@OptIn(ExperimentalLazyDsl::class, ExperimentalMaterialApi::class)
 @Composable
 fun AppContent(
     modifier: Modifier = Modifier,
@@ -45,7 +41,6 @@ fun AppContent(
 
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Preview(showBackground = true)
 @Composable
 fun NewsHomePreview() {
@@ -64,7 +59,6 @@ fun NewsHomePreview() {
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Preview(showBackground = true)
 @Composable
 fun DarkThemeNewsHomePreview() {

@@ -3,14 +3,12 @@ package io.github.droidkaigi.confsched2021.news.ui.article
 import androidx.compose.foundation.Text
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.ExperimentalLazyDsl
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.Divider
 import androidx.compose.material.DrawerState
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -33,7 +31,6 @@ import kotlinx.coroutines.launch
 /**
  * stateful
  */
-@OptIn(ExperimentalLazyDsl::class, ExperimentalMaterialApi::class)
 @Composable
 fun ArticleScreen(
     drawerState: DrawerState,
@@ -68,7 +65,6 @@ fun ArticleScreen(
 /**
  * stateless
  */
-@OptIn(ExperimentalLazyDsl::class, ExperimentalMaterialApi::class)
 @Composable
 private fun ArticleScreen(
     articles: Articles,
@@ -105,7 +101,6 @@ private fun ArticleScreen(
     )
 }
 
-@OptIn(ExperimentalLazyDsl::class, ExperimentalMaterialApi::class)
 @Composable
 private fun ArticleList(
     articles: Articles,

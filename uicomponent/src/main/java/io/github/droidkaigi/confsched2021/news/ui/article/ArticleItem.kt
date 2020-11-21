@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.ListItem
 import androidx.compose.runtime.Composable
@@ -30,7 +29,6 @@ import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsThe
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
-@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: (Article) -> Unit) {
     val newsViewModel = newsViewModel()
@@ -101,7 +99,6 @@ fun NetworkImage(
     )
 }
 
-@OptIn(ExperimentalMaterialApi::class)
 @Preview(showBackground = true)
 @Preview
 @Composable

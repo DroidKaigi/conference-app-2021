@@ -15,7 +15,6 @@ import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalCoroutinesApi::class)
 class NewsViewModel @ViewModelInject constructor(val repository: ArticlesRepository) : ViewModel(),
     INewsViewModel {
     private val allArticles: Flow<Articles> = repository.article()
@@ -43,7 +42,6 @@ class NewsViewModel @ViewModelInject constructor(val repository: ArticlesReposit
 
 // FIXME: replace when it released https://github.com/Kotlin/kotlinx.coroutines/pull/2069
 @Suppress("NOTHING_TO_INLINE")
-@OptIn(ExperimentalCoroutinesApi::class)
 private inline fun <T> Flow<T>.toStateFlow(scope: CoroutineScope, initialValue: T): StateFlow<T> {
     val mutableStateFlow = MutableStateFlow(initialValue)
     onEach { mutableStateFlow.value = it }.launchIn(scope)
