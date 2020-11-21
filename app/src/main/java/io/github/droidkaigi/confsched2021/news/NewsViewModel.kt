@@ -22,7 +22,7 @@ class NewsViewModel @ViewModelInject constructor(
         .combine(filter) { articles, filters ->
             articles.filtered(filters)
         }
-        .stateIn(viewModelScope, SharingStarted.Eagerly, Articles())
+        .stateIn(viewModelScope, SharingStarted.Lazily, Articles())
 
     override fun onFilterChanged(filters: Filters) {
         filter.value = filters

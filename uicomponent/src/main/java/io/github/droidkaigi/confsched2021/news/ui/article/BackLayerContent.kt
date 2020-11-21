@@ -19,6 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
@@ -26,14 +27,29 @@ enum class FilterState(val text: String) {
     All("All"), Favorite("Favorites")
 }
 
+/**
+ * Statefull
+ */
 @Composable
 fun BackLayerContent() {
     val viewModel = newsViewModel()
     val filterState by viewModel.filter.collectAsState()
     val filters = viewModel.filter.value
-    Input(text = if (filterState.filterFavorite) "Favorites" else "All") {
+    val onClick = {
         viewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
     }
+    BackLayerContent(filterState, onClick)
+}
+
+/**
+ * Stateless
+ */
+@Composable
+private fun BackLayerContent(
+    filterState: Filters,
+    onClick: () -> Unit
+) {
+    Input(text = if (filterState.filterFavorite) "Favorites" else "All", onClick = onClick)
     Spacer(Modifier.preferredHeight(8.dp))
 }
 

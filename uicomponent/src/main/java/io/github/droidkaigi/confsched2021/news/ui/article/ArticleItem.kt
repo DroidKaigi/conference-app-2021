@@ -24,14 +24,12 @@ import io.github.droidkaigi.confsched2021.news.Article
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
-import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @Composable
 fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: (Article) -> Unit) {
-    val newsViewModel = newsViewModel()
     ListItem(
         modifier = Modifier
             .clickable(onClick = { onClick(article) }),
@@ -66,7 +64,7 @@ fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: 
                     )
                 },
                 onCheckedChange = {
-                    newsViewModel.onToggleFavorite(article)
+                    onFavoriteChange(article)
                 }
             )
         }

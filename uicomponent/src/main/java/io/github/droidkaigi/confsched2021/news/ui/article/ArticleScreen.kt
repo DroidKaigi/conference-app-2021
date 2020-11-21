@@ -51,7 +51,7 @@ fun ArticleScreen(
     }
     val onNavigationIconClick = { drawerState.open() }
     val onFavoriteChange: (Article) -> Unit = {
-        newsViewModel.onToggleFavorite(articles.bigArticle)
+        newsViewModel.onToggleFavorite(it)
     }
     ArticleScreen(
         articles = articles,
@@ -109,14 +109,7 @@ private fun ArticleList(
 ) {
     LazyColumn {
         if (articles.size > 0) {
-            item {
-                BigArticleItem(
-                    articles.bigArticle,
-                    onClick = onClickArticle,
-                    onFavoriteChange = onFavoriteChange
-                )
-            }
-            items(articles.remainArticles) { item ->
+            items(articles.articles) { item ->
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
                 ArticleItem(
                     article = item,
