@@ -19,7 +19,7 @@ import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
 import com.soywiz.klock.DateTimeTz
 import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.coil.ErrorResult
+import dev.chrisbanes.accompanist.imageloading.ImageLoadState
 import io.github.droidkaigi.confsched2021.news.Article
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
@@ -93,7 +93,7 @@ fun NetworkImage(
         contentScale = contentScale,
         onRequestCompleted = { result ->
             when (result) {
-                is ErrorResult -> result.throwable.printStackTrace()
+                is ImageLoadState.Error -> result.throwable.printStackTrace()
             }
         }
     )
