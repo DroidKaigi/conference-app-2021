@@ -4,10 +4,10 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class DaggerArticlesRepository @Inject constructor(
+internal class DaggerArticleRepository @Inject constructor(
     api: Api,
     dataDataStore: UserDataStore
-) : ArticlesRepository(
+) : ArticleRepository(
     api,
     dataDataStore
 )

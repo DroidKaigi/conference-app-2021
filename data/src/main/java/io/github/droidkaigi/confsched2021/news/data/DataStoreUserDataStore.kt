@@ -17,7 +17,7 @@ class DataStoreUserDataStore @Inject constructor(
     @ApplicationContext val appContext: Context
 ) : UserDataStore {
 
-    val dataStore: DataStore<Preferences> = appContext.createDataStore(
+    private val dataStore: DataStore<Preferences> = appContext.createDataStore(
         name = "user_preferences"
     )
 

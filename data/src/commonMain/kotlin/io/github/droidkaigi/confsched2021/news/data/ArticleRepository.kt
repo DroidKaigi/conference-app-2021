@@ -6,8 +6,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.flow
 
-open class ArticlesRepository(private val api: Api, private val dataStore: UserDataStore) {
-    fun article(): Flow<Articles> {
+open class ArticleRepository(private val api: Api, private val dataStore: UserDataStore) {
+    fun articles(): Flow<Articles> {
         return flow {
             val apiArticles = api.fetch()
             dataStore.favorites().collect { favorites ->
