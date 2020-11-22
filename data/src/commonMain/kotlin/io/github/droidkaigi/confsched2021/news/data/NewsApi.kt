@@ -2,20 +2,21 @@ package io.github.droidkaigi.confsched2021.news.data
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.parse
-import io.github.droidkaigi.confsched2021.news.Article
-import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.Blog
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
+import io.github.droidkaigi.confsched2021.news.News
+import io.github.droidkaigi.confsched2021.news.Other
+import io.github.droidkaigi.confsched2021.news.Podcast
+import io.github.droidkaigi.confsched2021.news.Video
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
-import kotlin.random.Random
 
-
-open class Api {
+open class NewsApi {
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun fetch(): List<Article> {
+    suspend fun fetch(): List<News> {
         val response = """[
   {
     "id": "2020-07-22-droidkaigi2020",
@@ -137,33 +138,7 @@ open class Api {
             response
         )
             .map { response ->
-                Article(
-                    id = response.id,
-                    date = DateFormat("yyyy-MM-dd").parse(response.date),
-                    isFavorited = false,
-                    collection = response.collection,
-                    image = Image.of(response.image),
-                    media = response.media,
-                    localedContents = LocaledContents(
-                        buildMap {
-                            put(
-                                Locale("ja"), LocaledContents.Contents(
-                                    title = response.ja.title,
-                                    link = response.ja.link
-                                )
-                            )
-                            response.en?.let {
-                                put(
-                                    Locale("en"), LocaledContents.Contents(
-                                        title = response.en.title,
-                                        link = response.en.link
-                                    )
-                                )
-                            }
-                        }
-                    )
-
-                )
+                response.toNews()
             }
         return articles
     }
@@ -182,4 +157,75 @@ open class Api {
     @Serializable
     data class LocaledContentsResponse(val title: String, val link: String)
 
+}
+
+@ExperimentalStdlibApi
+private fun NewsApi.ArticleResponse.toNews(): News {
+    val response = this
+    val contents = buildMap<Locale, LocaledContents.Contents> {
+        put(
+            Locale("ja"), LocaledContents.Contents(
+                title = response.ja.title,
+                link = response.ja.link
+            )
+        )
+        response.en?.let {
+            put(
+                Locale("en"), LocaledContents.Contents(
+                    title = response.en.title,
+                    link = response.en.link
+                )
+            )
+        }
+    }
+    return when (response.media) {
+        "YOUTUBE" -> {
+            Video(
+                id = response.id,
+                date = DateFormat("yyyy-MM-dd").parse(response.date),
+                collection = response.collection,
+                image = Image.of(response.image),
+                media = response.media,
+                localedContents = LocaledContents(
+                    contents
+                )
+            )
+        }
+        "BLOG" -> {
+            Blog(
+                id = response.id,
+                date = DateFormat("yyyy-MM-dd").parse(response.date),
+                collection = response.collection,
+                image = Image.of(response.image),
+                media = response.media,
+                localedContents = LocaledContents(
+                    contents
+                )
+            )
+        }
+        "PODCAST" -> {
+            Podcast(
+                id = response.id,
+                date = DateFormat("yyyy-MM-dd").parse(response.date),
+                collection = response.collection,
+                image = Image.of(response.image),
+                media = response.media,
+                localedContents = LocaledContents(
+                    contents
+                )
+            )
+        }
+        else -> {
+            Other(
+                id = response.id,
+                date = DateFormat("yyyy-MM-dd").parse(response.date),
+                collection = response.collection,
+                image = Image.of(response.image),
+                media = response.media,
+                localedContents = LocaledContents(
+                    contents
+                )
+            )
+        }
+    }
 }

@@ -21,6 +21,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
     }
 }
 
@@ -43,6 +44,7 @@ kotlin {
             implementation "org.jetbrains.kotlin:kotlin-test-common"
             implementation "org.jetbrains.kotlin:kotlin-test-annotations-common"
         }
+        jvmMain
         jvmTest.dependencies {
             implementation "org.jetbrains.kotlin:kotlin-test-junit"
         }
@@ -55,7 +57,9 @@ kotlin {
 //            testImplementation "com.google.dagger:hilt-android-testing:2.29-alpha"
 //            kaptTest "com.google.dagger:hilt-android-compiler:2.29-alpha"
         }
-//        androidTest.dependencies{
+        androidTest.dependencies{
+            implementation "org.jetbrains.kotlin:kotlin-test-junit"
+        }
 //            // For instrumentation tests
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.29-alpha"
 //            kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.29-alpha"

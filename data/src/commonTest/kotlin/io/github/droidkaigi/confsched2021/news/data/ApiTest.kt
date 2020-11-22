@@ -7,7 +7,7 @@ class ApiTest {
     @Test
     fun test() {
         runBlocking {
-            assertTrue(Api().fetch().size > 0)
+            assertTrue(NewsApi().fetch().isNotEmpty())
         }
     }
 }

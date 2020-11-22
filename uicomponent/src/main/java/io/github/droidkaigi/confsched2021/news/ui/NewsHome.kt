@@ -1,8 +1,8 @@
 package io.github.droidkaigi.confsched2021.news.ui
 
-import androidx.compose.foundation.Text
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawerLayout
+import androidx.compose.material.Text
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -10,8 +10,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.ui.tooling.preview.Preview
-import io.github.droidkaigi.confsched2021.news.Article
-import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.News
+import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.ui.article.ArticleScreen
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
@@ -47,11 +47,11 @@ fun NewsHomePreview() {
     Conferenceapp2021newsTheme {
         ProvideNewsViewModel(viewModel = object : INewsViewModel {
             override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
-            override val articles: StateFlow<Articles> = MutableStateFlow(Articles())
+            override val newsContents: StateFlow<NewsContents> = MutableStateFlow(NewsContents())
             override fun onFilterChanged(filters: Filters) {
             }
 
-            override fun onToggleFavorite(article: Article) {
+            override fun onToggleFavorite(article: News) {
             }
         }) {
             AppContent()
@@ -65,11 +65,11 @@ fun DarkThemeNewsHomePreview() {
     Conferenceapp2021newsTheme(true) {
         ProvideNewsViewModel(viewModel = object : INewsViewModel {
             override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
-            override val articles: StateFlow<Articles> = MutableStateFlow(Articles())
+            override val newsContents: StateFlow<NewsContents> = MutableStateFlow(NewsContents())
             override fun onFilterChanged(filters: Filters) {
             }
 
-            override fun onToggleFavorite(article: Article) {
+            override fun onToggleFavorite(article: News) {
             }
         }) {
             AppContent()

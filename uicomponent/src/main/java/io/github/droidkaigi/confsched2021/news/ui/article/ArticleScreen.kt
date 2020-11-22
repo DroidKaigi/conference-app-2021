@@ -22,8 +22,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.confsched2021.news.Article
-import io.github.droidkaigi.confsched2021.news.Articles
+import io.github.droidkaigi.confsched2021.news.News
+import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 import kotlinx.coroutines.launch
@@ -37,10 +37,10 @@ fun ArticleScreen(
     firstBackdropValue: BackdropValue = BackdropValue.Concealed
 ) {
     val newsViewModel = newsViewModel()
-    val articles: Articles by newsViewModel.articles.collectAsState(initial = Articles())
+    val newsContents: NewsContents by newsViewModel.newsContents.collectAsState(initial = NewsContents())
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(firstBackdropValue)
-    val onClickArticle: (Article) -> Unit = {
+    val onClickArticle: (News) -> Unit = {
         coroutineScope.launch {
             scaffoldState.snackbarHostState.showSnackbar(
                 "TODO: waiting " +
@@ -50,11 +50,11 @@ fun ArticleScreen(
         }
     }
     val onNavigationIconClick = { drawerState.open() }
-    val onFavoriteChange: (Article) -> Unit = {
+    val onFavoriteChange: (News) -> Unit = {
         newsViewModel.onToggleFavorite(it)
     }
     ArticleScreen(
-        articles = articles,
+        newsContents = newsContents,
         scaffoldState = scaffoldState,
         onNavigationIconClick = onNavigationIconClick,
         onClickArticle = onClickArticle,
@@ -67,11 +67,11 @@ fun ArticleScreen(
  */
 @Composable
 private fun ArticleScreen(
-    articles: Articles,
+    newsContents: NewsContents,
     scaffoldState: BackdropScaffoldState,
     onNavigationIconClick: () -> Unit,
-    onClickArticle: (Article) -> Unit,
-    onFavoriteChange: (Article) -> Unit
+    onClickArticle: (News) -> Unit,
+    onFavoriteChange: (News) -> Unit
 ) {
     BackdropScaffold(
         backLayerBackgroundColor = MaterialTheme.colors.primary,
@@ -95,7 +95,7 @@ private fun ArticleScreen(
                 color = MaterialTheme.colors.background,
                 modifier = Modifier.fillMaxHeight()
             ) {
-                ArticleList(articles, onClickArticle, onFavoriteChange)
+                ArticleList(newsContents, onClickArticle, onFavoriteChange)
             }
         }
     )
@@ -103,16 +103,17 @@ private fun ArticleScreen(
 
 @Composable
 private fun ArticleList(
-    articles: Articles,
-    onClickArticle: (Article) -> Unit,
-    onFavoriteChange: (Article) -> Unit
+    newsContents: NewsContents,
+    onClickArticle: (News) -> Unit,
+    onFavoriteChange: (News) -> Unit
 ) {
     LazyColumn {
-        if (articles.size > 0) {
-            items(articles.articles) { item ->
+        if (newsContents.size > 0) {
+            items(newsContents.contents) { (item, favorited) ->
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
                 ArticleItem(
                     article = item,
+                    favorited = favorited,
                     onClick = onClickArticle,
                     onFavoriteChange = onFavoriteChange
                 )

@@ -20,16 +20,22 @@ import androidx.ui.tooling.preview.Preview
 import com.soywiz.klock.DateTimeTz
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.imageloading.ImageLoadState
-import io.github.droidkaigi.confsched2021.news.Article
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
+import io.github.droidkaigi.confsched2021.news.News
+import io.github.droidkaigi.confsched2021.news.Other
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @Composable
-fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: (Article) -> Unit) {
+fun ArticleItem(
+    article: News,
+    favorited: Boolean,
+    onClick: (News) -> Unit,
+    onFavoriteChange: (News) -> Unit
+) {
     ListItem(
         modifier = Modifier
             .clickable(onClick = { onClick(article) }),
@@ -53,7 +59,7 @@ fun ArticleItem(article: Article, onClick: (Article) -> Unit, onFavoriteChange: 
                 icon = {
                     Icon(
                         vectorResource(
-                            if (article.isFavorited) {
+                            if (favorited) {
                                 R.drawable
                                     .ic_baseline_favorite_24
                             } else {
@@ -102,7 +108,7 @@ fun NetworkImage(
 @Composable
 fun ArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        val article = Article(
+        val article = Other(
             id = "id",
             date = DateTimeTz.nowLocal(),
             collection = "collection",
@@ -114,6 +120,6 @@ fun ArticleItemPreview() {
                 )
             )
         )
-        ArticleItem(article, { }, {})
+        ArticleItem(article, false, { }, { })
     }
 }
