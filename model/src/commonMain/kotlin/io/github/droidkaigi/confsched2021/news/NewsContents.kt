@@ -17,7 +17,7 @@ class NewsContents(
                 favorites.contains(article.id)
             }
         }
-        return NewsContents(articles)
+        return NewsContents(articles, favorites)
     }
 
     val size get() = newsContents.size

@@ -2,14 +2,10 @@ package io.github.droidkaigi.confsched2021.news.data
 
 import com.soywiz.klock.DateFormat
 import com.soywiz.klock.parse
-import io.github.droidkaigi.confsched2021.news.Blog
 import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
 import io.github.droidkaigi.confsched2021.news.News
-import io.github.droidkaigi.confsched2021.news.Other
-import io.github.droidkaigi.confsched2021.news.Podcast
-import io.github.droidkaigi.confsched2021.news.Video
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -180,7 +176,7 @@ private fun NewsApi.ArticleResponse.toNews(): News {
     }
     return when (response.media) {
         "YOUTUBE" -> {
-            Video(
+            News.Video(
                 id = response.id,
                 date = DateFormat("yyyy-MM-dd").parse(response.date),
                 collection = response.collection,
@@ -192,7 +188,7 @@ private fun NewsApi.ArticleResponse.toNews(): News {
             )
         }
         "BLOG" -> {
-            Blog(
+            News.Blog(
                 id = response.id,
                 date = DateFormat("yyyy-MM-dd").parse(response.date),
                 collection = response.collection,
@@ -204,7 +200,7 @@ private fun NewsApi.ArticleResponse.toNews(): News {
             )
         }
         "PODCAST" -> {
-            Podcast(
+            News.Podcast(
                 id = response.id,
                 date = DateFormat("yyyy-MM-dd").parse(response.date),
                 collection = response.collection,
@@ -216,7 +212,7 @@ private fun NewsApi.ArticleResponse.toNews(): News {
             )
         }
         else -> {
-            Other(
+            News.Other(
                 id = response.id,
                 date = DateFormat("yyyy-MM-dd").parse(response.date),
                 collection = response.collection,

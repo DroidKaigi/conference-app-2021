@@ -30,7 +30,7 @@ class NewsViewModel @ViewModelInject constructor(
 
     override fun onToggleFavorite(article: News) {
         viewModelScope.launch {
-            if (newsContents.value.favorites.contains(article)) {
+            if (newsContents.value.favorites.contains(article.id)) {
                 repository.removeFavorite(article)
             } else {
                 repository.addFavorite(article)

@@ -24,7 +24,6 @@ import io.github.droidkaigi.confsched2021.news.Image
 import io.github.droidkaigi.confsched2021.news.Locale
 import io.github.droidkaigi.confsched2021.news.LocaledContents
 import io.github.droidkaigi.confsched2021.news.News
-import io.github.droidkaigi.confsched2021.news.Other
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
@@ -108,7 +107,7 @@ fun NetworkImage(
 @Composable
 fun ArticleItemPreview() {
     Conferenceapp2021newsTheme {
-        val article = Other(
+        val article = News.Other(
             id = "id",
             date = DateTimeTz.nowLocal(),
             collection = "collection",

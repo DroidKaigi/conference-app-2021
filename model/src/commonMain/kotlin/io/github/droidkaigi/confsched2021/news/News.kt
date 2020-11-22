@@ -9,40 +9,40 @@ sealed class News {
     abstract val image: Image
     abstract val media: String
     abstract val localedContents: LocaledContents
+
+    data class Blog(
+        override val id: String,
+        override val date: DateTimeTz,
+        override val collection: String,
+        override val image: Image,
+        override val media: String,
+        override val localedContents: LocaledContents
+    ) : News()
+
+    data class Video(
+        override val id: String,
+        override val date: DateTimeTz,
+        override val collection: String,
+        override val image: Image,
+        override val media: String,
+        override val localedContents: LocaledContents
+    ) : News()
+
+    data class Podcast(
+        override val id: String,
+        override val date: DateTimeTz,
+        override val collection: String,
+        override val image: Image,
+        override val media: String,
+        override val localedContents: LocaledContents
+    ) : News()
+
+    data class Other(
+        override val id: String,
+        override val date: DateTimeTz,
+        override val collection: String,
+        override val image: Image,
+        override val media: String,
+        override val localedContents: LocaledContents
+    ) : News()
 }
-
-data class Blog(
-    override val id: String,
-    override val date: DateTimeTz,
-    override val collection: String,
-    override val image: Image,
-    override val media: String,
-    override val localedContents: LocaledContents
-) : News()
-
-data class Video(
-    override val id: String,
-    override val date: DateTimeTz,
-    override val collection: String,
-    override val image: Image,
-    override val media: String,
-    override val localedContents: LocaledContents
-) : News()
-
-data class Podcast(
-    override val id: String,
-    override val date: DateTimeTz,
-    override val collection: String,
-    override val image: Image,
-    override val media: String,
-    override val localedContents: LocaledContents
-) : News()
-
-data class Other(
-    override val id: String,
-    override val date: DateTimeTz,
-    override val collection: String,
-    override val image: Image,
-    override val media: String,
-    override val localedContents: LocaledContents
-) : News()
