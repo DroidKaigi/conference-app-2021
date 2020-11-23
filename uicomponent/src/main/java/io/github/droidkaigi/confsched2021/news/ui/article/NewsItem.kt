@@ -29,7 +29,7 @@ import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @Composable
-fun ArticleItem(
+fun NewsItem(
     article: News,
     favorited: Boolean,
     onClick: (News) -> Unit,
@@ -119,6 +119,6 @@ fun ArticleItemPreview() {
                 )
             )
         )
-        ArticleItem(article, false, { }, { })
+        NewsItem(article, false, { }, { })
     }
 }

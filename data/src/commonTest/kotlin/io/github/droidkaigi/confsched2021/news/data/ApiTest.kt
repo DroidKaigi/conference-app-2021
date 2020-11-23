@@ -7,7 +7,7 @@ class ApiTest {
     @Test
     fun test() {
         runBlocking {
-            assertTrue(NewsApi().fetch().isNotEmpty())
+            assertTrue(KtorNewsApi().fetch().isNotEmpty())
         }
     }
 }

@@ -29,6 +29,23 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    testOptions {
+        unitTests {
+            returnDefaultValues = true
+            includeAndroidResources = true
+        }
+        unitTests.all {
+            maxHeapSize = "4096m"
+            maxParallelForks = Runtime.runtime.availableProcessors() / 2
+            testLogging {
+                exceptionFormat = "full"
+                showCauses true
+                showExceptions true
+                showStackTraces true
+                events = ["failed"]
+            }
+        }
+    }
     kotlinOptions {
         jvmTarget = '1.8'
     }
@@ -45,6 +62,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
         freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
     }
 }
 
@@ -57,7 +75,7 @@ dependencies {
     kapt 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
 
     // For instrumentation tests
-    androidTestImplementation  'com.google.dagger:hilt-android-testing:2.29.1-alpha'
+    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.29.1-alpha'
     kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
 
     // For local unit tests
@@ -80,7 +98,12 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation 'com.google.android.material:material:1.2.1'
 
-    testImplementation 'junit:junit:4.13'
+    testImplementation 'junit:junit:4.13.1'
+    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1'
+    testImplementation 'io.kotest:kotest-assertions-core:4.3.1'
+    // https://github.com/cashapp/turbine/issues/10
+    testImplementation 'app.cash.turbine:turbine:0.2.1'
+
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 }

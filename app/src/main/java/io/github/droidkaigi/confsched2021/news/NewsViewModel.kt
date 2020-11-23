@@ -16,24 +16,25 @@ import kotlinx.coroutines.launch
 class NewsViewModel @ViewModelInject constructor(
     private val repository: ArticleRepository
 ) : ViewModel(), INewsViewModel {
+
     private val allNewsContents: Flow<NewsContents> = repository.articles()
     override val filter: MutableStateFlow<Filters> = MutableStateFlow(Filters())
     override val newsContents: StateFlow<NewsContents> = allNewsContents
         .combine(filter) { articles, filters ->
             articles.filtered(filters)
         }
-        .stateIn(viewModelScope, SharingStarted.Lazily, NewsContents())
+        .stateIn(viewModelScope, SharingStarted.Eagerly, NewsContents())
 
     override fun onFilterChanged(filters: Filters) {
         filter.value = filters
     }
 
-    override fun onToggleFavorite(article: News) {
+    override fun onToggleFavorite(news: News) {
         viewModelScope.launch {
-            if (newsContents.value.favorites.contains(article.id)) {
-                repository.removeFavorite(article)
+            if (newsContents.value.favorites.contains(news.id)) {
+                repository.removeFavorite(news)
             } else {
-                repository.addFavorite(article)
+                repository.addFavorite(news)
             }
         }
     }

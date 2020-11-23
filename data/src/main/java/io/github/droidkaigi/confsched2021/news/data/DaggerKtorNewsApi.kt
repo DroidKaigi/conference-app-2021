@@ -4,4 +4,4 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class DaggerNewsApi @Inject constructor() : NewsApi()
+internal class DaggerKtorNewsApi @Inject constructor() : KtorNewsApi()

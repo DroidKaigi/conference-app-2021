@@ -26,7 +26,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
-fun NewsApp(firstSplashScreenState: SplashState = SplashState.Shown) {
+fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
     Conferenceapp2021newsTheme {
         var splashShown by remember {
             mutableStateOf(firstSplashScreenState)
@@ -77,18 +77,10 @@ private val splashTransitionDefinition = transitionDefinition<SplashState> {
 
 @Preview(showBackground = true)
 @Composable
-fun DefaultPreview() {
+fun DroidKaigiAppPreview() {
     Conferenceapp2021newsTheme {
-        ProvideNewsViewModel(viewModel = object : INewsViewModel {
-            override val filter: StateFlow<Filters> = MutableStateFlow(Filters())
-            override val newsContents: StateFlow<NewsContents> = MutableStateFlow(NewsContents())
-            override fun onFilterChanged(filters: Filters) {
-            }
-
-            override fun onToggleFavorite(article: News) {
-            }
-        }) {
-            NewsApp(SplashState.Completed)
+        ProvideNewsViewModel(viewModel = fakeNewsViewModel()){
+            DroidKaigiApp()
         }
     }
 }

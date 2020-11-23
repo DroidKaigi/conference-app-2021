@@ -9,13 +9,13 @@ import dagger.hilt.components.SingletonComponent
 @Module
 class DataModule {
     @Provides
-    internal fun provideApi(daggerApi: DaggerNewsApi): NewsApi {
+    internal fun provideApi(daggerApi: DaggerKtorNewsApi): NewsApi {
         return daggerApi
     }
 
     @Provides
     internal fun provideUserStore(daggerUserStore: DataStoreUserDataStore): UserDataStore {
-        return daggerUserStore
+        return fakeUserDataStore()
     }
 
     @Provides

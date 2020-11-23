@@ -1,18 +1,21 @@
 package io.github.droidkaigi.confsched2021.news.data
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.parse
-import io.github.droidkaigi.confsched2021.news.Image
-import io.github.droidkaigi.confsched2021.news.Locale
-import io.github.droidkaigi.confsched2021.news.LocaledContents
 import io.github.droidkaigi.confsched2021.news.News
-import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 
-open class NewsApi {
+interface NewsApi {
+    suspend fun fetch(): List<News>
+}
+
+fun fakeNewsApi(): NewsApi = object : NewsApi {
+    override suspend fun fetch(): List<News> {
+        return list
+    }
+
+    // cache for fixing test issue
     @OptIn(ExperimentalStdlibApi::class)
-    suspend fun fetch(): List<News> {
+    val list = run {
         val response = """[
   {
     "id": "2020-07-22-droidkaigi2020",
@@ -130,98 +133,13 @@ open class NewsApi {
     }
   }
 ]"""
-        val articles = Json.decodeFromString<List<ArticleResponse>>(
+        val articles = Json.decodeFromString<List<KtorNewsApi.ArticleResponse>>(
             response
         )
             .map { response ->
                 response.toNews()
             }
-        return articles
-    }
-
-    @Serializable
-    data class ArticleResponse(
-        val id: String,
-        val date: String,
-        val collection: String,
-        val image: String,
-        val media: String,
-        val ja: LocaledContentsResponse,
-        val en: LocaledContentsResponse? = null,
-    )
-
-    @Serializable
-    data class LocaledContentsResponse(val title: String, val link: String)
-
-}
-
-@ExperimentalStdlibApi
-private fun NewsApi.ArticleResponse.toNews(): News {
-    val response = this
-    val contents = buildMap<Locale, LocaledContents.Contents> {
-        put(
-            Locale("ja"), LocaledContents.Contents(
-                title = response.ja.title,
-                link = response.ja.link
-            )
-        )
-        response.en?.let {
-            put(
-                Locale("en"), LocaledContents.Contents(
-                    title = response.en.title,
-                    link = response.en.link
-                )
-            )
-        }
-    }
-    return when (response.media) {
-        "YOUTUBE" -> {
-            News.Video(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
-        "BLOG" -> {
-            News.Blog(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
-        "PODCAST" -> {
-            News.Podcast(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
-        else -> {
-            News.Other(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
+        articles
     }
 }
+

@@ -1,11 +1,11 @@
 package io.github.droidkaigi.confsched2021.news.data
 
 import android.content.Context
-import androidx.datastore.DataStore
-import androidx.datastore.preferences.Preferences
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
+import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.preferencesSetKey
 import androidx.datastore.preferences.createDataStore
-import androidx.datastore.preferences.edit
-import androidx.datastore.preferences.preferencesSetKey
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
