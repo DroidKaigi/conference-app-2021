@@ -15,7 +15,7 @@ class DataModule {
 
     @Provides
     internal fun provideUserStore(daggerUserStore: DataStoreUserDataStore): UserDataStore {
-        return fakeUserDataStore()
+        return daggerUserStore
     }
 
     @Provides
