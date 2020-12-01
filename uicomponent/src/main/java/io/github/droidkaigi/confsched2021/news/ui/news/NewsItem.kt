@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.ui.article
+package io.github.droidkaigi.confsched2021.news.ui.news
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.aspectRatio
@@ -30,16 +30,16 @@ import io.github.droidkaigi.confsched2021.news.uicomponent.R
 
 @Composable
 fun NewsItem(
-    article: News,
+    news: News,
     favorited: Boolean,
     onClick: (News) -> Unit,
     onFavoriteChange: (News) -> Unit
 ) {
     ListItem(
         modifier = Modifier
-            .clickable(onClick = { onClick(article) }),
+            .clickable(onClick = { onClick(news) }),
         icon = {
-            val url = article.image.url
+            val url = news.image.url
             val modifier = Modifier
                 .width(64.dp)
                 .clip(RoundedCornerShape(4.dp))
@@ -48,7 +48,7 @@ fun NewsItem(
         },
         secondaryText = {
             Text(
-                text = article.collection,
+                text = news.collection,
                 modifier = Modifier.padding(bottom = 8.dp)
             )
         },
@@ -69,13 +69,13 @@ fun NewsItem(
                     )
                 },
                 onCheckedChange = {
-                    onFavoriteChange(article)
+                    onFavoriteChange(news)
                 }
             )
         }
     ) {
         Text(
-            text = article.localedContents.getContents(Locale("ja")).title,
+            text = news.localedContents.getContents(Locale("ja")).title,
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
@@ -105,9 +105,9 @@ fun NetworkImage(
 @Preview(showBackground = true)
 @Preview
 @Composable
-fun ArticleItemPreview() {
+fun NewsItemPreview() {
     Conferenceapp2021newsTheme {
-        val article = News.Other(
+        val news = News.Other(
             id = "id",
             date = DateTimeTz.nowLocal(),
             collection = "collection",
@@ -119,6 +119,6 @@ fun ArticleItemPreview() {
                 )
             )
         )
-        NewsItem(article, false, { }, { })
+        NewsItem(news, false, { }, { })
     }
 }

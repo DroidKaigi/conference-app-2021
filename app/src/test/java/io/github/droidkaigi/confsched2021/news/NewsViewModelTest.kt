@@ -1,6 +1,6 @@
 package io.github.droidkaigi.confsched2021.news
 
-import io.github.droidkaigi.confsched2021.news.data.ArticleRepository
+import io.github.droidkaigi.confsched2021.news.data.NewsRepository
 import io.github.droidkaigi.confsched2021.news.data.fakeNewsApi
 import io.github.droidkaigi.confsched2021.news.data.fakeUserDataStore
 import io.github.droidkaigi.confsched2021.news.ui.INewsViewModel
@@ -28,7 +28,7 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsV
         // Replace when it fixed https://github.com/cashapp/turbine/issues/10
         val newsViewModel = newsViewModelFactory()
 
-        val firstContent = newsViewModel.newsContents.value
+        val firstContent = newsViewModel.filteredNewsContents.value
 
         firstContent.size shouldBeGreaterThan 1
 
@@ -38,27 +38,42 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsV
     @Test
     fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.newsContents.value
+        val firstContent = newsViewModel.filteredNewsContents.value
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.onToggleFavorite(fakeNewsContents().newsContents[0])
+        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
 
-        val secondContent = newsViewModel.newsContents.value
-        secondContent.favorites shouldBe setOf(fakeNewsContents().newsContents[0].id)
+        val secondContent = newsViewModel.filteredNewsContents.value
+        secondContent.favorites shouldBe setOf(firstContent.newsContents[0].id)
     }
 
     @OptIn(ExperimentalTime::class)
     @Test
     fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.newsContents.value
+        val firstContent = newsViewModel.filteredNewsContents.value
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.onToggleFavorite(fakeNewsContents().newsContents[0])
-        newsViewModel.onToggleFavorite(fakeNewsContents().newsContents[0])
+        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
+        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
 
-        val secondContent = newsViewModel.newsContents.value
+        val secondContent = newsViewModel.filteredNewsContents.value
         secondContent.favorites shouldBe setOf()
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val newsViewModel = newsViewModelFactory()
+        val firstContent = newsViewModel.filteredNewsContents.value
+        firstContent.favorites shouldBe setOf()
+        val favoriteContents = firstContent.newsContents[1]
+
+        newsViewModel.onToggleFavorite(favoriteContents)
+        newsViewModel.onFilterChanged(Filters(filterFavorite = true))
+
+        val secondContent = newsViewModel.filteredNewsContents.value
+        secondContent.contents[0].first.id shouldBe favoriteContents.id
     }
 
     companion object {
@@ -67,7 +82,7 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsV
         fun data() = listOf(
             arrayOf("Real ViewModel and Repository", {
                 NewsViewModel(
-                    repository = ArticleRepository(fakeNewsApi(), fakeUserDataStore())
+                    repository = NewsRepository(fakeNewsApi(), fakeUserDataStore())
                 )
             }),
             arrayOf("FakeViewModel", {

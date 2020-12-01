@@ -10,10 +10,10 @@ import io.github.droidkaigi.confsched2021.news.uicomponent.R
 fun DrawerContent(navController: NavHostController) {
     DrawerButton(
         icon = vectorResource(id = R.drawable.ic_baseline_list_alt_24),
-        label = "Articles",
+        label = "NewsContents",
         isSelected = true,
         {
-            navController.navigate("articles")
+            navController.navigate("newsContents")
         }
     )
     DrawerButton(

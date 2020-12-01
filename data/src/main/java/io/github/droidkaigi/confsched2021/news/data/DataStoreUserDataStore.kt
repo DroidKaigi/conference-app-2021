@@ -13,7 +13,7 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DataStoreUserDataStore @Inject constructor(
+internal class DataStoreUserDataStore @Inject constructor(
     @ApplicationContext val appContext: Context
 ) : UserDataStore {
 

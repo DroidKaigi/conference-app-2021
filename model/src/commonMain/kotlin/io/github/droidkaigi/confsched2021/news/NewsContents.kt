@@ -16,8 +16,8 @@ data class NewsContents(
     fun filtered(filters: Filters): NewsContents {
         var news = newsContents.toList()
         if (filters.filterFavorite) {
-            news = news.filter { article ->
-                favorites.contains(article.id)
+            news = news.filter { news ->
+                favorites.contains(news.id)
             }
         }
         return copy(newsContents = news)

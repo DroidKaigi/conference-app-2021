@@ -15,7 +15,7 @@ open class KtorNewsApi : NewsApi {
     }
 
     @Serializable
-    data class ArticleResponse(
+    data class NewsResponse(
         val id: String,
         val date: String,
         val collection: String,
@@ -31,7 +31,7 @@ open class KtorNewsApi : NewsApi {
 }
 
 @OptIn(ExperimentalStdlibApi::class)
-fun KtorNewsApi.ArticleResponse.toNews(): News {
+fun KtorNewsApi.NewsResponse.toNews(): News {
     val response = this
     val contents = buildMap<Locale, LocaledContents.Contents> {
         put(

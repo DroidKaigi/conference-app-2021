@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import io.github.droidkaigi.confsched2021.news.ui.article.NewsScreen
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsScreen
 
 @Composable
 fun AppContent(
@@ -24,8 +24,8 @@ fun AppContent(
         drawerState = drawerState,
         drawerContent = { DrawerContent(navController) }
     ) {
-        NavHost(navController, startDestination = "articles") {
-            composable("articles") {
+        NavHost(navController, startDestination = "newsContents") {
+            composable("newsContents") {
                 NewsScreen(onNavigationIconClick)
             }
             composable("about_this_app") { Text("ok?") }

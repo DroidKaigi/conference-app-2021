@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news.ui.article
+package io.github.droidkaigi.confsched2021.news.ui.news
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -56,8 +56,8 @@ fun NewsScreen(
     onNavigationIconClick: () -> Unit
 ) {
     val newsViewModel = newsViewModel()
-    val newsContents: NewsContents by newsViewModel.newsContents.collectAsState(
-        initial = newsViewModel.newsContents.value
+    val newsContents: NewsContents by newsViewModel.filteredNewsContents.collectAsState(
+        initial = newsViewModel.filteredNewsContents.value
     )
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -163,7 +163,7 @@ private fun NewsList(
             items(newsContents.contents) { (item, favorited) ->
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
                 NewsItem(
-                    article = item,
+                    news = item,
                     favorited = favorited,
                     onClick = onClickNews,
                     onFavoriteChange = onFavoriteChange

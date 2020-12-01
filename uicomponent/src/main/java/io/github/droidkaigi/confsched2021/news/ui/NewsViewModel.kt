@@ -7,12 +7,17 @@ import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.fakeNewsContents
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.stateIn
 
 interface INewsViewModel {
     val filter: StateFlow<Filters>
-    val newsContents: StateFlow<NewsContents>
+    val filteredNewsContents: StateFlow<NewsContents>
     fun onFilterChanged(filters: Filters)
     fun onToggleFavorite(news: News)
 }
@@ -29,10 +34,16 @@ fun newsViewModel() = NewsViewModelAmbient.current
 
 fun fakeNewsViewModel(): INewsViewModel {
     return object : INewsViewModel {
+        val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
         override val filter: MutableStateFlow<Filters> = MutableStateFlow(Filters())
-        override val newsContents: MutableStateFlow<NewsContents> = MutableStateFlow(
+        private val newsContents = MutableStateFlow(
             fakeNewsContents()
         )
+        override val filteredNewsContents: StateFlow<NewsContents> = newsContents
+            .combine(filter){contents, filter ->
+                contents.filtered(filter)
+            }
+            .stateIn(coroutineScope, SharingStarted.Eagerly, fakeNewsContents())
 
         override fun onFilterChanged(filters: Filters) {
             filter.value = filters

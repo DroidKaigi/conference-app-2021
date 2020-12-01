@@ -133,13 +133,13 @@ fun fakeNewsApi(): NewsApi = object : NewsApi {
     }
   }
 ]"""
-        val articles = Json.decodeFromString<List<KtorNewsApi.ArticleResponse>>(
+        val newsContents = Json.decodeFromString<List<KtorNewsApi.NewsResponse>>(
             response
         )
             .map { response ->
                 response.toNews()
             }
-        articles
+        newsContents
     }
 }
 

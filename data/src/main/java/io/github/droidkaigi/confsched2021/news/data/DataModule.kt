@@ -19,7 +19,7 @@ class DataModule {
     }
 
     @Provides
-    internal fun provideRepository(daggerRepository: DaggerArticleRepository): ArticleRepository {
+    internal fun provideRepository(daggerRepository: DaggerNewsRepository): NewsRepository {
         return daggerRepository
     }
 }

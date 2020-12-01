@@ -6,21 +6,21 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 
-open class ArticleRepository(private val newsApi: NewsApi, private val dataStore: UserDataStore) {
-    fun articles(): Flow<NewsContents> {
+open class NewsRepository(private val newsApi: NewsApi, private val dataStore: UserDataStore) {
+    fun newsContents(): Flow<NewsContents> {
         return dataStore.favorites()
             .combine(flow {
             emit(newsApi.fetch())
-        }) { favorites, apiArticles ->
-            NewsContents(apiArticles, favorites)
+        }) { favorites, apiNews ->
+            NewsContents(apiNews, favorites)
         }
     }
 
-    suspend fun addFavorite(article: News) {
-        dataStore.addFavorite(article.id)
+    suspend fun addFavorite(news: News) {
+        dataStore.addFavorite(news.id)
     }
 
-    suspend fun removeFavorite(article: News) {
-        dataStore.removeFavorite(article.id)
+    suspend fun removeFavorite(news: News) {
+        dataStore.removeFavorite(news.id)
     }
 }
