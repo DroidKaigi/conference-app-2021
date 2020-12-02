@@ -26,6 +26,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
+import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.ui.ProvideNewsViewModel
@@ -72,20 +73,26 @@ fun NewsScreen(
     }
 
     val newsViewModel = newsViewModel()
+    val filters by newsViewModel.filters.collectAsState()
     val newsContents: NewsContents by newsViewModel.filteredNewsContents.collectAsState(
         initial = newsViewModel.filteredNewsContents.value
     )
     val onFavoriteChange: (News) -> Unit = {
         newsViewModel.onToggleFavorite(it)
     }
+    val onFavoriteFilterChanged: (filtered: Boolean) -> Unit = {
+        newsViewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
+    }
     NewsScreen(
         newsContents = newsContents,
+        filters = filters,
+        scaffoldState = scaffoldState,
         selectedTab = selectedTab,
         onSelectTab = onSelectTab,
-        scaffoldState = scaffoldState,
         onNavigationIconClick = onNavigationIconClick,
         onClickNews = onClickNews,
-        onFavoriteChange = onFavoriteChange
+        onFavoriteChange = onFavoriteChange,
+        onFavoriteFilterChanged = onFavoriteFilterChanged
     )
 }
 
@@ -96,19 +103,21 @@ fun NewsScreen(
 @Composable
 private fun NewsScreen(
     newsContents: NewsContents,
+    filters: Filters,
     scaffoldState: BackdropScaffoldState,
     selectedTab: MutableState<NewsTabs>,
     onSelectTab: (NewsTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
     onClickNews: (News) -> Unit,
-    onFavoriteChange: (News) -> Unit
+    onFavoriteChange: (News) -> Unit,
+    onFavoriteFilterChanged: (filtered: Boolean) -> Unit
 ) {
     Column {
         BackdropScaffold(
             backLayerBackgroundColor = MaterialTheme.colors.primary,
             scaffoldState = scaffoldState,
             backLayerContent = {
-                BackLayerContent()
+                BackLayerContent(filters, onFavoriteFilterChanged)
             },
             peekHeight = 104.dp,
             appBar = {
@@ -175,12 +184,11 @@ private fun NewsList(
 }
 
 
-
 @Preview(showBackground = true)
 @Composable
 fun NewsScreenPreview() {
     Conferenceapp2021newsTheme(false) {
-        ProvideNewsViewModel(viewModel = fakeNewsViewModel()){
+        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
             NewsScreen {
 
             }

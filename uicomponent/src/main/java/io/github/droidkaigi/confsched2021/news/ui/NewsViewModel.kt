@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 
 interface INewsViewModel {
-    val filter: StateFlow<Filters>
+    val filters: StateFlow<Filters>
     val filteredNewsContents: StateFlow<NewsContents>
     fun onFilterChanged(filters: Filters)
     fun onToggleFavorite(news: News)
@@ -35,18 +35,18 @@ fun newsViewModel() = NewsViewModelAmbient.current
 fun fakeNewsViewModel(): INewsViewModel {
     return object : INewsViewModel {
         val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
-        override val filter: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+        override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
         private val newsContents = MutableStateFlow(
             fakeNewsContents()
         )
         override val filteredNewsContents: StateFlow<NewsContents> = newsContents
-            .combine(filter){contents, filter ->
+            .combine(filters){ contents, filter ->
                 contents.filtered(filter)
             }
             .stateIn(coroutineScope, SharingStarted.Eagerly, fakeNewsContents())
 
         override fun onFilterChanged(filters: Filters) {
-            filter.value = filters
+            this.filters.value = filters
         }
 
         override fun onToggleFavorite(news: News) {

@@ -26,29 +26,15 @@ enum class FilterState(val text: String) {
     All("All"), Favorite("Favorites")
 }
 
-/**
- * Statefull
- */
 @Composable
-fun BackLayerContent() {
-    val viewModel = newsViewModel()
-    val filterState by viewModel.filter.collectAsState()
-    val filters = viewModel.filter.value
-    val onClick = {
-        viewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
-    }
-    BackLayerContent(filterState, onClick)
-}
-
-/**
- * Stateless
- */
-@Composable
-private fun BackLayerContent(
+fun BackLayerContent(
     filterState: Filters,
-    onClick: () -> Unit
+    onFavoriteFilterChanged: (filtered: Boolean) -> Unit
 ) {
-    Input(text = if (filterState.filterFavorite) "Favorites" else "All", onClick = onClick)
+    Input(
+        text = if (filterState.filterFavorite) "Favorites" else "All",
+        onClick = { onFavoriteFilterChanged(filterState.filterFavorite.not()) }
+    )
     Spacer(Modifier.preferredHeight(8.dp))
 }
 

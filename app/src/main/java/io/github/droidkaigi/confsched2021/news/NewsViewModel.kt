@@ -18,15 +18,15 @@ class NewsViewModel @ViewModelInject constructor(
 ) : ViewModel(), INewsViewModel {
 
     private val allNewsContents: Flow<NewsContents> = repository.newsContents()
-    override val filter: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
     override val filteredNewsContents: StateFlow<NewsContents> = allNewsContents
-        .combine(filter) { newsContents, filters ->
+        .combine(filters) { newsContents, filters ->
             newsContents.filtered(filters)
         }
         .stateIn(viewModelScope, SharingStarted.Eagerly, NewsContents())
 
     override fun onFilterChanged(filters: Filters) {
-        filter.value = filters
+        this.filters.value = filters
     }
 
     override fun onToggleFavorite(news: News) {
