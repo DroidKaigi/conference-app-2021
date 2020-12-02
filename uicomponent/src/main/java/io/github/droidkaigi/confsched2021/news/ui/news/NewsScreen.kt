@@ -55,10 +55,6 @@ sealed class NewsTabs(val name: String) {
 fun NewsScreen(
     onNavigationIconClick: () -> Unit
 ) {
-    val newsViewModel = newsViewModel()
-    val newsContents: NewsContents by newsViewModel.filteredNewsContents.collectAsState(
-        initial = newsViewModel.filteredNewsContents.value
-    )
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val selectedTab = remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
@@ -74,6 +70,11 @@ fun NewsScreen(
             )
         }
     }
+
+    val newsViewModel = newsViewModel()
+    val newsContents: NewsContents by newsViewModel.filteredNewsContents.collectAsState(
+        initial = newsViewModel.filteredNewsContents.value
+    )
     val onFavoriteChange: (News) -> Unit = {
         newsViewModel.onToggleFavorite(it)
     }
