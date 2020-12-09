@@ -28,7 +28,9 @@ fun AppContent(
             composable("newsContents") {
                 NewsScreen(onNavigationIconClick)
             }
-            composable("about_this_app") { Text("ok?") }
+            composable("about_this_app") {
+                Text("ok?")
+            }
         }
     }
 }

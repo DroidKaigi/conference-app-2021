@@ -23,6 +23,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
@@ -58,9 +59,9 @@ fun NewsScreen(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val selectedTab = remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
+    var selectedTab by remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
     val onSelectTab = { tab: NewsTabs ->
-        selectedTab.value = tab
+        selectedTab = tab
     }
     val onClickNews: (News) -> Unit = {
         coroutineScope.launch {
@@ -105,7 +106,7 @@ private fun NewsScreen(
     newsContents: NewsContents,
     filters: Filters,
     scaffoldState: BackdropScaffoldState,
-    selectedTab: MutableState<NewsTabs>,
+    selectedTab: NewsTabs,
     onSelectTab: (NewsTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
     onClickNews: (News) -> Unit,
@@ -146,10 +147,9 @@ private fun NewsScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    val selectedTabValue = selectedTab.value
                     NewsList(
-                        newsContents = if (selectedTabValue is NewsTabs.FilteredNews) {
-                            newsContents.filterNewsType(selectedTabValue.newsClass)
+                        newsContents = if (selectedTab is NewsTabs.FilteredNews) {
+                            newsContents.filterNewsType(selectedTab.newsClass)
                         } else {
                             newsContents
                         },
