@@ -7,13 +7,15 @@ import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.fakeNewsContents
+import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Runnable
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlin.coroutines.CoroutineContext
 
 interface INewsViewModel {
     val filters: StateFlow<Filters>
@@ -34,13 +36,18 @@ fun newsViewModel() = NewsViewModelAmbient.current
 
 fun fakeNewsViewModel(): INewsViewModel {
     return object : INewsViewModel {
-        val coroutineScope = CoroutineScope(Dispatchers.Main.immediate)
+        val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
+            // for preview
+            override fun dispatch(context: CoroutineContext, block: Runnable) {
+                block.run()
+            }
+        })
         override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
         private val newsContents = MutableStateFlow(
             fakeNewsContents()
         )
         override val filteredNewsContents: StateFlow<NewsContents> = newsContents
-            .combine(filters){ contents, filter ->
+            .combine(filters) { contents, filter ->
                 contents.filtered(filter)
             }
             .stateIn(coroutineScope, SharingStarted.Eagerly, fakeNewsContents())
