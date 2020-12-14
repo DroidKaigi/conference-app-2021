@@ -81,7 +81,7 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsV
         @Parameterized.Parameters(name = "{0}")
         fun data() = listOf(
             arrayOf("Real ViewModel and Repository", {
-                NewsViewModel(
+                RealNewsViewModel(
                     repository = NewsRepository(fakeNewsApi(), fakeUserDataStore())
                 )
             }),

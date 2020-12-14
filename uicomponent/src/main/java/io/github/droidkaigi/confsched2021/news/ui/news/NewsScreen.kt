@@ -85,15 +85,15 @@ fun NewsScreen(
         newsViewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
     }
     NewsScreen(
-        newsContents = newsContents,
-        filters = filters,
-        scaffoldState = scaffoldState,
         selectedTab = selectedTab,
         onSelectTab = onSelectTab,
+        scaffoldState = scaffoldState,
         onNavigationIconClick = onNavigationIconClick,
-        onClickNews = onClickNews,
+        newsContents = newsContents,
         onFavoriteChange = onFavoriteChange,
-        onFavoriteFilterChanged = onFavoriteFilterChanged
+        filters = filters,
+        onFavoriteFilterChanged = onFavoriteFilterChanged,
+        onClickNews = onClickNews
     )
 }
 
@@ -103,15 +103,15 @@ fun NewsScreen(
  */
 @Composable
 private fun NewsScreen(
-    newsContents: NewsContents,
-    filters: Filters,
-    scaffoldState: BackdropScaffoldState,
     selectedTab: NewsTabs,
     onSelectTab: (NewsTabs) -> Unit,
+    scaffoldState: BackdropScaffoldState,
     onNavigationIconClick: () -> Unit,
-    onClickNews: (News) -> Unit,
+    newsContents: NewsContents,
     onFavoriteChange: (News) -> Unit,
-    onFavoriteFilterChanged: (filtered: Boolean) -> Unit
+    filters: Filters,
+    onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
+    onClickNews: (News) -> Unit
 ) {
     Column {
         BackdropScaffold(
@@ -190,7 +190,6 @@ fun NewsScreenPreview() {
     Conferenceapp2021newsTheme(false) {
         ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
             NewsScreen {
-
             }
         }
     }

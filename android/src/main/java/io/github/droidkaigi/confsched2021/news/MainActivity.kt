@@ -12,7 +12,7 @@ import io.github.droidkaigi.confsched2021.news.ui.ProvideNewsViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
-    private val viewModel by viewModels<NewsViewModel>()
+    private val viewModel by viewModels<RealNewsViewModel>()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setup(viewModel)
