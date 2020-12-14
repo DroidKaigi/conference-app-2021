@@ -84,7 +84,23 @@ private fun NewsScreen(
 
 # Testable & Previewable & Faster Build
 
-With this app, you can operate it like a real app in the preview of Android Studio.
+By using Fake, we are trying to make the development of Compose easier.
+For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
 This is possible by creating a Fake ViewModel and making it reliable.
+
+Preview GIF
+
+```
+@Preview(showBackground = true)
+@Composable
+fun NewsScreenPreview() {
+    Conferenceapp2021newsTheme(false) {
+        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
+            NewsScreen {
+            }
+        }
+    }
+}
+```
 
 ![image](https://user-images.githubusercontent.com/1386930/102029537-1f36d800-3df2-11eb-86f7-e06324233dba.png)
