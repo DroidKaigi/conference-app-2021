@@ -1,6 +1,5 @@
-package io.github.droidkaigi.confsched2021.news;
+package io.github.droidkaigi.confsched2021.news
 
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.TestCoroutineDispatcher
@@ -23,5 +22,4 @@ class CoroutineTestRule(val testDispatcher: TestCoroutineDispatcher = TestCorout
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()
     }
-
 }

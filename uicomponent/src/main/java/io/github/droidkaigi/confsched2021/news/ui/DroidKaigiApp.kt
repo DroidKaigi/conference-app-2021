@@ -17,13 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.unit.dp
 import androidx.ui.tooling.preview.Preview
-import io.github.droidkaigi.confsched2021.news.News
-import io.github.droidkaigi.confsched2021.news.NewsContents
-import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
-
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
@@ -79,7 +73,7 @@ private val splashTransitionDefinition = transitionDefinition<SplashState> {
 @Composable
 fun DroidKaigiAppPreview() {
     Conferenceapp2021newsTheme {
-        ProvideNewsViewModel(viewModel = fakeNewsViewModel()){
+        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
             DroidKaigiApp()
         }
     }

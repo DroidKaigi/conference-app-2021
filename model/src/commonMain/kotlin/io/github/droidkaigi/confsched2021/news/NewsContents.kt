@@ -27,7 +27,6 @@ data class NewsContents(
         return copy(newsContents = newsContents.filter { it::class == newsClass })
     }
 
-
     val size get() = newsContents.size
 }
 

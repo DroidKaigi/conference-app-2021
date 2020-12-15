@@ -9,11 +9,13 @@ import kotlinx.coroutines.flow.flow
 open class NewsRepository(private val newsApi: NewsApi, private val dataStore: UserDataStore) {
     fun newsContents(): Flow<NewsContents> {
         return dataStore.favorites()
-            .combine(flow {
-            emit(newsApi.fetch())
-        }) { favorites, apiNews ->
-            NewsContents(apiNews, favorites)
-        }
+            .combine(
+                flow {
+                    emit(newsApi.fetch())
+                }
+            ) { favorites, apiNews ->
+                NewsContents(apiNews, favorites)
+            }
     }
 
     suspend fun addFavorite(news: News) {

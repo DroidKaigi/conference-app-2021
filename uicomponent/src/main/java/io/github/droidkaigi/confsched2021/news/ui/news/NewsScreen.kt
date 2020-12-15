@@ -67,8 +67,8 @@ fun NewsScreen(
         coroutineScope.launch {
             scaffoldState.snackbarHostState.showSnackbar(
                 "TODO: waiting " +
-                        "navigation " +
-                        "component"
+                    "navigation " +
+                    "component"
             )
         }
     }
@@ -96,7 +96,6 @@ fun NewsScreen(
         onClickNews = onClickNews
     )
 }
-
 
 /**
  * stateless
@@ -139,7 +138,6 @@ private fun NewsScreen(
                             onClick = { onSelectTab(tab) }
                         )
                     }
-
                 }
             },
             frontLayerContent = {
@@ -183,7 +181,6 @@ private fun NewsList(
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun NewsScreenPreview() {
@@ -194,4 +191,3 @@ fun NewsScreenPreview() {
         }
     }
 }
-

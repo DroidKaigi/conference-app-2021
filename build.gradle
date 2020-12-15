@@ -16,6 +16,11 @@ buildscript {
     }
 }
 
+plugins {
+    id 'com.diffplug.spotless' version '5.7.0'
+}
+
+
 allprojects {
     repositories {
         google()
@@ -29,7 +34,22 @@ allprojects {
     }
 }
 
-task clean(type: Delete) {
-    delete rootProject.buildDir
+subprojects {
+    repositories {
+        google()
+        jcenter()
+    }
+
+    apply plugin: 'com.diffplug.spotless'
+    spotless {
+        kotlin {
+            target '**/*.kt'
+            targetExclude("$buildDir/**/*.kt")
+            targetExclude('bin/**/*.kt')
+
+            ktlint("0.39.0")
+        }
+    }
 }
+
 apply from: file('gradle/dependencyGraph.gradle')

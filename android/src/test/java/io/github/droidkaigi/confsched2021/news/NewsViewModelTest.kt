@@ -31,7 +31,6 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsV
         val firstContent = newsViewModel.filteredNewsContents.value
 
         firstContent.size shouldBeGreaterThan 1
-
     }
 
     @OptIn(ExperimentalTime::class)
@@ -80,14 +79,20 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsV
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = listOf(
-            arrayOf("Real ViewModel and Repository", {
-                RealNewsViewModel(
-                    repository = NewsRepository(fakeNewsApi(), fakeUserDataStore())
-                )
-            }),
-            arrayOf("FakeViewModel", {
-                fakeNewsViewModel()
-            })
+            arrayOf(
+                "Real ViewModel and Repository",
+                {
+                    RealNewsViewModel(
+                        repository = NewsRepository(fakeNewsApi(), fakeUserDataStore())
+                    )
+                }
+            ),
+            arrayOf(
+                "FakeViewModel",
+                {
+                    fakeNewsViewModel()
+                }
+            )
         )
     }
 }

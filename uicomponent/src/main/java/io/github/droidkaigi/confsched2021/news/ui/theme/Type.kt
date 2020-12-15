@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2021.news.ui.theme
 
 import androidx.compose.material.Typography
 
-
 // Set of Material typography styles to start with
 val typography = Typography()
 

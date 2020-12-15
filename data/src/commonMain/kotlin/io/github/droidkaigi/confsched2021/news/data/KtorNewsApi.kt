@@ -27,7 +27,6 @@ open class KtorNewsApi : NewsApi {
 
     @Serializable
     data class LocaledContentsResponse(val title: String, val link: String)
-
 }
 
 @OptIn(ExperimentalStdlibApi::class)
@@ -35,14 +34,16 @@ fun KtorNewsApi.NewsResponse.toNews(): News {
     val response = this
     val contents = buildMap<Locale, LocaledContents.Contents> {
         put(
-            Locale("ja"), LocaledContents.Contents(
+            Locale("ja"),
+            LocaledContents.Contents(
                 title = response.ja.title,
                 link = response.ja.link
             )
         )
         response.en?.let {
             put(
-                Locale("en"), LocaledContents.Contents(
+                Locale("en"),
+                LocaledContents.Contents(
                     title = response.en.title,
                     link = response.en.link
                 )

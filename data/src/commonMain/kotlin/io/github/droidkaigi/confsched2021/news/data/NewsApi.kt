@@ -142,4 +142,3 @@ fun fakeNewsApi(): NewsApi = object : NewsApi {
         newsContents
     }
 }
-
