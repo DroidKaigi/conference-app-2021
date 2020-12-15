@@ -1,0 +1,13 @@
+name: reviewdog-suggester
+on: [pull_request] # Support only pull_request event.
+jobs:
+  kotlin:
+    name: runner / suggester / spotless
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - run: ./gradlew spotlessKotlinApply
+      - uses: reviewdog/action-suggester@v1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          tool_name: spotless
