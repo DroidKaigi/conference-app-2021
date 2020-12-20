@@ -84,11 +84,25 @@ private fun NewsScreen(
 
 # Testable & Previewable & Faster Build
 
-By using Fake, we are trying to make the development of Compose easier.
+This year's DroidKaigi will try to improve testing, preview and build by using Fake.
 For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
-This is possible by creating a Fake ViewModel and making it reliable.
 
-Preview GIF
+![preview](https://user-images.githubusercontent.com/1386930/102705021-25332a00-42c6-11eb-9f6a-c675a2922b1f.gif)
+
+This is possible by creating a Fake ViewModel and making it reliable. By using same test for Real
+ ViewModel and Fake ViewModel.
+
+## How to make Fake's ViewModel reliable
+
+Do the same test for Fake and the real thing by testing against the interface. This makes Fake's
+ ViewModel reliable. 
+This technique of doing the same test against Fake was introduced in Build testable apps for Android (Google I / O '19).
+
+![image](https://user-images.githubusercontent.com/1386930/102705934-51ec3f00-42d0-11eb-8da2-999534f9c15b.png)
+
+## How to make it previewable and testable
+
+The way to do a preview is to distribute Fake's ViewModel.
 
 ```
 @Preview(showBackground = true)
@@ -104,3 +118,28 @@ fun NewsScreenPreview() {
 ```
 
 ![image](https://user-images.githubusercontent.com/1386930/102029537-1f36d800-3df2-11eb-86f7-e06324233dba.png)
+
+## How to make the build faster?
+
+Dagger Hilt uses Module in the classpath to create a dependency graph. 
+Therefore, change the Dagger module used in Fake and Real (this time we will use Product Flavor because it is small), 
+
+In fake product flavor.
+
+```kotlin
+@InstallIn(ActivityComponent::class)
+@Module
+class ViewModelModule {
+    @Provides
+    fun provideNewsViewModel(): INewsViewModel {
+        return fakeNewsViewModel()
+    }
+}
+```
+
+And only refer to the data module for the "real" product flavor.
+In this way, you can reduce the build time by reducing the product flavor referenced during Fake.
+
+```groovy
+  realImplementation project (":data")
+```
