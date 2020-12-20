@@ -9,8 +9,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ActivityComponent
+import dagger.hilt.android.scopes.ActivityScoped
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
-import io.github.droidkaigi.confsched2021.news.ui.INewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.NewsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -23,14 +24,16 @@ import kotlinx.coroutines.launch
 @Module
 class ViewModelModule {
     @Provides
-    fun provideNewsViewModel(fragmentActivity: FragmentActivity): INewsViewModel {
-        return fragmentActivity.viewModels<RealNewsViewModel>().value
+    @ActivityScoped // ViewModel instance is shared by ViewModelStore
+    fun provideNewsViewModel(fragmentActivity: FragmentActivity): NewsViewModel {
+        val viewModels = fragmentActivity.viewModels<RealNewsViewModel>()
+        return viewModels.value
     }
 }
 
 class RealNewsViewModel @ViewModelInject constructor(
-    private val repository: NewsRepository
-) : ViewModel(), INewsViewModel {
+    private val repository: NewsRepository,
+) : ViewModel(), NewsViewModel {
 
     private val allNewsContents: Flow<NewsContents> = repository.newsContents()
     override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())

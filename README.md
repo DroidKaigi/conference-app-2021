@@ -4,30 +4,6 @@ module graph
 
 ![image](https://user-images.githubusercontent.com/1386930/102029518-0f1ef880-3df2-11eb-91cc-c52adfbbde3e.png)
 
-# Android
-
-Invoke @Composable function in android module.
-Distribute the ViewModel by Ambient.
-
-```kotlin
-@AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
-    private val viewModel by viewModels<RealNewsViewModel>()
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setup(viewModel)
-    }
-
-    private fun ComponentActivity.setup(viewModel: INewsViewModel) {
-        setContent {
-            ProvideNewsViewModel(viewModel) {
-                DroidKaigiApp()
-            }
-        }
-    }
-}
-```
-
 # Compose
 
 Split Composable according to the following policy.
@@ -130,7 +106,7 @@ In fake product flavor.
 @Module
 class ViewModelModule {
     @Provides
-    fun provideNewsViewModel(): INewsViewModel {
+    fun provideNewsViewModel(): NewsViewModel {
         return fakeNewsViewModel()
     }
 }

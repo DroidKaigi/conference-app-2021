@@ -17,55 +17,57 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.CoroutineContext
 
-interface INewsViewModel {
+interface NewsViewModel {
     val filters: StateFlow<Filters>
     val filteredNewsContents: StateFlow<NewsContents>
     fun onFilterChanged(filters: Filters)
     fun onToggleFavorite(news: News)
 }
 
-private val NewsViewModelAmbient = ambientOf<INewsViewModel>()
+private val AmbientNewsViewModel = ambientOf<NewsViewModel>()
 
 @Composable
-fun ProvideNewsViewModel(viewModel: INewsViewModel, block: @Composable () -> Unit) {
-    Providers(NewsViewModelAmbient provides viewModel, content = block)
+fun ProvideNewsViewModel(viewModel: NewsViewModel, block: @Composable () -> Unit) {
+    Providers(AmbientNewsViewModel provides viewModel, content = block)
 }
 
 @Composable
-fun newsViewModel() = NewsViewModelAmbient.current
+fun newsViewModel() = AmbientNewsViewModel.current
 
-fun fakeNewsViewModel(): INewsViewModel {
-    return object : INewsViewModel {
-        val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
-            // for preview
-            override fun dispatch(context: CoroutineContext, block: Runnable) {
-                block.run()
-            }
-        })
-        override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
-        private val newsContents = MutableStateFlow(
-            fakeNewsContents()
+fun fakeNewsViewModel(): FakeNewsViewModel {
+    return FakeNewsViewModel()
+}
+
+class FakeNewsViewModel : NewsViewModel {
+    val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
+        // for preview
+        override fun dispatch(context: CoroutineContext, block: Runnable) {
+            block.run()
+        }
+    })
+    override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    private val newsContents = MutableStateFlow(
+        fakeNewsContents()
+    )
+    override val filteredNewsContents: StateFlow<NewsContents> = newsContents
+        .combine(filters) { contents, filter ->
+            contents.filtered(filter)
+        }
+        .stateIn(coroutineScope, SharingStarted.Eagerly, fakeNewsContents())
+
+    override fun onFilterChanged(filters: Filters) {
+        this.filters.value = filters
+    }
+
+    override fun onToggleFavorite(news: News) {
+        val value = newsContents.value
+        val newFavorites = if (!value.favorites.contains(news.id)) {
+            value.favorites + news.id
+        } else {
+            value.favorites - news.id
+        }
+        newsContents.value = value.copy(
+            favorites = newFavorites
         )
-        override val filteredNewsContents: StateFlow<NewsContents> = newsContents
-            .combine(filters) { contents, filter ->
-                contents.filtered(filter)
-            }
-            .stateIn(coroutineScope, SharingStarted.Eagerly, fakeNewsContents())
-
-        override fun onFilterChanged(filters: Filters) {
-            this.filters.value = filters
-        }
-
-        override fun onToggleFavorite(news: News) {
-            val value = newsContents.value
-            val newFavorites = if (!value.favorites.contains(news.id)) {
-                value.favorites + news.id
-            } else {
-                value.favorites - news.id
-            }
-            newsContents.value = value.copy(
-                favorites = newFavorites
-            )
-        }
     }
 }
