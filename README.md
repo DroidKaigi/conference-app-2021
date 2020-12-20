@@ -10,8 +10,6 @@ Split Composable according to the following policy.
 * [State hoisting](https://developer.android.com/jetpack/compose/state)(pass the value and receive the event) as much as possible.
 * If there are too many arguments or the arguments know too much detail, Pass interface.
 
-
-
 ![image](https://user-images.githubusercontent.com/1386930/102029530-1a722400-3df2-11eb-9e41-50010f455f0e.png)
 
 ```kotlin
@@ -60,7 +58,8 @@ private fun NewsScreen(
 
 # Testable & Previewable & Faster debug
 
-This year's DroidKaigi will try to improve testing, preview and build by using Fake.
+Jetpack Compose is still a new technology. We are thinking of best practices.  
+We will try to improve testing, preview and build by using Fake.  
 For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
 
 ![preview](https://user-images.githubusercontent.com/1386930/102705021-25332a00-42c6-11eb-9f6a-c675a2922b1f.gif)
