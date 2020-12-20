@@ -68,13 +68,3 @@ private val splashTransitionDefinition = transitionDefinition<SplashState> {
         )
     }
 }
-
-@Preview(showBackground = true)
-@Composable
-fun DroidKaigiAppPreview() {
-    Conferenceapp2021newsTheme {
-        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            DroidKaigiApp()
-        }
-    }
-}

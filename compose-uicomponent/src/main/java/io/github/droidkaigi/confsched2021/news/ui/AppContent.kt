@@ -6,10 +6,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsScreen
+import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 
 @Composable
 fun AppContent(
