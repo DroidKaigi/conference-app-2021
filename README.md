@@ -70,7 +70,8 @@ This is possible by creating a Fake ViewModel and making it reliable.
 
 Do the same test for Fake and the real thing by testing against the interface. This makes Fake's
  ViewModel reliable. 
-This technique of doing the same test against Fake was introduced in Build testable apps for Android (Google I / O '19).
+This technique of doing the same test against Fake was introduced in "Build testable apps for
+ Android" session(Google I/O'19).
 
 ![image](https://user-images.githubusercontent.com/1386930/102705934-51ec3f00-42d0-11eb-8da2-999534f9c15b.png)
 
