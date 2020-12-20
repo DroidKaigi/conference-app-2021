@@ -1,5 +1,5 @@
 name: reviewdog-suggester
-on: [pull_request] # Support only pull_request event.
+on: [pull_request]
 jobs:
   kotlin:
     name: runner / suggester / spotless
