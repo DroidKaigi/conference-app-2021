@@ -89,8 +89,7 @@ For example, this app allows you to interact with the Android Studio Preview as 
 
 ![preview](https://user-images.githubusercontent.com/1386930/102705021-25332a00-42c6-11eb-9f6a-c675a2922b1f.gif)
 
-This is possible by creating a Fake ViewModel and making it reliable. By using same test for Real
- ViewModel and Fake ViewModel.
+This is possible by creating a Fake ViewModel and making it reliable. 
 
 ## How to make Fake's ViewModel reliable
 
@@ -119,7 +118,7 @@ fun NewsScreenPreview() {
 
 ![image](https://user-images.githubusercontent.com/1386930/102029537-1f36d800-3df2-11eb-86f7-e06324233dba.png)
 
-## How to make the build faster?
+## How to make the build faster
 
 Dagger Hilt uses Module in the classpath to create a dependency graph. 
 Therefore, change the Dagger module used in Fake and Real (this time we will use Product Flavor because it is small), 
