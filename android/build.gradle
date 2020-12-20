@@ -56,6 +56,13 @@ android {
         kotlinCompilerExtensionVersion "${compose_version}"
         kotlinCompilerVersion "${kotlin_version}"
     }
+    flavorDimensions "fakeBuild"
+    productFlavors {
+        fake {
+        }
+        real {
+        }
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
@@ -67,7 +74,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 dependencies {
-    implementation project(":data")
+    realImplementation project(":data")
     implementation project(':compose-uicomponent')
 
     // Hilt
