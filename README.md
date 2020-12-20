@@ -58,7 +58,7 @@ private fun NewsScreen(
 // ...
 ```
 
-# Testable & Previewable & Faster Build
+# Testable & Previewable & Faster debug
 
 This year's DroidKaigi will try to improve testing, preview and build by using Fake.
 For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
@@ -94,27 +94,8 @@ fun NewsScreenPreview() {
 
 ![image](https://user-images.githubusercontent.com/1386930/102029537-1f36d800-3df2-11eb-86f7-e06324233dba.png)
 
-## How to make the build faster
+## How to debug fast?
 
-Dagger Hilt uses Module in the classpath to create a dependency graph. 
-Therefore, change the Dagger module used in Fake and Real (this time we will use Product Flavor because it is small), 
-
-In fake product flavor.
-
-```kotlin
-@InstallIn(ActivityComponent::class)
-@Module
-class ViewModelModule {
-    @Provides
-    fun provideNewsViewModel(): NewsViewModel {
-        return fakeNewsViewModel()
-    }
-}
-```
-
-And only refer to the data module for the "real" product flavor.
-In this way, you can reduce the build time by reducing the product flavor referenced during Fake.
-
-```groovy
-  realImplementation project (":data")
-```
+If you want to check the UI display, you can check it in the Preview of Android Studio.
+In that case, the required task is `:compose-uicomponent:compileDebugKotlin`. 
+Therefore, there is no need to build the data module that contains the definitions such as API and the build of Android dex, so you can quickly build and check.
