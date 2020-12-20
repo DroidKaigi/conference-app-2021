@@ -104,7 +104,7 @@ fun NetworkImage(
 
 @Preview(showBackground = true)
 @Composable
-fun NewsItemPreview() {
+fun PreviewNewsItem() {
     Conferenceapp2021newsTheme {
         val news = News.Other(
             id = "id",

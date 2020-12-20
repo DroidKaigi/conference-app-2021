@@ -3,7 +3,7 @@ package io.github.droidkaigi.confsched2021.news
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
 import io.github.droidkaigi.confsched2021.news.data.fakeNewsApi
 import io.github.droidkaigi.confsched2021.news.data.fakeUserDataStore
-import io.github.droidkaigi.confsched2021.news.ui.INewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.NewsViewModel
 import io.github.droidkaigi.confsched2021.news.ui.fakeNewsViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
@@ -18,7 +18,7 @@ import kotlin.time.ExperimentalTime
 @InternalCoroutinesApi
 @OptIn(ExperimentalTime::class)
 @RunWith(Parameterized::class)
-class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> INewsViewModel) {
+class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsViewModel) {
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()

@@ -4,7 +4,7 @@ import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
-import io.github.droidkaigi.confsched2021.news.ui.INewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.NewsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -14,8 +14,8 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 class RealNewsViewModel @ViewModelInject constructor(
-    private val repository: NewsRepository
-) : ViewModel(), INewsViewModel {
+    private val repository: NewsRepository,
+) : ViewModel(), NewsViewModel {
 
     private val allNewsContents: Flow<NewsContents> = repository.newsContents()
     override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
