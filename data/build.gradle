@@ -50,22 +50,29 @@ kotlin {
         }
         androidMain.dependencies {
             // Hilt
-            implementation "com.google.dagger:hilt-android:2.29-alpha"
+            implementation "com.google.dagger:hilt-android:2.29.1-alpha"
             implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
 
             // For local unit tests
-//            testImplementation "com.google.dagger:hilt-android-testing:2.29-alpha"
-//            kaptTest "com.google.dagger:hilt-android-compiler:2.29-alpha"
+//            testImplementation "com.google.dagger:hilt-android-testing:2.29.1-alpha"
+//            kaptTest "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
         }
         androidTest.dependencies{
             implementation "org.jetbrains.kotlin:kotlin-test-junit"
         }
 //            // For instrumentation tests
-//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.29-alpha"
-//            kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.29-alpha"
+//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.29.1-alpha"
+//            kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
 //        }
     }
 }
 dependencies {
-    kapt "com.google.dagger:hilt-android-compiler:2.29-alpha"
+    kapt "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
+}
+
+// delete this when this is fixed https://issuetracker.google.com/issues/175496966
+configurations {
+    testApi
+    testDebugApi
+    testReleaseApi
 }

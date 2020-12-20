@@ -28,7 +28,7 @@ private val NewsViewModelAmbient = ambientOf<INewsViewModel>()
 
 @Composable
 fun ProvideNewsViewModel(viewModel: INewsViewModel, block: @Composable () -> Unit) {
-    Providers(NewsViewModelAmbient provides viewModel, children = block)
+    Providers(NewsViewModelAmbient provides viewModel, content = block)
 }
 
 @Composable

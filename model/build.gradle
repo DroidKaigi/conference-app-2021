@@ -35,3 +35,10 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
         freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     }
 }
+
+// delete this when this is fixed https://issuetracker.google.com/issues/175496966
+configurations {
+    testApi
+    testDebugApi
+    testReleaseApi
+}

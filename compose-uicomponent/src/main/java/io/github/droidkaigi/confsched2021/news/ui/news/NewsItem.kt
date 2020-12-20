@@ -15,8 +15,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.ui.tooling.preview.Preview
 import com.soywiz.klock.DateTimeTz
 import dev.chrisbanes.accompanist.coil.CoilImage
 import dev.chrisbanes.accompanist.imageloading.ImageLoadState
@@ -55,7 +55,7 @@ fun NewsItem(
         trailing = {
             IconToggleButton(
                 checked = false,
-                icon = {
+                content = {
                     Icon(
                         vectorResource(
                             if (favorited) {
@@ -103,7 +103,6 @@ fun NetworkImage(
 }
 
 @Preview(showBackground = true)
-@Preview
 @Composable
 fun NewsItemPreview() {
     Conferenceapp2021newsTheme {
