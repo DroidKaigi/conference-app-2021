@@ -4,6 +4,9 @@ module graph
 
 ![image](https://user-images.githubusercontent.com/1386930/102029518-0f1ef880-3df2-11eb-91cc-c52adfbbde3e.png)
 
+# Contributing
+TBD
+
 # Modern Development
 
 * Jetpack Compose
@@ -110,3 +113,7 @@ Therefore, there is no need to build the data module that contains the definitio
 
 ![image](https://user-images.githubusercontent.com/1386930/102029537-1f36d800-3df2-11eb-86f7-e06324233dba.png)
 
+
+## Design
+
+TBD
