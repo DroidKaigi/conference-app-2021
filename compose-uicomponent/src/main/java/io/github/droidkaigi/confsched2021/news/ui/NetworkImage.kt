@@ -37,8 +37,10 @@ fun NetworkImage(
 @Preview
 @Composable
 fun PreviewNetworkImage() {
-    NetworkImage(url = "",
+    NetworkImage(
+        url = "",
         modifier = Modifier.fillMaxHeight().fillMaxWidth(),
         contentScale = ContentScale
-            .Crop)
+            .Crop
+    )
 }

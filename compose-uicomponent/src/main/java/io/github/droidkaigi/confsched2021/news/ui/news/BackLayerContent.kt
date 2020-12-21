@@ -74,7 +74,6 @@ private fun Input(text: String, onClick: () -> Unit) {
 fun BackLayerContentPreview() {
     BackLayerContent(
         filterState = Filters(),
-        onFavoriteFilterChanged = {  }
+        onFavoriteFilterChanged = { }
     )
 }
-

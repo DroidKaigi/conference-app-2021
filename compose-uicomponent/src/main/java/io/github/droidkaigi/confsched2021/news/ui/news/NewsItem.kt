@@ -114,10 +114,11 @@ fun PreviewNewsItem() {
                 mapOf(
                     Locale("ja") to LocaledContents.Contents(
                         "very long title very long title very long title",
-                        "link")
+                        "link"
                     )
                 )
             )
-                NewsItem (news, false, { }, { })
+        )
+        NewsItem(news, false, { }, { })
     }
 }
