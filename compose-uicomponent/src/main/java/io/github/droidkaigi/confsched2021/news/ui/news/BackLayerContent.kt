@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2021.news.ui.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,10 +13,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
@@ -27,13 +28,16 @@ enum class FilterState(val text: String) {
 @Composable
 fun BackLayerContent(
     filterState: Filters,
-    onFavoriteFilterChanged: (filtered: Boolean) -> Unit
+    onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
 ) {
-    Input(
-        text = if (filterState.filterFavorite) "Favorites" else "All",
-        onClick = { onFavoriteFilterChanged(filterState.filterFavorite.not()) }
-    )
-    Spacer(Modifier.preferredHeight(8.dp))
+    Column {
+        Spacer(Modifier.preferredHeight(16.dp))
+        Input(
+            text = if (filterState.filterFavorite) "Favorites" else "All",
+            onClick = { onFavoriteFilterChanged(filterState.filterFavorite.not()) }
+        )
+        Spacer(Modifier.preferredHeight(8.dp))
+    }
 }
 
 @Composable
@@ -64,3 +68,13 @@ private fun Input(text: String, onClick: () -> Unit) {
         }
     }
 }
+
+@Preview(showBackground = true)
+@Composable
+fun BackLayerContentPreview() {
+    BackLayerContent(
+        filterState = Filters(),
+        onFavoriteFilterChanged = {  }
+    )
+}
+
