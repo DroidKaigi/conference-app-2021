@@ -4,6 +4,14 @@ module graph
 
 ![image](https://user-images.githubusercontent.com/1386930/102029518-0f1ef880-3df2-11eb-91cc-c52adfbbde3e.png)
 
+# Modern Development
+
+* Jetpack Compose
+* Kotlin Coroutines & Flows
+* Dagger Hilt
+* DataStore
+* Kotlin Multiplatform
+
 # Compose
 
 Split Composable according to the following policy.
