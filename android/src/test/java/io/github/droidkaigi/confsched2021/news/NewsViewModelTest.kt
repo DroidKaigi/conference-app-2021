@@ -28,7 +28,7 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
         // Replace when it fixed https://github.com/cashapp/turbine/issues/10
         val newsViewModel = newsViewModelFactory()
 
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
 
         firstContent.size shouldBeGreaterThan 1
     }
@@ -37,12 +37,12 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
     @Test
     fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
 
         newsViewModel.onToggleFavorite(firstContent.newsContents[0])
 
-        val secondContent = newsViewModel.filteredNewsContents.value
+        val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.favorites shouldBe setOf(firstContent.newsContents[0].id)
     }
 
@@ -50,13 +50,13 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
     @Test
     fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
 
         newsViewModel.onToggleFavorite(firstContent.newsContents[0])
         newsViewModel.onToggleFavorite(firstContent.newsContents[0])
 
-        val secondContent = newsViewModel.filteredNewsContents.value
+        val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.favorites shouldBe setOf()
     }
 
@@ -64,14 +64,14 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
     @Test
     fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
         val favoriteContents = firstContent.newsContents[1]
 
         newsViewModel.onToggleFavorite(favoriteContents)
         newsViewModel.onFilterChanged(Filters(filterFavorite = true))
 
-        val secondContent = newsViewModel.filteredNewsContents.value
+        val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.contents[0].first.id shouldBe favoriteContents.id
     }
 

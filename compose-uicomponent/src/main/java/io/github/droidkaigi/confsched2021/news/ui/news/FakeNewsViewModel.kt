@@ -1,11 +1,7 @@
-package io.github.droidkaigi.confsched2021.news.ui
+package io.github.droidkaigi.confsched2021.news.ui.news
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
-import androidx.compose.runtime.ambientOf
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
-import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.fakeNewsContents
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -17,43 +13,31 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlin.coroutines.CoroutineContext
 
-interface NewsViewModel {
-    val filters: StateFlow<Filters>
-    val filteredNewsContents: StateFlow<NewsContents>
-    fun onFilterChanged(filters: Filters)
-    fun onToggleFavorite(news: News)
-}
-
-private val AmbientNewsViewModel = ambientOf<NewsViewModel>()
-
-@Composable
-fun ProvideNewsViewModel(viewModel: NewsViewModel, block: @Composable () -> Unit) {
-    Providers(AmbientNewsViewModel provides viewModel, content = block)
-}
-
-@Composable
-fun newsViewModel() = AmbientNewsViewModel.current
-
 fun fakeNewsViewModel(): FakeNewsViewModel {
     return FakeNewsViewModel()
 }
 
 class FakeNewsViewModel : NewsViewModel {
-    val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
+    private val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
         // for preview
         override fun dispatch(context: CoroutineContext, block: Runnable) {
             block.run()
         }
     })
-    override val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
     private val newsContents = MutableStateFlow(
         fakeNewsContents()
     )
-    override val filteredNewsContents: StateFlow<NewsContents> = newsContents
-        .combine(filters) { contents, filter ->
-            contents.filtered(filter)
+    private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+
+    override val state: StateFlow<NewsViewModel.State> =
+        combine(newsContents, filters) { newsContents, filters ->
+            val filteredNews = newsContents.filtered(filters)
+            NewsViewModel.State(
+                filters = filters,
+                filteredNewsContents = filteredNews
+            )
         }
-        .stateIn(coroutineScope, SharingStarted.Eagerly, fakeNewsContents())
+            .stateIn(coroutineScope, SharingStarted.Eagerly, NewsViewModel.State())
 
     override fun onFilterChanged(filters: Filters) {
         this.filters.value = filters

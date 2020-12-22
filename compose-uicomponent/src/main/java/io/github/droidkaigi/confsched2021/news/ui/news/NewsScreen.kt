@@ -30,9 +30,6 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
-import io.github.droidkaigi.confsched2021.news.ui.ProvideNewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.fakeNewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
@@ -55,7 +52,7 @@ sealed class NewsTabs(val name: String) {
  */
 @Composable
 fun NewsScreen(
-    onNavigationIconClick: () -> Unit
+    onNavigationIconClick: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -74,10 +71,11 @@ fun NewsScreen(
     }
 
     val newsViewModel = newsViewModel()
-    val filters by newsViewModel.filters.collectAsState()
-    val newsContents: NewsContents by newsViewModel.filteredNewsContents.collectAsState(
-        initial = newsViewModel.filteredNewsContents.value
-    )
+    val state by newsViewModel.state.collectAsState()
+
+    val filters = state.filters
+    val newsContents = state.filteredNewsContents
+
     val onFavoriteChange: (News) -> Unit = {
         newsViewModel.onToggleFavorite(it)
     }
@@ -110,7 +108,7 @@ private fun NewsScreen(
     onFavoriteChange: (News) -> Unit,
     filters: Filters,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
-    onClickNews: (News) -> Unit
+    onClickNews: (News) -> Unit,
 ) {
     Column {
         BackdropScaffold(
@@ -164,7 +162,7 @@ private fun NewsScreen(
 private fun NewsList(
     newsContents: NewsContents,
     onClickNews: (News) -> Unit,
-    onFavoriteChange: (News) -> Unit
+    onFavoriteChange: (News) -> Unit,
 ) {
     LazyColumn {
         if (newsContents.size > 0) {
