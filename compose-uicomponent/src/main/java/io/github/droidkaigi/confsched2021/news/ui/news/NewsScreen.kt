@@ -70,29 +70,41 @@ fun NewsScreen(
         }
     }
 
-    val newsViewModel = newsViewModel()
-    val state by newsViewModel.state.collectAsState()
-
-    val filters = state.filters
-    val newsContents = state.filteredNewsContents
+    val (
+        state,
+        onIntent,
+    ) = useNewsState()
 
     val onFavoriteChange: (News) -> Unit = {
-        newsViewModel.onToggleFavorite(it)
+        onIntent(NewsViewModel.Intent.ToggleFavorite(it))
     }
     val onFavoriteFilterChanged: (filtered: Boolean) -> Unit = {
-        newsViewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
+        onIntent(NewsViewModel.Intent.ChangeFavoriteFilter(
+            state.filters.copy(filterFavorite = !state.filters.filterFavorite))
+        )
     }
+
     NewsScreen(
         selectedTab = selectedTab,
         onSelectTab = onSelectTab,
         scaffoldState = scaffoldState,
         onNavigationIconClick = onNavigationIconClick,
-        newsContents = newsContents,
+        newsContents = state.filteredNewsContents,
         onFavoriteChange = onFavoriteChange,
-        filters = filters,
+        filters = state.filters,
         onFavoriteFilterChanged = onFavoriteFilterChanged,
         onClickNews = onClickNews
     )
+}
+
+@Composable
+private fun useNewsState(): Pair<NewsViewModel.State, (NewsViewModel.Intent) -> Unit> {
+    val newsViewModel = newsViewModel()
+    val state by newsViewModel.state.collectAsState()
+    val onIntent: (NewsViewModel.Intent) -> Unit = { intent ->
+        newsViewModel.intent(intent)
+    }
+    return state to onIntent
 }
 
 /**

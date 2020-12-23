@@ -13,9 +13,14 @@ interface NewsViewModel {
         val filters: Filters = Filters(),
         val filteredNewsContents: NewsContents = NewsContents(),
     )
+
+    sealed class Intent {
+        class ChangeFavoriteFilter(val filters: Filters) : Intent()
+        class ToggleFavorite(val news: News) : Intent()
+    }
+
     val state: StateFlow<State>
-    fun onFilterChanged(filters: Filters)
-    fun onToggleFavorite(news: News)
+    fun intent(intent: Intent)
 }
 
 private val AmbientNewsViewModel = ambientOf<NewsViewModel>()
