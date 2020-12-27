@@ -15,9 +15,15 @@ TBD
 * DataStore
 * Kotlin Multiplatform
 
-# Unidirectional flow
+# Unidirectional data flow
+
+Compose processing and ViewModel processing are performed by Unidirectional data flow.
+
 ![image](https://user-images.githubusercontent.com/1386930/103167463-a4000800-486e-11eb-87dd-29cbac2deafd.png)
 
+# Compose unidirectional data flow
+
+By performing [State hoisting](https://developer.android.com/jetpack/compose/state)(pass the value and receive the event), Jetpack Compose displays with unidirectional data flow.
 
 ```kotlin
 /**
@@ -80,15 +86,12 @@ private fun NewsScreen(
 }
 ```
 
-# Compose unidirectional flow
-Split Composable according to the following policy.
-* [State hoisting](https://developer.android.com/jetpack/compose/state)(pass the value and receive the event) as much as possible.
-* If there are too many arguments or the arguments know too much detail, Pass interface.
 
-
-# ViewModel unidirectional flow
+# ViewModel unidirectional data flow
 
 This app handles the ViewModel with an MVI-like interface.
+
+Compose
 
 ```kotlin
     val (
@@ -108,6 +111,7 @@ This app handles the ViewModel with an MVI-like interface.
     }
 ```
 
+ViewModel Interface
 
 ```kotlin
 interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
@@ -116,6 +120,8 @@ interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
     fun event(event: EVENT)
 }
 ```
+
+`use(viewModel)` function for dispatching events and subscribing to states
 
 ```kotlin
 @Composable
