@@ -1,13 +1,16 @@
 package io.github.droidkaigi.confsched2021.news.ui.news
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.Divider
+import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -25,12 +28,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.uicomponent.R
 import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
@@ -129,22 +134,45 @@ private fun NewsScreen(
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
             },
+            frontLayerShape = CutCornerShape(topLeft = 32.dp),
             peekHeight = 104.dp,
             appBar = {
                 TopAppBar(
-                    title = { Text("DroidKaigi News") },
+                    title = { Text("DroidKaigi") },
                     elevation = 0.dp,
                     navigationIcon = {
                         IconButton(onClick = onNavigationIconClick) {
-//                            Icon(vectorResource(R.drawable.ic_baseline_menu_24))
+                            Icon(vectorResource(R.drawable.ic_baseline_menu_24))
                         }
                     }
                 )
-                TabRow(selectedTabIndex = 0) {
+                TabRow(
+                    selectedTabIndex = 0,
+                    indicator = {
+                    },
+                    divider = {}
+                ) {
                     NewsTabs.values().forEach { tab ->
                         Tab(
                             selected = tab == selectedTab,
-                            text = { Text(tab.name) },
+                            text = {
+                                Text(
+                                    modifier = if (selectedTab == tab) {
+                                        Modifier
+                                            .background(
+                                                color = MaterialTheme.colors.secondary,
+                                                shape = CutCornerShape(
+                                                    topLeft = 8.dp,
+                                                    bottomRight = 8.dp
+                                                )
+                                            )
+                                            .padding(vertical = 4.dp, horizontal = 8.dp)
+                                    } else {
+                                        Modifier
+                                    },
+                                    text = tab.name
+                                )
+                            },
                             onClick = { onSelectTab(tab) }
                         )
                     }
