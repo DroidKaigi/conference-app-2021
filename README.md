@@ -3,9 +3,22 @@
 DroidKaigi 2021 official news app
 
 # Contributing
+
 TBD
 
-# Modern Development
+# Features
+
+# Development Environment
+
+## Multi module project
+
+TBD
+
+## Kotlin Multiplatform
+
+TBD
+
+## Modern Development
 
 * Jetpack Compose
 * Kotlin Coroutines & Flows
@@ -13,13 +26,15 @@ TBD
 * DataStore
 * Kotlin Multiplatform
 
-# Unidirectional data flow
+# Architecture
+
+## Unidirectional data flow
 
 Compose processing and ViewModel processing are performed by Unidirectional data flow.
 
 ![image](https://user-images.githubusercontent.com/1386930/103167463-a4000800-486e-11eb-87dd-29cbac2deafd.png)
 
-# Compose unidirectional data flow
+### Compose unidirectional data flow
 
 By performing [State hoisting](https://developer.android.com/jetpack/compose/state)(pass the value and receive the event), Jetpack Compose displays with unidirectional data flow.
 
@@ -84,8 +99,7 @@ private fun NewsScreen(
 }
 ```
 
-
-# ViewModel unidirectional data flow
+### ViewModel unidirectional data flow
 
 This app handles the ViewModel with an MVI-like interface.
 
@@ -135,7 +149,7 @@ inline fun <reified EVENT, EFFECT, STATE> use(viewModel: UnidirectionalViewModel
 ```
 
 
-# Testable & Previewable & Faster debug
+## Testable & Previewable & Faster debug
 
 Jetpack Compose is still a new technology. We are thinking of best practices.  
 We will try to improve testing, preview and build by using Fake.  
@@ -145,7 +159,7 @@ For example, this app allows you to interact with the Android Studio Preview as 
 
 This is possible by creating a Fake ViewModel and making it reliable. 
 
-## How to make Fake's ViewModel reliable
+### How to make Fake's ViewModel reliable
 
 Do the same test for Fake and the real thing by testing against the interface. This makes Fake's
  ViewModel reliable. 
@@ -166,7 +180,7 @@ override fun event(event: NewsViewModel.Event) {
             is NewsViewModel.Event.ChangeFavoriteFilter -> {
 ```
 
-## How to make it previewable and testable
+### How to make it previewable and testable
 
 The way to do a preview is to distribute Fake's ViewModel.
 
@@ -183,7 +197,7 @@ fun NewsScreenPreview() {
 }
 ```
 
-## How to debug fast?
+### How to debug fast?
 
 If you want to check the UI display, you can check it in the Preview of Android Studio.
 In that case, the required task is `:compose-uicomponent:compileDebugKotlin`. 
@@ -195,6 +209,6 @@ Therefore, there is no need to build the data module that contains the definitio
 
 ![image](https://user-images.githubusercontent.com/1386930/103167973-078c3480-4873-11eb-92a2-687314175450.png)
 
-## Design
+# Design
 
 TBD
