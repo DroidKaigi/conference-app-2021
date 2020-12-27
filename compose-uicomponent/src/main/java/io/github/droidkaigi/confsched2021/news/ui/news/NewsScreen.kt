@@ -88,8 +88,10 @@ fun NewsScreen(
             dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
         },
         onFavoriteFilterChanged = {
-            dispatch(NewsViewModel.Event.ChangeFavoriteFilter(
-                filters = state.filters.copy(filterFavorite = it))
+            dispatch(
+                NewsViewModel.Event.ChangeFavoriteFilter(
+                    filters = state.filters.copy(filterFavorite = it)
+                )
             )
         },
         onClickNews = {
@@ -97,7 +99,6 @@ fun NewsScreen(
         }
     )
 }
-
 
 /**
  * stateless

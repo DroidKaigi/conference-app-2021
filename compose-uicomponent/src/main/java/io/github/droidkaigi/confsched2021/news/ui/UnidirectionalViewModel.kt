@@ -9,13 +9,13 @@ import kotlinx.coroutines.flow.StateFlow
 @Composable
 inline fun <reified EVENT, EFFECT, STATE> use(viewModel: UnidirectionalViewModel<EVENT, EFFECT, STATE>):
     Triple<STATE, Flow<EFFECT>, (EVENT) -> Unit> {
-    val state by viewModel.state.collectAsState()
+        val state by viewModel.state.collectAsState()
 
-    val dispatch: (EVENT) -> Unit = { event ->
-        viewModel.event(event)
+        val dispatch: (EVENT) -> Unit = { event ->
+            viewModel.event(event)
+        }
+        return Triple(state, viewModel.effect, dispatch)
     }
-    return Triple(state, viewModel.effect, dispatch)
-}
 
 interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
     val state: StateFlow<STATE>

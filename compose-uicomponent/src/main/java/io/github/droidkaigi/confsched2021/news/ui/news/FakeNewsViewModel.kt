@@ -45,7 +45,6 @@ class FakeNewsViewModel : NewsViewModel {
     private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
 
-
     override fun event(event: NewsViewModel.Event) {
         coroutineScope.launch {
             @Exhaustive

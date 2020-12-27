@@ -41,4 +41,3 @@ fun ProvideNewsViewModel(viewModel: NewsViewModel, block: @Composable () -> Unit
 
 @Composable
 fun newsViewModel() = AmbientNewsViewModel.current
-
