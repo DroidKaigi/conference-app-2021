@@ -52,6 +52,9 @@ sealed class NewsTabs(val name: String) {
     }
 }
 
+/**
+ * stateful
+ */
 @Composable
 fun NewsScreen(
     onNavigationIconClick: () -> Unit,
