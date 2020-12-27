@@ -6,21 +6,30 @@ import androidx.compose.runtime.ambientOf
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
+import io.github.droidkaigi.confsched2021.news.ui.UnidirectionalViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-interface NewsViewModel {
+interface NewsViewModel :
+    UnidirectionalViewModel<NewsViewModel.Event, NewsViewModel.Effect, NewsViewModel.State> {
     data class State(
         val filters: Filters = Filters(),
         val filteredNewsContents: NewsContents = NewsContents(),
     )
 
-    sealed class Intent {
-        class ChangeFavoriteFilter(val filters: Filters) : Intent()
-        class ToggleFavorite(val news: News) : Intent()
+    sealed class Effect {
+        class OpenDetail(val news: News) : Effect()
     }
 
-    val state: StateFlow<State>
-    fun intent(intent: Intent)
+    sealed class Event {
+        class ChangeFavoriteFilter(val filters: Filters) : Event()
+        class ToggleFavorite(val news: News) : Event()
+        class OpenDetail(val news: News) : Event()
+    }
+
+    override val state: StateFlow<State>
+    override val effect: Flow<Effect>
+    override fun event(event: Event)
 }
 
 private val AmbientNewsViewModel = ambientOf<NewsViewModel>()

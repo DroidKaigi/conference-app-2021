@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.droidkaigi.confsched2021.news.ui.DroidKaigiApp
-import io.github.droidkaigi.confsched2021.news.ui.NewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.ProvideNewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.news.ProvideNewsViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {

@@ -3,8 +3,10 @@ package io.github.droidkaigi.confsched2021.news
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
 import io.github.droidkaigi.confsched2021.news.data.fakeNewsApi
 import io.github.droidkaigi.confsched2021.news.data.fakeUserDataStore
-import io.github.droidkaigi.confsched2021.news.ui.NewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.fakeNewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.ChangeFavoriteFilter
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.ToggleFavorite
+import io.github.droidkaigi.confsched2021.news.ui.news.fakeNewsViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -40,7 +42,7 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
         val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
+        newsViewModel.event(ToggleFavorite(firstContent.newsContents[0]))
 
         val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.favorites shouldBe setOf(firstContent.newsContents[0].id)
@@ -53,8 +55,8 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
         val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
-        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
+        newsViewModel.event(ToggleFavorite(news = firstContent.newsContents[0]))
+        newsViewModel.event(ToggleFavorite(news = firstContent.newsContents[0]))
 
         val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.favorites shouldBe setOf()
@@ -68,8 +70,8 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
         firstContent.favorites shouldBe setOf()
         val favoriteContents = firstContent.newsContents[1]
 
-        newsViewModel.onToggleFavorite(favoriteContents)
-        newsViewModel.onFilterChanged(Filters(filterFavorite = true))
+        newsViewModel.event(ToggleFavorite(news = favoriteContents))
+        newsViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
 
         val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.contents[0].first.id shouldBe favoriteContents.id

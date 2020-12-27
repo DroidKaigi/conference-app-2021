@@ -5,12 +5,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel
+import kotlinx.coroutines.channels.Channel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.annotation.meta.Exhaustive
 
 class RealNewsViewModel @ViewModelInject constructor(
     private val repository: NewsRepository,
@@ -29,19 +33,27 @@ class RealNewsViewModel @ViewModelInject constructor(
             )
         }
             .stateIn(viewModelScope, SharingStarted.Eagerly, NewsViewModel.State())
+    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
 
-    override fun onToggleFavorite(news: News) {
+    override fun event(event: NewsViewModel.Event) {
         viewModelScope.launch {
-            if (allNewsContents.value.favorites.contains(news.id)) {
-                repository.removeFavorite(news)
-            } else {
-                repository.addFavorite(news)
+            @Exhaustive
+            when (event) {
+                is NewsViewModel.Event.ChangeFavoriteFilter -> {
+                    filters.value = event.filters
+                }
+                is NewsViewModel.Event.ToggleFavorite -> {
+                    if (allNewsContents.value.favorites.contains(event.news.id)) {
+                        repository.removeFavorite(event.news)
+                    } else {
+                        repository.addFavorite(event.news)
+                    }
+                }
+                is NewsViewModel.Event.OpenDetail -> {
+                    effectChannel.send(NewsViewModel.Effect.OpenDetail(event.news))
+                }
             }
         }
-    }
-
-
-    override fun onFilterChanged(filters: Filters) {
-        this.filters.value = filters
     }
 }
