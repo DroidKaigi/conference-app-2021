@@ -5,11 +5,14 @@ import io.github.droidkaigi.confsched2021.news.data.fakeNewsApi
 import io.github.droidkaigi.confsched2021.news.data.fakeUserDataStore
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.ChangeFavoriteFilter
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.OpenDetail
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.ToggleFavorite
 import io.github.droidkaigi.confsched2021.news.ui.news.fakeNewsViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
@@ -75,6 +78,21 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
 
         val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.contents[0].first.id shouldBe favoriteContents.id
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun openDetail() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val newsViewModel = newsViewModelFactory()
+        val firstContent = newsViewModel.state.value.filteredNewsContents
+        firstContent.favorites shouldBe setOf()
+        val news = firstContent.newsContents[1]
+
+        newsViewModel.event(OpenDetail(news = news))
+
+        val firstEffect = newsViewModel.effect.first()
+        firstEffect.shouldBeInstanceOf<NewsViewModel.Effect.OpenDetail>()
+        firstEffect.news shouldBe news
     }
 
     companion object {
