@@ -20,12 +20,11 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
@@ -34,12 +33,10 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
-import io.github.droidkaigi.confsched2021.news.ui.ProvideNewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.fakeNewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.newsViewModel
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confsched2021.news.ui.use
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.collect
 import kotlin.reflect.KClass
 
 sealed class NewsTabs(val name: String) {
@@ -62,43 +59,47 @@ sealed class NewsTabs(val name: String) {
 fun NewsScreen(
     onNavigationIconClick: () -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var selectedTab by remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
-    val onSelectTab = { tab: NewsTabs ->
-        selectedTab = tab
-    }
-    val onClickNews: (News) -> Unit = {
-        coroutineScope.launch {
-            scaffoldState.snackbarHostState.showSnackbar(
-                "TODO: waiting " +
-                    "navigation " +
-                    "component"
-            )
+
+    val (
+        state,
+        effectFlow,
+        dispatch,
+    ) = use(newsViewModel())
+
+    LaunchedEffect(subject = effectFlow) {
+        effectFlow.collect {
+            when (it) {
+                is NewsViewModel.Effect.OpenDetail -> {
+                    TODO()
+                }
+            }
         }
     }
 
-    val newsViewModel = newsViewModel()
-    val filters by newsViewModel.filters.collectAsState()
-    val newsContents: NewsContents by newsViewModel.filteredNewsContents.collectAsState(
-        initial = newsViewModel.filteredNewsContents.value
-    )
-    val onFavoriteChange: (News) -> Unit = {
-        newsViewModel.onToggleFavorite(it)
-    }
-    val onFavoriteFilterChanged: (filtered: Boolean) -> Unit = {
-        newsViewModel.onFilterChanged(filters.copy(filterFavorite = !filters.filterFavorite))
-    }
     NewsScreen(
         selectedTab = selectedTab,
-        onSelectTab = onSelectTab,
         scaffoldState = scaffoldState,
+        newsContents = state.filteredNewsContents,
+        filters = state.filters,
+        onSelectTab = { tab: NewsTabs ->
+            selectedTab = tab
+        },
         onNavigationIconClick = onNavigationIconClick,
-        newsContents = newsContents,
-        onFavoriteChange = onFavoriteChange,
-        filters = filters,
-        onFavoriteFilterChanged = onFavoriteFilterChanged,
-        onClickNews = onClickNews
+        onFavoriteChange = {
+            dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
+        },
+        onFavoriteFilterChanged = {
+            dispatch(
+                NewsViewModel.Event.ChangeFavoriteFilter(
+                    filters = state.filters.copy(filterFavorite = it)
+                )
+            )
+        },
+        onClickNews = {
+            dispatch(NewsViewModel.Event.OpenDetail(news = it))
+        }
     )
 }
 
@@ -108,12 +109,12 @@ fun NewsScreen(
 @Composable
 private fun NewsScreen(
     selectedTab: NewsTabs,
-    onSelectTab: (NewsTabs) -> Unit,
     scaffoldState: BackdropScaffoldState,
-    onNavigationIconClick: () -> Unit,
     newsContents: NewsContents,
-    onFavoriteChange: (News) -> Unit,
     filters: Filters,
+    onSelectTab: (NewsTabs) -> Unit,
+    onNavigationIconClick: () -> Unit,
+    onFavoriteChange: (News) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickNews: (News) -> Unit,
 ) {

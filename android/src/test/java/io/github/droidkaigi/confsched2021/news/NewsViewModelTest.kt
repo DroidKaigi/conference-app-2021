@@ -3,11 +3,16 @@ package io.github.droidkaigi.confsched2021.news
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
 import io.github.droidkaigi.confsched2021.news.data.fakeNewsApi
 import io.github.droidkaigi.confsched2021.news.data.fakeUserDataStore
-import io.github.droidkaigi.confsched2021.news.ui.NewsViewModel
-import io.github.droidkaigi.confsched2021.news.ui.fakeNewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.ChangeFavoriteFilter
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.OpenDetail
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel.Event.ToggleFavorite
+import io.github.droidkaigi.confsched2021.news.ui.news.fakeNewsViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
 import org.junit.Test
@@ -28,7 +33,7 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
         // Replace when it fixed https://github.com/cashapp/turbine/issues/10
         val newsViewModel = newsViewModelFactory()
 
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
 
         firstContent.size shouldBeGreaterThan 1
     }
@@ -37,12 +42,12 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
     @Test
     fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
+        newsViewModel.event(ToggleFavorite(firstContent.newsContents[0]))
 
-        val secondContent = newsViewModel.filteredNewsContents.value
+        val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.favorites shouldBe setOf(firstContent.newsContents[0].id)
     }
 
@@ -50,13 +55,13 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
     @Test
     fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
-        newsViewModel.onToggleFavorite(firstContent.newsContents[0])
+        newsViewModel.event(ToggleFavorite(news = firstContent.newsContents[0]))
+        newsViewModel.event(ToggleFavorite(news = firstContent.newsContents[0]))
 
-        val secondContent = newsViewModel.filteredNewsContents.value
+        val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.favorites shouldBe setOf()
     }
 
@@ -64,15 +69,30 @@ class NewsViewModelTest(val name: String, val newsViewModelFactory: () -> NewsVi
     @Test
     fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsViewModelFactory()
-        val firstContent = newsViewModel.filteredNewsContents.value
+        val firstContent = newsViewModel.state.value.filteredNewsContents
         firstContent.favorites shouldBe setOf()
         val favoriteContents = firstContent.newsContents[1]
 
-        newsViewModel.onToggleFavorite(favoriteContents)
-        newsViewModel.onFilterChanged(Filters(filterFavorite = true))
+        newsViewModel.event(ToggleFavorite(news = favoriteContents))
+        newsViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
 
-        val secondContent = newsViewModel.filteredNewsContents.value
+        val secondContent = newsViewModel.state.value.filteredNewsContents
         secondContent.contents[0].first.id shouldBe favoriteContents.id
+    }
+
+    @OptIn(ExperimentalTime::class)
+    @Test
+    fun openDetail() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val newsViewModel = newsViewModelFactory()
+        val firstContent = newsViewModel.state.value.filteredNewsContents
+        firstContent.favorites shouldBe setOf()
+        val news = firstContent.newsContents[1]
+
+        newsViewModel.event(OpenDetail(news = news))
+
+        val firstEffect = newsViewModel.effect.first()
+        firstEffect.shouldBeInstanceOf<NewsViewModel.Effect.OpenDetail>()
+        firstEffect.news shouldBe news
     }
 
     companion object {
