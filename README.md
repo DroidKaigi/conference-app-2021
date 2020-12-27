@@ -193,8 +193,7 @@ Therefore, there is no need to build the data module that contains the definitio
 
 ## Overall architecture
 
-![image](https://user-images.githubusercontent.com/1386930/102029537-1f36d800-3df2-11eb-86f7-e06324233dba.png)
-
+![image](https://user-images.githubusercontent.com/1386930/103167973-078c3480-4873-11eb-92a2-687314175450.png)
 
 ## Design
 
