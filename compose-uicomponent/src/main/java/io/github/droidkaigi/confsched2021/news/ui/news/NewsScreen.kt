@@ -20,11 +20,12 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.onCommit
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
@@ -36,7 +37,7 @@ import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.use
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
-import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
 
 sealed class NewsTabs(val name: String) {
@@ -58,23 +59,22 @@ sealed class NewsTabs(val name: String) {
 @Composable
 fun NewsScreen(
     onNavigationIconClick: () -> Unit,
+    onClickNews: (News) -> Unit
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var selectedTab by remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
 
     val (
         state,
-        effectFlow,
         dispatch,
     ) = use(newsViewModel())
 
-    LaunchedEffect(subject = effectFlow) {
-        effectFlow.collect {
-            when (it) {
-                is NewsViewModel.Effect.OpenDetail -> {
-                    TODO()
-                }
-            }
+    val coroutineScope = rememberCoroutineScope()
+    onCommit(state.snackbarMessage) {
+        state.snackbarMessage?: return@onCommit
+        coroutineScope.launch {
+            scaffoldState.snackbarHostState.showSnackbar(state.snackbarMessage)
+            dispatch(NewsViewModel.Event.OnHideSnackbarMessage(state.snackbarMessage))
         }
     }
 
@@ -88,18 +88,16 @@ fun NewsScreen(
         },
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
-            dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
+            dispatch(NewsViewModel.Event.OnToggleFavorite(news = it))
         },
         onFavoriteFilterChanged = {
             dispatch(
-                NewsViewModel.Event.ChangeFavoriteFilter(
+                NewsViewModel.Event.OnChangeFavoriteFilter(
                     filters = state.filters.copy(filterFavorite = it)
                 )
             )
         },
-        onClickNews = {
-            dispatch(NewsViewModel.Event.OpenDetail(news = it))
-        }
+        onClickNews = onClickNews
     )
 }
 
@@ -215,8 +213,10 @@ private fun NewsList(
 fun NewsScreenPreview() {
     Conferenceapp2021newsTheme(false) {
         ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            NewsScreen {
-            }
+            NewsScreen(
+                onNavigationIconClick = {},
+                onClickNews = {}
+            )
         }
     }
 }

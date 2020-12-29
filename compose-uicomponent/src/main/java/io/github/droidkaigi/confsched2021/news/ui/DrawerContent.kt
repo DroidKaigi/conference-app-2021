@@ -13,7 +13,7 @@ fun DrawerContent(navController: NavHostController) {
         label = "NewsContents",
         isSelected = true,
         {
-            navController.navigate("newsContents")
+            navController.navigate("news/list")
         }
     )
     DrawerButton(

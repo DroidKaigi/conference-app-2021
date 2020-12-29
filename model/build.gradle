@@ -33,6 +33,7 @@ kotlin {
         android
         commonMain.dependencies {
             api Dep.klock
+            implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2")
         }
         android {}
     }

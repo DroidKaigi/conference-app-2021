@@ -7,28 +7,24 @@ import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.ui.UnidirectionalViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface NewsViewModel :
-    UnidirectionalViewModel<NewsViewModel.Event, NewsViewModel.Effect, NewsViewModel.State> {
+    UnidirectionalViewModel<NewsViewModel.Event, NewsViewModel.State> {
     data class State(
+        val showProgress: Boolean = false,
         val filters: Filters = Filters(),
         val filteredNewsContents: NewsContents = NewsContents(),
+        val snackbarMessage: String? = null,
     )
 
-    sealed class Effect {
-        class OpenDetail(val news: News) : Effect()
-    }
-
     sealed class Event {
-        class ChangeFavoriteFilter(val filters: Filters) : Event()
-        class ToggleFavorite(val news: News) : Event()
-        class OpenDetail(val news: News) : Event()
+        class OnChangeFavoriteFilter(val filters: Filters) : Event()
+        class OnToggleFavorite(val news: News) : Event()
+        object OnHideSnackbarMessage : Event()
     }
 
     override val state: StateFlow<State>
-    override val effect: Flow<Effect>
     override fun event(event: Event)
 }
 

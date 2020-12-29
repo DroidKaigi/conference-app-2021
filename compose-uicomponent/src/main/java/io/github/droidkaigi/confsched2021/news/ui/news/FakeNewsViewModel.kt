@@ -6,13 +6,10 @@ import io.github.droidkaigi.confsched2021.news.fakeNewsContents
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Runnable
-import kotlinx.coroutines.channels.Channel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
@@ -42,17 +39,15 @@ class FakeNewsViewModel : NewsViewModel {
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, NewsViewModel.State())
-    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
 
     override fun event(event: NewsViewModel.Event) {
         coroutineScope.launch {
             @Exhaustive
             when (event) {
-                is NewsViewModel.Event.ChangeFavoriteFilter -> {
+                is NewsViewModel.Event.OnChangeFavoriteFilter -> {
                     filters.value = event.filters
                 }
-                is NewsViewModel.Event.ToggleFavorite -> {
+                is NewsViewModel.Event.OnToggleFavorite -> {
                     val value = newsContents.value
                     val newFavorites = if (!value.favorites.contains(event.news.id)) {
                         value.favorites + event.news.id
@@ -62,9 +57,6 @@ class FakeNewsViewModel : NewsViewModel {
                     newsContents.value = value.copy(
                         favorites = newFavorites
                     )
-                }
-                is NewsViewModel.Event.OpenDetail -> {
-                    effectChannel.send(NewsViewModel.Effect.OpenDetail(event.news))
                 }
             }
         }

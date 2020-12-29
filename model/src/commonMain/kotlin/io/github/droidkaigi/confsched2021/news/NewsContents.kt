@@ -5,7 +5,7 @@ import kotlin.reflect.KClass
 
 data class NewsContents(
     val newsContents: List<News> = listOf(),
-    val favorites: Set<String> = setOf()
+    val favorites: Set<String> = setOf(),
 ) {
     val contents by lazy {
         newsContents.map {
@@ -29,6 +29,8 @@ data class NewsContents(
 
     val size get() = newsContents.size
 }
+
+fun NewsContents?.orEmpty(): NewsContents = this ?: NewsContents()
 
 fun fakeNewsContents(): NewsContents {
     return NewsContents(
