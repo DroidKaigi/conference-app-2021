@@ -20,5 +20,3 @@ sealed class AppError : RuntimeException {
 
     class UnknownException(cause: Throwable?) : AppError(cause)
 }
-
-
