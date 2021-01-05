@@ -56,3 +56,4 @@ fun <T> Flow<T>.toLoadState(): Flow<LoadState<T>> =
     map { LoadState.Loaded(it) as LoadState<T> }
         .onStart { emit(LoadState.Loading) }
         .catch { cause -> emit(LoadState.Error(cause)) }
+        
