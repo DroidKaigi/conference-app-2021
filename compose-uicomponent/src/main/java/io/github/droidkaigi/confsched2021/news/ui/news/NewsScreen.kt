@@ -27,9 +27,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
@@ -120,6 +125,7 @@ private fun NewsScreen(
     onClickNews: (News) -> Unit,
 ) {
     Column {
+        val density = AmbientDensity.current
         BackdropScaffold(
             backLayerBackgroundColor = MaterialTheme.colors.primary,
             scaffoldState = scaffoldState,
@@ -127,9 +133,10 @@ private fun NewsScreen(
                 BackLayerContent(filters, onFavoriteFilterChanged)
             },
             frontLayerShape = CutCornerShape(topLeft = 32.dp),
-            peekHeight = 104.dp,
+            peekHeight = 104.dp + (AmbientWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
                 TopAppBar(
+                    modifier = Modifier.statusBarsPadding(),
                     title = { Text("DroidKaigi") },
                     elevation = 0.dp,
                     navigationIcon = {
@@ -196,7 +203,9 @@ private fun NewsList(
     onClickNews: (News) -> Unit,
     onFavoriteChange: (News) -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn(
+        contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
+    ) {
         if (newsContents.size > 0) {
             items(newsContents.contents) { (item, favorited) ->
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))

@@ -5,6 +5,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 
 private val DarkColorPalette = darkColors(
     primary = blue200,
@@ -30,18 +31,19 @@ onSurface = Color.Black,
 @Composable
 fun Conferenceapp2021newsTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable() () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette
     } else {
         LightColorPalette
     }
-
-    MaterialTheme(
-        colors = colors,
-        typography = typography,
-        shapes = shapes,
-        content = content
-    )
+    ProvideWindowInsets {
+        MaterialTheme(
+            colors = colors,
+            typography = typography,
+            shapes = shapes,
+            content = content
+        )
+    }
 }

@@ -134,7 +134,7 @@ Compose
 This `state`, `effectFlow` and `dispatch` are created from ViewModel.
 
 `state` represents the state that the UI should display.  
-`effectFlow` represents a temporary event such as a Snackbar display.  
+`effectFlow` represents a one-time event such as a Snackbar display.  
 And `dispatch` represents a change of state.
 
 
@@ -148,7 +148,7 @@ interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
 }
 ```
 
-`use(viewModel)` function for dispatching events and subscribing to states
+`use(viewModel)` function
 
 ```kotlin
 @Composable
