@@ -1,7 +1,6 @@
 package io.github.droidkaigi.confsched2021.news.ui
 
 import android.content.Context
-import androidx.compose.ui.res.stringResource
 import io.github.droidkaigi.confsched2021.news.AppError
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
 

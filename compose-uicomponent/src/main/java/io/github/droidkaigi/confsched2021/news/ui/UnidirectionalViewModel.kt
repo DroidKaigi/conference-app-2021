@@ -17,17 +17,17 @@ inline fun <reified STATE, EFFECT, EVENT> use(
     viewModel: UnidirectionalViewModel<EVENT, EFFECT, STATE>,
 ):
     StateEffectDispatch<STATE, EFFECT, EVENT> {
-    val state by viewModel.state.collectAsState()
+        val state by viewModel.state.collectAsState()
 
-    val dispatch: (EVENT) -> Unit = { event ->
-        viewModel.event(event)
+        val dispatch: (EVENT) -> Unit = { event ->
+            viewModel.event(event)
+        }
+        return StateEffectDispatch(
+            state = state,
+            effectFlow = viewModel.effect,
+            dispatch = dispatch
+        )
     }
-    return StateEffectDispatch(
-        state = state,
-        effectFlow = viewModel.effect,
-        dispatch = dispatch
-    )
-}
 
 interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
     val state: StateFlow<STATE>

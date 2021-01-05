@@ -113,7 +113,8 @@ class NewsViewModelTest(
                                     AppError.ApiException.ServerException(null)
                                 } else {
                                     null
-                                }),
+                                }
+                            ),
                             dataStore = fakeUserDataStore()
                         )
                     )

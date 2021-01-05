@@ -30,13 +30,21 @@ fun AppContent(
     ) {
         NavHost(navController, startDestination = "news/list") {
             composable("news/list") {
-                NewsScreen(onNavigationIconClick, { news: News ->
-                    navController.navigate("news/${news.id}")
-                })
+                NewsScreen(
+                    onNavigationIconClick,
+                    { news: News ->
+                        navController.navigate("news/${news.id}")
+                    }
+                )
             }
-            composable("news/{newsId}", listOf(navArgument("newsId") {
-                type = NavType.StringType
-            })) { backStackEntry ->
+            composable(
+                "news/{newsId}",
+                listOf(
+                    navArgument("newsId") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
                 Text("detail of:${backStackEntry.arguments?.getString("newsId")}")
             }
             composable("about_this_app") {

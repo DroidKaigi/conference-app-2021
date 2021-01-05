@@ -216,9 +216,12 @@ private fun NewsList(
 fun NewsScreenPreview() {
     Conferenceapp2021newsTheme(false) {
         ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            NewsScreen({
-            }, { news: News ->
-            })
+            NewsScreen(
+                {
+                },
+                { news: News ->
+                }
+            )
         }
     }
 }
