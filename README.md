@@ -10,13 +10,11 @@ TBD
 
 # Development Environment
 
-## Multi module project
-
-TBD
-
 ## Kotlin Multiplatform
 
 TBD
+
+## Compose
 
 ## Modern Development
 
@@ -45,9 +43,9 @@ By performing [State hoisting](https://developer.android.com/jetpack/compose/sta
 @Composable
 fun NewsScreen(
     onNavigationIconClick: () -> Unit,
+    onDetailClick: (News) -> Unit,
 ) {
-    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
+...
 
     val (
         state,
@@ -55,12 +53,13 @@ fun NewsScreen(
         dispatch,
     ) = use(newsViewModel())
 
-    LaunchedEffect(subject = effectFlow) {
-        effectFlow.collect {
-            when (it) {
-                is NewsViewModel.Effect.OpenDetail -> {
-                  // ...
-                }
+    val context = AmbientContext.current
+    effectFlow.collectInLaunchedEffect { effect ->
+        when (effect) {
+            is NewsViewModel.Effect.ErrorMessage -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    effect.appError.getReadableMessage(context)
+                )
             }
         }
     }
@@ -112,16 +111,32 @@ Compose
         dispatch,
     ) = use(newsViewModel())
 
-    LaunchedEffect(subject = effectFlow) {
-        effectFlow.collect {
-            when (it) {
-                is NewsViewModel.Effect.OpenDetail -> {
-                  // ...
-                }
+    val context = AmbientContext.current
+    effectFlow.collectInLaunchedEffect { effect ->
+        when (effect) {
+            is NewsViewModel.Effect.ErrorMessage -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    effect.appError.getReadableMessage(context)
+                )
             }
         }
     }
+    
+    NewsScreen(
+        // ...
+        newsContents = state.filteredNewsContents, 
+        onFavoriteChange = {
+            dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
+        },
+        // ...
 ```
+
+This `state`, `effectFlow` and `dispatch` are created from ViewModel.
+
+`state` represents the state that the UI should display.  
+`effectFlow` represents a temporary event such as a Snackbar display.  
+And `dispatch` represents a change of state.
+
 
 ViewModel Interface
 
@@ -137,14 +152,20 @@ interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
 
 ```kotlin
 @Composable
-inline fun <reified EVENT, EFFECT, STATE> use(viewModel: UnidirectionalViewModel<EVENT, EFFECT, STATE>):
-    Triple<STATE, Flow<EFFECT>, (EVENT) -> Unit> {
+inline fun <reified STATE, EFFECT, EVENT> use(
+    viewModel: UnidirectionalViewModel<EVENT, EFFECT, STATE>,
+):
+    StateEffectDispatch<STATE, EFFECT, EVENT> {
     val state by viewModel.state.collectAsState()
 
     val dispatch: (EVENT) -> Unit = { event ->
         viewModel.event(event)
     }
-    return Triple(state, viewModel.effect, dispatch)
+    return StateEffectDispatch(
+        state = state,
+        effectFlow = viewModel.effect,
+        dispatch = dispatch
+    )
 }
 ```
 

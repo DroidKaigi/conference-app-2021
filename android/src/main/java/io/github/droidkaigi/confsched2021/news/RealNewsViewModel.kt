@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -20,21 +21,36 @@ class RealNewsViewModel @ViewModelInject constructor(
     private val repository: NewsRepository,
 ) : ViewModel(), NewsViewModel {
 
-    private val allNewsContents: StateFlow<NewsContents> = repository.newsContents()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, NewsContents())
+    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
+
+    private val allNewsContents: StateFlow<LoadState<NewsContents>> = repository.newsContents()
+        .toLoadState()
+        .onEach { loadState ->
+            if (loadState.isError()) {
+                // FIXME: smartcast is not working
+                val error = loadState as LoadState.Error
+                effectChannel.send(NewsViewModel.Effect.ErrorMessage(error.e))
+            }
+        }
+        .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<NewsViewModel.State> =
-        combine(allNewsContents, filters) { newsContents, filters ->
-            val filteredNews = newsContents.filtered(filters)
+        combine(
+            allNewsContents,
+            filters
+        ) { newsContentsLoadState, filters ->
+            val filteredNews =
+                newsContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             NewsViewModel.State(
+                showProgress = newsContentsLoadState.isLoading(),
                 filters = filters,
-                filteredNewsContents = filteredNews
+                filteredNewsContents = filteredNews,
+//                snackbarMessage = currentValue.snackbarMessage
             )
         }
             .stateIn(viewModelScope, SharingStarted.Eagerly, NewsViewModel.State())
-    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
 
     override fun event(event: NewsViewModel.Event) {
         viewModelScope.launch {
@@ -44,14 +60,15 @@ class RealNewsViewModel @ViewModelInject constructor(
                     filters.value = event.filters
                 }
                 is NewsViewModel.Event.ToggleFavorite -> {
-                    if (allNewsContents.value.favorites.contains(event.news.id)) {
+                    val favorite = allNewsContents.value
+                        .getContents()
+                        .favorites
+                        .contains(event.news.id)
+                    if (favorite) {
                         repository.removeFavorite(event.news)
                     } else {
                         repository.addFavorite(event.news)
                     }
-                }
-                is NewsViewModel.Event.OpenDetail -> {
-                    effectChannel.send(NewsViewModel.Effect.OpenDetail(event.news))
                 }
             }
         }
