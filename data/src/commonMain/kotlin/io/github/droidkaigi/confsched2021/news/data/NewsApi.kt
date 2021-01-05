@@ -1,5 +1,6 @@
 package io.github.droidkaigi.confsched2021.news.data
 
+import io.github.droidkaigi.confsched2021.news.AppError
 import io.github.droidkaigi.confsched2021.news.News
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
@@ -8,15 +9,18 @@ interface NewsApi {
     suspend fun fetch(): List<News>
 }
 
-fun fakeNewsApi(): NewsApi = object : NewsApi {
+fun fakeNewsApi(error: AppError? = null): NewsApi = object : NewsApi {
     override suspend fun fetch(): List<News> {
+        if (error != null) {
+            throw error
+        }
         return list
     }
 
     // cache for fixing test issue
     @OptIn(ExperimentalStdlibApi::class)
     val list = run {
-        val response = """[
+        val responseText = """[
   {
     "id": "2020-07-22-droidkaigi2020",
     "date": "2020-07-22",
@@ -134,7 +138,7 @@ fun fakeNewsApi(): NewsApi = object : NewsApi {
   }
 ]"""
         val newsContents = Json.decodeFromString<List<KtorNewsApi.NewsResponse>>(
-            response
+            responseText
         )
             .map { response ->
                 response.toNews()

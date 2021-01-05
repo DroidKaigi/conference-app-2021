@@ -6,7 +6,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 
-open class NewsRepository(private val newsApi: NewsApi, private val dataStore: UserDataStore) {
+open class NewsRepository(
+    private val newsApi: NewsApi,
+    private val dataStore: UserDataStore,
+) {
     fun newsContents(): Flow<NewsContents> {
         return dataStore.favorites()
             .combine(

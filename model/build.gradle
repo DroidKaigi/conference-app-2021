@@ -13,6 +13,16 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
     }
+
+    // delete this when this is fixed https://issuetracker.google.com/issues/175496966
+    configurations {
+        androidTestApi {}
+        androidTestDebugApi {}
+        androidTestReleaseApi {}
+        testApi {}
+        testDebugApi {}
+        testReleaseApi {}
+    }
 }
 
 kotlin {
@@ -27,26 +37,25 @@ kotlin {
             iosX64("ios")
         }
     } else {
-        ios
+        ios()
     }
     sourceSets {
         android
         commonMain.dependencies {
             api Dep.klock
+            api 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2'
         }
         android {}
+        all.languageSettings {
+            progressiveMode = true
+            useExperimentalAnnotation("kotlin.Experimental")
+            useExperimentalAnnotation("kotlinx.io.unsafe.ExperimentalTime")
+            useExperimentalAnnotation("kotlin.contracts.ExperimentalContracts")
+        }
     }
 }
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     kotlinOptions {
         jvmTarget = "1.8"
-        freeCompilerArgs += ["-Xopt-in=kotlin.RequiresOptIn"]
     }
-}
-
-// delete this when this is fixed https://issuetracker.google.com/issues/175496966
-configurations {
-    testApi
-    testDebugApi
-    testReleaseApi
 }

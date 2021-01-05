@@ -15,6 +15,16 @@ android {
         minSdkVersion 21
         targetSdkVersion 30
     }
+
+    // delete this when this is fixed https://issuetracker.google.com/issues/175496966
+    configurations {
+        androidTestApi {}
+        androidTestDebugApi {}
+        androidTestReleaseApi {}
+        testApi {}
+        testDebugApi {}
+        testReleaseApi {}
+    }
 }
 
 tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
@@ -37,7 +47,7 @@ kotlin {
             iosX64("ios")
         }
     } else {
-        ios
+        ios()
     }
     sourceSets {
         commonMain.dependencies {
@@ -77,11 +87,4 @@ kotlin {
 }
 dependencies {
     kapt "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
-}
-
-// delete this when this is fixed https://issuetracker.google.com/issues/175496966
-configurations {
-    testApi
-    testDebugApi
-    testReleaseApi
 }

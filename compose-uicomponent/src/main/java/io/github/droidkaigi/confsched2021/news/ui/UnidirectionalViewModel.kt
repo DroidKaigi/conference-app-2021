@@ -6,15 +6,27 @@ import androidx.compose.runtime.getValue
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
+data class StateEffectDispatch<STATE, EFFECT, EVENT>(
+    val state: STATE,
+    val effectFlow: Flow<EFFECT>,
+    val dispatch: (EVENT) -> Unit,
+)
+
 @Composable
-inline fun <reified EVENT, EFFECT, STATE> use(viewModel: UnidirectionalViewModel<EVENT, EFFECT, STATE>):
-    Triple<STATE, Flow<EFFECT>, (EVENT) -> Unit> {
+inline fun <reified STATE, EFFECT, EVENT> use(
+    viewModel: UnidirectionalViewModel<EVENT, EFFECT, STATE>,
+):
+    StateEffectDispatch<STATE, EFFECT, EVENT> {
         val state by viewModel.state.collectAsState()
 
         val dispatch: (EVENT) -> Unit = { event ->
             viewModel.event(event)
         }
-        return Triple(state, viewModel.effect, dispatch)
+        return StateEffectDispatch(
+            state = state,
+            effectFlow = viewModel.effect,
+            dispatch = dispatch
+        )
     }
 
 interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {

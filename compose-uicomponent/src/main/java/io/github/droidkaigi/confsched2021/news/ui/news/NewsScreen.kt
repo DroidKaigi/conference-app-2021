@@ -20,23 +20,29 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
+import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.confsched2021.news.Filters
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.NewsContents
+import io.github.droidkaigi.confsched2021.news.ui.getReadableMessage
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.use
+import io.github.droidkaigi.confsched2021.news.ui.util.collectInLaunchedEffect
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
-import kotlinx.coroutines.flow.collect
 import kotlin.reflect.KClass
 
 sealed class NewsTabs(val name: String) {
@@ -58,6 +64,7 @@ sealed class NewsTabs(val name: String) {
 @Composable
 fun NewsScreen(
     onNavigationIconClick: () -> Unit,
+    onDetailClick: (News) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var selectedTab by remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
@@ -68,12 +75,13 @@ fun NewsScreen(
         dispatch,
     ) = use(newsViewModel())
 
-    LaunchedEffect(subject = effectFlow) {
-        effectFlow.collect {
-            when (it) {
-                is NewsViewModel.Effect.OpenDetail -> {
-                    TODO()
-                }
+    val context = AmbientContext.current
+    effectFlow.collectInLaunchedEffect { effect ->
+        when (effect) {
+            is NewsViewModel.Effect.ErrorMessage -> {
+                scaffoldState.snackbarHostState.showSnackbar(
+                    effect.appError.getReadableMessage(context)
+                )
             }
         }
     }
@@ -97,9 +105,7 @@ fun NewsScreen(
                 )
             )
         },
-        onClickNews = {
-            dispatch(NewsViewModel.Event.OpenDetail(news = it))
-        }
+        onClickNews = onDetailClick
     )
 }
 
@@ -119,6 +125,7 @@ private fun NewsScreen(
     onClickNews: (News) -> Unit,
 ) {
     Column {
+        val density = AmbientDensity.current
         BackdropScaffold(
             backLayerBackgroundColor = MaterialTheme.colors.primary,
             scaffoldState = scaffoldState,
@@ -126,9 +133,10 @@ private fun NewsScreen(
                 BackLayerContent(filters, onFavoriteFilterChanged)
             },
             frontLayerShape = CutCornerShape(topLeft = 32.dp),
-            peekHeight = 104.dp,
+            peekHeight = 104.dp + (AmbientWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
                 TopAppBar(
+                    modifier = Modifier.statusBarsPadding(),
                     title = { Text("DroidKaigi") },
                     elevation = 0.dp,
                     navigationIcon = {
@@ -195,7 +203,9 @@ private fun NewsList(
     onClickNews: (News) -> Unit,
     onFavoriteChange: (News) -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn(
+        contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
+    ) {
         if (newsContents.size > 0) {
             items(newsContents.contents) { (item, favorited) ->
                 Divider(modifier = Modifier.padding(horizontal = 16.dp))
@@ -215,8 +225,12 @@ private fun NewsList(
 fun NewsScreenPreview() {
     Conferenceapp2021newsTheme(false) {
         ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            NewsScreen {
-            }
+            NewsScreen(
+                {
+                },
+                { news: News ->
+                }
+            )
         }
     }
 }

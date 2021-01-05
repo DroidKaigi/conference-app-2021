@@ -1,7 +1,9 @@
 package io.github.droidkaigi.confsched2021.news.ui.news
 
 import app.cash.exhaustive.Exhaustive
+import io.github.droidkaigi.confsched2021.news.AppError
 import io.github.droidkaigi.confsched2021.news.Filters
+import io.github.droidkaigi.confsched2021.news.NewsContents
 import io.github.droidkaigi.confsched2021.news.fakeNewsContents
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -11,26 +13,46 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-fun fakeNewsViewModel(): FakeNewsViewModel {
-    return FakeNewsViewModel()
+fun fakeNewsViewModel(errorFetchData: Boolean = false): FakeNewsViewModel {
+    return FakeNewsViewModel(errorFetchData)
 }
 
-class FakeNewsViewModel : NewsViewModel {
+class FakeNewsViewModel(val errorFetchData: Boolean) : NewsViewModel {
+
+    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
+
     private val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
         // for preview
         override fun dispatch(context: CoroutineContext, block: Runnable) {
             block.run()
         }
     })
-    private val newsContents = MutableStateFlow(
+    private val mutableNewsContents = MutableStateFlow(
         fakeNewsContents()
     )
+    private val errorNewsContents = flow<NewsContents> {
+        throw AppError.ApiException.ServerException(null)
+    }
+        .catch { error ->
+            effectChannel.send(NewsViewModel.Effect.ErrorMessage(error as AppError))
+        }
+        .stateIn(coroutineScope, SharingStarted.Lazily, fakeNewsContents())
+
+    private val newsContents: StateFlow<NewsContents> = if (errorFetchData) {
+        errorNewsContents
+    } else {
+        mutableNewsContents
+    }
+
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<NewsViewModel.State> =
@@ -42,8 +64,6 @@ class FakeNewsViewModel : NewsViewModel {
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, NewsViewModel.State())
-    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
 
     override fun event(event: NewsViewModel.Event) {
         coroutineScope.launch {
@@ -59,12 +79,9 @@ class FakeNewsViewModel : NewsViewModel {
                     } else {
                         value.favorites - event.news.id
                     }
-                    newsContents.value = value.copy(
+                    mutableNewsContents.value = value.copy(
                         favorites = newFavorites
                     )
-                }
-                is NewsViewModel.Event.OpenDetail -> {
-                    effectChannel.send(NewsViewModel.Effect.OpenDetail(event.news))
                 }
             }
         }
