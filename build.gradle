@@ -12,7 +12,7 @@ buildscript {
         classpath 'com.android.tools.build:gradle:7.0.0-alpha04'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
         classpath "org.jetbrains.kotlin:kotlin-serialization:$kotlin_version"
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.29.1-alpha'
+        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.31-alpha'
         classpath 'app.cash.exhaustive:exhaustive-gradle:0.1.1'
     }
 }

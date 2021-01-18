@@ -1,3 +1,4 @@
+import io.github.droidkaigi.confsched2021.news.Dep
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -72,20 +73,20 @@ dependencies {
     implementation project(':compose-uicomponent')
 
     // Hilt
-    implementation 'com.google.dagger:hilt-android:2.29.1-alpha'
-    kapt 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
+    implementation Dep.Dagger.hiltAndroid
+    kapt Dep.Dagger.hiltAndroidCompiler
 
     // For instrumentation tests
-    androidTestImplementation 'com.google.dagger:hilt-android-testing:2.29.1-alpha'
-    kaptAndroidTest 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
+    androidTestImplementation Dep.Dagger.hiltAndroidTesting
+    kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 
     // For local unit tests
-    testImplementation 'com.google.dagger:hilt-android-testing:2.29.1-alpha'
-    kaptTest 'com.google.dagger:hilt-android-compiler:2.29.1-alpha'
+    testImplementation Dep.Dagger.hiltAndroidTesting
+    kaptTest Dep.Dagger.hiltAndroidCompiler
 
     implementation('androidx.hilt:hilt-common:1.0.0-alpha02')
     implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02')
-    kapt 'androidx.hilt:hilt-compiler:1.0.0-alpha02'
+    kapt Dep.Dagger.hiltAndroidCompiler
 
     implementation "androidx.compose.runtime:runtime:$compose_version"
     implementation "androidx.compose.ui:ui:$compose_version"

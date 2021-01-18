@@ -51,40 +51,48 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
-            implementation Dep.ktor
-            implementation Dep.ktorJson
-            implementation Dep.ktorSerialization
-            implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1"
-            implementation "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
+            implementation Dep.Ktor.bom
+            implementation Dep.Ktor.core
+            implementation Dep.Ktor.json
+            implementation Dep.Ktor.serialization
+
+            implementation Dep.Coroutines.bom
+            implementation Dep.Coroutines.core
+
+            implementation Dep.Serialization.core
             api project(":model")
         }
         commonTest.dependencies {
-            implementation "org.jetbrains.kotlin:kotlin-test-common"
-            implementation "org.jetbrains.kotlin:kotlin-test-annotations-common"
-            implementation Dep.ktorMock
+            implementation Dep.KotlinTest.common
+            implementation Dep.KotlinTest.annotationCommon
+
+            implementation Dep.Ktor.bom
+            implementation Dep.Ktor.mock
         }
         jvmMain
         jvmTest.dependencies {
-            implementation "org.jetbrains.kotlin:kotlin-test-junit"
+            implementation Dep.KotlinTest.junit
         }
         androidMain.dependencies {
+            implementation Dep.Ktor.okHttp
+
             // Hilt
-            implementation "com.google.dagger:hilt-android:2.29.1-alpha"
+            implementation Dep.Dagger.hiltAndroid
             implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
 
             // For local unit tests
-//            testImplementation "com.google.dagger:hilt-android-testing:2.29.1-alpha"
-//            kaptTest "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
+//            testImplementation "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            kaptTest Dep.Dagger.hiltAndroidCompiler
         }
-        androidTest.dependencies{
-            implementation "org.jetbrains.kotlin:kotlin-test-junit"
+        androidTest.dependencies {
+            implementation Dep.KotlinTest.junit
         }
 //            // For instrumentation tests
-//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.29.1-alpha"
-//            kaptAndroidTest "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
+//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 //        }
     }
 }
 dependencies {
-    kapt "com.google.dagger:hilt-android-compiler:2.29.1-alpha"
+    kapt Dep.Dagger.hiltAndroidCompiler
 }
