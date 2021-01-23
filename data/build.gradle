@@ -55,11 +55,13 @@ kotlin {
             implementation Dep.Ktor.core
             implementation Dep.Ktor.json
             implementation Dep.Ktor.serialization
+            implementation Dep.Ktor.logging
 
             implementation Dep.Coroutines.bom
             implementation Dep.Coroutines.core
 
             implementation Dep.Serialization.core
+            implementation Dep.datetime
             api project(":model")
         }
         commonTest.dependencies {

@@ -1,6 +1,6 @@
 package io.github.droidkaigi.confsched2021.news
 
-import com.soywiz.klock.DateTimeTz
+import kotlinx.datetime.Clock
 import kotlin.reflect.KClass
 
 data class NewsContents(
@@ -36,44 +36,50 @@ fun LoadState<NewsContents>.getContents() = getValueOrNull() ?: NewsContents()
 fun fakeNewsContents(): NewsContents {
     return NewsContents(
         newsContents = listOf(
-            News.Blog(
-                "2020-07-22-droidkaigi2020",
-                DateTimeTz.nowLocal(),
-                "collection",
-                Image(""),
-                "Medium",
-                LocaledContents(
-                    mapOf(
-                        Locale("ja") to LocaledContents.Contents(
-                            "DroidKaigi Blog!!",
-                            "link-ja"
-                        ),
-                        Locale("en") to LocaledContents.Contents(
-                            "title-en",
-                            "link-en"
-                        )
-                    )
-                )
-            ),
-            News.Video(
-                "youtube id 1",
-                DateTimeTz.nowLocal(),
-                "collection",
-                Image(""),
-                "Medium",
-                LocaledContents(
-                    mapOf(
-                        Locale("ja") to LocaledContents.Contents(
-                            "DroidKaigi YouTube!!",
-                            "link-ja"
-                        ),
-                        Locale("en") to LocaledContents.Contents(
-                            "title-en",
-                            "link-en"
-                        )
-                    )
-                )
-            )
+//            News.Blog(
+//                "2020-07-22-droidkaigi2020",
+//                Clock.System.now(),
+//                "collection",
+//                Image(""),
+//                "Medium",
+//                MultiLangText(
+//                    mapOf(
+//                        Locale("ja") to MultiLangText.Contents(
+//                            "DroidKaigi Blog!!",
+//                            "link-ja"
+//                        ),
+//                        Locale("en") to MultiLangText.Contents(
+//                            "title-en",
+//                            "link-en"
+//                        )
+//                    )
+//                ),
+//                article.link,
+//                article.language,
+//                Author(
+//                    name = article.authorName,
+//                    link = article.authorUrl
+//                )
+//            ),
+//            News.Video(
+//                "youtube id 1",
+//                Clock.System.now(),
+//                "collection",
+//                Image(""),
+//                "Medium",
+//                MultiLangText(
+//                    mapOf(
+//                        Locale("ja") to MultiLangText.Contents(
+//                            "DroidKaigi YouTube!!",
+//                            "link-ja"
+//                        ),
+//                        Locale("en") to MultiLangText.Contents(
+//                            "title-en",
+//                            "link-en"
+//                        )
+//                    )
+//                )
+//            )
         ),
         favorites = setOf()
     )

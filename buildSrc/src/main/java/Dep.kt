@@ -16,16 +16,17 @@ object Dep {
         const val junit = "org.jetbrains.kotlin:kotlin-test-junit"
     }
 
-    const val klock = "com.soywiz.korlibs.klock:klock:2.0.3"
-
     object Ktor {
         const val bom = "io.ktor:ktor-bom:1.5.0"
         const val core = "io.ktor:ktor-client-core"
         const val json = "io.ktor:ktor-client-json"
+        const val logging = "io.ktor:ktor-client-logging"
         const val okHttp = "io.ktor:ktor-client-okhttp"
         const val serialization = "io.ktor:ktor-client-serialization"
         const val mock = "io.ktor:ktor-client-mock"
     }
+
+    const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
 
     object Dagger {
         const val hiltAndroid = "com.google.dagger:hilt-android:2.31-alpha"

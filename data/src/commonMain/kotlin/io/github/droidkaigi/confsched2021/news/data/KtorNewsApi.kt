@@ -1,103 +1,97 @@
 package io.github.droidkaigi.confsched2021.news.data
 
-import com.soywiz.klock.DateFormat
-import com.soywiz.klock.parse
+import io.github.droidkaigi.confsched2021.news.Author
 import io.github.droidkaigi.confsched2021.news.Image
-import io.github.droidkaigi.confsched2021.news.Locale
-import io.github.droidkaigi.confsched2021.news.LocaledContents
 import io.github.droidkaigi.confsched2021.news.News
-import kotlinx.serialization.Serializable
+import io.github.droidkaigi.confsched2021.news.data.response.FeedsResponse
+import io.github.droidkaigi.confsched2021.news.data.response.InstantSerializer
+import io.github.droidkaigi.confsched2021.news.data.response.Thumbnail
+import io.ktor.client.HttpClient
+import io.ktor.client.features.json.JsonFeature
+import io.ktor.client.features.json.serializer.KotlinxSerializer
+import io.ktor.client.features.logging.LogLevel
+import io.ktor.client.features.logging.Logger
+import io.ktor.client.features.logging.Logging
+import io.ktor.client.request.get
+import kotlinx.serialization.modules.SerializersModule
+import kotlinx.serialization.modules.contextual
 
 open class KtorNewsApi : NewsApi {
-    @OptIn(ExperimentalStdlibApi::class)
-    override suspend fun fetch(): List<News> {
-        return fakeNewsApi().fetch()
+    private val httpClient = HttpClient {
+        install(JsonFeature) {
+            serializer = KotlinxSerializer(json = kotlinx.serialization.json.Json {
+                serializersModule = SerializersModule {
+                    contextual(InstantSerializer)
+                }
+            })
+        }
+        install(Logging) {
+            logger = object : Logger {
+                override fun log(message: String) {
+                    println(message)
+                }
+            }
+            level = LogLevel.ALL
+        }
     }
 
-    @Serializable
-    data class NewsResponse(
-        val id: String,
-        val date: String,
-        val collection: String,
-        val image: String,
-        val media: String,
-        val ja: LocaledContentsResponse,
-        val en: LocaledContentsResponse? = null,
-    )
+    override suspend fun fetch(): List<News> {
+        val feedsResponse = httpClient.get<FeedsResponse>(
+            "https://ssot-api-staging.an.r.appspot.com/feeds/recent"
+        )
+        return feedsResponse.toNewsList()
+    }
 
-    @Serializable
-    data class LocaledContentsResponse(val title: String, val link: String)
+
 }
 
-@OptIn(ExperimentalStdlibApi::class)
-fun KtorNewsApi.NewsResponse.toNews(): News {
-    val response = this
-    val contents = buildMap<Locale, LocaledContents.Contents> {
-        put(
-            Locale("ja"),
-            LocaledContents.Contents(
-                title = response.ja.title,
-                link = response.ja.link
+fun FeedsResponse.toNewsList() =
+    articles.map { article ->
+        News.Blog(
+            id = article.id,
+            date = article.publishedAt,
+            image = article.thumbnail.toImage(),
+            media = "Medium",
+            title = article.title,
+            summary = article.summary,
+            link = article.link,
+            language = article.language,
+            author = Author(
+                name = article.authorName,
+                link = article.authorUrl
             )
         )
-        response.en?.let {
-            put(
-                Locale("en"),
-                LocaledContents.Contents(
-                    title = response.en.title,
-                    link = response.en.link
-                )
-            )
-        }
-    }
-    return when (response.media) {
-        "YOUTUBE" -> {
-            News.Video(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
-        "BLOG" -> {
-            News.Blog(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
-        "PODCAST" -> {
+    } +
+        recordings.map { recording ->
             News.Podcast(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
+                id = recording.id,
+                date = recording.publishedAt,
+                image = recording.thumbnail.toImage(),
+                media = "FM",
+                // TODO: Use MultiLangText
+                title = recording.multiLangTitle.japanese,
+                // TODO: Use MultiLangText
+                summary = recording.multiLangSummary.japanese,
+                link = recording.link,
+            )
+        } +
+        episodes.map { recording ->
+            News.Video(
+                id = recording.id,
+                date = recording.publishedAt,
+                image = recording.thumbnail.toImage(),
+                media = "YouTube",
+                title = recording.title,
+                summary = recording.title,
+                link = recording.link,
             )
         }
-        else -> {
-            News.Other(
-                id = response.id,
-                date = DateFormat("yyyy-MM-dd").parse(response.date),
-                collection = response.collection,
-                image = Image.of(response.image),
-                media = response.media,
-                localedContents = LocaledContents(
-                    contents
-                )
-            )
-        }
-    }
+
+private fun Thumbnail.toImage(): Image {
+    return Image(
+        smallUrl,
+        standardUrl,
+        largeUrl
+    )
 }
+

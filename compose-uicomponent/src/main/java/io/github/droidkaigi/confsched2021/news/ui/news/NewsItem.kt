@@ -16,15 +16,13 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.soywiz.klock.DateTimeTz
 import io.github.droidkaigi.confsched2021.news.Image
-import io.github.droidkaigi.confsched2021.news.Locale
-import io.github.droidkaigi.confsched2021.news.LocaledContents
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.ui.NetworkImage
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
+import kotlinx.datetime.Clock
 
 @Composable
 fun NewsItem(
@@ -34,9 +32,10 @@ fun NewsItem(
     onFavoriteChange: (News) -> Unit,
 ) {
     ConstraintLayout(
-        modifier = Modifier.clickable(
-            onClick = { onClick(news) }
-        )
+        modifier = Modifier
+            .clickable(
+                onClick = { onClick(news) }
+            )
             .fillMaxWidth()
     ) {
         val (source, image, title, date, favorite) = createRefs()
@@ -49,7 +48,7 @@ fun NewsItem(
                 .media
         )
         NetworkImage(
-            url = news.image.url,
+            url = news.image.standardUrl,
             modifier = Modifier
                 .constrainAs(image) {
                     top.linkTo(source.bottom, 12.dp)
@@ -69,7 +68,7 @@ fun NewsItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = news.localedContents.getContents(Locale("ja")).title,
+            text = news.title,
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
@@ -104,20 +103,18 @@ fun NewsItem(
 @Composable
 fun PreviewNewsItem() {
     Conferenceapp2021newsTheme {
-        val news = News.Other(
+        val news = News.Video(
             id = "id",
-            date = DateTimeTz.nowLocal(),
-            collection = "collection",
-            image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
+            date = Clock.System.now(),
+            image = Image(
+                smallUrl = "http://example.com/test.png",
+                standardUrl = "http://example.com/test.png",
+                largeUrl = "http://example.com/test.png",
+            ),
             media = "BLOG",
-            localedContents = LocaledContents(
-                mapOf(
-                    Locale("ja") to LocaledContents.Contents(
-                        "very long title very long title very long title",
-                        "link"
-                    )
-                )
-            )
+            title = "very long title very long title very long title",
+            summary = "this is summary",
+            link = "link",
         )
         NewsItem(news, false, { }, { })
     }
