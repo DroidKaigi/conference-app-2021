@@ -74,6 +74,7 @@ kotlin {
         jvmMain
         jvmTest.dependencies {
             implementation Dep.KotlinTest.junit
+            implementation Dep.Kotlin.reflect
         }
         androidMain.dependencies {
             implementation Dep.Ktor.okHttp

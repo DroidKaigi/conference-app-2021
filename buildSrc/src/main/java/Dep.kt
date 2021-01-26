@@ -1,6 +1,13 @@
 package io.github.droidkaigi.confsched2021.news
 
 object Dep {
+    object Kotlin {
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.4.30-RC"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.4.30-RC"
+        const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
+        const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
+    }
     object Coroutines {
         const val bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core"

@@ -1,11 +1,9 @@
 package io.github.droidkaigi.confsched2021.news.data
 
-import com.squareup.kotlinpoet.metadata.KotlinPoetMetadataPreview
 import kotlinx.datetime.Instant
 import kotlin.test.Test
 
 class GenerateFakeContents {
-    @OptIn(KotlinPoetMetadataPreview::class)
     @Test
     fun generate() = runBlocking {
         val newsList = fakeNewsApi()
