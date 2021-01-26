@@ -47,6 +47,10 @@ kotlin {
             api Dep.datetime
         }
         android {}
+        commonTest.dependencies {
+            implementation kotlin("test")
+            implementation kotlin('test-annotations-common')
+        }
         all.languageSettings {
             progressiveMode = true
             useExperimentalAnnotation("kotlin.Experimental")
