@@ -95,7 +95,7 @@ fun NewsItem(
             overflow = TextOverflow.Ellipsis
         )
         Text(
-            modifier = Modifier.constrainAs(date){
+            modifier = Modifier.constrainAs(date) {
                 bottom.linkTo(parent.bottom, 16.dp)
                 start.linkTo(image.end, 16.dp)
             },
