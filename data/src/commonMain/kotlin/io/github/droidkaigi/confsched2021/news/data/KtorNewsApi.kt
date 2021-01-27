@@ -67,7 +67,7 @@ fun FeedsResponse.toNewsList() =
                 id = recording.id,
                 date = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
-                media = "FM",
+                media = "YouTube",
                 // TODO: Use MultiLangText
                 title = recording.multiLangTitle.japanese,
                 // TODO: Use MultiLangText
@@ -80,7 +80,7 @@ fun FeedsResponse.toNewsList() =
                 id = recording.id,
                 date = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
-                media = "YouTube",
+                media = "FM",
                 title = recording.title,
                 summary = recording.title,
                 link = recording.link,

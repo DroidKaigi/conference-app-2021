@@ -34,6 +34,7 @@ object Dep {
     }
 
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
+    const val ktlint = "com.pinterest:ktlint:0.40.0"
 
     object Dagger {
         const val hiltAndroid = "com.google.dagger:hilt-android:2.31-alpha"
