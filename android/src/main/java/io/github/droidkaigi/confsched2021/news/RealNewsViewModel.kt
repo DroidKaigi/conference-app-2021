@@ -1,8 +1,8 @@
 package io.github.droidkaigi.confsched2021.news
 
-import androidx.hilt.lifecycle.ViewModelInject
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.confsched2021.news.data.NewsRepository
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsViewModel
 import kotlinx.coroutines.channels.Channel
@@ -16,8 +16,10 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 
-class RealNewsViewModel @ViewModelInject constructor(
+@HiltViewModel
+class RealNewsViewModel @Inject constructor(
     private val repository: NewsRepository,
 ) : ViewModel(), NewsViewModel {
 
