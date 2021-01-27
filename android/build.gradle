@@ -91,7 +91,8 @@ dependencies {
     implementation "androidx.compose.runtime:runtime:$compose_version"
     implementation "androidx.compose.ui:ui:$compose_version"
 
-    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
+    implementation Dep.Kotlin.bom
+    implementation Dep.Kotlin.stdlib
     implementation 'androidx.core:core-ktx:1.5.0-alpha05'
     implementation "androidx.fragment:fragment-ktx:1.2.5"
     implementation "androidx.activity:activity-ktx:1.1.0"

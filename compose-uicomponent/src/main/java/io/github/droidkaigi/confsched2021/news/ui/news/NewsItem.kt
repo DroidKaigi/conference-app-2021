@@ -1,26 +1,29 @@
 package io.github.droidkaigi.confsched2021.news.ui.news
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.soywiz.klock.DateTimeTz
-import io.github.droidkaigi.confsched2021.news.Image
-import io.github.droidkaigi.confsched2021.news.Locale
-import io.github.droidkaigi.confsched2021.news.LocaledContents
+import io.github.droidkaigi.confsched2021.news.Media
 import io.github.droidkaigi.confsched2021.news.News
+import io.github.droidkaigi.confsched2021.news.fakeNewsContents
 import io.github.droidkaigi.confsched2021.news.ui.NetworkImage
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
@@ -30,29 +33,46 @@ import io.github.droidkaigi.confsched2021.news.uicomponent.R
 fun NewsItem(
     news: News,
     favorited: Boolean,
+    showMediaLabel: Boolean = false,
     onClick: (News) -> Unit,
     onFavoriteChange: (News) -> Unit,
 ) {
     ConstraintLayout(
-        modifier = Modifier.clickable(
-            onClick = { onClick(news) }
-        )
+        modifier = Modifier
+            .clickable(
+                onClick = { onClick(news) }
+            )
             .fillMaxWidth()
     ) {
-        val (source, image, title, date, favorite) = createRefs()
-        Text(
-            modifier = Modifier.constrainAs(source) {
-                top.linkTo(parent.top, 12.dp)
-                start.linkTo(parent.start, 24.dp)
-            },
-            text = news
-                .media
-        )
+        val (media, image, title, date, favorite) = createRefs()
+        if (showMediaLabel) {
+            Text(
+                modifier = Modifier
+                    .constrainAs(media) {
+                        top.linkTo(parent.top, 12.dp)
+                        start.linkTo(parent.start, 24.dp)
+                    }
+                    .background(
+                        color = news.media.color(),
+                        shape = CutCornerShape(
+                            topLeft = 8.dp,
+                            bottomRight = 8.dp
+                        )
+                    )
+                    .padding(vertical = 4.dp, horizontal = 8.dp),
+                text = news.media.text,
+                color = Color.White
+            )
+        }
         NetworkImage(
-            url = news.image.url,
+            url = news.image.standardUrl,
             modifier = Modifier
                 .constrainAs(image) {
-                    top.linkTo(source.bottom, 12.dp)
+                    if (showMediaLabel) {
+                        top.linkTo(media.bottom, 12.dp)
+                    } else {
+                        top.linkTo(parent.top, 12.dp)
+                    }
                     start.linkTo(parent.start, 24.dp)
                     bottom.linkTo(parent.bottom, 12.dp)
                 }
@@ -69,10 +89,17 @@ fun NewsItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = news.localedContents.getContents(Locale("ja")).title,
+            text = news.title,
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
+        )
+        Text(
+            modifier = Modifier.constrainAs(date) {
+                bottom.linkTo(parent.bottom, 16.dp)
+                start.linkTo(image.end, 16.dp)
+            },
+            text = news.publishedDateString()
         )
         IconToggleButton(
             checked = false,
@@ -100,25 +127,48 @@ fun NewsItem(
     }
 }
 
+@Composable
+private fun Media.color() = when (this) {
+    Media.YouTube -> {
+        Color.Red
+    }
+    Media.Medium -> {
+        Color.DarkGray
+    }
+    Media.DroidKaigiFM -> {
+        MaterialTheme.colors.secondary
+    }
+    else -> {
+        Color.Gray
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewsItem() {
     Conferenceapp2021newsTheme {
-        val news = News.Other(
-            id = "id",
-            date = DateTimeTz.nowLocal(),
-            collection = "collection",
-            image = Image("https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e"),
-            media = "BLOG",
-            localedContents = LocaledContents(
-                mapOf(
-                    Locale("ja") to LocaledContents.Contents(
-                        "very long title very long title very long title",
-                        "link"
-                    )
-                )
-            )
+        val news = fakeNewsContents().newsContents[0]
+        NewsItem(
+            news = news,
+            favorited = false,
+            showMediaLabel = false,
+            onClick = { },
+            onFavoriteChange = { }
         )
-        NewsItem(news, false, { }, { })
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewNewsItemWithMedia() {
+    Conferenceapp2021newsTheme {
+        val news = fakeNewsContents().newsContents[0]
+        NewsItem(
+            news = news,
+            favorited = false,
+            showMediaLabel = true,
+            onClick = { },
+            onFavoriteChange = { }
+        )
     }
 }

@@ -55,11 +55,13 @@ kotlin {
             implementation Dep.Ktor.core
             implementation Dep.Ktor.json
             implementation Dep.Ktor.serialization
+            implementation Dep.Ktor.logging
 
             implementation Dep.Coroutines.bom
             implementation Dep.Coroutines.core
 
             implementation Dep.Serialization.core
+            implementation Dep.datetime
             api project(":model")
         }
         commonTest.dependencies {
@@ -72,6 +74,8 @@ kotlin {
         jvmMain
         jvmTest.dependencies {
             implementation Dep.KotlinTest.junit
+            implementation Dep.Kotlin.reflect
+            implementation Dep.ktlint
         }
         androidMain.dependencies {
             implementation Dep.Ktor.okHttp

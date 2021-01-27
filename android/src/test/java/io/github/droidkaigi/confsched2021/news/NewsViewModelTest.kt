@@ -22,7 +22,7 @@ import org.junit.runners.Parameterized
 @RunWith(Parameterized::class)
 class NewsViewModelTest(
     val name: String,
-    val newsNewsViewModelFactory: NewsViewModelFactory,
+    private val newsNewsViewModelFactory: NewsViewModelFactory,
 ) {
 
     @get:Rule
