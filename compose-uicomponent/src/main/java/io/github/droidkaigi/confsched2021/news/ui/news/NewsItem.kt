@@ -1,33 +1,39 @@
 package io.github.droidkaigi.confsched2021.news.ui.news
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.ConstraintLayout
 import androidx.compose.foundation.layout.Dimension
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.confsched2021.news.Image
+import io.github.droidkaigi.confsched2021.news.Media
 import io.github.droidkaigi.confsched2021.news.News
+import io.github.droidkaigi.confsched2021.news.fakeNewsContents
 import io.github.droidkaigi.confsched2021.news.ui.NetworkImage
 import io.github.droidkaigi.confsched2021.news.ui.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confsched2021.news.ui.theme.typography
 import io.github.droidkaigi.confsched2021.news.uicomponent.R
-import kotlinx.datetime.Clock
 
 @Composable
 fun NewsItem(
     news: News,
     favorited: Boolean,
+    showMediaLabel: Boolean = false,
     onClick: (News) -> Unit,
     onFavoriteChange: (News) -> Unit,
 ) {
@@ -38,20 +44,35 @@ fun NewsItem(
             )
             .fillMaxWidth()
     ) {
-        val (source, image, title, date, favorite) = createRefs()
-        Text(
-            modifier = Modifier.constrainAs(source) {
-                top.linkTo(parent.top, 12.dp)
-                start.linkTo(parent.start, 24.dp)
-            },
-            text = news
-                .media
-        )
+        val (media, image, title, date, favorite) = createRefs()
+        if (showMediaLabel) {
+            Text(
+                modifier = Modifier
+                    .constrainAs(media) {
+                        top.linkTo(parent.top, 12.dp)
+                        start.linkTo(parent.start, 24.dp)
+                    }
+                    .background(
+                        color = news.media.color(),
+                        shape = CutCornerShape(
+                            topLeft = 8.dp,
+                            bottomRight = 8.dp
+                        )
+                    )
+                    .padding(vertical = 4.dp, horizontal = 8.dp),
+                text = news.media.text,
+                color = Color.White
+            )
+        }
         NetworkImage(
             url = news.image.standardUrl,
             modifier = Modifier
                 .constrainAs(image) {
-                    top.linkTo(source.bottom, 12.dp)
+                    if (showMediaLabel) {
+                        top.linkTo(media.bottom, 12.dp)
+                    } else {
+                        top.linkTo(parent.top, 12.dp)
+                    }
                     start.linkTo(parent.start, 24.dp)
                     bottom.linkTo(parent.bottom, 12.dp)
                 }
@@ -99,23 +120,47 @@ fun NewsItem(
     }
 }
 
+private fun Media.color() = when (this) {
+    Media.YouTube -> {
+        Color.Red
+    }
+    Media.Medium -> {
+        Color.DarkGray
+    }
+    Media.DroidKaigiFM -> {
+        MaterialTheme.colors.secondary
+    }
+    else -> {
+        Color.Gray
+    }
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewsItem() {
     Conferenceapp2021newsTheme {
-        val news = News.Video(
-            id = "id",
-            date = Clock.System.now(),
-            image = Image(
-                smallUrl = "http://example.com/test.png",
-                standardUrl = "http://example.com/test.png",
-                largeUrl = "http://example.com/test.png",
-            ),
-            media = "BLOG",
-            title = "very long title very long title very long title",
-            summary = "this is summary",
-            link = "link",
+        val news = fakeNewsContents().newsContents[0]
+        NewsItem(
+            news = news,
+            favorited = false,
+            showMediaLabel = false,
+            onClick = { },
+            onFavoriteChange = { }
         )
-        NewsItem(news, false, { }, { })
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewNewsItemWithMedia() {
+    Conferenceapp2021newsTheme {
+        val news = fakeNewsContents().newsContents[0]
+        NewsItem(
+            news = news,
+            favorited = false,
+            showMediaLabel = true,
+            onClick = { },
+            onFavoriteChange = { }
+        )
     }
 }

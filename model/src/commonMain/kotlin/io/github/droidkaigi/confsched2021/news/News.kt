@@ -7,7 +7,7 @@ sealed class News {
     abstract val id: String
     abstract val date: Instant
     abstract val image: Image
-    abstract val media: String
+    abstract val media: Media
     abstract val title: String
     abstract val summary: String
     abstract val link: String
@@ -16,7 +16,7 @@ sealed class News {
         override val id: String,
         override val date: Instant,
         override val image: Image,
-        override val media: String,
+        override val media: Media,
         override val title: String,
         override val summary: String,
         override val link: String,
@@ -28,7 +28,7 @@ sealed class News {
         override val id: String,
         override val date: Instant,
         override val image: Image,
-        override val media: String,
+        override val media: Media,
         override val title: String,
         override val summary: String,
         override val link: String,
@@ -38,7 +38,7 @@ sealed class News {
         override val id: String,
         override val date: Instant,
         override val image: Image,
-        override val media: String,
+        override val media: Media,
         override val title: String,
         override val summary: String,
         override val link: String,

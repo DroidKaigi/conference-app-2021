@@ -2,6 +2,7 @@ package io.github.droidkaigi.confsched2021.news.data
 
 import io.github.droidkaigi.confsched2021.news.Author
 import io.github.droidkaigi.confsched2021.news.Image
+import io.github.droidkaigi.confsched2021.news.Media
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.data.response.FeedsResponse
 import io.github.droidkaigi.confsched2021.news.data.response.InstantSerializer
@@ -51,7 +52,7 @@ fun FeedsResponse.toNewsList() =
             id = article.id,
             date = article.publishedAt,
             image = article.thumbnail.toImage(),
-            media = "Medium",
+            media = Media.Medium,
             title = article.title,
             summary = article.summary,
             link = article.link,
@@ -67,7 +68,7 @@ fun FeedsResponse.toNewsList() =
                 id = recording.id,
                 date = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
-                media = "YouTube",
+                media = Media.YouTube,
                 // TODO: Use MultiLangText
                 title = recording.multiLangTitle.japanese,
                 // TODO: Use MultiLangText
@@ -80,7 +81,7 @@ fun FeedsResponse.toNewsList() =
                 id = recording.id,
                 date = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
-                media = "FM",
+                media = Media.DroidKaigiFM,
                 title = recording.title,
                 summary = recording.title,
                 link = recording.link,

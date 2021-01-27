@@ -1,6 +1,7 @@
 package io.github.droidkaigi.confsched2021.news.data
 
 import com.pinterest.ktlint.main
+import io.github.droidkaigi.confsched2021.news.Media
 import kotlinx.datetime.Instant
 import kotlin.test.Test
 
@@ -37,11 +38,12 @@ class GenerateFakeContents {
             is Instant -> {
                 "Instant.fromEpochMilliseconds(" + value.toEpochMilliseconds() + ")"
             }
+            is Media -> value::class.qualifiedName!!
             else -> {
                 val kClass = value::class
                 val primaryConstructor = kClass.constructors.toList()[0]
                 kClass.qualifiedName + "(" +
-                    primaryConstructor.parameters.joinToString(",") { parameter ->
+                    primaryConstructor.parameters.joinToString(",\n") { parameter ->
                         parameter.name + "=" + build(
                             kClass.members.first { member ->
                                 parameter.name == member.name

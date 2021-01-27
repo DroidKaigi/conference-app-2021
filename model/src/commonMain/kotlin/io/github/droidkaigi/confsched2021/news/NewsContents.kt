@@ -47,7 +47,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://miro.medium.com/max/480/1*-VG74mo_-SS3GLSteVuQEA.jpeg",
                     largeUrl = "https://miro.medium.com/max/640/1*-VG74mo_-SS3GLSteVuQEA.jpeg"
                 ),
-                media = "Medium", title = "DroidKaigi 2020でのCodelabsについて", summary = "DroidKaigiスタッフの@tomoya0x00です。DroidKaigi 2020の開催日が近づいてきましたね。この記事では、DroidKaigi 2020 Day.1に実施する DroidKaigiオリジナルCodelabsについてご紹介します。", link = "https://medium.com/droidkaigi/droidkaigi-2020%E3%81%A7%E3%81%AEcodelabs%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4a677d7456c6", language = "japanese",
+                media = Media.Medium, title = "DroidKaigi 2020でのCodelabsについて", summary = "DroidKaigiスタッフの@tomoya0x00です。DroidKaigi 2020の開催日が近づいてきましたね。この記事では、DroidKaigi 2020 Day.1に実施する DroidKaigiオリジナルCodelabsについてご紹介します。", link = "https://medium.com/droidkaigi/droidkaigi-2020%E3%81%A7%E3%81%AEcodelabs%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4a677d7456c6", language = "japanese",
                 author = Author(
                     name = "Tomoya Miwa",
                     link = "https://medium.com/@tomoya0x00"
@@ -63,7 +63,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://miro.medium.com/max/480/1*-VG74mo_-SS3GLSteVuQEA.jpeg",
                     largeUrl = "https://miro.medium.com/max/640/1*-VG74mo_-SS3GLSteVuQEA.jpeg"
                 ),
-                media = "Medium", title = "DroidKaigi 2020 Codelabs", summary = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is approaching!This post is about our original codelab that you can try on…", link = "https://medium.com/droidkaigi/droidkaigi-2020-codelabs-d190fa57ed10", language = "japanese",
+                media = Media.Medium, title = "DroidKaigi 2020 Codelabs", summary = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is approaching!This post is about our original codelab that you can try on…", link = "https://medium.com/droidkaigi/droidkaigi-2020-codelabs-d190fa57ed10", language = "japanese",
                 author = Author(
                     name = "Tomoya Miwa",
                     link = "https://medium.com/@tomoya0x00"
@@ -77,7 +77,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
                 ),
-                media = "FM",
+                media = Media.DroidKaigiFM,
                 title = "1. Android Studio 4.xとAndroid 11",
                 summary = "1. Android Studio 4.xとAndroid 11",
                 link = "https://droidkaigi.jp/fm/episode/1"
@@ -92,7 +92,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://miro.medium.com/max/480/0*wT9LBn4T-JSLXhFY",
                     largeUrl = "https://miro.medium.com/max/640/0*wT9LBn4T-JSLXhFY"
                 ),
-                media = "Medium", title = "DroidKaigiでデザイナーを募集します", summary = "こんにちは、DroidKaigi デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、その詳細をお知らせします。", link = "https://medium.com/droidkaigi/droidkaigi%E3%81%A7%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%82%92%E5%8B%9F%E9%9B%86%E3%81%97%E3%81%BE%E3%81%99-f4b59715b96c", language = "japanese",
+                media = Media.Medium, title = "DroidKaigiでデザイナーを募集します", summary = "こんにちは、DroidKaigi デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、その詳細をお知らせします。", link = "https://medium.com/droidkaigi/droidkaigi%E3%81%A7%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%82%92%E5%8B%9F%E9%9B%86%E3%81%97%E3%81%BE%E3%81%99-f4b59715b96c", language = "japanese",
                 author = Author(
                     name = "Atsushi Muto",
                     link = "https://medium.com/@mutoatu"
@@ -106,7 +106,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
                 ),
-                media = "FM",
+                media = Media.DroidKaigiFM,
                 title = "2. Android 11 Talks",
                 summary = "2. Android 11 Talks",
                 link = "https://droidkaigi.jp/fm/episode/2"
@@ -121,7 +121,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://miro.medium.com/max/480/1*c-gCfGSsYkCJiCMssCFL_Q.png",
                     largeUrl = "https://miro.medium.com/max/640/1*c-gCfGSsYkCJiCMssCFL_Q.png"
                 ),
-                media = "Medium", title = "DroidKaigi 2020 活動報告", summary = "DroidKaigi 代表理事 mhidaka です。", link = "https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e", language = "japanese",
+                media = Media.Medium, title = "DroidKaigi 2020 活動報告", summary = "DroidKaigi 代表理事 mhidaka です。", link = "https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e", language = "japanese",
                 author = Author(
                     name = "mhidaka",
                     link = "https://medium.com/@mhidaka"
@@ -137,7 +137,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://miro.medium.com/max/480/1*c-gCfGSsYkCJiCMssCFL_Q.png",
                     largeUrl = "https://miro.medium.com/max/640/1*c-gCfGSsYkCJiCMssCFL_Q.png"
                 ),
-                media = "Medium", title = "DroidKaigi 2020 Activity Report", summary = "This activity report consolidates the effects of the cancellation of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19.", link = "https://medium.com/droidkaigi/droidkaigi-2020-activity-report-en-cb93eea3083e", language = "japanese",
+                media = Media.Medium, title = "DroidKaigi 2020 Activity Report", summary = "This activity report consolidates the effects of the cancellation of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19.", link = "https://medium.com/droidkaigi/droidkaigi-2020-activity-report-en-cb93eea3083e", language = "japanese",
                 author = Author(
                     name = "mhidaka",
                     link = "https://medium.com/@mhidaka"
@@ -151,7 +151,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
                 ),
-                media = "FM",
+                media = Media.DroidKaigiFM,
                 title = "3. DroidKaigi 2020 LiteとDroidKaigi 2020",
                 summary = "3. DroidKaigi 2020 LiteとDroidKaigi 2020",
                 link = "https://droidkaigi.jp/fm/episode/3"
@@ -164,7 +164,7 @@ fun fakeNewsContents(): NewsContents {
                     standardUrl = "https://i.ytimg.com/vi/G5x1WUMj1gE/hqdefault.jpg",
                     largeUrl = "https://i.ytimg.com/vi/G5x1WUMj1gE/sddefault.jpg"
                 ),
-                media = "YouTube",
+                media = Media.YouTube,
                 title = "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]",
                 summary = """本動画は2020/05/04に公開した動画を DroidKaigi 2020 Lite 用に編集し再公開したものです。
 
@@ -181,7 +181,7 @@ Day 2の再生リストはこちら: https://www.youtu""",
                     standardUrl = "https://i.ytimg.com/vi/uQrzy2d7y7s/hqdefault.jpg",
                     largeUrl = "https://i.ytimg.com/vi/uQrzy2d7y7s/sddefault.jpg"
                 ),
-                media = "YouTube",
+                media = Media.YouTube,
                 title = "DroidKaigi 2020 Lite - Day 2 Night Session",
                 summary = """DroidKaigi 2020 Liteは3日間のオンラインチャリティイベントです。8月27日（木）～8月29日（土）の間に、オンラインセッション、Fireside chat、Ask the Speakerなどさまざまな技術トピックをお届け予定です。
 
@@ -196,7 +196,7 @@ Day 2のプレイリストはこちらです: https://www.youtube.com/playlist?"
                     standardUrl = "https://i.ytimg.com/vi/UCuf1vXPH3A/hqdefault.jpg",
                     largeUrl = "https://i.ytimg.com/vi/UCuf1vXPH3A/sddefault.jpg"
                 ),
-                media = "YouTube",
+                media = Media.YouTube,
                 title = "DroidKaigi 2020 - FlutterをRenderObjectまで理解する / kiri [JA]",
                 summary = """FlutterはWidgetをツリー構造に組み合わせて、UIレイアウトを構築します。
 それでは、構築されたWidgetツリーはどのようにスクリーンにレンダリングされるのでしょうか。
@@ -212,7 +212,7 @@ RenderObjectはレンダリングの責務を担い、ElementはWidgetとRenderO
                     standardUrl = "https://i.ytimg.com/vi/bsWHgePdLBg/hqdefault.jpg",
                     largeUrl = "https://i.ytimg.com/vi/bsWHgePdLBg/sddefault.jpg"
                 ),
-                media = "YouTube",
+                media = Media.YouTube,
                 title = "DroidKaigi 2020 - Meta-Programming with Kotlin / Jitin Sharma [EN]",
                 summary = """Kotlin has become go-to language for Android developers all over the world and the language itself has a large number of feature sets.
 With greater acceptance of language, we look""",
@@ -226,7 +226,7 @@ With greater acceptance of language, we look""",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
                 ),
-                media = "FM",
+                media = Media.DroidKaigiFM,
                 title = "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
                 summary = "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
                 link = "https://droidkaigi.jp/fm/episode/4"
@@ -239,7 +239,7 @@ With greater acceptance of language, we look""",
                     standardUrl = "https://i.ytimg.com/vi/GuwGFpQ5om0/hqdefault.jpg",
                     largeUrl = "https://i.ytimg.com/vi/GuwGFpQ5om0/sddefault.jpg"
                 ),
-                media = "YouTube",
+                media = Media.YouTube,
                 title = "DroidKaigi 2020 - Widget and Integration Testing in Flutter / JB Lorenzo [EN]",
                 summary = "Automated Testing is essential to making your apps production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it",
                 link = "https://youtube.com/watch?v=GuwGFpQ5om0"
@@ -252,7 +252,7 @@ With greater acceptance of language, we look""",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
                 ),
-                media = "FM",
+                media = Media.DroidKaigiFM,
                 title = "5. Notificiationよもやま話",
                 summary = "5. Notificiationよもやま話",
                 link = "https://droidkaigi.jp/fm/episode/5"

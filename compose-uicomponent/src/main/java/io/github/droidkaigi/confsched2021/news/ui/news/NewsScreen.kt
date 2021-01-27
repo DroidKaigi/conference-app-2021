@@ -32,7 +32,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
-import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.confsched2021.news.Filters
@@ -182,12 +181,14 @@ private fun NewsScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
+                    val isHome = selectedTab is NewsTabs.Home
                     NewsList(
                         newsContents = if (selectedTab is NewsTabs.FilteredNews) {
                             newsContents.filterNewsType(selectedTab.newsClass)
                         } else {
                             newsContents
                         },
+                        isHome = isHome,
                         onClickNews = onClickNews,
                         onFavoriteChange = onFavoriteChange
                     )
@@ -200,6 +201,7 @@ private fun NewsScreen(
 @Composable
 private fun NewsList(
     newsContents: NewsContents,
+    isHome: Boolean,
     onClickNews: (News) -> Unit,
     onFavoriteChange: (News) -> Unit,
 ) {
@@ -213,6 +215,7 @@ private fun NewsList(
                     news = item,
                     favorited = favorited,
                     onClick = onClickNews,
+                    showMediaLabel = isHome,
                     onFavoriteChange = onFavoriteChange
                 )
             }
