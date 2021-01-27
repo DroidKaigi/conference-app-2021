@@ -39,7 +39,7 @@ fun fakeNewsContents(): NewsContents {
         newsContents = listOf(
             News.Blog(
                 id = "ee03fa43-a17e-4fa3-812e-a6fed30e3822",
-                date = Instant.fromEpochMilliseconds(
+                publishedAt = Instant.fromEpochMilliseconds(
                     1583544379858
                 ),
                 image = Image(
@@ -55,7 +55,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Blog(
                 id = "7c0b46a9-3752-4050-8291-4f09b5aadb71",
-                date = Instant.fromEpochMilliseconds(
+                publishedAt = Instant.fromEpochMilliseconds(
                     1583676308319
                 ),
                 image = Image(
@@ -71,7 +71,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Video(
                 id = "6cc7dacd-643e-4553-b155-78c59ffbf6f7",
-                date = Instant.fromEpochMilliseconds(1593831600000),
+                publishedAt = Instant.fromEpochMilliseconds(1593831600000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -84,7 +84,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Blog(
                 id = "48b631b1-b565-44c6-9f94-256f025c8e29",
-                date = Instant.fromEpochMilliseconds(
+                publishedAt = Instant.fromEpochMilliseconds(
                     1594087371822
                 ),
                 image = Image(
@@ -100,7 +100,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Video(
                 id = "60f2e2da-8628-4d40-8eda-3ba15394af1c",
-                date = Instant.fromEpochMilliseconds(1594220400000),
+                publishedAt = Instant.fromEpochMilliseconds(1594220400000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -113,7 +113,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Blog(
                 id = "106ab422-b8e9-415c-8814-8fa9d29938d7",
-                date = Instant.fromEpochMilliseconds(
+                publishedAt = Instant.fromEpochMilliseconds(
                     1596092615466
                 ),
                 image = Image(
@@ -129,7 +129,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Blog(
                 id = "f6691d69-ffbb-499e-812b-12878179fe25",
-                date = Instant.fromEpochMilliseconds(
+                publishedAt = Instant.fromEpochMilliseconds(
                     1596101666223
                 ),
                 image = Image(
@@ -145,7 +145,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Video(
                 id = "02ff1334-19cf-4617-8834-12a59f1cf36b",
-                date = Instant.fromEpochMilliseconds(1597892400000),
+                publishedAt = Instant.fromEpochMilliseconds(1597892400000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -158,7 +158,7 @@ fun fakeNewsContents(): NewsContents {
             ),
             News.Podcast(
                 id = "8f38a6f5-41fa-4faf-8d03-40f7c34fa8f1",
-                date = Instant.fromEpochMilliseconds(1598590811000),
+                publishedAt = Instant.fromEpochMilliseconds(1598590811000),
                 image = Image(
                     smallUrl = "https://i.ytimg.com/vi/G5x1WUMj1gE/mqdefault.jpg",
                     standardUrl = "https://i.ytimg.com/vi/G5x1WUMj1gE/hqdefault.jpg",
@@ -175,7 +175,7 @@ Day 2の再生リストはこちら: https://www.youtu""",
             ),
             News.Podcast(
                 id = "21a03088-1ce5-4096-a915-cbf45e58e484",
-                date = Instant.fromEpochMilliseconds(1598613661000),
+                publishedAt = Instant.fromEpochMilliseconds(1598613661000),
                 image = Image(
                     smallUrl = "https://i.ytimg.com/vi/uQrzy2d7y7s/mqdefault.jpg",
                     standardUrl = "https://i.ytimg.com/vi/uQrzy2d7y7s/hqdefault.jpg",
@@ -190,7 +190,7 @@ Day 2のプレイリストはこちらです: https://www.youtube.com/playlist?"
             ),
             News.Podcast(
                 id = "9e223801-a73e-4710-bcce-35cc48d1d75b",
-                date = Instant.fromEpochMilliseconds(1604548808000),
+                publishedAt = Instant.fromEpochMilliseconds(1604548808000),
                 image = Image(
                     smallUrl = "https://i.ytimg.com/vi/UCuf1vXPH3A/mqdefault.jpg",
                     standardUrl = "https://i.ytimg.com/vi/UCuf1vXPH3A/hqdefault.jpg",
@@ -206,7 +206,7 @@ RenderObjectはレンダリングの責務を担い、ElementはWidgetとRenderO
             ),
             News.Podcast(
                 id = "8bf7bd0a-2ec8-45da-b6fa-406c1e5a0b36",
-                date = Instant.fromEpochMilliseconds(1605585609000),
+                publishedAt = Instant.fromEpochMilliseconds(1605585609000),
                 image = Image(
                     smallUrl = "https://i.ytimg.com/vi/bsWHgePdLBg/mqdefault.jpg",
                     standardUrl = "https://i.ytimg.com/vi/bsWHgePdLBg/hqdefault.jpg",
@@ -220,7 +220,7 @@ With greater acceptance of language, we look""",
             ),
             News.Video(
                 id = "b7718b84-1191-440b-bf7f-b8e079ba93e0",
-                date = Instant.fromEpochMilliseconds(1605841200000),
+                publishedAt = Instant.fromEpochMilliseconds(1605841200000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -233,7 +233,7 @@ With greater acceptance of language, we look""",
             ),
             News.Podcast(
                 id = "925cd30a-63b6-4536-823b-bec1e46f9ddf",
-                date = Instant.fromEpochMilliseconds(1606190409000),
+                publishedAt = Instant.fromEpochMilliseconds(1606190409000),
                 image = Image(
                     smallUrl = "https://i.ytimg.com/vi/GuwGFpQ5om0/mqdefault.jpg",
                     standardUrl = "https://i.ytimg.com/vi/GuwGFpQ5om0/hqdefault.jpg",
@@ -246,7 +246,7 @@ With greater acceptance of language, we look""",
             ),
             News.Video(
                 id = "0b328510-182f-47f7-a2ae-a1afc6200baf",
-                date = Instant.fromEpochMilliseconds(1608519600000),
+                publishedAt = Instant.fromEpochMilliseconds(1608519600000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
                     standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",

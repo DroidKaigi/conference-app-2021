@@ -94,6 +94,13 @@ fun NewsItem(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
+        Text(
+            modifier = Modifier.constrainAs(date){
+                bottom.linkTo(parent.bottom, 16.dp)
+                start.linkTo(image.end, 16.dp)
+            },
+            text = news.publishedDateString()
+        )
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
@@ -120,6 +127,7 @@ fun NewsItem(
     }
 }
 
+@Composable
 private fun Media.color() = when (this) {
     Media.YouTube -> {
         Color.Red

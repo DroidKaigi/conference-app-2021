@@ -10,7 +10,7 @@ class GenerateFakeContents {
     fun generate() = runBlocking {
         val newsList = fakeNewsApi()
             .fetch()
-            .sortedBy { it.date }
+            .sortedBy { it.publishedAt }
         val code = "" +
             "fun fakeNewsContents(): NewsContents {\n" +
             "    return NewsContents(\n" +

@@ -17,7 +17,7 @@ open class NewsRepository(
                     emit(newsApi.fetch())
                 }
             ) { favorites, apiNews ->
-                NewsContents(apiNews.sortedBy { it.date }, favorites)
+                NewsContents(apiNews.sortedBy { it.publishedAt }, favorites)
             }
     }
 

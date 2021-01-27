@@ -52,7 +52,7 @@ fun FeedsResponse.toNewsList() =
     articles.map { article ->
         News.Blog(
             id = article.id,
-            date = article.publishedAt,
+            publishedAt = article.publishedAt,
             image = article.thumbnail.toImage(),
             media = Media.Medium,
             title = article.title,
@@ -68,7 +68,7 @@ fun FeedsResponse.toNewsList() =
         recordings.map { recording ->
             News.Podcast(
                 id = recording.id,
-                date = recording.publishedAt,
+                publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
                 media = Media.YouTube,
                 // TODO: Use MultiLangText
@@ -81,7 +81,7 @@ fun FeedsResponse.toNewsList() =
         episodes.map { recording ->
             News.Video(
                 id = recording.id,
-                date = recording.publishedAt,
+                publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
                 media = Media.DroidKaigiFM,
                 title = recording.title,
