@@ -2,7 +2,6 @@ package io.github.droidkaigi.confsched2021.news
 
 import kotlinx.datetime.Instant
 
-
 sealed class News {
     abstract val id: String
     abstract val date: Instant

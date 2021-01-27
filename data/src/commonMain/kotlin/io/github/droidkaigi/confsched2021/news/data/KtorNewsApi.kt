@@ -20,11 +20,13 @@ import kotlinx.serialization.modules.contextual
 open class KtorNewsApi : NewsApi {
     private val httpClient = HttpClient {
         install(JsonFeature) {
-            serializer = KotlinxSerializer(json = kotlinx.serialization.json.Json {
-                serializersModule = SerializersModule {
-                    contextual(InstantSerializer)
+            serializer = KotlinxSerializer(
+                json = kotlinx.serialization.json.Json {
+                    serializersModule = SerializersModule {
+                        contextual(InstantSerializer)
+                    }
                 }
-            })
+            )
         }
         install(Logging) {
             logger = object : Logger {
@@ -95,4 +97,3 @@ private fun Thumbnail.toImage(): Image {
         largeUrl
     )
 }
-

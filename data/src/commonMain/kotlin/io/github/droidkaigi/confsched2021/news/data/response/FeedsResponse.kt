@@ -5,7 +5,6 @@ import kotlinx.serialization.Contextual
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-
 @Serializable
 class ExternalId(
     var value: String,
@@ -99,4 +98,3 @@ class FeedsResponse(
     var episodes: List<Episode>,
     var recordings: List<Recording>,
 )
-
