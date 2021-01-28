@@ -70,7 +70,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 
 dependencies {
     implementation project(":data")
-    implementation project(':compose-uicomponent')
+    implementation project(':uicomponent-compose:main')
 
     // Hilt
     implementation Dep.Dagger.hiltAndroid

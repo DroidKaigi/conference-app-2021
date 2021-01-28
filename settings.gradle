@@ -3,5 +3,8 @@ enableFeaturePreview("GRADLE_METADATA")
 rootProject.name = "conference-app-2021-news"
 include ':android'
 include ':model'
-include ':compose-uicomponent'
+include ':uicomponent-compose:main'
+include ':uicomponent-compose:news'
+include ':uicomponent-compose:other'
+include ':uicomponent-compose:core'
 include ':data'
