@@ -22,11 +22,13 @@ fun NetworkImage(
     Box(modifier = modifier.background(Color.Gray))
     CoilImage(
         data = url,
+        contentDescription = "news image",
         modifier = modifier.testTag("NetworkImage"),
         contentScale = contentScale,
         onRequestCompleted = { result ->
             when (result) {
                 is ImageLoadState.Error -> result.throwable.printStackTrace()
+                else -> {}
             }
         },
         loading = {

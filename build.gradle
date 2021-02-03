@@ -17,6 +17,7 @@ buildscript {
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8
         classpath Dep.Kotlin.serializationPlugin
+        classpath Dep.PlayServices.plugin
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.31-alpha'
         classpath 'app.cash.exhaustive:exhaustive-gradle:0.1.1'
     }
