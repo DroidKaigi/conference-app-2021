@@ -65,6 +65,7 @@ fun DrawerButton(
             ) {
                 Image(
                     imageVector = icon,
+                    contentDescription = label,
                     colorFilter = ColorFilter.tint(textIconColor),
                     alpha = imageAlpha
                 )

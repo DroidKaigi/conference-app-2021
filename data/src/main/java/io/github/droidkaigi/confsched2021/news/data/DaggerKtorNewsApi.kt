@@ -4,4 +4,5 @@ import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-internal class DaggerKtorNewsApi @Inject constructor() : KtorNewsApi()
+internal class DaggerKtorNewsApi @Inject constructor(firebaseAuthApi: FirebaseAuthApi) :
+    KtorNewsApi(firebaseAuthApi)

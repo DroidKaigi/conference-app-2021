@@ -42,6 +42,7 @@ kotlin {
     sourceSets {
         android
         commonMain.dependencies {
+            implementation Dep.Kotlin.bom
             api project.dependencies.platform(Dep.Coroutines.bom)
             api Dep.Coroutines.core
             api Dep.datetime

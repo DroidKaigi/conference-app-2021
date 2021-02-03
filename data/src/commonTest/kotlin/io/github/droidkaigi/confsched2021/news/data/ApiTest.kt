@@ -7,7 +7,7 @@ class ApiTest {
     @Test
     fun test() {
         runBlocking {
-            assertTrue(KtorNewsApi().fetch().isNotEmpty())
+            assertTrue(KtorNewsApi(firebaseAuthApi).fetch().isNotEmpty())
         }
     }
 }

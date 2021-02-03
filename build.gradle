@@ -2,18 +2,20 @@ import io.github.droidkaigi.confsched2021.news.Dep
 
 buildscript {
     ext {
-        compose_version = '1.0.0-alpha10'
-        kotlin_version = "1.4.21"
+        compose_version = '1.0.0-alpha11'
+        kotlin_version = "1.4.21-2"
     }
     repositories {
         google()
         jcenter()
+        mavenCentral()
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha04'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha05'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
+        classpath Dep.Kotlin.stdlibJdk8
         classpath Dep.Kotlin.serializationPlugin
         classpath 'com.google.dagger:hilt-android-gradle-plugin:2.31-alpha'
         classpath 'app.cash.exhaustive:exhaustive-gradle:0.1.1'
@@ -43,6 +45,7 @@ allprojects {
 subprojects {
     repositories {
         google()
+        mavenCentral()
         jcenter()
     }
 

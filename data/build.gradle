@@ -1,10 +1,10 @@
 import io.github.droidkaigi.confsched2021.news.Dep
 
 plugins {
-    id("com.android.library")
     id("kotlin-multiplatform")
     id("kotlinx-serialization")
     id("kotlin-kapt")
+    id("com.android.library")
 }
 
 android {
@@ -37,7 +37,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
 
 kotlin {
     android()
-    jvm()
+//    jvm()
     if (System.getProperty("idea.active") == "true") {
         // Fix IntelliJ Unresolved reference
         def onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
@@ -51,6 +51,8 @@ kotlin {
     }
     sourceSets {
         commonMain.dependencies {
+            api project(":model")
+
             implementation Dep.Ktor.bom
             implementation Dep.Ktor.core
             implementation Dep.Ktor.json
@@ -62,7 +64,8 @@ kotlin {
 
             implementation Dep.Serialization.core
             implementation Dep.datetime
-            api project(":model")
+
+            implementation(Dep.firebaseAuth)
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common
@@ -71,12 +74,12 @@ kotlin {
             implementation Dep.Ktor.bom
             implementation Dep.Ktor.mock
         }
-        jvmMain
-        jvmTest.dependencies {
-            implementation Dep.KotlinTest.junit
-            implementation Dep.Kotlin.reflect
-            implementation Dep.ktlint
-        }
+//        jvmMain
+//        jvmTest.dependencies {
+//            implementation Dep.KotlinTest.junit
+//            implementation Dep.Kotlin.reflect
+//            implementation Dep.ktlint
+//        }
         androidMain.dependencies {
             implementation Dep.Ktor.okHttp
 
@@ -90,6 +93,8 @@ kotlin {
         }
         androidTest.dependencies {
             implementation Dep.KotlinTest.junit
+            implementation Dep.Kotlin.reflect
+            implementation Dep.ktlint
         }
 //            // For instrumentation tests
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31-alpha"
@@ -97,6 +102,7 @@ kotlin {
 //        }
     }
 }
+
 dependencies {
     kapt Dep.Dagger.hiltAndroidCompiler
 }

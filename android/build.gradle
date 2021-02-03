@@ -55,7 +55,6 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion "${compose_version}"
-        kotlinCompilerVersion "${kotlin_version}"
     }
 }
 
@@ -100,6 +99,9 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
     implementation 'com.google.android.material:material:1.2.1'
+
+    implementation Dep.firebaseAuth
+    implementation Dep.Jetpack.startup
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1'

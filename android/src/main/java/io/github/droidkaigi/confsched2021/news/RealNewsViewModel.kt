@@ -32,6 +32,7 @@ class RealNewsViewModel @Inject constructor(
             if (loadState.isError()) {
                 // FIXME: smartcast is not working
                 val error = loadState as LoadState.Error
+                error.getThrowableOrNull()?.printStackTrace()
                 effectChannel.send(NewsViewModel.Effect.ErrorMessage(error.e))
             }
         }

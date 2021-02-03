@@ -55,7 +55,7 @@ private fun Input(text: String, onClick: () -> Unit) {
             Row(
                 Modifier.padding(all = 12.dp)
             ) {
-                Image(vectorResource(R.drawable.ic_baseline_favorite_24))
+                Image(vectorResource(R.drawable.ic_baseline_favorite_24), "filter favorite")
                 Spacer(Modifier.preferredWidth(8.dp))
                 Text(
                     modifier = Modifier

@@ -6,8 +6,8 @@ import javax.inject.Singleton
 @Singleton
 internal class DaggerNewsRepository @Inject constructor(
     newsApi: NewsApi,
-    dataDataStore: UserDataStore
+    dataDataStore: UserDataStore,
 ) : NewsRepository(
     newsApi,
-    dataDataStore
+    dataDataStore,
 )

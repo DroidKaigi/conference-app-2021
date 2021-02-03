@@ -21,6 +21,10 @@ fun LandingScreen(modifier: Modifier = Modifier, onTimeout: () -> Unit) {
             delay(SplashWaitTime)
             onTimeout()
         }
-        Image(bitmap = imageResource(id = R.drawable.ic_logo_big), Modifier.fillMaxSize(0.5F))
+        Image(
+            bitmap = imageResource(id = R.drawable.ic_logo_big),
+            contentDescription = "landing",
+            modifier = Modifier.fillMaxSize(0.5F)
+        )
     }
 }

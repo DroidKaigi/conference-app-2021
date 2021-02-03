@@ -14,10 +14,11 @@ import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
+import io.ktor.client.request.headers
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-open class KtorNewsApi : NewsApi {
+open class KtorNewsApi(private val firebaseAuthApi: FirebaseAuthApi) : NewsApi {
     private val httpClient = HttpClient {
         install(JsonFeature) {
             serializer = KotlinxSerializer(
@@ -40,11 +41,24 @@ open class KtorNewsApi : NewsApi {
 
     override suspend fun fetch(): List<News> {
         val feedsResponse = httpClient.get<FeedsResponse>(
-            "https://ssot-api-staging.an.r.appspot.com/feeds/recent"
-        )
+            "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
+        ) {
+            try {
+                val user = firebaseAuthApi.user()
+                val idToken = user.getIdToken(false)
+                headers {
+                    idToken?.let {
+                        set("Authorization", "Bearer $idToken")
+                    }
+                }
+            } catch (illegalStateException: IllegalStateException) {
+                illegalStateException.printStackTrace()
+                // fail to initialize firebase
+                // currently ignore it
+            }
+        }
         return feedsResponse.toNewsList()
     }
-
 
 }
 

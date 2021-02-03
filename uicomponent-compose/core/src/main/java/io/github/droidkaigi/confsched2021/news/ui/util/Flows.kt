@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.collect
 @Composable
 fun <T> Flow<T>.collectInLaunchedEffect(function: suspend (value: T) -> Unit) {
     val flow = this
-    LaunchedEffect(subject = flow) {
+    LaunchedEffect(key1 = flow) {
         flow.collect(function)
     }
 }

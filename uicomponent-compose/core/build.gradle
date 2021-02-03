@@ -1,3 +1,4 @@
+import io.github.droidkaigi.confsched2021.news.Dep
 // TODO: make this library Kotlin MPP
 plugins {
     id 'com.android.library'
@@ -40,6 +41,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 
 dependencies {
     api project(":model")
+    implementation Dep.Kotlin.bom
+    implementation Dep.Kotlin.stdlibJdk8
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "dev.chrisbanes.accompanist:accompanist-coil:0.4.1"

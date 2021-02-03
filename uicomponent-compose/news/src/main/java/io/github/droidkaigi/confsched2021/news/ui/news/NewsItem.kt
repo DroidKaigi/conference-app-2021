@@ -117,7 +117,8 @@ fun NewsItem(
                             R.drawable
                                 .ic_baseline_favorite_border_24
                         }
-                    )
+                    ),
+                    "favorite"
                 )
             },
             onCheckedChange = {

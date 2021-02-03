@@ -140,7 +140,7 @@ private fun NewsScreen(
                     elevation = 0.dp,
                     navigationIcon = {
                         IconButton(onClick = onNavigationIconClick) {
-                            Icon(vectorResource(R.drawable.ic_baseline_menu_24))
+                            Icon(vectorResource(R.drawable.ic_baseline_menu_24), "menu")
                         }
                     }
                 )
@@ -209,15 +209,19 @@ private fun NewsList(
         contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
     ) {
         if (newsContents.size > 0) {
-            items(newsContents.contents) { (item, favorited) ->
-                Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                NewsItem(
-                    news = item,
-                    favorited = favorited,
-                    onClick = onClickNews,
-                    showMediaLabel = isHome,
-                    onFavoriteChange = onFavoriteChange
-                )
+            items(newsContents.contents.size * 2) { index ->
+                if (index % 2 == 0) {
+                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                } else {
+                    val (item, favorited) = newsContents.contents[index / 2]
+                    NewsItem(
+                        news = item,
+                        favorited = favorited,
+                        onClick = onClickNews,
+                        showMediaLabel = isHome,
+                        onFavoriteChange = onFavoriteChange
+                    )
+                }
             }
         }
     }
