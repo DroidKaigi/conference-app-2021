@@ -70,8 +70,12 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
     }
 }
 
+hilt {
+    enableExperimentalClasspathAggregation = true
+}
+
 dependencies {
-    implementation project(":data")
+    implementation project(':data:repository')
     implementation project(':uicomponent-compose:main')
 
     // Hilt

@@ -1,0 +1,108 @@
+import io.github.droidkaigi.confsched2021.news.Dep
+
+plugins {
+    id("kotlin-multiplatform")
+    id("kotlinx-serialization")
+    id("kotlin-kapt")
+    id("com.android.library")
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+    }
+
+    // delete this when this is fixed https://issuetracker.google.com/issues/175496966
+    configurations {
+        androidTestApi {}
+        androidTestDebugApi {}
+        androidTestReleaseApi {}
+        testApi {}
+        testDebugApi {}
+        testReleaseApi {}
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
+    }
+}
+
+kotlin {
+    android()
+//    jvm()
+    // currently firebase-auth not supported iOS
+    // https://github.com/GitLiveApp/firebase-kotlin-sdk/issues/133
+//    if (System.getProperty("idea.active") == "true") {
+//        // Fix IntelliJ Unresolved reference
+//        def onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+//        if (onPhone) {
+//            iosArm64("ios")
+//        } else {
+//            iosX64("ios")
+//        }
+//    } else {
+//        ios()
+//    }
+    sourceSets {
+        commonMain.dependencies {
+            api project(":model")
+
+            implementation Dep.Ktor.bom
+            implementation Dep.Ktor.core
+            implementation Dep.Ktor.json
+            implementation Dep.Ktor.serialization
+            implementation Dep.Ktor.logging
+
+            implementation Dep.Coroutines.bom
+            implementation Dep.Coroutines.core
+
+            implementation Dep.Serialization.core
+
+            implementation(Dep.firebaseAuth)
+        }
+        commonTest.dependencies {
+            implementation Dep.KotlinTest.common
+            implementation Dep.KotlinTest.annotationCommon
+
+            implementation Dep.Ktor.bom
+            implementation Dep.Ktor.mock
+        }
+//        jvmMain
+//        jvmTest.dependencies {
+//            implementation Dep.KotlinTest.junit
+//            implementation Dep.Kotlin.reflect
+//            implementation Dep.ktlint
+//        }
+        androidMain.dependencies {
+            implementation Dep.Ktor.okHttp
+
+            // Hilt
+            implementation Dep.Dagger.hiltAndroid
+
+            // For local unit tests
+//            testImplementation "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            kaptTest Dep.Dagger.hiltAndroidCompiler
+        }
+        androidTest.dependencies {
+            implementation Dep.KotlinTest.junit
+            implementation Dep.Kotlin.reflect
+            implementation Dep.ktlint
+        }
+//            // For instrumentation tests
+//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
+//        }
+    }
+}
+
+dependencies {
+    kapt Dep.Dagger.hiltAndroidCompiler
+}
