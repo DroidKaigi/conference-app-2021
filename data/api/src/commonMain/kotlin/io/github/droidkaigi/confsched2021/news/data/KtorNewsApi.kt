@@ -8,7 +8,6 @@ import io.github.droidkaigi.confsched2021.news.data.response.FeedsResponse
 import io.github.droidkaigi.confsched2021.news.data.response.InstantSerializer
 import io.github.droidkaigi.confsched2021.news.data.response.Thumbnail
 import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.LogLevel
@@ -61,7 +60,6 @@ open class KtorNewsApi(private val firebaseAuthApi: FirebaseAuthApi) :
         }
         return feedsResponse.toNewsList()
     }
-
 }
 
 fun FeedsResponse.toNewsList() =
