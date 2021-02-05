@@ -5,25 +5,7 @@ plugins {
     id("kotlin-multiplatform")
 }
 
-android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
-
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-    }
-
-    // delete this when this is fixed https://issuetracker.google.com/issues/175496966
-    configurations {
-        androidTestApi {}
-        androidTestDebugApi {}
-        androidTestReleaseApi {}
-        testApi {}
-        testDebugApi {}
-        testReleaseApi {}
-    }
-}
+apply from: rootProject.file("gradle/android.gradle")
 
 kotlin {
     android()

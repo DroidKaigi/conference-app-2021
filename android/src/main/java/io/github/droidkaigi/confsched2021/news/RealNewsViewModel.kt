@@ -53,7 +53,12 @@ class RealNewsViewModel @Inject constructor(
 //                snackbarMessage = currentValue.snackbarMessage
             )
         }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, NewsViewModel.State())
+            .stateIn(
+                scope = viewModelScope,
+                // prefetch when splash screen
+                started = SharingStarted.Eagerly,
+                initialValue = NewsViewModel.State()
+            )
 
     override fun event(event: NewsViewModel.Event) {
         viewModelScope.launch {

@@ -3,9 +3,11 @@ package io.github.droidkaigi.confsched2021.news.data
 import com.pinterest.ktlint.main
 import io.github.droidkaigi.confsched2021.news.Media
 import kotlinx.datetime.Instant
+import kotlin.test.Ignore
 import kotlin.test.Test
 
 class GenerateFakeContents {
+    @Ignore
     @Test
     fun generate() = runBlocking {
         val newsList = fakeNewsApi()
