@@ -32,6 +32,7 @@ class RealNewsViewModel @Inject constructor(
             if (loadState.isError()) {
                 // FIXME: smartcast is not working
                 val error = loadState as LoadState.Error
+                error.getThrowableOrNull()?.printStackTrace()
                 effectChannel.send(NewsViewModel.Effect.ErrorMessage(error.e))
             }
         }
@@ -52,7 +53,12 @@ class RealNewsViewModel @Inject constructor(
 //                snackbarMessage = currentValue.snackbarMessage
             )
         }
-            .stateIn(viewModelScope, SharingStarted.Eagerly, NewsViewModel.State())
+            .stateIn(
+                scope = viewModelScope,
+                // prefetch when splash screen
+                started = SharingStarted.Eagerly,
+                initialValue = NewsViewModel.State()
+            )
 
     override fun event(event: NewsViewModel.Event) {
         viewModelScope.launch {

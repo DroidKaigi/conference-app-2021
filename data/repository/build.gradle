@@ -1,0 +1,77 @@
+import io.github.droidkaigi.confsched2021.news.Dep
+
+plugins {
+    id("kotlin-multiplatform")
+    id("kotlinx-serialization")
+    id("kotlin-kapt")
+    id("com.android.library")
+}
+
+apply from: rootProject.file("gradle/android.gradle")
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += "-Xopt-in=kotlin.RequiresOptIn"
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
+    }
+}
+
+kotlin {
+    android()
+//    jvm()
+    // currently firebase-auth not supported iOS
+    // https://github.com/GitLiveApp/firebase-kotlin-sdk/issues/133
+//    if (System.getProperty("idea.active") == "true") {
+//        // Fix IntelliJ Unresolved reference
+//        def onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
+//        if (onPhone) {
+//            iosArm64("ios")
+//        } else {
+//            iosX64("ios")
+//        }
+//    } else {
+//        ios()
+//    }
+    sourceSets {
+        commonMain.dependencies {
+            api project(":model")
+            implementation project(":data:api")
+            implementation project(":data:db")
+
+            implementation Dep.Coroutines.bom
+            implementation Dep.Coroutines.core
+        }
+        commonTest.dependencies {
+            implementation Dep.KotlinTest.common
+            implementation Dep.KotlinTest.annotationCommon
+        }
+//        jvmMain
+//        jvmTest.dependencies {
+//            implementation Dep.KotlinTest.junit
+//            implementation Dep.Kotlin.reflect
+//            implementation Dep.ktlint
+//        }
+        androidMain.dependencies {
+            // Hilt
+            implementation Dep.Dagger.hiltAndroid
+
+            // For local unit tests
+//            testImplementation "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            kaptTest Dep.Dagger.hiltAndroidCompiler
+        }
+        androidTest.dependencies {
+            implementation Dep.KotlinTest.junit
+            implementation Dep.Kotlin.reflect
+            implementation Dep.ktlint
+        }
+//            // For instrumentation tests
+//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
+//        }
+    }
+}
+
+dependencies {
+    kapt Dep.Dagger.hiltAndroidCompiler
+}

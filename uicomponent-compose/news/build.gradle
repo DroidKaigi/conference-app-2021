@@ -1,0 +1,69 @@
+import io.github.droidkaigi.confsched2021.news.Dep
+// TODO: make this library Kotlin MPP
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'app.cash.exhaustive'
+}
+
+android {
+    compileSdkVersion 30
+    buildToolsVersion "30.0.2"
+
+    defaultConfig {
+        minSdkVersion 21
+        targetSdkVersion 30
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+        freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
+        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
+    }
+    buildFeatures {
+        compose true
+    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "${compose_version}"
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+    kotlinOptions {
+        jvmTarget = "1.8"
+        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
+        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
+    }
+}
+
+dependencies {
+    api project(":uicomponent-compose:core")
+    api project(":model")
+
+    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation Dep.Accompanist.coil
+    implementation Dep.Accompanist.insets
+
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+
+    // Write here to get from JetNews
+    // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
+    implementation "androidx.compose.runtime:runtime:$compose_version"
+    implementation "androidx.compose.ui:ui:$compose_version"
+    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
+    implementation "androidx.compose.material:material:$compose_version"
+    implementation "androidx.compose.material:material-icons-extended:$compose_version"
+    implementation "androidx.compose.foundation:foundation:$compose_version"
+    implementation "androidx.compose.animation:animation:$compose_version"
+    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
+    implementation "androidx.compose.ui:ui-tooling:$compose_version"
+
+    def nav_compose_version = "1.0.0-alpha04"
+    implementation "androidx.navigation:navigation-compose:$nav_compose_version"
+
+    // Android
+    implementation Dep.Jetpack.browser
+}
