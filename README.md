@@ -221,10 +221,11 @@ fun NewsScreenPreview() {
 ### How to debug fast?
 
 If you want to check the UI display, you can check it in the Preview of Android Studio.
-In that case, the required task is `:compose-uicomponent:compileDebugKotlin`. 
+In that case, the required task is `:uicomponent-compose:main:compileDebugKotlin`. 
 Therefore, there is no need to build the data module that contains the definitions such as API and the build of Android dex, so you can quickly build and check.
+Also, the separate modules make the build faster.
 
-![image](https://user-images.githubusercontent.com/1386930/102029518-0f1ef880-3df2-11eb-91cc-c52adfbbde3e.png)
+![image](https://user-images.githubusercontent.com/1386930/107116623-f1cd4e80-68b7-11eb-8053-9498f15356d4.png)
 
 ## Overall architecture
 
