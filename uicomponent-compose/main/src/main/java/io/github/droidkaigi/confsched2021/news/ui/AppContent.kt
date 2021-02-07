@@ -4,7 +4,6 @@ import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.ModalDrawerLayout
-import androidx.compose.material.Text
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -13,9 +12,11 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
+import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import io.github.droidkaigi.confsched2021.news.News
 import io.github.droidkaigi.confsched2021.news.ui.news.NewsScreen
+import io.github.droidkaigi.confsched2021.news.ui.news.NewsTabs
 
 @Composable
 fun AppContent(
@@ -28,14 +29,32 @@ fun AppContent(
     ModalDrawerLayout(
         modifier = modifier,
         drawerState = drawerState,
-        drawerContent = { DrawerContent(navController) }
+        drawerContent = {
+            DrawerContent { route ->
+                try {
+                    navController.navigate(route)
+                } finally {
+                    drawerState.close()
+                }
+            }
+        }
     ) {
-        NavHost(navController, startDestination = "news/list") {
-            composable("news/list") {
+        NavHost(navController, startDestination = "news/{newsTab}") {
+            composable(
+                route = "news/{newsTab}",
+                arguments = listOf(
+                    navArgument("newsTab") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val newsType =
+                    backStackEntry.arguments?.getString("newsTab") ?: NewsTabs.Home.routePath
                 val context = AmbientContext.current
                 NewsScreen(
-                    onNavigationIconClick,
-                    { news: News ->
+                    onNavigationIconClick = onNavigationIconClick,
+                    initialSelectedTab = NewsTabs.ofRoutePath(newsType),
+                    onDetailClick = { news: News ->
                         // FIXME: Use navigation
                         val builder = CustomTabsIntent.Builder()
                             .setShowTitle(true)
@@ -47,17 +66,13 @@ fun AppContent(
                 )
             }
             composable(
-                "news/{newsId}",
-                listOf(
-                    navArgument("newsId") {
+                route = "other/{otherTab}",
+                arguments = listOf(
+                    navArgument("otherTab") {
                         type = NavType.StringType
                     }
                 )
             ) { backStackEntry ->
-                Text("detail of:${backStackEntry.arguments?.getString("newsId")}")
-            }
-            composable("about_this_app") {
-                Text("ok?")
             }
         }
     }
