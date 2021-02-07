@@ -93,6 +93,12 @@ fun OtherScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
+                    when (selectedTab) {
+                        OtherTabs.Staff -> StaffScreen()
+                        else -> {
+                            Text("Not implemented yet. Please create this screen!")
+                        }
+                    }
                 }
             }
         )

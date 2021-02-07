@@ -17,7 +17,6 @@ interface NewsViewModel :
         val showProgress: Boolean = false,
         val filters: Filters = Filters(),
         val filteredNewsContents: NewsContents = NewsContents(),
-        val snackbarMessage: String? = null,
     )
 
     sealed class Effect {

@@ -107,7 +107,7 @@ private fun DrawerContentGroup(
     }
 }
 
-@Preview()
+@Preview
 @Composable
 fun PreviewDrawerContent() {
     Conferenceapp2021newsTheme {

@@ -111,7 +111,7 @@ dependencies {
     implementation Dep.Jetpack.startup
 
     testImplementation 'junit:junit:4.13.1'
-    testImplementation 'org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.1'
+    testImplementation Dep.Coroutines.test
     testImplementation 'io.kotest:kotest-assertions-core:4.3.1'
     // https://github.com/cashapp/turbine/issues/10
     testImplementation 'app.cash.turbine:turbine:0.2.1'
