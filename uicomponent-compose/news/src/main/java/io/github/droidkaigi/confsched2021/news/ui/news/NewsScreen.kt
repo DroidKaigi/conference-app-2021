@@ -20,7 +20,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -44,16 +43,19 @@ import io.github.droidkaigi.confsched2021.news.ui.util.collectInLaunchedEffect
 import io.github.droidkaigi.confsched2021.news.uicomponent.news.R
 import kotlin.reflect.KClass
 
-sealed class NewsTabs(val name: String) {
-    object Home : NewsTabs("Home")
-    sealed class FilteredNews(val newsClass: KClass<out News>, name: String) : NewsTabs(name) {
-        object Blog : FilteredNews(News.Blog::class, "Blog")
-        object Video : FilteredNews(News.Video::class, "Video")
-        object Podcast : FilteredNews(News.Podcast::class, "Podcast")
+sealed class NewsTabs(val name: String, val routePath: String) {
+    object Home : NewsTabs("Home", "home")
+    sealed class FilteredNews(val newsClass: KClass<out News>, name: String, routePath: String) :
+        NewsTabs(name, routePath) {
+        object Blog : FilteredNews(News.Blog::class, "Blog", "blog")
+        object Video : FilteredNews(News.Video::class, "Video", "video")
+        object Podcast : FilteredNews(News.Podcast::class, "Podcast", "podcast")
     }
 
     companion object {
         fun values() = listOf(Home, FilteredNews.Blog, FilteredNews.Video, FilteredNews.Podcast)
+
+        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
     }
 }
 
@@ -62,11 +64,14 @@ sealed class NewsTabs(val name: String) {
  */
 @Composable
 fun NewsScreen(
+    initialSelectedTab: NewsTabs,
     onNavigationIconClick: () -> Unit,
     onDetailClick: (News) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember<MutableState<NewsTabs>> { mutableStateOf(NewsTabs.Home) }
+    var selectedTab by remember(initialSelectedTab) {
+        mutableStateOf(initialSelectedTab)
+    }
 
     val (
         state,
@@ -229,15 +234,30 @@ private fun NewsList(
 
 @Preview(showBackground = true)
 @Composable
-fun NewsScreenPreview() {
+fun PreviewNewsScreen() {
     Conferenceapp2021newsTheme(false) {
         ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
             NewsScreen(
-                {
-                },
-                { news: News ->
+                initialSelectedTab = NewsTabs.Home,
+                onNavigationIconClick = {
                 }
-            )
+            ) { news: News ->
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewNewsScreenWithStartBlog() {
+    Conferenceapp2021newsTheme(false) {
+        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
+            NewsScreen(
+                initialSelectedTab = NewsTabs.FilteredNews.Blog,
+                onNavigationIconClick = {
+                }
+            ) { news: News ->
+            }
         }
     }
 }
