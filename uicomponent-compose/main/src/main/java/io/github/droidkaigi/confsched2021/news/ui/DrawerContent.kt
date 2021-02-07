@@ -111,7 +111,6 @@ private fun DrawerContentGroup(
 fun PreviewDrawerContent() {
     Conferenceapp2021newsTheme {
         DrawerContent {
-
         }
     }
 }
