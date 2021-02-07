@@ -48,8 +48,8 @@ fun AppContent(
                     }
                 )
             ) { backStackEntry ->
-                val newsType =
-                    backStackEntry.arguments?.getString("newsTab") ?: NewsTabs.Home.routePath
+                val newsType = backStackEntry
+                    .arguments?.getString("newsTab") ?: NewsTabs.Home.routePath
                 val context = AmbientContext.current
                 NewsScreen(
                     onNavigationIconClick = onNavigationIconClick,
@@ -73,6 +73,12 @@ fun AppContent(
                     }
                 )
             ) { backStackEntry ->
+                val routePath = backStackEntry
+                    .arguments?.getString("otherTab") ?: NewsTabs.Home.routePath
+                OtherScreen(
+                    OtherTabs.ofRoutePath(routePath),
+                    onNavigationIconClick
+                )
             }
         }
     }

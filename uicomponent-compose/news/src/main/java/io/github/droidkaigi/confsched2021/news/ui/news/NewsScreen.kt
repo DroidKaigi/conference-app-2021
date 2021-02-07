@@ -139,67 +139,72 @@ private fun NewsScreen(
             frontLayerShape = CutCornerShape(topLeft = 32.dp),
             peekHeight = 104.dp + (AmbientWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
-                TopAppBar(
-                    modifier = Modifier.statusBarsPadding(),
-                    title = { Text("DroidKaigi") },
-                    elevation = 0.dp,
-                    navigationIcon = {
-                        IconButton(onClick = onNavigationIconClick) {
-                            Icon(vectorResource(R.drawable.ic_baseline_menu_24), "menu")
-                        }
-                    }
-                )
-                TabRow(
-                    selectedTabIndex = 0,
-                    indicator = {
-                    },
-                    divider = {}
-                ) {
-                    NewsTabs.values().forEach { tab ->
-                        Tab(
-                            selected = tab == selectedTab,
-                            text = {
-                                Text(
-                                    modifier = if (selectedTab == tab) {
-                                        Modifier
-                                            .background(
-                                                color = MaterialTheme.colors.secondary,
-                                                shape = CutCornerShape(
-                                                    topLeft = 8.dp,
-                                                    bottomRight = 8.dp
-                                                )
-                                            )
-                                            .padding(vertical = 4.dp, horizontal = 8.dp)
-                                    } else {
-                                        Modifier
-                                    },
-                                    text = tab.name
-                                )
-                            },
-                            onClick = { onSelectTab(tab) }
-                        )
-                    }
-                }
+                AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                Surface(
-                    color = MaterialTheme.colors.background,
-                    modifier = Modifier.fillMaxHeight()
-                ) {
-                    val isHome = selectedTab is NewsTabs.Home
-                    NewsList(
-                        newsContents = if (selectedTab is NewsTabs.FilteredNews) {
-                            newsContents.filterNewsType(selectedTab.newsClass)
-                        } else {
-                            newsContents
-                        },
-                        isHome = isHome,
-                        onClickNews = onClickNews,
-                        onFavoriteChange = onFavoriteChange
-                    )
-                }
+                val isHome = selectedTab is NewsTabs.Home
+                NewsList(
+                    newsContents = if (selectedTab is NewsTabs.FilteredNews) {
+                        newsContents.filterNewsType(selectedTab.newsClass)
+                    } else {
+                        newsContents
+                    },
+                    isHome = isHome,
+                    onClickNews = onClickNews,
+                    onFavoriteChange = onFavoriteChange
+                )
+
             }
         )
+    }
+}
+
+@Composable
+private fun AppBar(
+    onNavigationIconClick: () -> Unit,
+    selectedTab: NewsTabs,
+    onSelectTab: (NewsTabs) -> Unit,
+) {
+    TopAppBar(
+        modifier = Modifier.statusBarsPadding(),
+        title = { Text("DroidKaigi") },
+        elevation = 0.dp,
+        navigationIcon = {
+            IconButton(onClick = onNavigationIconClick) {
+                Icon(vectorResource(R.drawable.ic_baseline_menu_24), "menu")
+            }
+        }
+    )
+    TabRow(
+        selectedTabIndex = 0,
+        indicator = {
+        },
+        divider = {}
+    ) {
+        NewsTabs.values().forEach { tab ->
+            Tab(
+                selected = tab == selectedTab,
+                text = {
+                    Text(
+                        modifier = if (selectedTab == tab) {
+                            Modifier
+                                .background(
+                                    color = MaterialTheme.colors.secondary,
+                                    shape = CutCornerShape(
+                                        topLeft = 8.dp,
+                                        bottomRight = 8.dp
+                                    )
+                                )
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
+                        } else {
+                            Modifier
+                        },
+                        text = tab.name
+                    )
+                },
+                onClick = { onSelectTab(tab) }
+            )
+        }
     }
 }
 
@@ -210,22 +215,27 @@ private fun NewsList(
     onClickNews: (News) -> Unit,
     onFavoriteChange: (News) -> Unit,
 ) {
-    LazyColumn(
-        contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
+    Surface(
+        color = MaterialTheme.colors.background,
+        modifier = Modifier.fillMaxHeight()
     ) {
-        if (newsContents.size > 0) {
-            items(newsContents.contents.size * 2) { index ->
-                if (index % 2 == 0) {
-                    Divider(modifier = Modifier.padding(horizontal = 16.dp))
-                } else {
-                    val (item, favorited) = newsContents.contents[index / 2]
-                    NewsItem(
-                        news = item,
-                        favorited = favorited,
-                        onClick = onClickNews,
-                        showMediaLabel = isHome,
-                        onFavoriteChange = onFavoriteChange
-                    )
+        LazyColumn(
+            contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
+        ) {
+            if (newsContents.size > 0) {
+                items(newsContents.contents.size * 2) { index ->
+                    if (index % 2 == 0) {
+                        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+                    } else {
+                        val (item, favorited) = newsContents.contents[index / 2]
+                        NewsItem(
+                            news = item,
+                            favorited = favorited,
+                            onClick = onClickNews,
+                            showMediaLabel = isHome,
+                            onFavoriteChange = onFavoriteChange
+                        )
+                    }
                 }
             }
         }

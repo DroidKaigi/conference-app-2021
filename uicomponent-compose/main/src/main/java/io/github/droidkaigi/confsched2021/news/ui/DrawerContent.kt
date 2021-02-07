@@ -49,30 +49,30 @@ enum class DrawerContents(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "DroidKaigiとは",
-        route = "news/about"
+        route = "other/${OtherTabs.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "CONTRIBUTOR",
-        route = "other/contributor"
+        route = "other/${OtherTabs.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "STAFF",
-        route = "other/staff"
+        route = "other/${OtherTabs.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "SETTING",
-        route = "other/settings"
+        route = "other/${OtherTabs.Settings.routePath}",
     ),
     ;
 
     enum class Group {
-        NEWS, OTHER
+        NEWS, OTHER;
     }
 }
 
@@ -84,7 +84,8 @@ fun DrawerContent(onNavigate: (route: String) -> Unit) {
             val groupContents = DrawerContents.values()
                 .filter { content -> content.group == group }
             DrawerContentGroup(groupContents, onNavigate)
-            Divider()
+            Spacer(modifier = Modifier.height(2.dp))
+            Divider(thickness = 4.dp)
         }
     }
 }
