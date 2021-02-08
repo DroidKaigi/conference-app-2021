@@ -1,4 +1,4 @@
-import io.github.droidkaigi.confsched2021.news.Dep
+import io.github.droidkaigi.confnews2021.Dep
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -11,7 +11,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "io.github.droidkaigi.confsched2021.news"
+        applicationId "io.github.droidkaigi.confnews2021"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

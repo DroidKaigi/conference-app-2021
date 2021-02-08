@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confnews2021
 
 object Dep {
     object Jetpack {
