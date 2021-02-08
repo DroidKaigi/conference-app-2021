@@ -7,6 +7,7 @@ import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel
 import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel.Event.ChangeFavoriteFilter
 import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel.Event.ToggleFavorite
 import io.github.droidkaigi.confnews2021.ui.news.fakeNewsViewModel
+import io.github.droidkaigi.confnews2021.viewmodel.RealNewsViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf

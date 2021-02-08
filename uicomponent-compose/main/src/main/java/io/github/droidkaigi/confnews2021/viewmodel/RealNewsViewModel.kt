@@ -1,9 +1,15 @@
-package io.github.droidkaigi.confnews2021
+package io.github.droidkaigi.confnews2021.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.droidkaigi.confnews2021.Filters
+import io.github.droidkaigi.confnews2021.LoadState
+import io.github.droidkaigi.confnews2021.NewsContents
 import io.github.droidkaigi.confnews2021.data.NewsRepository
+import io.github.droidkaigi.confnews2021.getContents
+import io.github.droidkaigi.confnews2021.orEmptyContents
+import io.github.droidkaigi.confnews2021.toLoadState
 import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

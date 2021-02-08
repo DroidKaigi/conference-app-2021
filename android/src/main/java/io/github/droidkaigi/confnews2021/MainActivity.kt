@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import io.github.droidkaigi.confnews2021.ui.DroidKaigiApp
 import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel
 import io.github.droidkaigi.confnews2021.ui.news.ProvideNewsViewModel
+import io.github.droidkaigi.confnews2021.viewmodel.RealNewsViewModel
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
