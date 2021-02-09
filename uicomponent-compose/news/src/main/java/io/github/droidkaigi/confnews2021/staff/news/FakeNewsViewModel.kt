@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.news
+package io.github.droidkaigi.confnews2021.staff.news
 
 import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.confnews2021.AppError

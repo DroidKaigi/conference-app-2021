@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.news
+package io.github.droidkaigi.confnews2021.staff.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confnews2021.Media
 import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.fakeNewsContents
-import io.github.droidkaigi.confnews2021.ui.NetworkImage
-import io.github.droidkaigi.confnews2021.ui.theme.Conferenceapp2021newsTheme
-import io.github.droidkaigi.confnews2021.ui.theme.typography
+import io.github.droidkaigi.confnews2021.staff.NetworkImage
+import io.github.droidkaigi.confnews2021.staff.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confnews2021.staff.theme.typography
 import io.github.droidkaigi.confnews2021.uicomponent.news.R
 
 @Composable

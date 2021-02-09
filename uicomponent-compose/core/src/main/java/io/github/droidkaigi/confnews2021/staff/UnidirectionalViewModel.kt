@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

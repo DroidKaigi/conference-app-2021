@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.news
+package io.github.droidkaigi.confnews2021.staff.news
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable

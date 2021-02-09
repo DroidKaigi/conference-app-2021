@@ -3,10 +3,10 @@ package io.github.droidkaigi.confnews2021
 import io.github.droidkaigi.confnews2021.data.NewsRepository
 import io.github.droidkaigi.confnews2021.data.fakeNewsApi
 import io.github.droidkaigi.confnews2021.data.fakeUserDataStore
-import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel
-import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel.Event.ChangeFavoriteFilter
-import io.github.droidkaigi.confnews2021.ui.news.NewsViewModel.Event.ToggleFavorite
-import io.github.droidkaigi.confnews2021.ui.news.fakeNewsViewModel
+import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel
+import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel.Event.ChangeFavoriteFilter
+import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel.Event.ToggleFavorite
+import io.github.droidkaigi.confnews2021.staff.news.fakeNewsViewModel
 import io.github.droidkaigi.confnews2021.viewmodel.RealNewsViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe

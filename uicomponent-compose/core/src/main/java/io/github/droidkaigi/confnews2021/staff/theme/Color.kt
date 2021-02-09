@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.theme
+package io.github.droidkaigi.confnews2021.staff.theme
 
 import androidx.compose.ui.graphics.Color
 

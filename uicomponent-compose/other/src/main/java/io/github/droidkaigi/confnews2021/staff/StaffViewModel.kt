@@ -1,9 +1,10 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.ambientOf
 import io.github.droidkaigi.confnews2021.AppError
+import io.github.droidkaigi.confnews2021.Staff
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -11,7 +12,7 @@ interface StaffViewModel :
     UnidirectionalViewModel<StaffViewModel.Event, StaffViewModel.Effect, StaffViewModel.State> {
     data class State(
         val showProgress: Boolean = false,
-//        val staffContents: StaffContents = StaffContents(),
+        val staffContents: List<Staff> = listOf(),
     )
 
     sealed class Effect {
@@ -34,5 +35,5 @@ fun ProvideStaffViewModel(viewModel: StaffViewModel, block: @Composable () -> Un
 }
 
 @Composable
-fun newsViewModel() = AmbientStaffViewModel.current
+fun staffViewModel() = AmbientStaffViewModel.current
 

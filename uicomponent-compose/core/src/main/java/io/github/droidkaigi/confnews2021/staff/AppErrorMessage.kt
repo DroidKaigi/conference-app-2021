@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import android.content.Context
 import io.github.droidkaigi.confnews2021.AppError

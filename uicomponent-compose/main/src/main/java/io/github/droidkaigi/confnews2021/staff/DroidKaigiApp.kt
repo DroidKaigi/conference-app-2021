@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import androidx.compose.animation.DpPropKey
 import androidx.compose.animation.core.FloatPropKey
@@ -16,7 +16,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawOpacity
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.confnews2021.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confnews2021.staff.theme.Conferenceapp2021newsTheme
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {

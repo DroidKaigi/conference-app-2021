@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.util
+package io.github.droidkaigi.confnews2021.staff.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect

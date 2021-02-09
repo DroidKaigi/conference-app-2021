@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.news
+package io.github.droidkaigi.confnews2021.staff.news
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
@@ -7,7 +7,7 @@ import io.github.droidkaigi.confnews2021.AppError
 import io.github.droidkaigi.confnews2021.Filters
 import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.NewsContents
-import io.github.droidkaigi.confnews2021.ui.UnidirectionalViewModel
+import io.github.droidkaigi.confnews2021.staff.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 

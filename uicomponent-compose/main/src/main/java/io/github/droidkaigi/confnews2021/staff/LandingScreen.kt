@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box

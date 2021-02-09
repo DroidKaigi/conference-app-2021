@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
@@ -15,8 +15,10 @@ import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import io.github.droidkaigi.confnews2021.News
-import io.github.droidkaigi.confnews2021.ui.news.NewsScreen
-import io.github.droidkaigi.confnews2021.ui.news.NewsTabs
+import io.github.droidkaigi.confnews2021.other.OtherScreen
+import io.github.droidkaigi.confnews2021.other.OtherTabs
+import io.github.droidkaigi.confnews2021.staff.news.NewsScreen
+import io.github.droidkaigi.confnews2021.staff.news.NewsTabs
 
 @Composable
 fun AppContent(

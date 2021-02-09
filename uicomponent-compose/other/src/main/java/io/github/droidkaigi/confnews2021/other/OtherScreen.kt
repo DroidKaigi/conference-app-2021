@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.other
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -31,7 +31,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
-import io.github.droidkaigi.confnews2021.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confnews2021.staff.StaffList
+import io.github.droidkaigi.confnews2021.staff.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confnews2021.uicomponent.other.R
 
 sealed class OtherTabs(val name: String, val routePath: String) {
@@ -94,7 +95,7 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     when (selectedTab) {
-                        OtherTabs.Staff -> StaffScreen()
+                        OtherTabs.Staff -> StaffList()
                         else -> {
                             Text("Not implemented yet. Please create this screen!")
                         }

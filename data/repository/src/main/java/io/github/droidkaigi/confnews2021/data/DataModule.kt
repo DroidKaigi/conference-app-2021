@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.droidkaigi.confnews2021.data.response.InstantSerializer
 
 @InstallIn(SingletonComponent::class)
 @Module

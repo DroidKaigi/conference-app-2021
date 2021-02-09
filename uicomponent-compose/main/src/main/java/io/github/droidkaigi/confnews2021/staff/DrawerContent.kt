@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui
+package io.github.droidkaigi.confnews2021.staff
 
 import androidx.annotation.IdRes
 import androidx.compose.foundation.layout.Column
@@ -10,8 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.confnews2021.ui.news.NewsTabs
-import io.github.droidkaigi.confnews2021.ui.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confnews2021.other.OtherTabs
+import io.github.droidkaigi.confnews2021.staff.news.NewsTabs
+import io.github.droidkaigi.confnews2021.staff.theme.Conferenceapp2021newsTheme
 import io.github.droidkaigi.confnews2021.uicomponent.main.R
 
 enum class DrawerContents(

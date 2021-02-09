@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.ui.news
+package io.github.droidkaigi.confnews2021.staff.news
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -36,10 +36,10 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.confnews2021.Filters
 import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.NewsContents
-import io.github.droidkaigi.confnews2021.ui.getReadableMessage
-import io.github.droidkaigi.confnews2021.ui.theme.Conferenceapp2021newsTheme
-import io.github.droidkaigi.confnews2021.ui.use
-import io.github.droidkaigi.confnews2021.ui.util.collectInLaunchedEffect
+import io.github.droidkaigi.confnews2021.staff.getReadableMessage
+import io.github.droidkaigi.confnews2021.staff.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.confnews2021.staff.use
+import io.github.droidkaigi.confnews2021.staff.util.collectInLaunchedEffect
 import io.github.droidkaigi.confnews2021.uicomponent.news.R
 import kotlin.reflect.KClass
 
