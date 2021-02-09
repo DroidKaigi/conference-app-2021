@@ -2,7 +2,6 @@ package io.github.droidkaigi.confnews2021.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.droidkaigi.confnews2021.data.StaffRepository
 import io.github.droidkaigi.confnews2021.staff.StaffViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

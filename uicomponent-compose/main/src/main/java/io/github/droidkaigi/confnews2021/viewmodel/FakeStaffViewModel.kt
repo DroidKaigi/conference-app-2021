@@ -2,7 +2,6 @@ package io.github.droidkaigi.confnews2021.viewmodel
 
 import io.github.droidkaigi.confnews2021.fakeStaffs
 import io.github.droidkaigi.confnews2021.staff.StaffViewModel
-import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

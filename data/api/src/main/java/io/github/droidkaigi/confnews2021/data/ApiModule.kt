@@ -39,4 +39,5 @@ class ApiModule {
                 level = LogLevel.ALL
             }
         }
-    }}
+    }
+}

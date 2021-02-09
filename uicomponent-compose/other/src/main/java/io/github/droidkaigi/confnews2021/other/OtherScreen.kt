@@ -162,7 +162,6 @@ fun PreviewOtherScreen() {
         OtherScreen(
             initialSelectedTab = OtherTabs.AboutThisApp,
             onNavigationIconClick = {
-
             }
         )
     }

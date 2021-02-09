@@ -9,8 +9,8 @@ import io.github.droidkaigi.confnews2021.NewsContents
 import io.github.droidkaigi.confnews2021.data.NewsRepository
 import io.github.droidkaigi.confnews2021.getContents
 import io.github.droidkaigi.confnews2021.orEmptyContents
-import io.github.droidkaigi.confnews2021.toLoadState
 import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel
+import io.github.droidkaigi.confnews2021.toLoadState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow

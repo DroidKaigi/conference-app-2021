@@ -5,7 +5,6 @@ import io.github.droidkaigi.confnews2021.Image
 import io.github.droidkaigi.confnews2021.Media
 import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.data.response.FeedsResponse
-import io.github.droidkaigi.confnews2021.data.response.InstantSerializer
 import io.github.droidkaigi.confnews2021.data.response.Thumbnail
 import io.ktor.client.HttpClient
 import io.ktor.client.HttpClientConfig
@@ -16,14 +15,11 @@ import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
-import kotlinx.serialization.modules.SerializersModule
-import kotlinx.serialization.modules.contextual
 
 open class KtorNewsApi(
     private val firebaseAuthApi: FirebaseAuthApi,
     val httpClient: HttpClient,
 ) : NewsApi {
-
 
     override suspend fun fetch(): List<News> {
         val feedsResponse = httpClient.get<FeedsResponse>(

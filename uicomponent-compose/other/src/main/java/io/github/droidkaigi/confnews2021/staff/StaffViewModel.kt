@@ -19,8 +19,7 @@ interface StaffViewModel :
         data class ErrorMessage(val appError: AppError) : Effect()
     }
 
-    sealed class Event {
-    }
+    sealed class Event
 
     override val state: StateFlow<State>
     override val effect: Flow<Effect>
@@ -36,4 +35,3 @@ fun ProvideStaffViewModel(viewModel: StaffViewModel, block: @Composable () -> Un
 
 @Composable
 fun staffViewModel() = AmbientStaffViewModel.current
-

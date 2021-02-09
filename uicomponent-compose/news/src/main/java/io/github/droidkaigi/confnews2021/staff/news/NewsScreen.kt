@@ -153,7 +153,6 @@ private fun NewsScreen(
                     onClickNews = onClickNews,
                     onFavoriteChange = onFavoriteChange
                 )
-
             }
         )
     }
