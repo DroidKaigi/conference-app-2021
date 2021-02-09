@@ -7,6 +7,35 @@
   "client": [
     {
       "client_info": {
+        "mobilesdk_app_id": "1:1046519477136:android:2249e423a7595598a8f915",
+        "android_client_info": {
+          "package_name": "io.github.droidkaigi.confnews2021.debug"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046519477136-68ce7mi69ss85q4ro3ti579ldr7q4e6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyChx_mnm6Mj8hXFfj5KNrMij0n3NlGqDEg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046519477136-68ce7mi69ss85q4ro3ti579ldr7q4e6p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:1046519477136:android:46947d6a2ee90e7fa8f915",
         "android_client_info": {
           "package_name": "io.github.droidkaigi.confsched2021.news.debug"

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confsched2021.news
+package io.github.droidkaigi.confnews2021
 
 object Dep {
     object Jetpack {
@@ -20,6 +20,7 @@ object Dep {
     object Coroutines {
         const val bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"
         const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
     }
 
     object Serialization {

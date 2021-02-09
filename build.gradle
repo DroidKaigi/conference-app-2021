@@ -1,4 +1,4 @@
-import io.github.droidkaigi.confsched2021.news.Dep
+import io.github.droidkaigi.confnews2021.Dep
 
 buildscript {
     ext {
