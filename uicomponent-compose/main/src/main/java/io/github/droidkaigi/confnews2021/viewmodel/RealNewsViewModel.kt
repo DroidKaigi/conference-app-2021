@@ -6,7 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.confnews2021.Filters
 import io.github.droidkaigi.confnews2021.LoadState
 import io.github.droidkaigi.confnews2021.NewsContents
-import io.github.droidkaigi.confnews2021.data.NewsRepository
+import io.github.droidkaigi.confnews2021.NewsRepository
 import io.github.droidkaigi.confnews2021.getContents
 import io.github.droidkaigi.confnews2021.orEmptyContents
 import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel

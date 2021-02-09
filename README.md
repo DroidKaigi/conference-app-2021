@@ -121,10 +121,10 @@ Compose
             }
         }
     }
-    
+
     NewsScreen(
         // ...
-        newsContents = state.filteredNewsContents, 
+        newsContents = state.filteredNewsContents,
         onFavoriteChange = {
             dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
         },
@@ -133,8 +133,8 @@ Compose
 
 This `state`, `effectFlow` and `dispatch` are created from ViewModel.
 
-`state` represents the state that the UI should display.  
-`effectFlow` represents a one-time event such as a Snackbar display.  
+`state` represents the state that the UI should display.
+`effectFlow` represents a one-time event such as a Snackbar display.
 And `dispatch` represents a change of state.
 
 
@@ -172,18 +172,18 @@ inline fun <reified STATE, EFFECT, EVENT> use(
 
 ## Testable & Previewable & Faster debug
 
-Jetpack Compose is still a new technology. We are thinking of best practices.  
-We will try to improve testing, preview and build by using Fake.  
+Jetpack Compose is still a new technology. We are thinking of best practices.
+We will try to improve testing, preview and build by using Fake.
 For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
 
 ![preview](https://user-images.githubusercontent.com/1386930/102705021-25332a00-42c6-11eb-9f6a-c675a2922b1f.gif)
 
-This is possible by creating a Fake ViewModel and making it reliable. 
+This is possible by creating a Fake ViewModel and making it reliable.
 
 ### How to make Fake's ViewModel reliable
 
 Do the same test for Fake and the real thing by testing against the interface. This makes Fake's
- ViewModel reliable. 
+ ViewModel reliable.
 This technique of doing the same test against Fake was introduced in "Build testable apps for
  Android" session(Google I/O'19).
 
@@ -221,11 +221,11 @@ fun NewsScreenPreview() {
 ### How to debug fast?
 
 If you want to check the UI display, you can check it in the Preview of Android Studio.
-In that case, the required task is `:uicomponent-compose:main:compileDebugKotlin`. 
+In that case, the required task is `:uicomponent-compose:main:compileDebugKotlin`.
 Therefore, there is no need to build the data module that contains the definitions such as API and the build of Android dex, so you can quickly build and check.
-Also, the separate modules make the build faster.
+Also, changes to the data layer do not affect the ui module, so you can build faster.
 
-![image](https://user-images.githubusercontent.com/1386930/107116623-f1cd4e80-68b7-11eb-8053-9498f15356d4.png)
+![image](https://user-images.githubusercontent.com/1386930/107300623-3bd35180-6abd-11eb-94e8-0c5169b9f35d.png)
 
 ## Overall architecture
 

@@ -36,8 +36,8 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api project(":model")
-            implementation project(":data:api")
-            implementation project(":data:db")
+            api project(":data:api")
+            api project(":data:db")
 
             implementation Dep.Coroutines.bom
             implementation Dep.Coroutines.core

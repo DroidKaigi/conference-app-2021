@@ -45,7 +45,6 @@ dependencies {
     api project(":uicomponent-compose:core")
     api project(":uicomponent-compose:news")
     api project(":uicomponent-compose:other")
-    api project(":data:repository")
     api project(":model")
 
     // Hilt

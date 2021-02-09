@@ -1,6 +1,6 @@
 package io.github.droidkaigi.confnews2021
 
-import io.github.droidkaigi.confnews2021.data.NewsRepository
+import io.github.droidkaigi.confnews2021.data.NewsRepositoryImpl
 import io.github.droidkaigi.confnews2021.data.fakeNewsApi
 import io.github.droidkaigi.confnews2021.data.fakeUserDataStore
 import io.github.droidkaigi.confnews2021.staff.news.NewsViewModel
@@ -108,7 +108,7 @@ class NewsViewModelTest(
                 "Real ViewModel and Repository",
                 NewsViewModelFactory { errorFetchData: Boolean ->
                     RealNewsViewModel(
-                        repository = NewsRepository(
+                        repository = NewsRepositoryImpl(
                             newsApi = fakeNewsApi(
                                 if (errorFetchData) {
                                     AppError.ApiException.ServerException(null)
