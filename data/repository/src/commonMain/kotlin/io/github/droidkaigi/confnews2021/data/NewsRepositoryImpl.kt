@@ -2,15 +2,16 @@ package io.github.droidkaigi.confnews2021.data
 
 import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.NewsContents
+import io.github.droidkaigi.confnews2021.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
 
-open class NewsRepository(
+open class NewsRepositoryImpl(
     private val newsApi: NewsApi,
     private val dataStore: UserDataStore,
-) {
-    fun newsContents(): Flow<NewsContents> {
+) : NewsRepository {
+    override fun newsContents(): Flow<NewsContents> {
         return dataStore.favorites()
             .combine(
                 flow {
@@ -21,11 +22,11 @@ open class NewsRepository(
             }
     }
 
-    suspend fun addFavorite(news: News) {
+    override suspend fun addFavorite(news: News) {
         dataStore.addFavorite(news.id)
     }
 
-    suspend fun removeFavorite(news: News) {
+    override suspend fun removeFavorite(news: News) {
         dataStore.removeFavorite(news.id)
     }
 }

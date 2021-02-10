@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.droidkaigi.confnews2021.NewsRepository
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -19,7 +20,7 @@ class DataModule {
     }
 
     @Provides
-    internal fun provideRepository(daggerRepository: DaggerNewsRepository): NewsRepository {
+    internal fun provideRepository(daggerRepository: DaggerNewsRepositoryImpl): NewsRepository {
         return daggerRepository
     }
 
