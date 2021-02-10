@@ -1,8 +1,8 @@
 package io.github.droidkaigi.confnews2021.data
 
-import io.github.droidkaigi.confnews2021.NewsRepository
 import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.NewsContents
+import io.github.droidkaigi.confnews2021.NewsRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flow
