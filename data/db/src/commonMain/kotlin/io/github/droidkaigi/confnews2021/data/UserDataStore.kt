@@ -12,7 +12,7 @@ abstract class UserDataStore {
     fun favorites(): Flow<Set<String>> {
         return flowSettings
             .getStringFlow(KEY_FAVORITES)
-            .map { it.split(",").toSet() }
+            .map { favorites -> favorites.split(",").filter { it.isNotBlank() }.toSet() }
     }
 
     suspend fun addFavorite(id: String) {
