@@ -4,7 +4,7 @@ author: '@jmatsu'
 inputs:
   github-token:
     required: true
-    description: 'a token of github. it should have write-permission.'
+    description: 'a token of github. it should have write-permission.'ascasc
   deployment-id:
     required: true
     description: '[number] deployment id to update.'
