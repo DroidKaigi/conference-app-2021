@@ -1,23 +1,28 @@
 name: assemble-and-stage-via-deploygate
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed]
 
 jobs:
   assemble:
+    if: github.event.action != 'closed'
     name: "assemble android application files"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
         with:
           ref: refs/pull/${{ github.event.pull_request.number }}/merge
-      - uses: actions/cache@v1
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-${{ hashFiles('**/*.gradle*') }}
           restore-keys: |
               ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-
-      - uses: actions/cache@v1
+      - uses: actions/cache@v2
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
@@ -30,28 +35,24 @@ jobs:
           name: assemble-output
           path: android/build/outputs
           retention-days: 14
-  stage:
-    name: "stage built application files"
-    needs:
-      - assemble
+      - uses: ./gh-actions/actions/create-deployment
+        with:
+          github-token: ${{ github.token }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
+          sha: ${{ github.event.pull_request.head.sha }}
+          artifact-name: assemble-output
+  drop-stage:
+    if: github.event.action == 'closed'
+    name: "Drop from staging"
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
         with:
-          name: assemble-output
-          path: ~/assemble-output
-      - uses: ./.github/actions-factory/actions/find-files
-        id: find-aab-files
+          ref: main
+      - uses: ./gh-actions/actions/destroy-distribution-by-name
         with:
-          pattern: "~/assemble-output/**/*.aab"
-      - uses: jmatsu/dg-upload-app-action@v0.2
-        with:
-          app_owner_name: droidkaigi
-          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
-          message: GitHub Actions have staged an artifatc of pull/${{ github.event.pull_request.number }}
-          distribution_find_by: name
-          distribution_id: ${{ format('debug/pulls/{0}', github.event.pull_request.number) }}
-          release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.sha) }}
-          pin: false
+          api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app-owner-name: droidkaigi
+          platform: android
+          app-id: <package name|bundle identifier>
+          distribution-name: ${{ format('debug/pulls/{0}', github.event.pull_request.number) }}
