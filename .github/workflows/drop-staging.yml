@@ -8,6 +8,9 @@ jobs:
     name: "Drop from staging"
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
       - uses: ./.github/actions-factory/actions/destroy-distribution-by-name
         with:
           api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}

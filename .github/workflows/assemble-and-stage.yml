@@ -1,14 +1,14 @@
 name: assemble-and-stage-via-deploygate
 on:
   pull_request:
-    types: [review_requested, opened, synchronize, reopened]
+    types: [opened, synchronize, reopened]
 
 jobs:
   assemble:
     name: "assemble android application files"
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@2
+      - uses: actions/checkout@v2
         with:
           ref: refs/pull/${{ github.event.pull_request.number }}/merge
       - uses: actions/cache@v1
@@ -36,6 +36,7 @@ jobs:
       - assemble
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
       - uses: actions/download-artifact@v2
         with:
           name: assemble-output
@@ -44,12 +45,12 @@ jobs:
         id: find-aab-files
         with:
           pattern: "~/assemble-output/**/*.aab"
-      - uses: jmatsu/dg-upload-app-action@<version>
+      - uses: jmatsu/dg-upload-app-action@v0.2
         with:
           app_owner_name: droidkaigi
           api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
           app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
-          message: GitHub Actions have staged an artifatc of refs/pull/${{ github.event.pull_request.number }}
+          message: GitHub Actions have staged an artifatc of pull/${{ github.event.pull_request.number }}
           distribution_find_by: name
           distribution_id: ${{ format('debug/pulls/{0}', github.event.pull_request.number) }}
           release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.sha) }}
