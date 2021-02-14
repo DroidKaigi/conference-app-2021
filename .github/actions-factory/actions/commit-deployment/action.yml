@@ -1,5 +1,5 @@
 name: 'Commit a deployment status'
-description: 'ditto'
+description: 'ditto'asdasd
 author: '@jmatsu'
 inputs:
   github-token:
