@@ -234,3 +234,13 @@ Also, changes to the data layer do not affect the ui module, so you can build fa
 # Design
 
 TBD
+
+# Trouble Shooting
+
+## Android Gradle plugin requires Java 11 to run. You are currently using Java 1.X
+
+JDK 1.8 is a requirement to build an Android project basically, but AGP 7.0 requires JDK 11. Please make sure you are using Java 11. Please note that the java version of Gradle Daemon is determined at the launch-time, so `./gradlew --stop` might be required for you.
+
+## The option 'android.enableBuildCache' is deprecated.
+
+`android.enableBuildCache` is *REMOVED* in AGP 7.0. `android.enableBuildCache=false` has no issue but builds randomly succeed with *true* value. This may affect to those who declare `android.enableBuildCache=true` in their `$GRADLE_USER_HOME/gradle.properties`. 

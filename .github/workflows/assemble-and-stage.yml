@@ -1,0 +1,109 @@
+name: assemble-and-stage-via-deploygate
+on:
+  pull_request_target:
+    types: [opened, synchronize, reopened, closed]
+
+jobs:
+  assemble:
+    if: github.event.action != 'closed'
+    name: "assemble android application files"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+              ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+      - name: "Generate an app bundle file"
+        run: ./gradlew bundleDebug
+        env:
+          FOR_DEVS: 'Never pass any secrets to avoid leaking them. For the more details, please ask @jmatsu'
+      - uses: actions/upload-artifact@v2
+        with:
+          name: assemble-output
+          path: android/build/outputs
+          retention-days: 14
+  stage:
+    needs: [assemble]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: actions/download-artifact@v2
+        with:
+          name: assemble-output
+          path: ~/assemble-output
+      - uses: ./gh-actions/actions/find-files
+        id: find-aab-files
+        with:
+          pattern: "~/assemble-output/**/*.aab"
+      - uses: ./gh-actions/actions/create-deployment
+        id: create-deployment
+        with:
+          github-token: ${{ github.token }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/head
+          sha: ${{ github.event.pull_request.head.sha }}
+          artifact-name: assemble-output
+      - uses: jmatsu/dg-upload-app-action@v0.2
+        id: upload
+        continue-on-error: true
+        with:
+          app_owner_name: droidkaigi
+          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
+          message: GitHub Actions have staged an artifact of ${{ github.event.pull_request.number }}/head / ${{ github.event.pull_request.head.sha }}
+          distribution_find_by: name
+          distribution_id: ${{ format('debug/refs/pull/{0}/head', github.event.pull_request.number) }}
+          release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.event.pull_request.head.sha) }}
+          pin: false
+      - name: generate properties based on upload step's status
+        id: deployment-properties
+        if: steps.upload.conclusion == 'success'
+        run: |
+            if [[ "${{ steps.upload.outcome }}" == "success" ]]; then
+              echo "::set-output name=deployment-url::${{ steps.upload.distribution_url }}"
+              echo "::set-output name=description::Deployed an app successfully. Please try it through DeployGate!"
+            else
+              echo "::set-output name=deployment-url::$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+              echo "::set-output name=description::Staging an app failed. Please check the workflow."
+            fi
+      - uses: ./gh-actions/actions/commit-deployment
+        if: steps.upload.conclusion == 'success'
+        with:
+          github-token: ${{ github.token }}
+          deployment-id: ${{ steps.create-deployment.outputs.deployment.id }}
+          state: ${{ steps.upload.outcome }}
+          deployment-url: ${{ steps.deployment-properties.outputs.deployment-url }}
+          description: ${{ steps.deployment-properties.outputs.description }}
+  drop-stage:
+    if: github.event.action == 'closed'
+    name: "Drop from staging"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - uses: ./gh-actions/actions/destroy-distribution-by-name
+        with:
+          api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app-owner-name: droidkaigi
+          platform: android
+          app-id: <package name|bundle identifier>
+          distribution-name: ${{ format('debug/pulls/{0}', github.event.pull_request.number) }}
