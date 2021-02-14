@@ -23,9 +23,4 @@ class DataModule {
     internal fun provideRepository(daggerRepository: DaggerNewsRepositoryImpl): NewsRepository {
         return daggerRepository
     }
-
-    @Provides
-    internal fun provideFirebaseAuthApi(): FirebaseAuthApi {
-        return FirebaseAuthApi()
-    }
 }

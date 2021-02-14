@@ -40,4 +40,12 @@ class ApiModule {
             }
         }
     }
+
+    @Provides
+    internal fun provideFirebaseAuthApi(
+        httpClient: HttpClient,
+        userDataStore: UserDataStore,
+    ): UserApi {
+        return UserApi(httpClient, userDataStore)
+    }
 }

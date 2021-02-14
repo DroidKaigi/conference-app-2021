@@ -44,7 +44,7 @@ allprojects {
     }
 }
 
-subprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()

@@ -7,17 +7,11 @@ import io.github.droidkaigi.confnews2021.News
 import io.github.droidkaigi.confnews2021.data.response.FeedsResponse
 import io.github.droidkaigi.confnews2021.data.response.Thumbnail
 import io.ktor.client.HttpClient
-import io.ktor.client.HttpClientConfig
-import io.ktor.client.features.json.JsonFeature
-import io.ktor.client.features.json.serializer.KotlinxSerializer
-import io.ktor.client.features.logging.LogLevel
-import io.ktor.client.features.logging.Logger
-import io.ktor.client.features.logging.Logging
 import io.ktor.client.request.get
 import io.ktor.client.request.headers
 
 open class KtorNewsApi(
-    private val firebaseAuthApi: FirebaseAuthApi,
+    private val userApi: UserApi,
     val httpClient: HttpClient,
 ) : NewsApi {
 
@@ -26,8 +20,7 @@ open class KtorNewsApi(
             "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
         ) {
             try {
-                val user = firebaseAuthApi.user()
-                val idToken = user.getIdToken(false)
+                val idToken = userApi.authIfNeeded()
                 headers {
                     idToken?.let {
                         set("Authorization", "Bearer $idToken")

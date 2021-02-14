@@ -4,6 +4,14 @@ object Dep {
     object Jetpack {
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
+        const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha04"
+    }
+
+    object MultiplatformSettings {
+        const val settings = "com.russhwolf:multiplatform-settings:0.7.2"
+        const val coroutines = "com.russhwolf:multiplatform-settings-coroutines:0.7.2"
+        const val datastore = "com.russhwolf:multiplatform-settings-datastore:0.7.2"
+        const val test = "com.russhwolf:multiplatform-settings-test:0.7.2"
     }
 
     object Kotlin {
@@ -19,8 +27,8 @@ object Dep {
 
     object Coroutines {
         const val bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"
-        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
-        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
     }
 
     object Serialization {
