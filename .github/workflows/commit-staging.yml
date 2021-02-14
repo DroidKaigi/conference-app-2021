@@ -1,0 +1,52 @@
+
+name: deployment-aware-app-staging
+
+on:
+  - deployment
+
+jobs:
+  create_distribution:
+    runs-on: ubuntu-latest
+    if: github.event.deployment.task == 'deploygate' && github.event.deployment.environment == 'staging'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions-factory/actions/get-artifact
+        with:
+          github-token: ${{ github.token }}
+          artifact-id: ${{ github.event.deployment.payload.artifactId }}
+          path: ~/assemble-output
+      - uses: ./.github/actions-factory/actions/find-files
+        id: find-aab-files
+        with:
+          pattern: "~/assemble-output/**/*.aab"
+      - uses: jmatsu/dg-upload-app-action@v0.2
+        id: upload
+        continue-on-error: true
+        with:
+          app_owner_name: droidkaigi
+          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
+          message: GitHub Actions have staged an artifatc of ${{ github.event.deployment.payload.ref }}
+          distribution_find_by: name
+          distribution_id: ${{ format('debug/{0}', github.event.deployment.payload.ref) }}
+          release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.event.deployment.payload.ref) }}
+          pin: false
+      - name: generate properties based on upload step's status
+        id: deployment-properties
+        if: steps.upload.conclusion == 'success'
+        run: |
+            if [[ "${{ steps.upload.outcome }}" == "success"]]; then
+              echo "::set-output name=deployment-url::${{ steps.upload.distribution_url }}"
+              echo "::set-output name=description::Deployed an app successfully. Please try it through DeployGate!"
+            else
+              echo "::set-output name=deployment-url::$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+              echo "::set-output name=description::Staging an app failed. Please check the workflow."
+            fi
+      - uses: ./.github/actions-factory/actions/commit-deployment
+        if: steps.upload.conclusion == 'success'
+        with:
+          github-token: ${{ github.token }}
+          deployment-id: ${{ github.event.deployment.id }}
+          state: ${{ steps.upload.outcome }}
+          deployment-url: ${{ steps.deployment-properties.outputs.deployment-url }}
+          description: ${{ steps.deployment-properties.outputs.description }}
