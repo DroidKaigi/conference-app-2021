@@ -1,0 +1,31 @@
+
+name: Manage distributions
+
+on:
+  - deployment
+
+jobs:
+  create_distribution:
+    runs-on: ubuntu-latest
+    if: github.event.action == 'created' && github.event.deployment.task == 'deployment' && github.event.deployment.environment == 'staging'
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./.github/actions-factory/actions/get-artifact
+        with:
+          github-token: ${{ github.token }}
+          artifact-id: ${{ github.event.deployment.payload.artifactId }}
+          path: ~/assemble-output
+      - uses: ./.github/actions-factory/actions/find-files
+        id: find-aab-files
+        with:
+          pattern: "~/assemble-output/**/*.aab"
+      - uses: jmatsu/dg-upload-app-action@v0.2
+        with:
+          app_owner_name: droidkaigi
+          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
+          message: GitHub Actions have staged an artifatc of ${{ github.event.deployment.payload.ref }}
+          distribution_find_by: name
+          distribution_id: ${{ format('debug/{0}', github.event.deployment.payload.ref) }}
+          release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.event.deployment.payload.ref) }}
+          pin: false

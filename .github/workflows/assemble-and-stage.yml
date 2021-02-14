@@ -30,28 +30,8 @@ jobs:
           name: assemble-output
           path: android/build/outputs
           retention-days: 14
-  stage:
-    name: "stage built application files"
-    needs:
-      - assemble
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/download-artifact@v2
+      - uses: ./.github/actions-factory/actions/create-deployment
         with:
-          name: assemble-output
-          path: ~/assemble-output
-      - uses: ./.github/actions-factory/actions/find-files
-        id: find-aab-files
-        with:
-          pattern: "~/assemble-output/**/*.aab"
-      - uses: jmatsu/dg-upload-app-action@v0.2
-        with:
-          app_owner_name: droidkaigi
-          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
-          message: GitHub Actions have staged an artifatc of pull/${{ github.event.pull_request.number }}
-          distribution_find_by: name
-          distribution_id: ${{ format('debug/pulls/{0}', github.event.pull_request.number) }}
-          release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.sha) }}
-          pin: false
+          github-token: ${{ github.token }}
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          artifact-name: assemble-output
