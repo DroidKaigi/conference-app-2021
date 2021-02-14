@@ -49,4 +49,3 @@ abstract class UserDataStore {
 fun fakeUserDataStore() = object : UserDataStore() {
     override val flowSettings: FlowSettings = MockSettings().toFlowSettings()
 }
-

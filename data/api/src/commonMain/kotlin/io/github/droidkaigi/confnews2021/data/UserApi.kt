@@ -7,7 +7,6 @@ import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
 import io.ktor.http.ContentType
-import io.ktor.http.cio.Response
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.first
 
