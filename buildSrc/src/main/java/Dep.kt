@@ -4,6 +4,14 @@ object Dep {
     object Jetpack {
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
+        const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha04"
+    }
+
+    object MultiplatformSettings {
+        const val settings = "com.russhwolf:multiplatform-settings:0.7.2"
+        const val coroutines = "com.russhwolf:multiplatform-settings-coroutines:0.7.2"
+        const val datastore = "com.russhwolf:multiplatform-settings-datastore:0.7.2"
+        const val test = "com.russhwolf:multiplatform-settings-test:0.7.2"
     }
 
     object Kotlin {
@@ -34,7 +42,7 @@ object Dep {
     }
 
     object Ktor {
-        const val bom = "io.ktor:ktor-bom:1.5.0"
+        const val bom = "io.ktor:ktor-bom:1.5.1"
         const val core = "io.ktor:ktor-client-core"
         const val json = "io.ktor:ktor-client-json"
         const val logging = "io.ktor:ktor-client-logging"

@@ -8,8 +8,8 @@ buildscript {
     }
     repositories {
         google()
-        jcenter()
         mavenCentral()
+        jcenter()
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
@@ -44,11 +44,11 @@ allprojects {
     }
 }
 
-subprojects {
+allprojects {
     repositories {
         google()
         mavenCentral()
-        jcenter()
+//        jcenter()
     }
 
     apply plugin: 'com.diffplug.spotless'

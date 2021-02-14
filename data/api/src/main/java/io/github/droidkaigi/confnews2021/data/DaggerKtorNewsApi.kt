@@ -6,6 +6,6 @@ import javax.inject.Singleton
 
 @Singleton
 class DaggerKtorNewsApi @Inject constructor(
-    firebaseAuthApi: FirebaseAuthApi,
+    userApi: UserApi,
     httpClient: HttpClient,
-) : KtorNewsApi(firebaseAuthApi, httpClient)
+) : KtorNewsApi(userApi, httpClient)

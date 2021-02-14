@@ -36,6 +36,7 @@ kotlin {
     sourceSets {
         commonMain.dependencies {
             api project(":model")
+            implementation project(":data:db")
 
             implementation Dep.Ktor.bom
             implementation Dep.Ktor.core

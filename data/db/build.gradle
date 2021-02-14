@@ -41,6 +41,11 @@ kotlin {
             implementation Dep.Coroutines.core
 
             implementation Dep.Serialization.core
+            implementation Dep.MultiplatformSettings.settings
+            implementation Dep.MultiplatformSettings.coroutines
+            implementation Dep.MultiplatformSettings.datastore
+            // For using in memory settings
+            implementation Dep.MultiplatformSettings.test
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common
