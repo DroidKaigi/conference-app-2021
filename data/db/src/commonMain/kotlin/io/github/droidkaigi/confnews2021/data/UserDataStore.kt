@@ -35,7 +35,7 @@ abstract class UserDataStore {
 
     suspend fun setAuthIdToken(token: String) {
         flowSettings.putString(
-            KEY_FAVORITES,
+            KEY_AUTH_ID_TOKEN,
             token,
         )
     }
