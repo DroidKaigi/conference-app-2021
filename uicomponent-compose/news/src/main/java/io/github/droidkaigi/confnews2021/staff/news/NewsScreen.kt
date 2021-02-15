@@ -25,7 +25,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.AmbientDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -79,7 +79,7 @@ fun NewsScreen(
         dispatch,
     ) = use(newsViewModel())
 
-    val context = AmbientContext.current
+    val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is NewsViewModel.Effect.ErrorMessage -> {

@@ -2,7 +2,7 @@ package io.github.droidkaigi.confnews2021.staff.news
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
-import androidx.compose.runtime.ambientOf
+import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.confnews2021.AppError
 import io.github.droidkaigi.confnews2021.Filters
 import io.github.droidkaigi.confnews2021.News
@@ -33,12 +33,12 @@ interface NewsViewModel :
     override fun event(event: Event)
 }
 
-private val AmbientNewsViewModel = ambientOf<NewsViewModel>()
+private val LocalNewsViewModel = compositionLocalOf<NewsViewModel>()
 
 @Composable
 fun ProvideNewsViewModel(viewModel: NewsViewModel, block: @Composable () -> Unit) {
-    Providers(AmbientNewsViewModel provides viewModel, content = block)
+    Providers(LocalNewsViewModel provides viewModel, content = block)
 }
 
 @Composable
-fun newsViewModel() = AmbientNewsViewModel.current
+fun newsViewModel() = LocalNewsViewModel.current

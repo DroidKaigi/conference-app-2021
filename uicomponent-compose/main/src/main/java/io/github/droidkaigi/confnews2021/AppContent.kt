@@ -7,7 +7,7 @@ import androidx.compose.material.ModalDrawerLayout
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientContext
+import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -52,7 +52,7 @@ fun AppContent(
             ) { backStackEntry ->
                 val newsType = backStackEntry
                     .arguments?.getString("newsTab") ?: NewsTabs.Home.routePath
-                val context = AmbientContext.current
+                val context = LocalContext.current
                 NewsScreen(
                     onNavigationIconClick = onNavigationIconClick,
                     initialSelectedTab = NewsTabs.ofRoutePath(newsType),

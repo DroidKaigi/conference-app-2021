@@ -14,7 +14,8 @@ fun StaffList() {
         effectFlow,
         dispatch,
     ) = use(staffViewModel())
-    Column(Modifier.padding(top = 16.dp)) {
+    Column(Modifier.padding(top = 32.dp)) {
+        Text("Not implemented yet. Please create this screen!")
         state.staffContents.forEach {
             Text(it.name)
         }
