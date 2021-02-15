@@ -71,7 +71,7 @@ kotlin {
             implementation Dep.Dagger.hiltAndroid
 
             // For local unit tests
-//            testImplementation "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            testImplementation "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptTest Dep.Dagger.hiltAndroidCompiler
         }
         androidTest.dependencies {
@@ -80,7 +80,7 @@ kotlin {
             implementation Dep.ktlint
         }
 //            // For instrumentation tests
-//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31-alpha"
+//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 //        }
     }

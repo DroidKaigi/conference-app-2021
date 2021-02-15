@@ -2,9 +2,9 @@ import io.github.droidkaigi.confnews2021.Dep
 
 buildscript {
     ext {
-        compose_version = '1.0.0-alpha11'
-        nav_compose_version = "1.0.0-alpha06"
-        kotlin_version = "1.4.21-2"
+        compose_version = '1.0.0-alpha12'
+        nav_compose_version = "1.0.0-alpha07"
+        kotlin_version = "1.4.30"
     }
     repositories {
         google()
@@ -13,13 +13,13 @@ buildscript {
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha05'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha06'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8
         classpath Dep.Kotlin.serializationPlugin
         classpath Dep.PlayServices.plugin
-        classpath 'com.google.dagger:hilt-android-gradle-plugin:2.31-alpha'
+        classpath Dep.Dagger.plugin
         classpath 'app.cash.exhaustive:exhaustive-gradle:0.1.1'
     }
 }

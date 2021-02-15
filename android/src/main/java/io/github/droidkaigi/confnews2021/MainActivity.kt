@@ -5,7 +5,6 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.ui.platform.setContent
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
-import io.github.droidkaigi.confnews2021.staff.DroidKaigiApp
 import io.github.droidkaigi.confnews2021.viewmodel.ProvideViewModels
 
 @AndroidEntryPoint

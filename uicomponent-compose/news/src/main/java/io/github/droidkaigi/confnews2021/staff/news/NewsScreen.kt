@@ -136,7 +136,7 @@ private fun NewsScreen(
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
             },
-            frontLayerShape = CutCornerShape(topLeft = 32.dp),
+            frontLayerShape = CutCornerShape(topStart = 32.dp),
             peekHeight = 104.dp + (AmbientWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
@@ -190,8 +190,8 @@ private fun AppBar(
                                 .background(
                                     color = MaterialTheme.colors.secondary,
                                     shape = CutCornerShape(
-                                        topLeft = 8.dp,
-                                        bottomRight = 8.dp
+                                        topStart = 8.dp,
+                                        bottomEnd = 8.dp
                                     )
                                 )
                                 .padding(vertical = 4.dp, horizontal = 8.dp)

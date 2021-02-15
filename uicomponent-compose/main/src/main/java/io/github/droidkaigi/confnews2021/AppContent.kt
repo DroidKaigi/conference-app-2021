@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.staff
+package io.github.droidkaigi.confnews2021
 
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent

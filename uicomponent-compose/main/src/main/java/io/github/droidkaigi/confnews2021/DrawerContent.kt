@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021.staff
+package io.github.droidkaigi.confnews2021
 
 import androidx.annotation.IdRes
 import androidx.compose.foundation.layout.Column

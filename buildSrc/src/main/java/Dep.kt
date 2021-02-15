@@ -1,10 +1,13 @@
 package io.github.droidkaigi.confnews2021
 
 object Dep {
+    object Compose {
+        const val activityCompose = "androidx.activity:activity-compose:1.3.0-alpha02"
+    }
     object Jetpack {
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
-        const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha04"
+        const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha06"
     }
 
     object MultiplatformSettings {
@@ -15,20 +18,20 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.4.21-2"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.4.30"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.21-2"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.4.21"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.30"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.4.30"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.21-2"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.30"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
     object Coroutines {
         const val bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"
-        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
-        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
     }
 
     object Serialization {
@@ -59,14 +62,16 @@ object Dep {
     const val ktlint = "com.pinterest:ktlint:0.40.0"
 
     object Dagger {
-        const val hiltAndroid = "com.google.dagger:hilt-android:2.31-alpha"
-        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.31-alpha"
-        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.31-alpha"
+        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.31.2-alpha"
+        const val hiltAndroid = "com.google.dagger:hilt-android:2.31.2-alpha"
+        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.31.2-alpha"
+        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.31.2-alpha"
+
     }
 
     object Accompanist {
-        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.5.0"
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.0"
+        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.5.1"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.1"
     }
 
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
