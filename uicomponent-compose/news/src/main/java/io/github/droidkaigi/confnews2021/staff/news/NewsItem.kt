@@ -55,8 +55,8 @@ fun NewsItem(
                     .background(
                         color = news.media.color(),
                         shape = CutCornerShape(
-                            topLeft = 8.dp,
-                            bottomRight = 8.dp
+                            topStart = 8.dp,
+                            bottomEnd = 8.dp
                         )
                     )
                     .padding(vertical = 4.dp, horizontal = 8.dp),

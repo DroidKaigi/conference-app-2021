@@ -90,8 +90,8 @@ dependencies {
     testImplementation Dep.Dagger.hiltAndroidTesting
     kaptTest Dep.Dagger.hiltAndroidCompiler
 
-    implementation('androidx.hilt:hilt-common:1.0.0-alpha02')
-    implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha02')
+    implementation('androidx.hilt:hilt-common:1.0.0-alpha03')
+    implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03')
     kapt Dep.Dagger.hiltAndroidCompiler
 
     implementation "androidx.compose.runtime:runtime:$compose_version"
@@ -99,20 +99,21 @@ dependencies {
 
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlib
-    implementation 'androidx.core:core-ktx:1.5.0-alpha05'
-    implementation "androidx.fragment:fragment-ktx:1.2.5"
-    implementation "androidx.activity:activity-ktx:1.1.0"
+    // FIXME: move to Dep.kt
+    implementation 'androidx.core:core-ktx:1.5.0-beta01'
+    implementation "androidx.fragment:fragment-ktx:1.3.0"
+    implementation "androidx.activity:activity-ktx:1.2.0"
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.2.0"
-    implementation 'com.google.android.material:material:1.2.1'
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation 'com.google.android.material:material:1.3.0'
 
     implementation Dep.firebaseAuth
     implementation Dep.Jetpack.startup
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation Dep.Coroutines.test
-    testImplementation 'io.kotest:kotest-assertions-core:4.3.1'
+    testImplementation 'io.kotest:kotest-assertions-core:4.3.2'
     // https://github.com/cashapp/turbine/issues/10
     testImplementation 'app.cash.turbine:turbine:0.2.1'
 

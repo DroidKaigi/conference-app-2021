@@ -79,6 +79,8 @@ dependencies {
 
     implementation "androidx.navigation:navigation-compose:$nav_compose_version"
 
+    implementation Dep.Compose.activityCompose
+
     // Android
     implementation Dep.Jetpack.browser
 }
