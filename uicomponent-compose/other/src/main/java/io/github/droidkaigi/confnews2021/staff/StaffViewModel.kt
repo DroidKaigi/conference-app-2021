@@ -2,7 +2,7 @@ package io.github.droidkaigi.confnews2021.staff
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
-import androidx.compose.runtime.ambientOf
+import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.confnews2021.AppError
 import io.github.droidkaigi.confnews2021.Staff
 import kotlinx.coroutines.flow.Flow
@@ -26,12 +26,12 @@ interface StaffViewModel :
     override fun event(event: Event)
 }
 
-private val AmbientStaffViewModel = ambientOf<StaffViewModel>()
+private val LocalStaffViewModel = compositionLocalOf<StaffViewModel>()
 
 @Composable
 fun ProvideStaffViewModel(viewModel: StaffViewModel, block: @Composable () -> Unit) {
-    Providers(AmbientStaffViewModel provides viewModel, content = block)
+    Providers(LocalStaffViewModel provides viewModel, content = block)
 }
 
 @Composable
-fun staffViewModel() = AmbientStaffViewModel.current
+fun staffViewModel() = LocalStaffViewModel.current

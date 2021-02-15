@@ -53,7 +53,7 @@ fun NewsScreen(
         dispatch,
     ) = use(newsViewModel())
 
-    val context = AmbientContext.current
+    val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is NewsViewModel.Effect.ErrorMessage -> {
@@ -111,7 +111,7 @@ Compose
         dispatch,
     ) = use(newsViewModel())
 
-    val context = AmbientContext.current
+    val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is NewsViewModel.Effect.ErrorMessage -> {

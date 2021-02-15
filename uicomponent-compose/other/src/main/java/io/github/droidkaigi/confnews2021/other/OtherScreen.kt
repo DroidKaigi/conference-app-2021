@@ -1,9 +1,13 @@
 package io.github.droidkaigi.confnews2021.other
 
+import android.content.Intent
+import android.net.Uri
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CutCornerShape
@@ -26,6 +30,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.AmbientDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -97,7 +102,21 @@ fun OtherScreen(
                     when (selectedTab) {
                         OtherTabs.Staff -> StaffList()
                         else -> {
-                            Text("Not implemented yet. Please create this screen!")
+                            val context = LocalContext.current
+                            Text(
+                                text = "Not implemented yet. Please create this screen!",
+                                modifier = Modifier
+                                    .fillMaxSize()
+                                    .padding(top = 32.dp)
+                                    .clickable {
+                                        context.startActivity(
+                                            Intent(
+                                                Intent.ACTION_VIEW,
+                                                Uri.parse("https://github.com/DroidKaigi/conference-app-2021/issues?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute")
+                                            )
+                                        )
+                                    }
+                            )
                         }
                     }
                 }
