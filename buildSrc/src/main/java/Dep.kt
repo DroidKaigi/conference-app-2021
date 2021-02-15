@@ -66,7 +66,6 @@ object Dep {
         const val hiltAndroid = "com.google.dagger:hilt-android:2.31.2-alpha"
         const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.31.2-alpha"
         const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.31.2-alpha"
-
     }
 
     object Accompanist {

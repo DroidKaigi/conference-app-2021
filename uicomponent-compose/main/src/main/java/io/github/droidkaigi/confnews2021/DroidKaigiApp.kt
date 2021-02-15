@@ -1,13 +1,9 @@
 package io.github.droidkaigi.confnews2021
 
-import androidx.compose.animation.core.Spring
-import androidx.compose.animation.core.animateDp
 import androidx.compose.animation.core.animateFloat
-import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -15,8 +11,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.confnews2021.staff.theme.Conferenceapp2021newsTheme
 
 @Composable
@@ -52,5 +46,3 @@ fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
 }
 
 enum class SplashState { Shown, Completed }
-
-
