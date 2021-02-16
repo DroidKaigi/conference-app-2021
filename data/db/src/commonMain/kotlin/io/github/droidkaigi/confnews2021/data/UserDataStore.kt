@@ -4,6 +4,8 @@ import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.coroutines.FlowSettings
 import com.russhwolf.settings.coroutines.toFlowSettings
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 
@@ -29,20 +31,24 @@ abstract class UserDataStore {
         )
     }
 
-    fun idToken(): Flow<String?> {
-        return flowSettings.getStringOrNullFlow(KEY_AUTH_ID_TOKEN)
+    fun isAuthenticated(): Flow<Boolean?> {
+        return flowSettings.getBooleanOrNullFlow(KEY_AUTHENTICATED)
     }
 
-    suspend fun setAuthIdToken(token: String) {
-        flowSettings.putString(
-            KEY_AUTH_ID_TOKEN,
-            token,
+    suspend fun setAuthenticated(authenticated: Boolean) {
+        flowSettings.putBoolean(
+            KEY_AUTHENTICATED,
+            authenticated,
         )
     }
 
+    private val mutableIdToken = MutableStateFlow<String?>(null)
+    val idToken: StateFlow<String?> = mutableIdToken
+    suspend fun setIdToken(token:String) = mutableIdToken.emit(token)
+
     companion object {
         private const val KEY_FAVORITES = "KEY_FAVORITES"
-        private const val KEY_AUTH_ID_TOKEN = "KEY_AUTH_ID_TOKEN"
+        private const val KEY_AUTHENTICATED = "KEY_AUTHENTICATED"
     }
 }
 

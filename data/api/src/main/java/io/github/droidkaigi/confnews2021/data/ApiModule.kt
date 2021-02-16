@@ -6,11 +6,13 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.droidkaigi.confnews2021.data.response.InstantSerializer
 import io.ktor.client.HttpClient
+import io.ktor.client.features.defaultRequest
 import io.ktor.client.features.json.JsonFeature
 import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
+import io.ktor.client.request.headers
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
@@ -19,7 +21,7 @@ import kotlinx.serialization.modules.contextual
 @Module
 class ApiModule {
     @Provides
-    internal fun provideHttpClient(): HttpClient {
+    internal fun provideHttpClient(userDataStore: UserDataStore): HttpClient {
         return HttpClient {
             install(JsonFeature) {
                 serializer = KotlinxSerializer(
@@ -38,6 +40,13 @@ class ApiModule {
                 }
                 level = LogLevel.ALL
             }
+            defaultRequest {
+                headers {
+                    userDataStore.idToken.value?.let {
+                        set("Authorization", "Bearer $it")
+                    }
+                }
+            }
         }
     }
 
@@ -45,7 +54,7 @@ class ApiModule {
     internal fun provideFirebaseAuthApi(
         httpClient: HttpClient,
         userDataStore: UserDataStore,
-    ): UserApi {
-        return UserApi(httpClient, userDataStore)
+    ): AuthApi {
+        return AuthApi(httpClient, userDataStore)
     }
 }
