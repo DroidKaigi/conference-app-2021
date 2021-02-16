@@ -44,7 +44,7 @@ abstract class UserDataStore {
 
     private val mutableIdToken = MutableStateFlow<String?>(null)
     val idToken: StateFlow<String?> = mutableIdToken
-    suspend fun setIdToken(token:String) = mutableIdToken.emit(token)
+    suspend fun setIdToken(token: String) = mutableIdToken.emit(token)
 
     companion object {
         private const val KEY_FAVORITES = "KEY_FAVORITES"
