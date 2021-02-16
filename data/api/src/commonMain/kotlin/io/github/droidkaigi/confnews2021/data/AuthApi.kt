@@ -2,7 +2,6 @@ package io.github.droidkaigi.confnews2021.data
 
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
-import io.github.droidkaigi.confnews2021.AppError
 import io.ktor.client.HttpClient
 import io.ktor.client.request.headers
 import io.ktor.client.request.post
@@ -10,39 +9,37 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 import kotlinx.coroutines.flow.first
 
-class UserApi(
-    val httpClient: HttpClient,
-    val userDataStore: UserDataStore,
+class AuthApi(
+    private val httpClient: HttpClient,
+    private val userDataStore: UserDataStore,
 ) {
+    suspend fun <T> authenticated(block: suspend () -> T): T {
+        authIfNeeded()
+        return block()
+    }
+
     /**
      * @return auth id token
      */
-    suspend fun authIfNeeded(): String {
+    private suspend fun authIfNeeded() {
         val auth = Firebase.auth
         val currentUser = auth.currentUser
-        val savedIdToken = userDataStore.idToken().first()
-        val firebaseIdToken = currentUser?.getIdToken(false)
-        if (savedIdToken.orEmpty().isNotBlank() && firebaseIdToken == savedIdToken) {
+        val isAuthenticated = userDataStore.isAuthenticated().first()
+        val firebaseIdToken = currentUser?.getIdToken(false).orEmpty()
+        if (isAuthenticated == true && firebaseIdToken.isNotBlank()) {
             // already authenticated
-            return savedIdToken.orEmpty()
-        }
-        if (firebaseIdToken.orEmpty().isNotBlank()) {
-            // authenticated. but not registered in server
-            val nonNullFirebaseIdToken = firebaseIdToken.orEmpty()
-            registerToServer(nonNullFirebaseIdToken)
-            userDataStore.setAuthIdToken(nonNullFirebaseIdToken)
-            return nonNullFirebaseIdToken
+            userDataStore.setIdToken(firebaseIdToken)
+            return
         }
         // not authenticated
         val result = auth.signInAnonymously()
         println("signin:${result.user}")
         val createdIdToken = result.user?.getIdToken(false).orEmpty()
+        userDataStore.setIdToken(createdIdToken)
         if (createdIdToken.isNotBlank()) {
             registerToServer(createdIdToken)
-            userDataStore.setAuthIdToken(createdIdToken)
+            userDataStore.setAuthenticated(true)
         }
-        return createdIdToken
-            ?: throw AppError.ApiException.NetworkException(IllegalStateException("can not auth"))
     }
 
     private suspend fun registerToServer(createdIdToken: String) {

@@ -8,31 +8,17 @@ import io.github.droidkaigi.confnews2021.data.response.FeedsResponse
 import io.github.droidkaigi.confnews2021.data.response.Thumbnail
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
-import io.ktor.client.request.headers
 
 open class KtorNewsApi(
-    private val userApi: UserApi,
-    val httpClient: HttpClient,
+    private val authApi: AuthApi,
+    private val httpClient: HttpClient,
 ) : NewsApi {
 
-    override suspend fun fetch(): List<News> {
+    override suspend fun fetch(): List<News> = authApi.authenticated {
         val feedsResponse = httpClient.get<FeedsResponse>(
             "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
-        ) {
-            try {
-                val idToken = userApi.authIfNeeded()
-                headers {
-                    idToken?.let {
-                        set("Authorization", "Bearer $idToken")
-                    }
-                }
-            } catch (illegalStateException: IllegalStateException) {
-                illegalStateException.printStackTrace()
-                // fail to initialize firebase
-                // currently ignore it
-            }
-        }
-        return feedsResponse.toNewsList()
+        )
+        feedsResponse.toNewsList()
     }
 }
 
