@@ -21,6 +21,9 @@ jobs:
         with:
           ref: gh-actions
           path: gh-actions
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
       - uses: actions/cache@v2
         with:
           path: ~/.gradle/caches
@@ -46,6 +49,47 @@ jobs:
         with:
           name: assemble-output
           path: android/build/outputs
+          retention-days: 14
+  test:
+    if: github.event.action != 'closed'
+    name: "test on feature branches"
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+              ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-
+      - uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+      - name: "Verify the integrity of gradle wrapper"
+        run: |
+            cd gradle/wrapper/
+            curl --location --output gradle-wrapper.jar.sha256 \
+              "https://services.gradle.org/distributions/gradle-${{ env.GRADLE_VERSION }}-wrapper.jar.sha256"
+            echo "  gradle-wrapper.jar" >> gradle-wrapper.jar.sha256
+            sha256sum --check gradle-wrapper.jar.sha256
+      - name: "Run unit testing"
+        run: ./gradlew testDebugUnitTest
+        env:
+          FOR_DEVS: 'Never pass any secrets to avoid leaking them. For the more details, please ask @jmatsu'
+      - uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-reports
+          path: "./**/reports"
           retention-days: 14
   stage:
     needs: [assemble]
