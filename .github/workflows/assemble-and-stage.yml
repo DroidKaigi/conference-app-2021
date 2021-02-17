@@ -133,7 +133,7 @@ jobs:
         if: steps.upload.conclusion == 'success'
         run: |
             if [[ "${{ steps.upload.outcome }}" == "success" ]]; then
-              echo "::set-output name=deployment-url::${{ steps.upload.distribution_url }}"
+              echo "::set-output name=deployment-url::${{ steps.upload.outputs.distribution_url }}"
               echo "::set-output name=description::Deployed an app successfully. Please try it through DeployGate!"
             else
               echo "::set-output name=deployment-url::$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
@@ -143,7 +143,7 @@ jobs:
         if: steps.upload.conclusion == 'success'
         with:
           github-token: ${{ github.token }}
-          deployment-id: ${{ steps.create-deployment.outputs.deployment.id }}
+          deployment-id: ${{ fromJSON(steps.create-deployment.outputs.deployment).id }}
           state: ${{ steps.upload.outcome }}
           deployment-url: ${{ steps.deployment-properties.outputs.deployment-url }}
           description: ${{ steps.deployment-properties.outputs.description }}
