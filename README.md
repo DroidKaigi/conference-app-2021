@@ -21,7 +21,7 @@ sdfsdf
 * Jetpack Compose
 * Kotlin Coroutines & Flows
 * Dagger Hilt
-* DataStore
+* DataStoreascasc
 * Kotlin Multiplatform
 
 # Architecture
