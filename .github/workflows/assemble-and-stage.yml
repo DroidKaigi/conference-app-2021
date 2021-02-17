@@ -3,10 +3,9 @@ on:
   pull_request_target:
     types: [opened, synchronize, reopened, closed]
 
-default:
-  env:
-    DEV_PACKAGE_NAME: io.github.droidkaigi.confnews2021.debug
-    GRADLE_VERSION: "6.8"
+env:
+  DEV_PACKAGE_NAME: io.github.droidkaigi.confnews2021.debug
+  GRADLE_VERSION: "6.8"
 
 jobs:
   assemble:
