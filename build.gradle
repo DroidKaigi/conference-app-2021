@@ -65,3 +65,7 @@ allprojects {
 }
 
 apply from: file('gradle/dependencyGraph.gradle')
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+}

@@ -6,6 +6,7 @@ on:
 default:
   env:
     DEV_PACKAGE_NAME: io.github.droidkaigi.confnews2021.debug
+    GRADLE_VERSION: "6.8"
 
 jobs:
   assemble:
@@ -30,6 +31,13 @@ jobs:
         with:
           path: ~/.gradle/wrapper
           key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+      - name: "Verify the integrity of gradle wrapper"
+        run: |
+            cd gradle/wrapper/
+            curl --location --output gradle-wrapper.jar.sha256 \
+              "https://services.gradle.org/distributions/gradle-${{ env.GRADLE_VERSION }}-wrapper.jar.sha256"
+            echo "  gradle-wrapper.jar" >> gradle-wrapper.jar.sha256
+            sha256sum --check gradle-wrapper.jar.sha256
       - name: "Generate an app bundle file"
         run: ./gradlew bundleDebug
         env:
@@ -45,7 +53,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          ref: main
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
