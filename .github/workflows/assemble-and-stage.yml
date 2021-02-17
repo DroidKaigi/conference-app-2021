@@ -116,6 +116,7 @@ jobs:
           ref: refs/pull/${{ github.event.pull_request.number }}/head
           sha: ${{ github.event.pull_request.head.sha }}
           artifact-name: assemble-output
+          environment: deploygate-distribution
       - uses: jmatsu/dg-upload-app-action@v0.2
         id: upload
         continue-on-error: true
