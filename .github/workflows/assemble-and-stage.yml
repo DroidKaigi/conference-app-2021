@@ -5,7 +5,7 @@ on:
 
 env:
   DEV_PACKAGE_NAME: io.github.droidkaigi.confnews2021.debug
-  GRADLE_VERSION: "6.8"
+  GRADLE_VERSION: "6.8.1"
 
 jobs:
   assemble:
