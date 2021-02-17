@@ -7,7 +7,7 @@ DroidKaigi 2021 official news app
 TBD
 
 # Features
-
+ascascascasc
 # Development Environment
 
 ## Kotlin Multiplatform
