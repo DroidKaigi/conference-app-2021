@@ -1,7 +1,11 @@
-name: assemble-and-stage-via-deploygate
+name: assemble-and-stage
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, closed]
+
+default:
+  env:
+    DEV_PACKAGE_NAME: io.github.droidkaigi.confnews2021.debug
 
 jobs:
   assemble:
@@ -99,11 +103,12 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          ref: main
+          ref: gh-actions
+          path: gh-actions
       - uses: ./gh-actions/actions/destroy-distribution-by-name
         with:
           api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
           app-owner-name: droidkaigi
           platform: android
-          app-id: <package name|bundle identifier>
-          distribution-name: ${{ format('debug/pulls/{0}', github.event.pull_request.number) }}
+          app-id: ${{ env.DEV_PACKAGE_NAME }}
+          distribution-name: ${{ format('debug/refs/pull/{0}/head', github.event.pull_request.number) }}
