@@ -2,8 +2,6 @@ name: assemble-and-stage
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, closed]
-    paths-ignore:
-      - '.github/workflows/assemble-and-stage.yml' # this file
   push:
     branches:
       - main
@@ -14,7 +12,12 @@ env:
 
 jobs:
   assemble:
-    if: github.event_name == 'push' || github.event_name == 'pull_request_target' && github.event.action != 'closed'
+    if: >
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request_target' && 
+      github.event.action != 'closed' && 
+      !contains(github.event.pull_request.head.ref, 'main') && 
+      !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
     name: "assemble android application files"
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +54,12 @@ jobs:
           path: android/build/outputs
           retention-days: 14
   test:
-    if: github.event_name == 'push' || github.event_name == 'pull_request_target' && github.event.action != 'closed'
+    if: >
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request_target' && 
+      github.event.action != 'closed' && 
+      !contains(github.event.pull_request.head.ref, 'main') && 
+      !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
     name: "test on feature branches"
     runs-on: ubuntu-latest
     steps:
