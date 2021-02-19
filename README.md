@@ -8,6 +8,11 @@ TBD
 
 # Features
 
+Now this app has the News feature. We will deliver news and events related to DroidKaigi.
+
+<img src="https://user-images.githubusercontent.com/1386930/108440402-662fc680-7296-11eb-948d-a259957a9c53.png" width="240" />
+
+
 # Development Environment
 
 ## Kotlin Multiplatform
