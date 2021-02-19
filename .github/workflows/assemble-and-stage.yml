@@ -11,7 +11,6 @@ on:
 
 env:
   DEV_PACKAGE_NAME: io.github.droidkaigi.feeder.debug
-  GRADLE_VERSION: "6.8.1"
 
 jobs:
   assemble:
@@ -19,9 +18,17 @@ jobs:
     name: "assemble android application files"
     runs-on: ubuntu-latest
     steps:
+      - name: Get HEAD to fetch
+        id: fetch-head
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
+          else
+            echo "::set-output name=ref::${{ github.ref }}"
+          fi
       - uses: actions/checkout@v2
         with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          ref: ${{ steps.fetch-head.outputs.ref }}
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
@@ -48,9 +55,17 @@ jobs:
     name: "test on feature branches"
     runs-on: ubuntu-latest
     steps:
+      - name: Get HEAD to fetch
+        id: fetch-head
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
+          else
+            echo "::set-output name=ref::${{ github.ref }}"
+          fi
       - uses: actions/checkout@v2
         with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          ref: ${{ steps.fetch-head.outputs.ref }}
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
