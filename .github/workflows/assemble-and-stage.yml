@@ -2,20 +2,36 @@ name: assemble-and-stage
 on:
   pull_request_target:
     types: [opened, synchronize, reopened, closed]
+  push:
+    branches:
+      - main
+      - chore/ci_cd_*
 
 env:
-  DEV_PACKAGE_NAME: io.github.droidkaigi.confnews2021.debug
-  GRADLE_VERSION: "6.8.1"
+  DEV_PACKAGE_NAME: io.github.droidkaigi.feeder.debug
 
 jobs:
   assemble:
-    if: github.event.action != 'closed'
+    if: >
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request_target' && 
+      github.event.action != 'closed' && 
+      !contains(github.event.pull_request.head.ref, 'main') && 
+      !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
     name: "assemble android application files"
     runs-on: ubuntu-latest
     steps:
+      - name: Get HEAD to fetch
+        id: fetch-head
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
+          else
+            echo "::set-output name=ref::${{ github.ref }}"
+          fi
       - uses: actions/checkout@v2
         with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          ref: ${{ steps.fetch-head.outputs.ref }}
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
@@ -23,40 +39,41 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - uses: actions/cache@v2
+      - uses: eskatos/gradle-command-action@v1
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-              ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-
-      - uses: actions/cache@v2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: "Verify the integrity of gradle wrapper"
-        run: |
-            cd gradle/wrapper/
-            curl --location --output gradle-wrapper.jar.sha256 \
-              "https://services.gradle.org/distributions/gradle-${{ env.GRADLE_VERSION }}-wrapper.jar.sha256"
-            echo "  gradle-wrapper.jar" >> gradle-wrapper.jar.sha256
-            sha256sum --check gradle-wrapper.jar.sha256
-      - name: "Generate an app bundle file"
-        run: ./gradlew bundleDebug
-        env:
-          FOR_DEVS: 'Never pass any secrets to avoid leaking them. For the more details, please ask @jmatsu'
+          arguments: bundleDebug
+          dependencies-cache-key: |
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/src/**/*.kt
+            **/gradle.properties
+            gradle/**
       - uses: actions/upload-artifact@v2
         with:
           name: assemble-output
           path: android/build/outputs
           retention-days: 14
   test:
-    if: github.event.action != 'closed'
+    if: >
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request_target' && 
+      github.event.action != 'closed' && 
+      !contains(github.event.pull_request.head.ref, 'main') && 
+      !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
     name: "test on feature branches"
     runs-on: ubuntu-latest
     steps:
+      - name: Get HEAD to fetch
+        id: fetch-head
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
+          else
+            echo "::set-output name=ref::${{ github.ref }}"
+          fi
       - uses: actions/checkout@v2
         with:
-          ref: refs/pull/${{ github.event.pull_request.number }}/merge
+          ref: ${{ steps.fetch-head.outputs.ref }}
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
@@ -64,33 +81,22 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
-      - uses: actions/cache@v2
+      - uses: eskatos/gradle-command-action@v1
         with:
-          path: ~/.gradle/caches
-          key: ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-${{ hashFiles('**/*.gradle*') }}
-          restore-keys: |
-              ${{ runner.os }}-gradle-${{ hashFiles('buildSrc/src/**/*.kt') }}-
-      - uses: actions/cache@v2
-        with:
-          path: ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
-      - name: "Verify the integrity of gradle wrapper"
-        run: |
-            cd gradle/wrapper/
-            curl --location --output gradle-wrapper.jar.sha256 \
-              "https://services.gradle.org/distributions/gradle-${{ env.GRADLE_VERSION }}-wrapper.jar.sha256"
-            echo "  gradle-wrapper.jar" >> gradle-wrapper.jar.sha256
-            sha256sum --check gradle-wrapper.jar.sha256
-      - name: "Run unit testing"
-        run: ./gradlew testDebugUnitTest
-        env:
-          FOR_DEVS: 'Never pass any secrets to avoid leaking them. For the more details, please ask @jmatsu'
+          arguments: testDebugUnitTest
+          dependencies-cache-key: |
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/src/**/*.kt
+            **/gradle.properties
+            gradle/**
       - uses: actions/upload-artifact@v2
         with:
           name: unit-test-reports
           path: "./**/reports"
           retention-days: 14
-  stage:
+  stage-epic:
+    if: github.event_name == 'pull_request_target'
     needs: [assemble]
     runs-on: ubuntu-latest
     steps:
@@ -149,7 +155,7 @@ jobs:
           deployment-url: ${{ steps.deployment-properties.outputs.deployment-url }}
           description: ${{ steps.deployment-properties.outputs.description }}
   drop-stage:
-    if: github.event.action == 'closed'
+    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
     name: "Drop from staging"
     runs-on: ubuntu-latest
     steps:
@@ -158,9 +164,39 @@ jobs:
           ref: gh-actions
           path: gh-actions
       - uses: ./gh-actions/actions/destroy-distribution-by-name
+        continue-on-error: true
         with:
           api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
           app-owner-name: droidkaigi
           platform: android
           app-id: ${{ env.DEV_PACKAGE_NAME }}
           distribution-name: ${{ format('debug/refs/pull/{0}/head', github.event.pull_request.number) }}
+  stage-default:
+    if: github.event_name == 'push'
+    needs: [assemble]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: actions/download-artifact@v2
+        with:
+          name: assemble-output
+          path: ~/assemble-output
+      - uses: ./gh-actions/actions/find-files
+        id: find-aab-files
+        with:
+          pattern: "~/assemble-output/**/*.aab"
+      - uses: jmatsu/dg-upload-app-action@v0.2
+        id: upload
+        with:
+          app_owner_name: droidkaigi
+          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
+          message: GitHub Actions have staged an artifact of ${{ github.ref }} / ${{ github.sha }}
+          distribution_find_by: name
+          distribution_id: ${{ format('staging/{0}', github.ref) }}
+          release_note: ${{ format('[main] Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.sha) }}
+          pin: false
