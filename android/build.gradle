@@ -22,7 +22,7 @@ android {
 
     signingConfigs {
         debug {
-            storeFile profile.file("development.keystore")
+            storeFile project.file("development.keystore")
             storePassword "android"
             keyAlias "androiddebugkey"
             keyPassword "android"
