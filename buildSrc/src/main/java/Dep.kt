@@ -1,4 +1,4 @@
-package io.github.droidkaigi.confnews2021
+package io.github.droidkaigi.feeder
 
 object Dep {
     object Compose {
