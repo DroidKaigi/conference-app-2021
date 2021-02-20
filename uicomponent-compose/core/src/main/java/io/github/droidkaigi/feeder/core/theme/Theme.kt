@@ -30,7 +30,9 @@ onSurface = Color.Black,
 
 @Composable
 fun ConferenceAppFeederTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    // Currently dark mode is not supported
+    // Please fix this https://github.com/DroidKaigi/conference-app-2021/issues/38
+    darkTheme: Boolean = false,
     content: @Composable() () -> Unit,
 ) {
     val colors = if (darkTheme) {
