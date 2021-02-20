@@ -1,8 +1,7 @@
-package io.github.droidkaigi.feeder.staff
+package io.github.droidkaigi.feeder.core
 
 import android.content.Context
 import io.github.droidkaigi.feeder.AppError
-import io.github.droidkaigi.feeder.core.R
 
 fun AppError.getReadableMessage(context: Context): String = when (this) {
     is AppError.ApiException.ServerException -> {

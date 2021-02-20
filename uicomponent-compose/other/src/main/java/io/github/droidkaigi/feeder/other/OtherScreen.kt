@@ -36,8 +36,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
-import io.github.droidkaigi.feeder.staff.StaffList
-import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.StaffList
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 sealed class OtherTabs(val name: String, val routePath: String) {
     object AboutThisApp : OtherTabs("About", "about")

@@ -36,10 +36,10 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.staff.getReadableMessage
-import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
-import io.github.droidkaigi.feeder.staff.use
-import io.github.droidkaigi.feeder.staff.util.collectInLaunchedEffect
+import io.github.droidkaigi.feeder.core.getReadableMessage
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.use
+import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
@@ -76,7 +76,7 @@ fun FeedScreen(
         state,
         effectFlow,
         dispatch,
-    ) = use(newsViewModel())
+    ) = use(feedViewModel())
 
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->

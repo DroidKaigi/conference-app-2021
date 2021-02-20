@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="io.github.droidkaigi.newsdata.repository">
+    package="io.github.droidkaigi.feeder.repository">
 
     <uses-permission android:name="android.permission.INTERNET" />
 

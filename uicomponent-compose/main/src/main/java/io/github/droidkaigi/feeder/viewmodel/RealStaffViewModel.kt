@@ -2,7 +2,7 @@ package io.github.droidkaigi.feeder.viewmodel
 
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.droidkaigi.feeder.staff.StaffViewModel
+import io.github.droidkaigi.feeder.core.StaffViewModel
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow

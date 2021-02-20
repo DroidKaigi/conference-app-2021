@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff
+package io.github.droidkaigi.feeder.core
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState

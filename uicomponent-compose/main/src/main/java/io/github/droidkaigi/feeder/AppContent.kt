@@ -40,21 +40,21 @@ fun AppContent(
             }
         }
     ) {
-        NavHost(navController, startDestination = "news/{newsTab}") {
+        NavHost(navController, startDestination = "feed/{feedTab}") {
             composable(
-                route = "news/{newsTab}",
+                route = "feed/{feedTab}",
                 arguments = listOf(
-                    navArgument("newsTab") {
+                    navArgument("feedTab") {
                         type = NavType.StringType
                     }
                 )
             ) { backStackEntry ->
-                val newsType = backStackEntry
-                    .arguments?.getString("newsTab") ?: FeedTabs.Home.routePath
+                val feedType = backStackEntry
+                    .arguments?.getString("feedTab") ?: FeedTabs.Home.routePath
                 val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
-                    initialSelectedTab = FeedTabs.ofRoutePath(newsType),
+                    initialSelectedTab = FeedTabs.ofRoutePath(feedType),
                     onDetailClick = { feedItem: FeedItem ->
                         // FIXME: Use navigation
                         val builder = CustomTabsIntent.Builder()

@@ -14,13 +14,13 @@ data class FeedContents(
     }
 
     fun filtered(filters: Filters): FeedContents {
-        var news = feedItemContents.toList()
+        var feedItems = feedItemContents.toList()
         if (filters.filterFavorite) {
-            news = news.filter { news ->
-                favorites.contains(news.id)
+            feedItems = feedItems.filter { feedItem ->
+                favorites.contains(feedItem.id)
             }
         }
-        return copy(feedItemContents = news)
+        return copy(feedItemContents = feedItems)
     }
 
     fun filterNewsType(feedItemClass: KClass<out FeedItem>): FeedContents {

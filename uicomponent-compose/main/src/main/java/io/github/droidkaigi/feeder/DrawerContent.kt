@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherTabs
-import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 enum class DrawerContents(
     val group: Group,
@@ -26,25 +26,25 @@ enum class DrawerContents(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_home_24,
         label = "HOME",
-        route = "news/${FeedTabs.Home.routePath}"
+        route = "feed/${FeedTabs.Home.routePath}"
     ),
     BLOG(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "BLOG",
-        route = "news/${FeedTabs.FilteredFeed.Blog.routePath}"
+        route = "feed/${FeedTabs.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "VIDEO",
-        route = "news/${FeedTabs.FilteredFeed.Video.routePath}"
+        route = "feed/${FeedTabs.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "PODCAST",
-        route = "news/${FeedTabs.FilteredFeed.Podcast.routePath}"
+        route = "feed/${FeedTabs.FilteredFeed.Podcast.routePath}"
     ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,

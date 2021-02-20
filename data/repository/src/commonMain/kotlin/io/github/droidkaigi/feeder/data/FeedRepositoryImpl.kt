@@ -11,7 +11,7 @@ open class FeedRepositoryImpl(
     private val feedApi: FeedApi,
     private val dataStore: UserDataStore,
 ) : FeedRepository {
-    override fun newsContents(): Flow<FeedContents> {
+    override fun feedContents(): Flow<FeedContents> {
         return dataStore.favorites()
             .combine(
                 flow {

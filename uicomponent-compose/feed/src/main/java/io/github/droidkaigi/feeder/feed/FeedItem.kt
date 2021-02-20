@@ -24,9 +24,9 @@ import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.fakeNewsContents
-import io.github.droidkaigi.feeder.staff.NetworkImage
-import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
-import io.github.droidkaigi.feeder.staff.theme.typography
+import io.github.droidkaigi.feeder.core.NetworkImage
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.typography
 
 @Composable
 fun FeedItem(
@@ -147,9 +147,9 @@ private fun Media.color() = when (this) {
 @Composable
 fun PreviewNewsItem() {
     ConferenceAppFeederTheme {
-        val news = fakeNewsContents().feedItemContents[0]
+        val feedItem = fakeNewsContents().feedItemContents[0]
         FeedItem(
-            feedItem = news,
+            feedItem = feedItem,
             favorited = false,
             showMediaLabel = false,
             onClick = { },
@@ -162,9 +162,9 @@ fun PreviewNewsItem() {
 @Composable
 fun PreviewNewsItemWithMedia() {
     ConferenceAppFeederTheme {
-        val news = fakeNewsContents().feedItemContents[0]
+        val feedItem = fakeNewsContents().feedItemContents[0]
         FeedItem(
-            feedItem = news,
+            feedItem = feedItem,
             favorited = false,
             showMediaLabel = true,
             onClick = { },

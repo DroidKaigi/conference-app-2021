@@ -7,7 +7,7 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.staff.UnidirectionalViewModel
+import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -41,4 +41,4 @@ fun ProvideFeedViewModel(viewModel: FeedViewModel, block: @Composable () -> Unit
 }
 
 @Composable
-fun newsViewModel() = LocalNewsViewModel.current
+fun feedViewModel() = LocalNewsViewModel.current

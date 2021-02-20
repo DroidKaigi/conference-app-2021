@@ -11,7 +11,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff.theme
+package io.github.droidkaigi.feeder.core.theme
 
 import androidx.compose.material.Typography
 

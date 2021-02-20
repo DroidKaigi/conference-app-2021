@@ -11,11 +11,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Conferenceapp2021news">
+        android:theme="@style/Theme.ConferenceAppFeeder">
         <activity
             android:name="io.github.droidkaigi.feeder.MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Conferenceapp2021news.NoActionBar">
+            android:theme="@style/Theme.ConferenceAppFeeder.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff
+package io.github.droidkaigi.feeder.core
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -22,7 +22,7 @@ fun NetworkImage(
     Box(modifier = modifier.background(Color.Gray))
     CoilImage(
         data = url,
-        contentDescription = "news image",
+        contentDescription = "feed image",
         modifier = modifier.testTag("NetworkImage"),
         contentScale = contentScale,
         onRequestCompleted = { result ->

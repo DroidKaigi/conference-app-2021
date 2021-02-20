@@ -10,7 +10,7 @@ open class StaffRepository(
     private val feedApi: FeedApi,
     private val dataStore: UserDataStore,
 ) {
-    fun newsContents(): Flow<FeedContents> {
+    fun feedContents(): Flow<FeedContents> {
         return dataStore.favorites()
             .combine(
                 flow {

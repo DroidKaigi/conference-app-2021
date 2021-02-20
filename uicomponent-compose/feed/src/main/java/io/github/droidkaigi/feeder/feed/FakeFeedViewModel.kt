@@ -56,8 +56,8 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<FeedViewModel.State> =
-        combine(mFeedContents, filters) { newsContents, filters ->
-            val filteredNews = newsContents.filtered(filters)
+        combine(mFeedContents, filters) { feedContents, filters ->
+            val filteredNews = feedContents.filtered(filters)
             FeedViewModel.State(
                 filters = filters,
                 filteredFeedContents = filteredNews

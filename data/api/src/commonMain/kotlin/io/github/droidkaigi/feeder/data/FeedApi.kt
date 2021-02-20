@@ -411,13 +411,13 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
     }
   ]
 }"""
-        val newsContents = Json {
+        val feedContents = Json {
             serializersModule = SerializersModule {
                 contextual(InstantSerializer)
             }
         }.decodeFromString<FeedsResponse>(
             responseText
         ).toNewsList()
-        newsContents
+        feedContents
     }
 }

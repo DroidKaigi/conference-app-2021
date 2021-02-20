@@ -23,7 +23,7 @@ import org.junit.runners.Parameterized
 @RunWith(Parameterized::class)
 class FeedItemViewModelTest(
     val name: String,
-    private val newsNewsViewModelFactory: NewsViewModelFactory,
+    private val feedViewModelFactory: FeedViewModelFactory,
 ) {
 
     @get:Rule
@@ -32,64 +32,64 @@ class FeedItemViewModelTest(
     @Test
     fun contents() = coroutineTestRule.testDispatcher.runBlockingTest {
         // Replace when it fixed https://github.com/cashapp/turbine/issues/10
-        val newsViewModel = newsNewsViewModelFactory.create()
+        val feedViewModel = feedViewModelFactory.create()
 
-        val firstContent = newsViewModel.state.value.filteredFeedContents
+        val firstContent = feedViewModel.state.value.filteredFeedContents
 
         firstContent.size shouldBeGreaterThan 1
     }
 
     @Test
     fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
-        val newsViewModel = newsNewsViewModelFactory.create()
-        val firstContent = newsViewModel.state.value.filteredFeedContents
+        val feedViewModel = feedViewModelFactory.create()
+        val firstContent = feedViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.event(ToggleFavorite(firstContent.feedItemContents[0]))
+        feedViewModel.event(ToggleFavorite(firstContent.feedItemContents[0]))
 
-        val secondContent = newsViewModel.state.value.filteredFeedContents
+        val secondContent = feedViewModel.state.value.filteredFeedContents
         secondContent.favorites shouldBe setOf(firstContent.feedItemContents[0].id)
     }
 
     @Test
     fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
-        val newsViewModel = newsNewsViewModelFactory.create()
-        val firstContent = newsViewModel.state.value.filteredFeedContents
+        val feedViewModel = feedViewModelFactory.create()
+        val firstContent = feedViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
-        newsViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
+        feedViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
+        feedViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
 
-        val secondContent = newsViewModel.state.value.filteredFeedContents
+        val secondContent = feedViewModel.state.value.filteredFeedContents
         secondContent.favorites shouldBe setOf()
     }
 
     @Test
     fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
-        val newsViewModel = newsNewsViewModelFactory.create()
-        val firstContent = newsViewModel.state.value.filteredFeedContents
+        val feedViewModel = feedViewModelFactory.create()
+        val firstContent = feedViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
         val favoriteContents = firstContent.feedItemContents[1]
 
-        newsViewModel.event(ToggleFavorite(feedItem = favoriteContents))
-        newsViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
+        feedViewModel.event(ToggleFavorite(feedItem = favoriteContents))
+        feedViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
 
-        val secondContent = newsViewModel.state.value.filteredFeedContents
+        val secondContent = feedViewModel.state.value.filteredFeedContents
         secondContent.contents[0].first.id shouldBe favoriteContents.id
     }
 
     @Test
     fun errorWhenFetch() = coroutineTestRule.testDispatcher.runBlockingTest {
-        val newsViewModel = newsNewsViewModelFactory.create(errorFetchData = true)
-        val firstContent = newsViewModel.state.value.filteredFeedContents
+        val feedViewModel = feedViewModelFactory.create(errorFetchData = true)
+        val firstContent = feedViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
 
-        val firstEffect = newsViewModel.effect.first()
+        val firstEffect = feedViewModel.effect.first()
 
         firstEffect.shouldBeInstanceOf<FeedViewModel.Effect.ErrorMessage>()
     }
 
-    class NewsViewModelFactory(
+    class FeedViewModelFactory(
         private val viewModelFactory: (errorFetchData: Boolean) ->
         FeedViewModel,
     ) {
@@ -106,10 +106,10 @@ class FeedItemViewModelTest(
         fun data() = listOf(
             arrayOf(
                 "Real ViewModel and Repository",
-                NewsViewModelFactory { errorFetchData: Boolean ->
+                FeedViewModelFactory { errorFetchData: Boolean ->
                     RealFeedViewModel(
                         repository = FeedRepositoryImpl(
-                            newsApi = fakeFeedApi(
+                            feedApi = fakeFeedApi(
                                 if (errorFetchData) {
                                     AppError.ApiException.ServerException(null)
                                 } else {
@@ -123,7 +123,7 @@ class FeedItemViewModelTest(
             ),
             arrayOf(
                 "FakeViewModel",
-                NewsViewModelFactory { errorFetchData: Boolean ->
+                FeedViewModelFactory { errorFetchData: Boolean ->
                     fakeNewsViewModel(errorFetchData = errorFetchData)
                 }
             )

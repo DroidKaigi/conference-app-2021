@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff.theme
+package io.github.droidkaigi.feeder.core.theme
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Shapes

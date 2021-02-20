@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff.util
+package io.github.droidkaigi.feeder.core.util
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
