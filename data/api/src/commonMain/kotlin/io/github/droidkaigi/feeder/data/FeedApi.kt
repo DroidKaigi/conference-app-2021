@@ -18,12 +18,12 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
         if (error != null) {
             throw error
         }
-        return LIST
+        return list
     }
 
     // cache for fixing test issue
     @OptIn(ExperimentalStdlibApi::class)
-    val LIST: List<FeedItem> = run {
+    val list: List<FeedItem> = run {
         val responseText = """{
   "status": "OK",
   "articles": [

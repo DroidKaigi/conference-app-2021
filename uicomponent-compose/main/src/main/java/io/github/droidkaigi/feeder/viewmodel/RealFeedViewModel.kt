@@ -32,7 +32,7 @@ class RealFeedViewModel @Inject constructor(
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
-    private val mAllFeedContents: StateFlow<LoadState<FeedContents>> = repository.newsContents()
+    private val allFeedContents: StateFlow<LoadState<FeedContents>> = repository.newsContents()
         .toLoadState()
         .onEach { loadState ->
             if (loadState.isError()) {
@@ -47,7 +47,7 @@ class RealFeedViewModel @Inject constructor(
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
-            mAllFeedContents,
+            allFeedContents,
             filters
         ) { feedContentsLoadState, filters ->
             val filteredFeed =
@@ -74,7 +74,7 @@ class RealFeedViewModel @Inject constructor(
                     filters.value = event.filters
                 }
                 is FeedViewModel.Event.ToggleFavorite -> {
-                    val favorite = mAllFeedContents.value
+                    val favorite = allFeedContents.value
                         .getContents()
                         .favorites
                         .contains(event.feedItem.id)
