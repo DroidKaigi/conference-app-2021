@@ -2,16 +2,21 @@
 
 DroidKaigi 2021 official app
 
-# Contributing
-
-TBD
-
 # Features
 
-Now this app has the News feature. We will deliver news and events related to DroidKaigi.
+Now this app has the Feed feature. We will deliver Feed and events related to DroidKaigi.
 
 <img src="https://user-images.githubusercontent.com/1386930/108440402-662fc680-7296-11eb-948d-a259957a9c53.png" width="240" />
 
+# Contributing
+
+We always welcome any and all contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information
+
+For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
+
+## Requirements
+
+Latest Android Studio Arctic Fox and higher. You can download it from [this page](https://developer.android.com/studio/preview).
 
 # Development Environment
 
@@ -35,7 +40,7 @@ TBD
 
 Compose processing and ViewModel processing are performed by Unidirectional data flow.
 
-![image](https://user-images.githubusercontent.com/1386930/103167463-a4000800-486e-11eb-87dd-29cbac2deafd.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588098-bf811e00-739a-11eb-8bf9-1cfa8bea9464.png" />
 
 ### Compose unidirectional data flow
 
@@ -46,9 +51,9 @@ By performing [State hoisting](https://developer.android.com/jetpack/compose/sta
  * stateful
  */
 @Composable
-fun NewsScreen(
+fun FeedScreen(
     onNavigationIconClick: () -> Unit,
-    onDetailClick: (News) -> Unit,
+    onDetailClick: (Feed) -> Unit,
 ) {
 ...
 
@@ -56,12 +61,12 @@ fun NewsScreen(
         state,
         effectFlow,
         dispatch,
-    ) = use(newsViewModel())
+    ) = use(FeedViewModel())
 
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
-            is NewsViewModel.Effect.ErrorMessage -> {
+            is FeedViewModel.Effect.ErrorMessage -> {
                 scaffoldState.snackbarHostState.showSnackbar(
                     effect.appError.getReadableMessage(context)
                 )
@@ -69,11 +74,11 @@ fun NewsScreen(
         }
     }
 
-    NewsScreen(
+    FeedScreen(
         // ...
-        newsContents = state.filteredNewsContents,
+        FeedContents = state.filteredFeedContents,
         onFavoriteChange = {
-            dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
+            dispatch(FeedViewModel.Event.ToggleFavorite(Feed = it))
         },
         // ...
     )
@@ -83,10 +88,10 @@ fun NewsScreen(
  * stateless
  */
 @Composable
-private fun NewsScreen(
+private fun FeedScreen(
     // ...
-    newsContents: NewsContents,
-    onFavoriteChange: (News) -> Unit,
+    FeedContents: FeedContents,
+    onFavoriteChange: (Feed) -> Unit,
     // ...
 ) {
     Column {
@@ -114,12 +119,12 @@ Compose
         state,
         effectFlow,
         dispatch,
-    ) = use(newsViewModel())
+    ) = use(FeedViewModel())
 
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
-            is NewsViewModel.Effect.ErrorMessage -> {
+            is FeedViewModel.Effect.ErrorMessage -> {
                 scaffoldState.snackbarHostState.showSnackbar(
                     effect.appError.getReadableMessage(context)
                 )
@@ -127,11 +132,11 @@ Compose
         }
     }
 
-    NewsScreen(
+    FeedScreen(
         // ...
-        newsContents = state.filteredNewsContents,
+        FeedContents = state.filteredFeedContents,
         onFavoriteChange = {
-            dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
+            dispatch(FeedViewModel.Event.ToggleFavorite(Feed = it))
         },
         // ...
 ```
@@ -181,7 +186,7 @@ Jetpack Compose is still a new technology. We are thinking of best practices.
 We will try to improve testing, preview and build by using Fake.
 For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
 
-![preview](https://user-images.githubusercontent.com/1386930/102705021-25332a00-42c6-11eb-9f6a-c675a2922b1f.gif)
+![preview](https://user-images.githubusercontent.com/1386930/108589503-ea22a500-73a1-11eb-8f71-d323a8628e7d.gif)
 
 This is possible by creating a Fake ViewModel and making it reliable.
 
@@ -192,31 +197,34 @@ Do the same test for Fake and the real thing by testing against the interface. T
 This technique of doing the same test against Fake was introduced in "Build testable apps for
  Android" session(Google I/O'19).
 
-![image](https://user-images.githubusercontent.com/1386930/102705934-51ec3f00-42d0-11eb-8da2-999534f9c15b.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588041-79c45580-739a-11eb-966d-321ddd58db74.png" />
 
 
 You can also prevent forgetting to update by forcing the implementation with interface and .
-Also, by forcing the implementation with interface and "(Exhaustive)[https://github.com/cashapp/exhaustive]", it is possible to prevent forgetting to update Fake's ViewModel.
+Also, by forcing the implementation with interface and " [Exhaustive](https://github.
+com/cashapp/exhaustive) ", it is possible to prevent forgetting to update Fake's ViewModel.
 
 ```kotlin
-override fun event(event: NewsViewModel.Event) {
+override fun event(event: FeedViewModel.Event) {
     coroutineScope.launch {
         @Exhaustive
         when (event) {
-            is NewsViewModel.Event.ChangeFavoriteFilter -> {
+            is FeedViewModel.Event.ChangeFavoriteFilter -> {
 ```
 
 ### How to make it previewable and testable
 
-The way to do a preview is to distribute Fake's ViewModel.
+This app uses fake's ViewModel to enable preview.
+
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588048-85178100-739a-11eb-8c4b-780b7f5d6dbd.png" />
 
 ```kotlin
 @Preview(showBackground = true)
 @Composable
-fun NewsScreenPreview() {
-    Conferenceapp2021newsTheme(false) {
-        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            NewsScreen {
+fun FeedScreenPreview() {
+    Conferenceapp2021FeedTheme(false) {
+        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+            FeedScreen {
             }
         }
     }
@@ -230,15 +238,15 @@ In that case, the required task is `:uicomponent-compose:main:compileDebugKotlin
 Therefore, there is no need to build the data module that contains the definitions such as API and the build of Android dex, so you can quickly build and check.
 Also, changes to the data layer do not affect the ui module, so you can build faster.
 
-![image](https://user-images.githubusercontent.com/1386930/107300623-3bd35180-6abd-11eb-94e8-0c5169b9f35d.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588191-37e7df00-739b-11eb-86f9-b315b2c88156.png" />
 
 ## Overall architecture
 
-![image](https://user-images.githubusercontent.com/1386930/103167973-078c3480-4873-11eb-92a2-687314175450.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588059-91034300-739a-11eb-8fdb-55d79861b4b3.png" />
 
 # Design
 
-TBD
+https://www.figma.com/file/IFlrbfmBSdYvUz7VmSzfLV/DroidKaigi_2021_official_app
 
 # Trouble Shooting
 
