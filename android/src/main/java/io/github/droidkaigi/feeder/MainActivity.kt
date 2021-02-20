@@ -11,9 +11,8 @@ import io.github.droidkaigi.feeder.viewmodel.ProvideViewModels
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        WindowCompat.setDecorFitsSystemWindows(window, false)
-        setup()
-    }
+WindowCompat.setDecorFitsSystemWindows(window, false)
+        setup()}
 
     private fun setup() {
         setContent {
