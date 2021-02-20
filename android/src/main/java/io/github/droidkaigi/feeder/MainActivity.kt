@@ -1,8 +1,8 @@
 package io.github.droidkaigi.feeder
 
 import android.os.Bundle
+import androidx.activity.compose.setContent
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.ui.platform.setContent
 import androidx.core.view.WindowCompat
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.droidkaigi.feeder.viewmodel.ProvideViewModels

@@ -6,7 +6,7 @@ import io.github.droidkaigi.feeder.data.fakeUserDataStore
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.feed.FeedViewModel.Event.ChangeFavoriteFilter
 import io.github.droidkaigi.feeder.feed.FeedViewModel.Event.ToggleFavorite
-import io.github.droidkaigi.feeder.feed.fakeNewsViewModel
+import io.github.droidkaigi.feeder.feed.fakeFeedViewModel
 import io.github.droidkaigi.feeder.viewmodel.RealFeedViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
@@ -124,7 +124,7 @@ class FeedItemViewModelTest(
             arrayOf(
                 "FakeViewModel",
                 FeedViewModelFactory { errorFetchData: Boolean ->
-                    fakeNewsViewModel(errorFetchData = errorFetchData)
+                    fakeFeedViewModel(errorFetchData = errorFetchData)
                 }
             )
         )

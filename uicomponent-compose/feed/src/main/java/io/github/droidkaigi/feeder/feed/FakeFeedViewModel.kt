@@ -4,7 +4,7 @@ import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.fakeNewsContents
+import io.github.droidkaigi.feeder.fakeFeedContents
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Runnable
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-fun fakeNewsViewModel(errorFetchData: Boolean = false): FakeFeedViewModel {
+fun fakeFeedViewModel(errorFetchData: Boolean = false): FakeFeedViewModel {
     return FakeFeedViewModel(errorFetchData)
 }
 
@@ -36,31 +36,31 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
             block.run()
         }
     })
-    private val mutableNewsContents = MutableStateFlow(
-        fakeNewsContents()
+    private val mutableFeedContents = MutableStateFlow(
+        fakeFeedContents()
     )
-    private val errorNewsContents = flow<FeedContents> {
+    private val errorFeedContents = flow<FeedContents> {
         throw AppError.ApiException.ServerException(null)
     }
         .catch { error ->
             effectChannel.send(FeedViewModel.Effect.ErrorMessage(error as AppError))
         }
-        .stateIn(coroutineScope, SharingStarted.Lazily, fakeNewsContents())
+        .stateIn(coroutineScope, SharingStarted.Lazily, fakeFeedContents())
 
     private val mFeedContents: StateFlow<FeedContents> = if (errorFetchData) {
-        errorNewsContents
+        errorFeedContents
     } else {
-        mutableNewsContents
+        mutableFeedContents
     }
 
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(mFeedContents, filters) { feedContents, filters ->
-            val filteredNews = feedContents.filtered(filters)
+            val filteredFeed = feedContents.filtered(filters)
             FeedViewModel.State(
                 filters = filters,
-                filteredFeedContents = filteredNews
+                filteredFeedContents = filteredFeed
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, FeedViewModel.State())
@@ -79,7 +79,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     } else {
                         value.favorites - event.feedItem.id
                     }
-                    mutableNewsContents.value = value.copy(
+                    mutableFeedContents.value = value.copy(
                         favorites = newFavorites
                     )
                 }
