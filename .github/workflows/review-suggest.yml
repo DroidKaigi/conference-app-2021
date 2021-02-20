@@ -12,6 +12,9 @@ jobs:
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
+      # Since "reviewdog/action-suggester" using "spotlessKotlinApply" does not work with forked PR,
+      # perform "spotlessKotlinCheck".
+      - run: ./gradlew spotlessKotlinCheck
       - run: ./gradlew spotlessKotlinApply
       - uses: reviewdog/action-suggester@v1
         with:
