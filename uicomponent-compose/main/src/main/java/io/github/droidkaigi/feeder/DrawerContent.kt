@@ -11,9 +11,9 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.other.OtherTabs
-import io.github.droidkaigi.feeder.staff.news.NewsTabs
-import io.github.droidkaigi.feeder.staff.theme.Conferenceapp2021newsTheme
-import io.github.droidkaigi.feeder.uicomponent.main.R
+import io.github.droidkaigi.feeder.feed.FeedTabs
+import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.main.R
 
 enum class DrawerContents(
     val group: Group,
@@ -26,25 +26,25 @@ enum class DrawerContents(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_home_24,
         label = "HOME",
-        route = "news/${NewsTabs.Home.routePath}"
+        route = "news/${FeedTabs.Home.routePath}"
     ),
     BLOG(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "BLOG",
-        route = "news/${NewsTabs.FilteredNews.Blog.routePath}"
+        route = "news/${FeedTabs.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "VIDEO",
-        route = "news/${NewsTabs.FilteredNews.Video.routePath}"
+        route = "news/${FeedTabs.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_list_alt_24,
         label = "PODCAST",
-        route = "news/${NewsTabs.FilteredNews.Podcast.routePath}"
+        route = "news/${FeedTabs.FilteredFeed.Podcast.routePath}"
     ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
@@ -111,7 +111,7 @@ private fun DrawerContentGroup(
 @Preview
 @Composable
 fun PreviewDrawerContent() {
-    Conferenceapp2021newsTheme {
+    ConferenceAppFeederTheme {
         DrawerContent {
         }
     }

@@ -1,9 +1,9 @@
-package io.github.droidkaigi.feeder.staff.news
+package io.github.droidkaigi.feeder.feed
 
 import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.NewsContents
+import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.fakeNewsContents
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -21,14 +21,14 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
-fun fakeNewsViewModel(errorFetchData: Boolean = false): FakeNewsViewModel {
-    return FakeNewsViewModel(errorFetchData)
+fun fakeNewsViewModel(errorFetchData: Boolean = false): FakeFeedViewModel {
+    return FakeFeedViewModel(errorFetchData)
 }
 
-class FakeNewsViewModel(val errorFetchData: Boolean) : NewsViewModel {
+class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
 
-    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
+    private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
     private val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
         // for preview
@@ -39,15 +39,15 @@ class FakeNewsViewModel(val errorFetchData: Boolean) : NewsViewModel {
     private val mutableNewsContents = MutableStateFlow(
         fakeNewsContents()
     )
-    private val errorNewsContents = flow<NewsContents> {
+    private val errorNewsContents = flow<FeedContents> {
         throw AppError.ApiException.ServerException(null)
     }
         .catch { error ->
-            effectChannel.send(NewsViewModel.Effect.ErrorMessage(error as AppError))
+            effectChannel.send(FeedViewModel.Effect.ErrorMessage(error as AppError))
         }
         .stateIn(coroutineScope, SharingStarted.Lazily, fakeNewsContents())
 
-    private val newsContents: StateFlow<NewsContents> = if (errorFetchData) {
+    private val mFeedContents: StateFlow<FeedContents> = if (errorFetchData) {
         errorNewsContents
     } else {
         mutableNewsContents
@@ -55,29 +55,29 @@ class FakeNewsViewModel(val errorFetchData: Boolean) : NewsViewModel {
 
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
-    override val state: StateFlow<NewsViewModel.State> =
-        combine(newsContents, filters) { newsContents, filters ->
+    override val state: StateFlow<FeedViewModel.State> =
+        combine(mFeedContents, filters) { newsContents, filters ->
             val filteredNews = newsContents.filtered(filters)
-            NewsViewModel.State(
+            FeedViewModel.State(
                 filters = filters,
-                filteredNewsContents = filteredNews
+                filteredFeedContents = filteredNews
             )
         }
-            .stateIn(coroutineScope, SharingStarted.Eagerly, NewsViewModel.State())
+            .stateIn(coroutineScope, SharingStarted.Eagerly, FeedViewModel.State())
 
-    override fun event(event: NewsViewModel.Event) {
+    override fun event(event: FeedViewModel.Event) {
         coroutineScope.launch {
             @Exhaustive
             when (event) {
-                is NewsViewModel.Event.ChangeFavoriteFilter -> {
+                is FeedViewModel.Event.ChangeFavoriteFilter -> {
                     filters.value = event.filters
                 }
-                is NewsViewModel.Event.ToggleFavorite -> {
-                    val value = newsContents.value
-                    val newFavorites = if (!value.favorites.contains(event.news.id)) {
-                        value.favorites + event.news.id
+                is FeedViewModel.Event.ToggleFavorite -> {
+                    val value = mFeedContents.value
+                    val newFavorites = if (!value.favorites.contains(event.feedItem.id)) {
+                        value.favorites + event.feedItem.id
                     } else {
-                        value.favorites - event.news.id
+                        value.favorites - event.feedItem.id
                     }
                     mutableNewsContents.value = value.copy(
                         favorites = newFavorites

@@ -11,11 +11,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import io.github.droidkaigi.feeder.staff.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
-    Conferenceapp2021newsTheme {
+    ConferenceAppFeederTheme {
         var splashShown by remember {
             mutableStateOf(firstSplashScreenState)
         }

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff.news
+package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -19,7 +19,6 @@ import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.uicomponent.news.R
 
 enum class FilterState(val text: String) {
     All("All"), Favorite("Favorites")

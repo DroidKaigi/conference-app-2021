@@ -4,7 +4,7 @@ import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
-sealed class News {
+sealed class FeedItem {
     abstract val id: String
     abstract val publishedAt: Instant
     abstract val image: Image
@@ -23,7 +23,7 @@ sealed class News {
         override val link: String,
         val language: String,
         val author: Author,
-    ) : News()
+    ) : FeedItem()
 
     data class Video(
         override val id: String,
@@ -33,7 +33,7 @@ sealed class News {
         override val title: String,
         override val summary: String,
         override val link: String,
-    ) : News()
+    ) : FeedItem()
 
     data class Podcast(
         override val id: String,
@@ -43,7 +43,7 @@ sealed class News {
         override val title: String,
         override val summary: String,
         override val link: String,
-    ) : News()
+    ) : FeedItem()
 
     fun publishedDateString(): String {
         val localDate = publishedAt

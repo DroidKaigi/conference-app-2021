@@ -8,7 +8,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.imageResource
-import io.github.droidkaigi.feeder.uicomponent.main.R
+import io.github.droidkaigi.feeder.main.R
 import kotlinx.coroutines.delay
 
 private const val SplashWaitTime: Long = 2000

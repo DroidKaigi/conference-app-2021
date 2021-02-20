@@ -11,7 +11,7 @@ android {
     buildToolsVersion "30.0.2"
 
     defaultConfig {
-        applicationId "io.github.droidkaigi.confnews2021"
+        applicationId "io.github.droidkaigi.feeder"
         minSdkVersion 21
         targetSdkVersion 30
         versionCode 1

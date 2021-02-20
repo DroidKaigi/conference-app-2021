@@ -5,11 +5,11 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
-import io.github.droidkaigi.feeder.NewsContents
-import io.github.droidkaigi.feeder.NewsRepository
+import io.github.droidkaigi.feeder.FeedContents
+import io.github.droidkaigi.feeder.FeedRepository
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
-import io.github.droidkaigi.feeder.staff.news.NewsViewModel
+import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.toLoadState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -25,37 +25,37 @@ import javax.annotation.meta.Exhaustive
 import javax.inject.Inject
 
 @HiltViewModel
-class RealNewsViewModel @Inject constructor(
-    private val repository: NewsRepository,
-) : ViewModel(), NewsViewModel {
+class RealFeedViewModel @Inject constructor(
+    private val repository: FeedRepository,
+) : ViewModel(), FeedViewModel {
 
-    private val effectChannel = Channel<NewsViewModel.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<NewsViewModel.Effect> = effectChannel.receiveAsFlow()
+    private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
-    private val allNewsContents: StateFlow<LoadState<NewsContents>> = repository.newsContents()
+    private val mAllFeedContents: StateFlow<LoadState<FeedContents>> = repository.newsContents()
         .toLoadState()
         .onEach { loadState ->
             if (loadState.isError()) {
                 // FIXME: smartcast is not working
                 val error = loadState as LoadState.Error
                 error.getThrowableOrNull()?.printStackTrace()
-                effectChannel.send(NewsViewModel.Effect.ErrorMessage(error.e))
+                effectChannel.send(FeedViewModel.Effect.ErrorMessage(error.e))
             }
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
-    override val state: StateFlow<NewsViewModel.State> =
+    override val state: StateFlow<FeedViewModel.State> =
         combine(
-            allNewsContents,
+            mAllFeedContents,
             filters
-        ) { newsContentsLoadState, filters ->
-            val filteredNews =
-                newsContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
-            NewsViewModel.State(
-                showProgress = newsContentsLoadState.isLoading(),
+        ) { feedContentsLoadState, filters ->
+            val filteredFeed =
+                feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
+            FeedViewModel.State(
+                showProgress = feedContentsLoadState.isLoading(),
                 filters = filters,
-                filteredNewsContents = filteredNews,
+                filteredFeedContents = filteredFeed,
 //                snackbarMessage = currentValue.snackbarMessage
             )
         }
@@ -63,25 +63,25 @@ class RealNewsViewModel @Inject constructor(
                 scope = viewModelScope,
                 // prefetch when splash screen
                 started = SharingStarted.Eagerly,
-                initialValue = NewsViewModel.State()
+                initialValue = FeedViewModel.State()
             )
 
-    override fun event(event: NewsViewModel.Event) {
+    override fun event(event: FeedViewModel.Event) {
         viewModelScope.launch {
             @Exhaustive
             when (event) {
-                is NewsViewModel.Event.ChangeFavoriteFilter -> {
+                is FeedViewModel.Event.ChangeFavoriteFilter -> {
                     filters.value = event.filters
                 }
-                is NewsViewModel.Event.ToggleFavorite -> {
-                    val favorite = allNewsContents.value
+                is FeedViewModel.Event.ToggleFavorite -> {
+                    val favorite = mAllFeedContents.value
                         .getContents()
                         .favorites
-                        .contains(event.news.id)
+                        .contains(event.feedItem.id)
                     if (favorite) {
-                        repository.removeFavorite(event.news)
+                        repository.removeFavorite(event.feedItem)
                     } else {
-                        repository.addFavorite(event.news)
+                        repository.addFavorite(event.feedItem)
                     }
                 }
             }

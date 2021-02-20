@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.AppError
-import io.github.droidkaigi.feeder.News
+import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import kotlinx.serialization.decodeFromString
@@ -9,21 +9,21 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-interface NewsApi {
-    suspend fun fetch(): List<News>
+interface FeedApi {
+    suspend fun fetch(): List<FeedItem>
 }
 
-fun fakeNewsApi(error: AppError? = null): NewsApi = object : NewsApi {
-    override suspend fun fetch(): List<News> {
+fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
+    override suspend fun fetch(): List<FeedItem> {
         if (error != null) {
             throw error
         }
-        return list
+        return LIST
     }
 
     // cache for fixing test issue
     @OptIn(ExperimentalStdlibApi::class)
-    val list: List<News> = run {
+    val LIST: List<FeedItem> = run {
         val responseText = """{
   "status": "OK",
   "articles": [

@@ -2,7 +2,7 @@ package io.github.droidkaigi.feeder.staff
 
 import android.content.Context
 import io.github.droidkaigi.feeder.AppError
-import io.github.droidkaigi.feeder.uicomponent.core.R
+import io.github.droidkaigi.feeder.core.R
 
 fun AppError.getReadableMessage(context: Context): String = when (this) {
     is AppError.ApiException.ServerException -> {

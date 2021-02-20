@@ -1,22 +1,22 @@
-package io.github.droidkaigi.feeder.staff.news
+package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Providers
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
+import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.News
-import io.github.droidkaigi.feeder.NewsContents
+import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.staff.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-interface NewsViewModel :
-    UnidirectionalViewModel<NewsViewModel.Event, NewsViewModel.Effect, NewsViewModel.State> {
+interface FeedViewModel :
+    UnidirectionalViewModel<FeedViewModel.Event, FeedViewModel.Effect, FeedViewModel.State> {
     data class State(
         val showProgress: Boolean = false,
         val filters: Filters = Filters(),
-        val filteredNewsContents: NewsContents = NewsContents(),
+        val filteredFeedContents: FeedContents = FeedContents(),
     )
 
     sealed class Effect {
@@ -25,7 +25,7 @@ interface NewsViewModel :
 
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
-        class ToggleFavorite(val news: News) : Event()
+        class ToggleFavorite(val feedItem: FeedItem) : Event()
     }
 
     override val state: StateFlow<State>
@@ -33,10 +33,10 @@ interface NewsViewModel :
     override fun event(event: Event)
 }
 
-private val LocalNewsViewModel = compositionLocalOf<NewsViewModel>()
+private val LocalNewsViewModel = compositionLocalOf<FeedViewModel>()
 
 @Composable
-fun ProvideNewsViewModel(viewModel: NewsViewModel, block: @Composable () -> Unit) {
+fun ProvideFeedViewModel(viewModel: FeedViewModel, block: @Composable () -> Unit) {
     Providers(LocalNewsViewModel provides viewModel, content = block)
 }
 

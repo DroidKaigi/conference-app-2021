@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff.news
+package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -34,26 +34,26 @@ import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.News
-import io.github.droidkaigi.feeder.NewsContents
+import io.github.droidkaigi.feeder.FeedItem
+import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.staff.getReadableMessage
-import io.github.droidkaigi.feeder.staff.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.staff.use
 import io.github.droidkaigi.feeder.staff.util.collectInLaunchedEffect
-import io.github.droidkaigi.feeder.uicomponent.news.R
+import io.github.droidkaigi.feeder.feed.R
 import kotlin.reflect.KClass
 
-sealed class NewsTabs(val name: String, val routePath: String) {
-    object Home : NewsTabs("Home", "home")
-    sealed class FilteredNews(val newsClass: KClass<out News>, name: String, routePath: String) :
-        NewsTabs(name, routePath) {
-        object Blog : FilteredNews(News.Blog::class, "Blog", "blog")
-        object Video : FilteredNews(News.Video::class, "Video", "video")
-        object Podcast : FilteredNews(News.Podcast::class, "Podcast", "podcast")
+sealed class FeedTabs(val name: String, val routePath: String) {
+    object Home : FeedTabs("Home", "home")
+    sealed class FilteredFeed(val feedItemClass: KClass<out FeedItem>, name: String, routePath: String) :
+        FeedTabs(name, routePath) {
+        object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
+        object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
+        object Podcast : FilteredFeed(FeedItem.Podcast::class, "Podcast", "podcast")
     }
 
     companion object {
-        fun values() = listOf(Home, FilteredNews.Blog, FilteredNews.Video, FilteredNews.Podcast)
+        fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
 
         fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
     }
@@ -63,10 +63,10 @@ sealed class NewsTabs(val name: String, val routePath: String) {
  * stateful
  */
 @Composable
-fun NewsScreen(
-    initialSelectedTab: NewsTabs,
+fun FeedScreen(
+    initialSelectedTab: FeedTabs,
     onNavigationIconClick: () -> Unit,
-    onDetailClick: (News) -> Unit,
+    onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     var selectedTab by remember(initialSelectedTab) {
@@ -82,7 +82,7 @@ fun NewsScreen(
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
-            is NewsViewModel.Effect.ErrorMessage -> {
+            is FeedViewModel.Effect.ErrorMessage -> {
                 scaffoldState.snackbarHostState.showSnackbar(
                     effect.appError.getReadableMessage(context)
                 )
@@ -90,21 +90,21 @@ fun NewsScreen(
         }
     }
 
-    NewsScreen(
+    FeedScreen(
         selectedTab = selectedTab,
         scaffoldState = scaffoldState,
-        newsContents = state.filteredNewsContents,
+        feedContents = state.filteredFeedContents,
         filters = state.filters,
-        onSelectTab = { tab: NewsTabs ->
+        onSelectTab = { tab: FeedTabs ->
             selectedTab = tab
         },
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
-            dispatch(NewsViewModel.Event.ToggleFavorite(news = it))
+            dispatch(FeedViewModel.Event.ToggleFavorite(feedItem = it))
         },
         onFavoriteFilterChanged = {
             dispatch(
-                NewsViewModel.Event.ChangeFavoriteFilter(
+                FeedViewModel.Event.ChangeFavoriteFilter(
                     filters = state.filters.copy(filterFavorite = it)
                 )
             )
@@ -117,16 +117,16 @@ fun NewsScreen(
  * stateless
  */
 @Composable
-private fun NewsScreen(
-    selectedTab: NewsTabs,
+private fun FeedScreen(
+    selectedTab: FeedTabs,
     scaffoldState: BackdropScaffoldState,
-    newsContents: NewsContents,
+    feedContents: FeedContents,
     filters: Filters,
-    onSelectTab: (NewsTabs) -> Unit,
+    onSelectTab: (FeedTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
-    onFavoriteChange: (News) -> Unit,
+    onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
-    onClickNews: (News) -> Unit,
+    onClickNews: (FeedItem) -> Unit,
 ) {
     Column {
         val density = AmbientDensity.current
@@ -142,15 +142,15 @@ private fun NewsScreen(
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                val isHome = selectedTab is NewsTabs.Home
-                NewsList(
-                    newsContents = if (selectedTab is NewsTabs.FilteredNews) {
-                        newsContents.filterNewsType(selectedTab.newsClass)
+                val isHome = selectedTab is FeedTabs.Home
+                FeedList(
+                    feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
+                        feedContents.filterNewsType(selectedTab.feedItemClass)
                     } else {
-                        newsContents
+                        feedContents
                     },
                     isHome = isHome,
-                    onClickNews = onClickNews,
+                    onClickFeed = onClickNews,
                     onFavoriteChange = onFavoriteChange
                 )
             }
@@ -161,8 +161,8 @@ private fun NewsScreen(
 @Composable
 private fun AppBar(
     onNavigationIconClick: () -> Unit,
-    selectedTab: NewsTabs,
-    onSelectTab: (NewsTabs) -> Unit,
+    selectedTab: FeedTabs,
+    onSelectTab: (FeedTabs) -> Unit,
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -180,7 +180,7 @@ private fun AppBar(
         },
         divider = {}
     ) {
-        NewsTabs.values().forEach { tab ->
+        FeedTabs.values().forEach { tab ->
             Tab(
                 selected = tab == selectedTab,
                 text = {
@@ -208,11 +208,11 @@ private fun AppBar(
 }
 
 @Composable
-private fun NewsList(
-    newsContents: NewsContents,
+private fun FeedList(
+    feedContents: FeedContents,
     isHome: Boolean,
-    onClickNews: (News) -> Unit,
-    onFavoriteChange: (News) -> Unit,
+    onClickFeed: (FeedItem) -> Unit,
+    onFavoriteChange: (FeedItem) -> Unit,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -221,16 +221,16 @@ private fun NewsList(
         LazyColumn(
             contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
         ) {
-            if (newsContents.size > 0) {
-                items(newsContents.contents.size * 2) { index ->
+            if (feedContents.size > 0) {
+                items(feedContents.contents.size * 2) { index ->
                     if (index % 2 == 0) {
                         Divider(modifier = Modifier.padding(horizontal = 16.dp))
                     } else {
-                        val (item, favorited) = newsContents.contents[index / 2]
-                        NewsItem(
-                            news = item,
+                        val (item, favorited) = feedContents.contents[index / 2]
+                        FeedItem(
+                            feedItem = item,
                             favorited = favorited,
-                            onClick = onClickNews,
+                            onClick = onClickFeed,
                             showMediaLabel = isHome,
                             onFavoriteChange = onFavoriteChange
                         )
@@ -244,13 +244,13 @@ private fun NewsList(
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewsScreen() {
-    Conferenceapp2021newsTheme(false) {
-        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            NewsScreen(
-                initialSelectedTab = NewsTabs.Home,
+    ConferenceAppFeederTheme(false) {
+        ProvideFeedViewModel(viewModel = fakeNewsViewModel()) {
+            FeedScreen(
+                initialSelectedTab = FeedTabs.Home,
                 onNavigationIconClick = {
                 }
-            ) { news: News ->
+            ) { feedItem: FeedItem ->
             }
         }
     }
@@ -259,13 +259,13 @@ fun PreviewNewsScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewsScreenWithStartBlog() {
-    Conferenceapp2021newsTheme(false) {
-        ProvideNewsViewModel(viewModel = fakeNewsViewModel()) {
-            NewsScreen(
-                initialSelectedTab = NewsTabs.FilteredNews.Blog,
+    ConferenceAppFeederTheme(false) {
+        ProvideFeedViewModel(viewModel = fakeNewsViewModel()) {
+            FeedScreen(
+                initialSelectedTab = FeedTabs.FilteredFeed.Blog,
                 onNavigationIconClick = {
                 }
-            ) { news: News ->
+            ) { feedItem: FeedItem ->
             }
         }
     }

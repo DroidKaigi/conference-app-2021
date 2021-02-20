@@ -3,18 +3,18 @@ package io.github.droidkaigi.feeder.data
 import io.github.droidkaigi.feeder.Author
 import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
-import io.github.droidkaigi.feeder.News
+import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.Thumbnail
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
-open class KtorNewsApi(
+open class KtorFeedApi(
     private val authApi: AuthApi,
     private val httpClient: HttpClient,
-) : NewsApi {
+) : FeedApi {
 
-    override suspend fun fetch(): List<News> = authApi.authenticated {
+    override suspend fun fetch(): List<FeedItem> = authApi.authenticated {
         val feedsResponse = httpClient.get<FeedsResponse>(
             "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
         )
@@ -24,7 +24,7 @@ open class KtorNewsApi(
 
 fun FeedsResponse.toNewsList() =
     articles.map { article ->
-        News.Blog(
+        FeedItem.Blog(
             id = article.id,
             publishedAt = article.publishedAt,
             image = article.thumbnail.toImage(),
@@ -40,7 +40,7 @@ fun FeedsResponse.toNewsList() =
         )
     } +
         recordings.map { recording ->
-            News.Podcast(
+            FeedItem.Podcast(
                 id = recording.id,
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
@@ -53,7 +53,7 @@ fun FeedsResponse.toNewsList() =
             )
         } +
         episodes.map { recording ->
-            News.Video(
+            FeedItem.Video(
                 id = recording.id,
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),

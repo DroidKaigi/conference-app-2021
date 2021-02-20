@@ -29,7 +29,7 @@ onSurface = Color.Black,
 )
 
 @Composable
-fun Conferenceapp2021newsTheme(
+fun ConferenceAppFeederTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit,
 ) {

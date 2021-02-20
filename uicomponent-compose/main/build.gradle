@@ -43,7 +43,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 
 dependencies {
     api project(":uicomponent-compose:core")
-    api project(":uicomponent-compose:news")
+    api project(":uicomponent-compose:feed")
     api project(":uicomponent-compose:other")
     api project(":model")
 

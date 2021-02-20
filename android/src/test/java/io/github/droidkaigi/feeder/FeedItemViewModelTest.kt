@@ -1,13 +1,13 @@
 package io.github.droidkaigi.feeder
 
-import io.github.droidkaigi.feeder.data.NewsRepositoryImpl
-import io.github.droidkaigi.feeder.data.fakeNewsApi
+import io.github.droidkaigi.feeder.data.FeedRepositoryImpl
+import io.github.droidkaigi.feeder.data.fakeFeedApi
 import io.github.droidkaigi.feeder.data.fakeUserDataStore
-import io.github.droidkaigi.feeder.staff.news.NewsViewModel
-import io.github.droidkaigi.feeder.staff.news.NewsViewModel.Event.ChangeFavoriteFilter
-import io.github.droidkaigi.feeder.staff.news.NewsViewModel.Event.ToggleFavorite
-import io.github.droidkaigi.feeder.staff.news.fakeNewsViewModel
-import io.github.droidkaigi.feeder.viewmodel.RealNewsViewModel
+import io.github.droidkaigi.feeder.feed.FeedViewModel
+import io.github.droidkaigi.feeder.feed.FeedViewModel.Event.ChangeFavoriteFilter
+import io.github.droidkaigi.feeder.feed.FeedViewModel.Event.ToggleFavorite
+import io.github.droidkaigi.feeder.feed.fakeNewsViewModel
+import io.github.droidkaigi.feeder.viewmodel.RealFeedViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
@@ -21,7 +21,7 @@ import org.junit.runners.Parameterized
 
 @InternalCoroutinesApi
 @RunWith(Parameterized::class)
-class NewsViewModelTest(
+class FeedItemViewModelTest(
     val name: String,
     private val newsNewsViewModelFactory: NewsViewModelFactory,
 ) {
@@ -34,7 +34,7 @@ class NewsViewModelTest(
         // Replace when it fixed https://github.com/cashapp/turbine/issues/10
         val newsViewModel = newsNewsViewModelFactory.create()
 
-        val firstContent = newsViewModel.state.value.filteredNewsContents
+        val firstContent = newsViewModel.state.value.filteredFeedContents
 
         firstContent.size shouldBeGreaterThan 1
     }
@@ -42,60 +42,60 @@ class NewsViewModelTest(
     @Test
     fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsNewsViewModelFactory.create()
-        val firstContent = newsViewModel.state.value.filteredNewsContents
+        val firstContent = newsViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.event(ToggleFavorite(firstContent.newsContents[0]))
+        newsViewModel.event(ToggleFavorite(firstContent.feedItemContents[0]))
 
-        val secondContent = newsViewModel.state.value.filteredNewsContents
-        secondContent.favorites shouldBe setOf(firstContent.newsContents[0].id)
+        val secondContent = newsViewModel.state.value.filteredFeedContents
+        secondContent.favorites shouldBe setOf(firstContent.feedItemContents[0].id)
     }
 
     @Test
     fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsNewsViewModelFactory.create()
-        val firstContent = newsViewModel.state.value.filteredNewsContents
+        val firstContent = newsViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
 
-        newsViewModel.event(ToggleFavorite(news = firstContent.newsContents[0]))
-        newsViewModel.event(ToggleFavorite(news = firstContent.newsContents[0]))
+        newsViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
+        newsViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
 
-        val secondContent = newsViewModel.state.value.filteredNewsContents
+        val secondContent = newsViewModel.state.value.filteredFeedContents
         secondContent.favorites shouldBe setOf()
     }
 
     @Test
     fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsNewsViewModelFactory.create()
-        val firstContent = newsViewModel.state.value.filteredNewsContents
+        val firstContent = newsViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
-        val favoriteContents = firstContent.newsContents[1]
+        val favoriteContents = firstContent.feedItemContents[1]
 
-        newsViewModel.event(ToggleFavorite(news = favoriteContents))
+        newsViewModel.event(ToggleFavorite(feedItem = favoriteContents))
         newsViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
 
-        val secondContent = newsViewModel.state.value.filteredNewsContents
+        val secondContent = newsViewModel.state.value.filteredFeedContents
         secondContent.contents[0].first.id shouldBe favoriteContents.id
     }
 
     @Test
     fun errorWhenFetch() = coroutineTestRule.testDispatcher.runBlockingTest {
         val newsViewModel = newsNewsViewModelFactory.create(errorFetchData = true)
-        val firstContent = newsViewModel.state.value.filteredNewsContents
+        val firstContent = newsViewModel.state.value.filteredFeedContents
         firstContent.favorites shouldBe setOf()
 
         val firstEffect = newsViewModel.effect.first()
 
-        firstEffect.shouldBeInstanceOf<NewsViewModel.Effect.ErrorMessage>()
+        firstEffect.shouldBeInstanceOf<FeedViewModel.Effect.ErrorMessage>()
     }
 
     class NewsViewModelFactory(
         private val viewModelFactory: (errorFetchData: Boolean) ->
-        NewsViewModel,
+        FeedViewModel,
     ) {
         fun create(
             errorFetchData: Boolean = false,
-        ): NewsViewModel {
+        ): FeedViewModel {
             return viewModelFactory(errorFetchData)
         }
     }
@@ -107,9 +107,9 @@ class NewsViewModelTest(
             arrayOf(
                 "Real ViewModel and Repository",
                 NewsViewModelFactory { errorFetchData: Boolean ->
-                    RealNewsViewModel(
-                        repository = NewsRepositoryImpl(
-                            newsApi = fakeNewsApi(
+                    RealFeedViewModel(
+                        repository = FeedRepositoryImpl(
+                            newsApi = fakeFeedApi(
                                 if (errorFetchData) {
                                     AppError.ApiException.ServerException(null)
                                 } else {

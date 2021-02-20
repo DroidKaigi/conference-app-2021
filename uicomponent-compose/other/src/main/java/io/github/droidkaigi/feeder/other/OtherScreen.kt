@@ -37,8 +37,8 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.staff.StaffList
-import io.github.droidkaigi.feeder.staff.theme.Conferenceapp2021newsTheme
-import io.github.droidkaigi.feeder.uicomponent.other.R
+import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.other.R
 
 sealed class OtherTabs(val name: String, val routePath: String) {
     object AboutThisApp : OtherTabs("About", "about")
@@ -177,7 +177,7 @@ private fun AppBar(
 @Preview
 @Composable
 fun PreviewOtherScreen() {
-    Conferenceapp2021newsTheme {
+    ConferenceAppFeederTheme {
         OtherScreen(
             initialSelectedTab = OtherTabs.AboutThisApp,
             onNavigationIconClick = {

@@ -16,8 +16,8 @@ import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTabs
-import io.github.droidkaigi.feeder.staff.news.NewsScreen
-import io.github.droidkaigi.feeder.staff.news.NewsTabs
+import io.github.droidkaigi.feeder.feed.FeedScreen
+import io.github.droidkaigi.feeder.feed.FeedTabs
 
 @Composable
 fun AppContent(
@@ -50,19 +50,19 @@ fun AppContent(
                 )
             ) { backStackEntry ->
                 val newsType = backStackEntry
-                    .arguments?.getString("newsTab") ?: NewsTabs.Home.routePath
+                    .arguments?.getString("newsTab") ?: FeedTabs.Home.routePath
                 val context = LocalContext.current
-                NewsScreen(
+                FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
-                    initialSelectedTab = NewsTabs.ofRoutePath(newsType),
-                    onDetailClick = { news: News ->
+                    initialSelectedTab = FeedTabs.ofRoutePath(newsType),
+                    onDetailClick = { feedItem: FeedItem ->
                         // FIXME: Use navigation
                         val builder = CustomTabsIntent.Builder()
                             .setShowTitle(true)
                             .setUrlBarHidingEnabled(true)
 
                         val intent = builder.build()
-                        intent.launchUrl(context, Uri.parse(news.link))
+                        intent.launchUrl(context, Uri.parse(feedItem.link))
                     }
                 )
             }
@@ -75,7 +75,7 @@ fun AppContent(
                 )
             ) { backStackEntry ->
                 val routePath = backStackEntry
-                    .arguments?.getString("otherTab") ?: NewsTabs.Home.routePath
+                    .arguments?.getString("otherTab") ?: FeedTabs.Home.routePath
                 OtherScreen(
                     OtherTabs.ofRoutePath(routePath),
                     onNavigationIconClick

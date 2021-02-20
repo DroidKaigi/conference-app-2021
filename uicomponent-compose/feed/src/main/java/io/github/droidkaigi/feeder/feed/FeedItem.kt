@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff.news
+package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -22,25 +22,25 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.Media
-import io.github.droidkaigi.feeder.News
+import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.fakeNewsContents
 import io.github.droidkaigi.feeder.staff.NetworkImage
-import io.github.droidkaigi.feeder.staff.theme.Conferenceapp2021newsTheme
+import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.staff.theme.typography
-import io.github.droidkaigi.feeder.uicomponent.news.R
+import io.github.droidkaigi.feeder.feed.R
 
 @Composable
-fun NewsItem(
-    news: News,
+fun FeedItem(
+    feedItem: FeedItem,
     favorited: Boolean,
     showMediaLabel: Boolean = false,
-    onClick: (News) -> Unit,
-    onFavoriteChange: (News) -> Unit,
+    onClick: (FeedItem) -> Unit,
+    onFavoriteChange: (FeedItem) -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier
             .clickable(
-                onClick = { onClick(news) }
+                onClick = { onClick(feedItem) }
             )
             .fillMaxWidth()
     ) {
@@ -53,19 +53,19 @@ fun NewsItem(
                         start.linkTo(parent.start, 24.dp)
                     }
                     .background(
-                        color = news.media.color(),
+                        color = feedItem.media.color(),
                         shape = CutCornerShape(
                             topStart = 8.dp,
                             bottomEnd = 8.dp
                         )
                     )
                     .padding(vertical = 4.dp, horizontal = 8.dp),
-                text = news.media.text,
+                text = feedItem.media.text,
                 color = Color.White
             )
         }
         NetworkImage(
-            url = news.image.standardUrl,
+            url = feedItem.image.standardUrl,
             modifier = Modifier
                 .constrainAs(image) {
                     if (showMediaLabel) {
@@ -89,7 +89,7 @@ fun NewsItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = news.title,
+            text = feedItem.title,
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
@@ -99,7 +99,7 @@ fun NewsItem(
                 bottom.linkTo(parent.bottom, 16.dp)
                 start.linkTo(image.end, 16.dp)
             },
-            text = news.publishedDateString()
+            text = feedItem.publishedDateString()
         )
         IconToggleButton(
             checked = false,
@@ -122,7 +122,7 @@ fun NewsItem(
                 )
             },
             onCheckedChange = {
-                onFavoriteChange(news)
+                onFavoriteChange(feedItem)
             }
         )
     }
@@ -147,10 +147,10 @@ private fun Media.color() = when (this) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewsItem() {
-    Conferenceapp2021newsTheme {
-        val news = fakeNewsContents().newsContents[0]
-        NewsItem(
-            news = news,
+    ConferenceAppFeederTheme {
+        val news = fakeNewsContents().feedItemContents[0]
+        FeedItem(
+            feedItem = news,
             favorited = false,
             showMediaLabel = false,
             onClick = { },
@@ -162,10 +162,10 @@ fun PreviewNewsItem() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewNewsItemWithMedia() {
-    Conferenceapp2021newsTheme {
-        val news = fakeNewsContents().newsContents[0]
-        NewsItem(
-            news = news,
+    ConferenceAppFeederTheme {
+        val news = fakeNewsContents().feedItemContents[0]
+        FeedItem(
+            feedItem = news,
             favorited = false,
             showMediaLabel = true,
             onClick = { },
