@@ -1,6 +1,6 @@
-# DroidKaigi 2021 official news app[WIP]
+# DroidKaigi 2021 official app[WIP]
 
-DroidKaigi 2021 official news app
+DroidKaigi 2021 official app
 
 # Contributing
 
@@ -248,4 +248,4 @@ JDK 1.8 is a requirement to build an Android project basically, but AGP 7.0 requ
 
 ## The option 'android.enableBuildCache' is deprecated.
 
-`android.enableBuildCache` is *REMOVED* in AGP 7.0. `android.enableBuildCache=false` has no issue but builds randomly succeed with *true* value. This may affect to those who declare `android.enableBuildCache=true` in their `$GRADLE_USER_HOME/gradle.properties`. 
+`android.enableBuildCache` is *REMOVED* in AGP 7.0. `android.enableBuildCache=false` has no issue but builds randomly succeed with *true* value. This may affect to those who declare `android.enableBuildCache=true` in their `$GRADLE_USER_HOME/gradle.properties`.

@@ -1,4 +1,4 @@
-import io.github.droidkaigi.confnews2021.Dep
+import io.github.droidkaigi.feeder.Dep
 // TODO: make this library Kotlin MPP
 plugins {
     id 'com.android.library'
@@ -43,7 +43,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 
 dependencies {
     api project(":uicomponent-compose:core")
-    api project(":uicomponent-compose:news")
+    api project(":uicomponent-compose:feed")
     api project(":uicomponent-compose:other")
     api project(":model")
 

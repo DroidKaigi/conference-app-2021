@@ -1,4 +1,4 @@
-import io.github.droidkaigi.confnews2021.Dep
+import io.github.droidkaigi.feeder.Dep
 
 plugins {
     id("kotlin-multiplatform")
