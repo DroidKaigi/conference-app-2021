@@ -3,13 +3,13 @@ package io.github.droidkaigi.feeder.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.LoadState
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedRepository
+import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.LoadState
+import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
-import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.toLoadState
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow

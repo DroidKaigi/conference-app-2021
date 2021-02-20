@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder.data
 
-import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.FeedContents
+import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.FeedRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine

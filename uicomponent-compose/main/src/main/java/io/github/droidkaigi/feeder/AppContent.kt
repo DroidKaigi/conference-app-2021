@@ -14,10 +14,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
-import io.github.droidkaigi.feeder.other.OtherScreen
-import io.github.droidkaigi.feeder.other.OtherTabs
 import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTabs
+import io.github.droidkaigi.feeder.other.OtherScreen
+import io.github.droidkaigi.feeder.other.OtherTabs
 
 @Composable
 fun AppContent(

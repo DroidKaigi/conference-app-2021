@@ -38,7 +38,6 @@ import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.staff.StaffList
 import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
-import io.github.droidkaigi.feeder.other.R
 
 sealed class OtherTabs(val name: String, val routePath: String) {
     object AboutThisApp : OtherTabs("About", "about")

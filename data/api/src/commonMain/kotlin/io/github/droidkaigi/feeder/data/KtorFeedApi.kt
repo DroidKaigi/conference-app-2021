@@ -1,9 +1,9 @@
 package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.Author
+import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
-import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.Thumbnail
 import io.ktor.client.HttpClient

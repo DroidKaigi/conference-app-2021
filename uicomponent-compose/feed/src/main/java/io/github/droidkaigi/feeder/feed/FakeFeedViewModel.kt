@@ -2,8 +2,8 @@ package io.github.droidkaigi.feeder.feed
 
 import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
-import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.FeedContents
+import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.fakeNewsContents
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

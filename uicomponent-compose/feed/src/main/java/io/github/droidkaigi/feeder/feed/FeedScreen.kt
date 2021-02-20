@@ -25,22 +25,21 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.AmbientDensity
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
-import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.FeedContents
+import io.github.droidkaigi.feeder.FeedItem
+import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.staff.getReadableMessage
 import io.github.droidkaigi.feeder.staff.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.staff.use
 import io.github.droidkaigi.feeder.staff.util.collectInLaunchedEffect
-import io.github.droidkaigi.feeder.feed.R
 import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
