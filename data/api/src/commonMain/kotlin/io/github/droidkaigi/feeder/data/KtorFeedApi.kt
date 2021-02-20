@@ -18,11 +18,11 @@ open class KtorFeedApi(
         val feedsResponse = httpClient.get<FeedsResponse>(
             "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
         )
-        feedsResponse.toNewsList()
+        feedsResponse.toFeedList()
     }
 }
 
-fun FeedsResponse.toNewsList() =
+fun FeedsResponse.toFeedList() =
     articles.map { article ->
         FeedItem.Blog(
             id = article.id,

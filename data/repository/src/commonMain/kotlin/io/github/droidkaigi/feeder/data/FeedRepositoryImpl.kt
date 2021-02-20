@@ -17,8 +17,8 @@ open class FeedRepositoryImpl(
                 flow {
                     emit(feedApi.fetch())
                 }
-            ) { favorites, apiNews ->
-                FeedContents(apiNews.sortedBy { it.publishedAt }, favorites)
+            ) { favorites, apiFeed ->
+                FeedContents(apiFeed.sortedBy { it.publishedAt }, favorites)
             }
     }
 

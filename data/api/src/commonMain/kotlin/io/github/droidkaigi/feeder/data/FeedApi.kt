@@ -417,7 +417,7 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
             }
         }.decodeFromString<FeedsResponse>(
             responseText
-        ).toNewsList()
+        ).toFeedList()
         feedContents
     }
 }

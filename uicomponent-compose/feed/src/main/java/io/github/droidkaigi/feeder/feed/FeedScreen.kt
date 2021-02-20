@@ -108,7 +108,7 @@ fun FeedScreen(
                 )
             )
         },
-        onClickNews = onDetailClick
+        onClickFeed = onDetailClick
     )
 }
 
@@ -125,7 +125,7 @@ private fun FeedScreen(
     onNavigationIconClick: () -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
-    onClickNews: (FeedItem) -> Unit,
+    onClickFeed: (FeedItem) -> Unit,
 ) {
     Column {
         val density = AmbientDensity.current
@@ -144,12 +144,12 @@ private fun FeedScreen(
                 val isHome = selectedTab is FeedTabs.Home
                 FeedList(
                     feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
-                        feedContents.filterNewsType(selectedTab.feedItemClass)
+                        feedContents.filterFeedType(selectedTab.feedItemClass)
                     } else {
                         feedContents
                     },
                     isHome = isHome,
-                    onClickFeed = onClickNews,
+                    onClickFeed = onClickFeed,
                     onFavoriteChange = onFavoriteChange
                 )
             }
@@ -242,9 +242,9 @@ private fun FeedList(
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewNewsScreen() {
+fun PreviewFeedScreen() {
     ConferenceAppFeederTheme(false) {
-        ProvideFeedViewModel(viewModel = fakeNewsViewModel()) {
+        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 initialSelectedTab = FeedTabs.Home,
                 onNavigationIconClick = {
@@ -257,9 +257,9 @@ fun PreviewNewsScreen() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewNewsScreenWithStartBlog() {
+fun PreviewFeedScreenWithStartBlog() {
     ConferenceAppFeederTheme(false) {
-        ProvideFeedViewModel(viewModel = fakeNewsViewModel()) {
+        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 initialSelectedTab = FeedTabs.FilteredFeed.Blog,
                 onNavigationIconClick = {
