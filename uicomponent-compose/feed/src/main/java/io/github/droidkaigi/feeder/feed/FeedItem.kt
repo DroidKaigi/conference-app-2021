@@ -23,10 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Media
-import io.github.droidkaigi.feeder.fakeNewsContents
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
+import io.github.droidkaigi.feeder.fakeNewsContents
 
 @Composable
 fun FeedItem(

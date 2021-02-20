@@ -10,10 +10,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherTabs
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 enum class DrawerContents(
     val group: Group,
