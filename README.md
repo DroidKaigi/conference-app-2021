@@ -40,7 +40,7 @@ TBD
 
 Compose processing and ViewModel processing are performed by Unidirectional data flow.
 
-![image](https://user-images.githubusercontent.com/1386930/108588098-bf811e00-739a-11eb-8bf9-1cfa8bea9464.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588098-bf811e00-739a-11eb-8bf9-1cfa8bea9464.png" />
 
 ### Compose unidirectional data flow
 
@@ -186,8 +186,7 @@ Jetpack Compose is still a new technology. We are thinking of best practices.
 We will try to improve testing, preview and build by using Fake.
 For example, this app allows you to interact with the Android Studio Preview as if it were a real app.
 
-![preview](https://user-images.githubusercontent.
-com/1386930/108588048-85178100-739a-11eb-8c4b-780b7f5d6dbd.png)
+![preview](https://user-images.githubusercontent.com/1386930/108589503-ea22a500-73a1-11eb-8f71-d323a8628e7d.gif)
 
 This is possible by creating a Fake ViewModel and making it reliable.
 
@@ -198,7 +197,7 @@ Do the same test for Fake and the real thing by testing against the interface. T
 This technique of doing the same test against Fake was introduced in "Build testable apps for
  Android" session(Google I/O'19).
 
-![image](https://user-images.githubusercontent.com/1386930/108588041-79c45580-739a-11eb-966d-321ddd58db74.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588041-79c45580-739a-11eb-966d-321ddd58db74.png" />
 
 
 You can also prevent forgetting to update by forcing the implementation with interface and .
@@ -217,7 +216,7 @@ override fun event(event: FeedViewModel.Event) {
 
 This app uses fake's ViewModel to enable preview.
 
-![image](https://user-images.githubusercontent.com/1386930/108588048-85178100-739a-11eb-8c4b-780b7f5d6dbd.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588048-85178100-739a-11eb-8c4b-780b7f5d6dbd.png" />
 
 ```kotlin
 @Preview(showBackground = true)
@@ -239,11 +238,11 @@ In that case, the required task is `:uicomponent-compose:main:compileDebugKotlin
 Therefore, there is no need to build the data module that contains the definitions such as API and the build of Android dex, so you can quickly build and check.
 Also, changes to the data layer do not affect the ui module, so you can build faster.
 
-![image](https://user-images.githubusercontent.com/1386930/108588191-37e7df00-739b-11eb-86f9-b315b2c88156.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588191-37e7df00-739b-11eb-86f9-b315b2c88156.png" />
 
 ## Overall architecture
 
-![image](https://user-images.githubusercontent.com/1386930/108588059-91034300-739a-11eb-8fdb-55d79861b4b3.png)
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108588059-91034300-739a-11eb-8fdb-55d79861b4b3.png" />
 
 # Design
 
