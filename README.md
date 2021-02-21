@@ -238,7 +238,7 @@ In that case, the required task is `:uicomponent-compose:main:compileDebugKotlin
 Therefore, there is no need to build the data module that contains the definitions such as API and the build of Android dex, so you can quickly build and check.
 Also, changes to the data layer do not affect the ui module, so you can build faster.
 
-<img width="480" src="https://user-images.githubusercontent.com/1386930/108588191-37e7df00-739b-11eb-86f9-b315b2c88156.png" />
+<img width="480" src="https://user-images.githubusercontent.com/1386930/108615484-0b3dd100-7448-11eb-9ffb-87c38192deea.png" />
 
 ## Overall architecture
 
