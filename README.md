@@ -2,13 +2,41 @@
 
 DroidKaigi 2021 official app
 
-# Features
+# Guides
+
+- [Development](./#Development)
+  - [Features](./#Features)
+  - [Design](./#Design)
+  - [Try it out](./#Try_it_out)
+  - [Contributing](./#Contributing)
+  - [Requirements](./#Requirements)
+- [Tech Stacks](./#Tech_Stacks)
+  - [Kotlin Multiplatform](./#Kotlin_Multiplatform)
+  - [Jetpack Compose](./#Jetpack_Compose)
+- [Architecture](./#Architecture)
+- [Trouble Shooting](./#Trouble_Shooting)
+
+# Development
+
+## Features
 
 Now this app has the Feed feature. We will deliver Feed and events related to DroidKaigi.
 
 <img src="https://user-images.githubusercontent.com/1386930/108440402-662fc680-7296-11eb-948d-a259957a9c53.png" width="240" />
 
-# Contributing
+## Design
+
+https://www.figma.com/file/IFlrbfmBSdYvUz7VmSzfLV/DroidKaigi_2021_official_app
+
+## Try it out
+
+The builds being distributed through mobile app distribution services.
+
+- Production (TBR)
+- Try the latest staging through [<img src="https://dply.me/o701pp/button/small" alt="Download to device">](https://dply.me/o701pp#install)
+- and more... (tbw)
+
+## Contributing
 
 We always welcome any and all contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for more information
 
@@ -18,13 +46,13 @@ For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
 
 Latest Android Studio Arctic Fox and higher. You can download it from [this page](https://developer.android.com/studio/preview).
 
-# Development Environment
+# Tech Stacks
 
 ## Kotlin Multiplatform
 
 TBD
 
-## Compose
+## Jetpack Compose
 
 ## Modern Development
 
@@ -243,10 +271,6 @@ Also, changes to the data layer do not affect the ui module, so you can build fa
 ## Overall architecture
 
 <img width="480" src="https://user-images.githubusercontent.com/1386930/108588059-91034300-739a-11eb-8fdb-55d79861b4b3.png" />
-
-# Design
-
-https://www.figma.com/file/IFlrbfmBSdYvUz7VmSzfLV/DroidKaigi_2021_official_app
 
 # Trouble Shooting
 
