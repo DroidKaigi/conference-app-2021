@@ -75,5 +75,9 @@ object Dep {
         const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
     }
 
+    object FirebaseCrashlytics {
+        const val plugin = "com.google.firebase:firebase-crashlytics-gradle:2.5.0"
+        const val android = "com.google.firebase:firebase-crashlytics:17.3.1"
+    }
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
 }
