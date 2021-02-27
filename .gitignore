@@ -310,3 +310,4 @@ fabric.properties
 # End of https://www.toptal.com/developers/gitignore/api/androidstudio,android,macos,vim,emacs
 
 .idea/artifacts/
+./gh-actions/
