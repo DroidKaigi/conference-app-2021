@@ -42,7 +42,7 @@ For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
 
 ## Requirements
 
-Latest Android Studio Arctic Fox and higher. You can download it from [this page](https://developer.android.com/studio/preview).
+Latest Android Studio **Arctic Fox** and higher. You can download it from [this page](https://developer.android.com/studio/preview).
 
 # Tech Stacks
 
@@ -87,7 +87,7 @@ fun FeedScreen(
         state,
         effectFlow,
         dispatch,
-    ) = use(FeedViewModel())
+    ) = use(feedViewModel())
 
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
@@ -145,7 +145,7 @@ Compose
         state,
         effectFlow,
         dispatch,
-    ) = use(FeedViewModel())
+    ) = use(feedViewModel())
 
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
@@ -170,7 +170,9 @@ Compose
 This `state`, `effectFlow` and `dispatch` are created from ViewModel.
 
 `state` represents the state that the UI should display.
+
 `effectFlow` represents a one-time event such as a Snackbar display.
+
 And `dispatch` represents a change of state.
 
 
@@ -223,12 +225,11 @@ Do the same test for Fake and the real thing by testing against the interface. T
 This technique of doing the same test against Fake was introduced in "Build testable apps for
  Android" session(Google I/O'19).
 
-<img width="480" src="https://user-images.githubusercontent.com/1386930/108588041-79c45580-739a-11eb-966d-321ddd58db74.png" />
+<img width="480" src="https://user-images.githubusercontent.com/1386930/109384456-35076400-7930-11eb-905a-ea028e73de05.png" />
 
 
 You can also prevent forgetting to update by forcing the implementation with interface and .
-Also, by forcing the implementation with interface and " [Exhaustive](https://github.
-com/cashapp/exhaustive) ", it is possible to prevent forgetting to update Fake's ViewModel.
+Also, by forcing the implementation with interface and " [Exhaustive](https://github.com/cashapp/exhaustive) ", it is possible to prevent forgetting to update Fake's ViewModel.
 
 ```kotlin
 override fun event(event: FeedViewModel.Event) {
