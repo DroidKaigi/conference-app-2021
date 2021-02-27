@@ -27,7 +27,7 @@ jobs:
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
             })
-            return resp.jobs[0].steps[0].name
+            return resp.jobs[0].steps[1].name
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
