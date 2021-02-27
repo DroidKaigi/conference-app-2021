@@ -25,15 +25,20 @@ jobs:
             const resp = await github.actions.listJobsForWorkflowRun({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              run_id: context.payload.id
+              run_id: ${{ github.event.workflow_run.id }}
             })
-            return resp.jobs[0].name
+            const prNumber = resp.jobs[0].name
+            await github.pulls.get({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: prNumber
+            })
+            return prNumber
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
           path: gh-actions
       - uses: ./gh-actions/actions/destroy-distribution-by-name
-        continue-on-error: true
         with:
           api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
           app-owner-name: droidkaigi
