@@ -1,0 +1,42 @@
+name: drop-staging
+
+on:
+  workflow_run:
+    workflows:
+      - pull-request-closed-hook
+    branches-ignore:
+      - main
+      - release*
+    types:
+      - completed
+
+jobs:
+  drop-stage:
+    name: "Drop from staging"
+    runs-on: ubuntu-latest
+    if: github.event.workflow_run.conclusion == "success"
+    steps:
+      - uses: actions/github-script@v3
+        id: get-pr-number
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          result-encoding: string
+          script: |
+            const resp = await github.actions.listJobsForWorkflowRun({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              run_id: context.payload.id
+            })
+            return resp.jobs[0].name
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: ./gh-actions/actions/destroy-distribution-by-name
+        continue-on-error: true
+        with:
+          api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
+          app-owner-name: droidkaigi
+          platform: android
+          app-id: io.github.droidkaigi.feeder.debug
+          distribution-name: ${{ format('debug/refs/pull/{0}/head', steps.get-pr-number.outputs.result) }}
