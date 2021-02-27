@@ -1,6 +1,4 @@
-# DroidKaigi 2021 official app[WIP]
-
-DroidKaigi 2021 official app
+# DroidKaigi 2021 official app
 
 # Guides
 

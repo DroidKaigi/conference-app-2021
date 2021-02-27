@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder.core
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Providers
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Staff
@@ -26,11 +26,13 @@ interface StaffViewModel :
     override fun event(event: Event)
 }
 
-private val LocalStaffViewModel = compositionLocalOf<StaffViewModel>()
+private val LocalStaffViewModel = compositionLocalOf<StaffViewModel> {
+    error("Not view model provided")
+}
 
 @Composable
 fun ProvideStaffViewModel(viewModel: StaffViewModel, block: @Composable () -> Unit) {
-    Providers(LocalStaffViewModel provides viewModel, content = block)
+    CompositionLocalProvider(LocalStaffViewModel provides viewModel, content = block)
 }
 
 @Composable

@@ -25,12 +25,13 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.AmbientDensity
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import dev.chrisbanes.accompanist.insets.AmbientWindowInsets
+import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
@@ -128,7 +129,7 @@ private fun FeedScreen(
     onClickFeed: (FeedItem) -> Unit,
 ) {
     Column {
-        val density = AmbientDensity.current
+        val density = LocalDensity.current
         BackdropScaffold(
             backLayerBackgroundColor = MaterialTheme.colors.primary,
             scaffoldState = scaffoldState,
@@ -136,7 +137,7 @@ private fun FeedScreen(
                 BackLayerContent(filters, onFavoriteFilterChanged)
             },
             frontLayerShape = CutCornerShape(topStart = 32.dp),
-            peekHeight = 104.dp + (AmbientWindowInsets.current.systemBars.top / density.density).dp,
+            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
@@ -169,7 +170,7 @@ private fun AppBar(
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(vectorResource(R.drawable.ic_baseline_menu_24), "menu")
+                Icon(ImageVector.vectorResource(R.drawable.ic_baseline_menu_24), "menu")
             }
         }
     )
@@ -218,7 +219,7 @@ private fun FeedList(
         modifier = Modifier.fillMaxHeight()
     ) {
         LazyColumn(
-            contentPadding = AmbientWindowInsets.current.systemBars.toPaddingValues(top = false)
+            contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(top = false)
         ) {
             if (feedContents.size > 0) {
                 items(feedContents.contents.size * 2) { index ->
