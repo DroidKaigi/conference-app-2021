@@ -1,0 +1,13 @@
+name: pull-request-closed-hook
+
+on:
+  pull_request:
+    types: [closed]
+
+jobs:
+  placeholder:
+    name: "placeholder"
+    runs-on: ubuntu-latest
+    steps:
+      - name: ${{ github.event.pull_request.number }}
+        run: echo ok

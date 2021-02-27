@@ -1,21 +1,17 @@
 name: assemble-and-stage
 on:
   pull_request_target:
-    types: [opened, synchronize, reopened, closed]
+    types: [opened, synchronize, reopened]
   push:
     branches:
       - main
       - chore/ci_cd_*
-
-env:
-  DEV_PACKAGE_NAME: io.github.droidkaigi.feeder.debug
 
 jobs:
   assemble:
     if: >
       github.event_name == 'push' || 
       github.event_name == 'pull_request_target' && 
-      github.event.action != 'closed' && 
       !contains(github.event.pull_request.head.ref, 'main') && 
       !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
     name: "assemble android application files"
@@ -57,7 +53,6 @@ jobs:
     if: >
       github.event_name == 'push' || 
       github.event_name == 'pull_request_target' && 
-      github.event.action != 'closed' && 
       !contains(github.event.pull_request.head.ref, 'main') && 
       !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
     name: "test on feature branches"
@@ -154,23 +149,6 @@ jobs:
           state: ${{ steps.upload.outcome }}
           deployment-url: ${{ steps.deployment-properties.outputs.deployment-url }}
           description: ${{ steps.deployment-properties.outputs.description }}
-  drop-stage:
-    if: github.event_name == 'pull_request_target' && github.event.action == 'closed'
-    name: "Drop from staging"
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: gh-actions
-          path: gh-actions
-      - uses: ./gh-actions/actions/destroy-distribution-by-name
-        continue-on-error: true
-        with:
-          api-token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-          app-owner-name: droidkaigi
-          platform: android
-          app-id: ${{ env.DEV_PACKAGE_NAME }}
-          distribution-name: ${{ format('debug/refs/pull/{0}/head', github.event.pull_request.number) }}
   stage-default:
     if: github.event_name == 'push'
     needs: [assemble]
