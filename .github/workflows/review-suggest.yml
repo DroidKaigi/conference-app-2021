@@ -1,13 +1,12 @@
 name: reviewdog-suggester
-on: [pull_request]
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
 jobs:
   kotlin:
     name: runner / suggester / spotless
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: main
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
