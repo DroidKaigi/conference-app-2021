@@ -20,6 +20,7 @@ buildscript {
         classpath Dep.Kotlin.serializationPlugin
         classpath Dep.PlayServices.plugin
         classpath Dep.Dagger.plugin
+        classpath Dep.FirebaseCrashlytics.plugin
         classpath 'app.cash.exhaustive:exhaustive-gradle:0.1.1'
     }
 }
