@@ -7,6 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.res.imageResource
 import io.github.droidkaigi.feeder.main.R
 import kotlinx.coroutines.delay
@@ -22,7 +23,7 @@ fun LandingScreen(modifier: Modifier = Modifier, onTimeout: () -> Unit) {
             onTimeout()
         }
         Image(
-            bitmap = imageResource(id = R.drawable.ic_logo_big),
+            bitmap = ImageBitmap.imageResource(id = R.drawable.ic_logo_big),
             contentDescription = "landing",
             modifier = Modifier.fillMaxSize(0.5F)
         )

@@ -2,8 +2,10 @@ package io.github.droidkaigi.feeder
 
 object Dep {
     object Compose {
-        const val activityCompose = "androidx.activity:activity-compose:1.3.0-alpha02"
+        const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
+        const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
     }
+
     object Jetpack {
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
@@ -69,8 +71,8 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.5.1"
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.5.1"
+        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.6.0"
+        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
     }
 
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"

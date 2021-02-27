@@ -3,9 +3,10 @@ package io.github.droidkaigi.feeder
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.material.DrawerValue
-import androidx.compose.material.ModalDrawerLayout
+import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavType
@@ -18,6 +19,7 @@ import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTabs
+import kotlinx.coroutines.launch
 
 @Composable
 fun AppContent(
@@ -26,8 +28,13 @@ fun AppContent(
 ) {
     val drawerState = rememberDrawerState(firstDrawerValue)
     val navController = rememberNavController()
-    val onNavigationIconClick = { drawerState.open() }
-    ModalDrawerLayout(
+    val coroutineScope = rememberCoroutineScope()
+    val onNavigationIconClick: () -> Unit = {
+        coroutineScope.launch {
+            drawerState.open()
+        }
+    }
+    ModalDrawer(
         modifier = modifier,
         drawerState = drawerState,
         drawerContent = {
@@ -35,7 +42,9 @@ fun AppContent(
                 try {
                     navController.navigate(route)
                 } finally {
-                    drawerState.close()
+                    coroutineScope.launch {
+                        drawerState.close()
+                    }
                 }
             }
         }

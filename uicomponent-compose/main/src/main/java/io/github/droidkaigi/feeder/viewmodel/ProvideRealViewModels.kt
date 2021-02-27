@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder.viewmodel
 
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.viewinterop.viewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.droidkaigi.feeder.core.ProvideStaffViewModel
 import io.github.droidkaigi.feeder.feed.ProvideFeedViewModel
 

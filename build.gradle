@@ -2,8 +2,8 @@ import io.github.droidkaigi.feeder.Dep
 
 buildscript {
     ext {
-        compose_version = '1.0.0-alpha12'
-        nav_compose_version = "1.0.0-alpha07"
+        compose_version = '1.0.0-beta01'
+        nav_compose_version = "1.0.0-alpha08"
         kotlin_version = "1.4.30"
     }
     repositories {
@@ -13,7 +13,7 @@ buildscript {
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha06'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha08'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8
