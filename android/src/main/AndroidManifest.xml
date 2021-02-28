@@ -31,6 +31,21 @@
                 android:name="io.github.droidkaigi.feeder.FirebaseInitializer"
                 android:value="androidx.startup" />
         </provider>
+        <service
+            android:name=".notification.KaigiMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <receiver
+            android:name=".notification.LocaleChangeReceiver"
+            android:enabled="true"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCALE_CHANGED" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
