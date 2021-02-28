@@ -67,19 +67,17 @@ dependencies {
 
     // Write here to get from JetNews
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
-    implementation "androidx.compose.runtime:runtime:$compose_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
-    implementation "androidx.compose.foundation:foundation-layout:$compose_version"
-    implementation "androidx.compose.material:material:$compose_version"
-    implementation "androidx.compose.material:material-icons-extended:$compose_version"
-    implementation "androidx.compose.foundation:foundation:$compose_version"
-    implementation "androidx.compose.animation:animation:$compose_version"
-    implementation "androidx.compose.runtime:runtime-livedata:$compose_version"
-    implementation "androidx.compose.ui:ui-tooling:$compose_version"
-
-    implementation "androidx.navigation:navigation-compose:$nav_compose_version"
-
     implementation Dep.Compose.activity
+    implementation Dep.Compose.navigation
+    implementation Dep.Compose.runtime
+    implementation Dep.Compose.livedata
+    implementation Dep.Compose.foundation
+    implementation Dep.Compose.layout
+    implementation Dep.Compose.ui
+    implementation Dep.Compose.tooling
+    implementation Dep.Compose.material
+    implementation Dep.Compose.iconsExtended
+    implementation Dep.Compose.animation
 
     // Android
     implementation Dep.Jetpack.browser

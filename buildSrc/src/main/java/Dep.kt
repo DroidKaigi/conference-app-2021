@@ -4,6 +4,16 @@ object Dep {
     object Compose {
         const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
         const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+        const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
+        const val runtime = "androidx.compose.runtime:runtime:1.0.0-beta01"
+        const val livedata = "androidx.compose.runtime:runtime-livedata:1.0.0-beta01"
+        const val foundation = "androidx.compose.foundation:foundation:1.0.0-beta01"
+        const val layout = "androidx.compose.foundation:foundation-layout:1.0.0-beta01"
+        const val ui = "androidx.compose.ui:ui:1.0.0-beta01"
+        const val tooling = "androidx.compose.ui:ui-tooling:1.0.0-beta01"
+        const val material = "androidx.compose.material:material:1.0.0-beta01"
+        const val iconsExtended = "androidx.compose.material:material-icons-extended:1.0.0-beta01"
+        const val animation = "androidx.compose.animation:animation:1.0.0-beta01"
     }
 
     object Jetpack {
