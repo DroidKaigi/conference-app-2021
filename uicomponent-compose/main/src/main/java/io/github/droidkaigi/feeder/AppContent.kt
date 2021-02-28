@@ -47,10 +47,9 @@ fun AppContent(
         drawerShape = MaterialTheme.shapes.large.copy(all = CornerSize(0.dp)),
         drawerContent = {
             DrawerContent { route ->
-                actions.onSelectDrawerItem(route) {
-                    coroutineScope.launch {
-                        drawerState.close()
-                    }
+                actions.onSelectDrawerItem(route)
+                coroutineScope.launch {
+                    drawerState.close()
                 }
             }
         }
@@ -95,13 +94,10 @@ fun AppContent(
 }
 
 private class AppActions(navController: NavHostController) {
-    val onSelectDrawerItem: (String, () -> Unit) -> Unit = { route, closeDrawer ->
-        try {
-            navController.navigate(route)
-        } finally {
-            closeDrawer()
-        }
+    val onSelectDrawerItem: (String) -> Unit = { route ->
+        navController.navigate(route)
     }
+
     val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->
         val builder = CustomTabsIntent.Builder()
             .setShowTitle(true)
