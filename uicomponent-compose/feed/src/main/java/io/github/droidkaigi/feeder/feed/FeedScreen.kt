@@ -12,9 +12,9 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
-import androidx.compose.material.TabRow
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
@@ -173,8 +173,9 @@ private fun AppBar(
             }
         }
     )
-    TabRow(
+    ScrollableTabRow(
         selectedTabIndex = 0,
+        edgePadding = 0.dp,
         indicator = {
         },
         divider = {}
