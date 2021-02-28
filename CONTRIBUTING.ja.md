@@ -6,7 +6,7 @@
 
 ### タスクの見つけ方
 
-タスク管理にGitHub Issueを使っています。こちらでコントリビュートしたいIssueをお探しください。`welcome contribute` と `easy`のラベルがついているIssueは、初めてのコントリビュートにおすすめです。
+タスク管理にGitHub Issueを使っています。こちらでコントリビュートしたいIssueをお探しください。[`welcome contribute` と `easy`のラベルがついているIssue](https://github.com/DroidKaigi/conference-app-2021/issues?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute)は、初めてのコントリビュートにおすすめです。
 
 IssueがないPull Requestでも大丈夫です。その場合はPull Requestに理由、原因、解決策などの詳細をご記入ください。
 
