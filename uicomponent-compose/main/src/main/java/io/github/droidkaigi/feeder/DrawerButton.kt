@@ -17,7 +17,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.main.R
 
 // from JetNews
 
@@ -78,5 +82,18 @@ fun DrawerButton(
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewDrawerButton() {
+    ConferenceAppFeederTheme {
+        DrawerButton(
+            icon = ImageVector.vectorResource(id = R.drawable.ic_baseline_home_24),
+            label = "HOME",
+            isSelected = true,
+            action = {}
+        )
     }
 }
