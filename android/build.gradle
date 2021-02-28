@@ -111,9 +111,9 @@ dependencies {
     implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03')
     kapt Dep.Dagger.hiltAndroidCompiler
 
-    implementation "androidx.compose.runtime:runtime:$compose_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
     implementation Dep.Compose.activity
+    implementation Dep.Compose.runtime
+    implementation Dep.Compose.ui
 
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlib
