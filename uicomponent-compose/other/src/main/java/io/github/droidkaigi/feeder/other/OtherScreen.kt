@@ -43,7 +43,7 @@ sealed class OtherTabs(val name: String, val routePath: String) {
     object AboutThisApp : OtherTabs("About", "about")
     object Contributor : OtherTabs("Contributor", "contributor")
     object Staff : OtherTabs("Staff", "about_this_app")
-    object Settings : OtherTabs("Setting", "about_this_app")
+    object Settings : OtherTabs("Setting", "setting")
 
     companion object {
         fun values() = listOf(AboutThisApp, Contributor, Staff, Settings)
