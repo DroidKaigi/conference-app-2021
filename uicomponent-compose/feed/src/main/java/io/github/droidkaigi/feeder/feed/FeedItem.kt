@@ -99,7 +99,8 @@ fun FeedItem(
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
-                bottom.linkTo(image.bottom)
+                top.linkTo(date.top)
+                bottom.linkTo(date.bottom)
                 end.linkTo(parent.end, 16.dp)
             },
             content = {
