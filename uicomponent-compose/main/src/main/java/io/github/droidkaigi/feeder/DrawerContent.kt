@@ -1,13 +1,24 @@
 package io.github.droidkaigi.feeder
 
 import androidx.annotation.IdRes
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
@@ -48,26 +59,26 @@ enum class DrawerContents(
     ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_android_24,
         label = "DroidKaigiとは",
         route = "other/${OtherTabs.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
-        label = "CONTRIBUTOR",
+        imageResId = R.drawable.ic_outline_people_24,
+        label = "コントリビューター",
         route = "other/${OtherTabs.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
-        label = "STAFF",
+        imageResId = R.drawable.ic_baseline_face_24,
+        label = "スタッフ",
         route = "other/${OtherTabs.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
-        label = "SETTING",
+        imageResId = R.drawable.ic_baseline_settings_24,
+        label = "設定",
         route = "other/${OtherTabs.Settings.routePath}",
     ),
     ;
@@ -78,15 +89,49 @@ enum class DrawerContents(
 }
 
 @Composable
-fun DrawerContent(onNavigate: (route: String) -> Unit) {
+fun DrawerContent(
+    currentRoute: String = DrawerContents.HOME.route,
+    onNavigate: (route: String) -> Unit,
+) {
     Column {
-        Spacer(modifier = Modifier.height(36.dp))
+        Spacer(modifier = Modifier.height(52.dp))
+        Row(
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(horizontal = 24.dp)
+                .fillMaxWidth()
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_logo),
+                contentDescription = "logo"
+            )
+            Spacer(Modifier.width(12.dp))
+            Text(
+                text = "DroidKaigi",
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold,
+                modifier = Modifier.fillMaxWidth()
+            )
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        Divider()
+        Spacer(modifier = Modifier.height(12.dp))
         for (group in DrawerContents.Group.values()) {
-            val groupContents = DrawerContents.values()
-                .filter { content -> content.group == group }
-            DrawerContentGroup(groupContents, onNavigate)
-            Spacer(modifier = Modifier.height(2.dp))
-            Divider(thickness = 4.dp)
+            when (group) {
+                DrawerContents.Group.NEWS -> {
+                    val newsContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.NEWS }
+                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+                }
+                DrawerContents.Group.OTHER -> {
+                    val otherContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.OTHER }
+                    DrawerContentGroup(otherContents, currentRoute, onNavigate)
+                }
+            }
         }
     }
 }
@@ -94,13 +139,14 @@ fun DrawerContent(onNavigate: (route: String) -> Unit) {
 @Composable
 private fun DrawerContentGroup(
     groupContents: List<DrawerContents>,
+    currentRoute: String,
     onNavigate: (route: String) -> Unit,
 ) {
     for (content in groupContents) {
         DrawerButton(
             painter = painterResource(id = content.imageResId),
             label = content.label,
-            isSelected = true,
+            isSelected = content.route == currentRoute,
             {
                 onNavigate(content.route)
             }
@@ -112,7 +158,9 @@ private fun DrawerContentGroup(
 @Composable
 fun PreviewDrawerContent() {
     ConferenceAppFeederTheme {
-        DrawerContent {
+        Surface {
+            DrawerContent(currentRoute = DrawerContents.HOME.route) {
+            }
         }
     }
 }

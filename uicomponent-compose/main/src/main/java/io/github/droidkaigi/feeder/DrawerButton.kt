@@ -14,10 +14,13 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.main.R
 
 // from JetNews
 
@@ -35,15 +38,15 @@ fun DrawerButton(
     } else {
         0.6f
     }
-    val textIconColor = if (isSelected) {
-        colors.primary
+    val iconColor = if (isSelected) {
+        colors.secondary
     } else {
         colors.onSurface.copy(alpha = 0.6f)
     }
-    val backgroundColor = if (isSelected) {
-        colors.primary.copy(alpha = 0.12f)
+    val textColor = if (isSelected) {
+        colors.onSurface
     } else {
-        Color.Transparent
+        colors.onSurface.copy(alpha = 0.4f)
     }
 
     val surfaceModifier = modifier
@@ -51,7 +54,6 @@ fun DrawerButton(
         .fillMaxWidth()
     Surface(
         modifier = surfaceModifier,
-        color = backgroundColor,
         shape = MaterialTheme.shapes.small
     ) {
         TextButton(
@@ -61,22 +63,38 @@ fun DrawerButton(
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .padding(vertical = 4.dp)
+                    .fillMaxWidth()
             ) {
                 Image(
                     painter = painter,
                     contentDescription = label,
-                    colorFilter = ColorFilter.tint(textIconColor),
-                    alpha = imageAlpha
+                    colorFilter = ColorFilter.tint(iconColor),
+                    alpha = imageAlpha,
+                    modifier = Modifier.padding(start = 8.dp)
                 )
-                Spacer(Modifier.width(16.dp))
+                Spacer(Modifier.width(32.dp))
                 Text(
                     text = label,
-                    style = MaterialTheme.typography.body2,
-                    color = textIconColor,
+                    style = MaterialTheme.typography.subtitle2,
+                    color = textColor,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
         }
+    }
+}
+
+@Preview
+@Composable
+private fun PreviewDrawerButton() {
+    ConferenceAppFeederTheme {
+        DrawerButton(
+            painter = painterResource(id = R.drawable.ic_baseline_home_24),
+            label = "HOME",
+            isSelected = true,
+            action = {}
+        )
     }
 }
