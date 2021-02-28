@@ -18,11 +18,12 @@ fun NetworkImage(
     url: String,
     modifier: Modifier,
     contentScale: ContentScale,
+    contentDescription: String?
 ) {
     Box(modifier = modifier.background(Color.Gray))
     CoilImage(
         data = url,
-        contentDescription = "feed image",
+        contentDescription = contentDescription,
         modifier = modifier.testTag("NetworkImage"),
         contentScale = contentScale,
         onRequestCompleted = { result ->
@@ -45,6 +46,7 @@ fun PreviewNetworkImage() {
             .fillMaxHeight()
             .fillMaxWidth(),
         contentScale = ContentScale
-            .Crop
+            .Crop,
+        contentDescription = ""
     )
 }
