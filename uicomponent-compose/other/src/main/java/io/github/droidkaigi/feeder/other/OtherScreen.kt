@@ -35,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import io.github.droidkaigi.feeder.core.AboutThisApp
 import io.github.droidkaigi.feeder.core.StaffList
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
@@ -98,6 +99,7 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     when (selectedTab) {
+                        OtherTabs.AboutThisApp -> AboutThisApp()
                         OtherTabs.Staff -> StaffList()
                         else -> {
                             val context = LocalContext.current
