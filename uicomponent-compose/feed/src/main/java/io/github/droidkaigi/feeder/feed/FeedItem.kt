@@ -13,9 +13,8 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -73,7 +72,6 @@ fun FeedItem(
                     bottom.linkTo(parent.bottom, 12.dp)
                 }
                 .width(96.dp)
-                .width(96.dp)
 //                .aspectRatio(16F / 9F)
                 .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop
@@ -100,12 +98,13 @@ fun FeedItem(
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
-                bottom.linkTo(image.bottom)
+                top.linkTo(date.top)
+                bottom.linkTo(date.bottom)
                 end.linkTo(parent.end, 16.dp)
             },
             content = {
                 Icon(
-                    ImageVector.vectorResource(
+                    painterResource(
                         if (favorited) {
                             R.drawable
                                 .ic_baseline_favorite_24

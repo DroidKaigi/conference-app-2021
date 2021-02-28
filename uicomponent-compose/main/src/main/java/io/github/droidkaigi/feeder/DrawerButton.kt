@@ -15,9 +15,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.main.R
@@ -26,7 +26,7 @@ import io.github.droidkaigi.feeder.main.R
 
 @Composable
 fun DrawerButton(
-    icon: ImageVector,
+    painter: Painter,
     label: String,
     isSelected: Boolean,
     action: () -> Unit,
@@ -68,7 +68,7 @@ fun DrawerButton(
                     .fillMaxWidth()
             ) {
                 Image(
-                    imageVector = icon,
+                    painter = painter,
                     contentDescription = label,
                     colorFilter = ColorFilter.tint(iconColor),
                     alpha = imageAlpha,
@@ -91,7 +91,7 @@ fun DrawerButton(
 private fun PreviewDrawerButton() {
     ConferenceAppFeederTheme {
         DrawerButton(
-            icon = ImageVector.vectorResource(id = R.drawable.ic_baseline_home_24),
+            painter = painterResource(id = R.drawable.ic_baseline_home_24),
             label = "HOME",
             isSelected = true,
             action = {}

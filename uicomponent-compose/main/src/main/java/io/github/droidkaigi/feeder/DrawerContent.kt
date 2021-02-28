@@ -17,9 +17,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.vectorResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -146,7 +144,7 @@ private fun DrawerContentGroup(
 ) {
     for (content in groupContents) {
         DrawerButton(
-            icon = ImageVector.vectorResource(id = content.imageResId),
+            painter = painterResource(id = content.imageResId),
             label = content.label,
             isSelected = content.route == currentRoute,
             {

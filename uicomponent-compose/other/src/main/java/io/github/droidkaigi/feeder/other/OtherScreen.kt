@@ -28,10 +28,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
@@ -43,7 +42,7 @@ sealed class OtherTabs(val name: String, val routePath: String) {
     object AboutThisApp : OtherTabs("About", "about")
     object Contributor : OtherTabs("Contributor", "contributor")
     object Staff : OtherTabs("Staff", "about_this_app")
-    object Settings : OtherTabs("Setting", "about_this_app")
+    object Settings : OtherTabs("Setting", "setting")
 
     companion object {
         fun values() = listOf(AboutThisApp, Contributor, Staff, Settings)
@@ -136,7 +135,7 @@ private fun AppBar(
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(ImageVector.vectorResource(R.drawable.ic_baseline_menu_24), "menu")
+                Icon(painterResource(R.drawable.ic_baseline_menu_24), "menu")
             }
         }
     )
