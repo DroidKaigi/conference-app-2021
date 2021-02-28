@@ -64,7 +64,7 @@ jobs:
         if: steps.get-artifact-id.outputs.result != '[halt]'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          artifact-id: steps.get-artifact-id.outputs.result
+          artifact-id: ${{ steps.get-artifact-id.outputs.result }}
           path: ~/assemble-output
       - uses: ./gh-actions/actions/find-files
         id: find-aab-files
