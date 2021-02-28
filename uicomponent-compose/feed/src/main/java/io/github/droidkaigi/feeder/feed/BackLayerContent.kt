@@ -65,7 +65,6 @@ private fun Input(text: String, onClick: () -> Unit) {
                 Spacer(Modifier.width(8.dp))
             }
         }
-
     }
 }
 
