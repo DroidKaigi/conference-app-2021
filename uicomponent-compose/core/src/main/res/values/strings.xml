@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_network" translatable="false">A network error has occurred.Please try again.</string>
-    <string name="error_server" translatable="false">A server error has occurred.Please try again.</string>
-    <string name="error_unknown" translatable="false">An unknown error has occurred.Please try again.</string>
+    <string name="error_network">A network error has occurred.Please try again.</string>
+    <string name="error_server">A server error has occurred.Please try again.</string>
+    <string name="error_unknown">An unknown error has occurred.Please try again.</string>
 </resources>
