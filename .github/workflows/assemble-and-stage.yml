@@ -1,33 +1,39 @@
-name: assemble-and-stage
+name: assemble-app
 on:
-  pull_request_target:
+  pull_request:
     types: [opened, synchronize, reopened]
   push:
     branches:
       - main
-      - chore/ci_cd_*
 
 jobs:
+  get-pr-number:
+    if: github.event_name == 'pull_request'
+    name: "get-pr-number"
+    runs-on: ubuntu-latest
+    steps:
+      - name: ${{ github.event.pull_request.number }}
+        run: echo ok
   assemble:
     if: >
       github.event_name == 'push' || 
-      github.event_name == 'pull_request_target' && 
-      !contains(github.event.pull_request.head.ref, 'main') && 
-      !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
+      github.event_name == 'pull_request' && 
+      !contains(github.event.pull_request.head.ref, 'main')
     name: "assemble android application files"
     runs-on: ubuntu-latest
     steps:
       - name: Get HEAD to fetch
         id: fetch-head
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
-            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
-          else
+          if [[ "${{ github.event_name }}" == "push" ]]; then
             echo "::set-output name=ref::${{ github.ref }}"
+          else
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
           fi
       - uses: actions/checkout@v2
         with:
           ref: ${{ steps.fetch-head.outputs.ref }}
+      - run: rm -fr ./.gh-actions
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
@@ -52,23 +58,23 @@ jobs:
   test:
     if: >
       github.event_name == 'push' || 
-      github.event_name == 'pull_request_target' && 
-      !contains(github.event.pull_request.head.ref, 'main') && 
-      !contains(github.event.pull_request.head.ref, 'chore/ci_cd_')
+      github.event_name == 'pull_request' && 
+      !contains(github.event.pull_request.head.ref, 'main')
     name: "test on feature branches"
     runs-on: ubuntu-latest
     steps:
       - name: Get HEAD to fetch
         id: fetch-head
         run: |
-          if [[ "${{ github.event_name }}" == "pull_request_target" ]]; then
-            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
-          else
+          if [[ "${{ github.event_name }}" == "push" ]]; then
             echo "::set-output name=ref::${{ github.ref }}"
+          else
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
           fi
       - uses: actions/checkout@v2
         with:
           ref: ${{ steps.fetch-head.outputs.ref }}
+      - run: rm -fr ./.gh-actions
       - uses: actions/checkout@v2
         with:
           ref: gh-actions
@@ -90,65 +96,6 @@ jobs:
           name: unit-test-reports
           path: "./**/reports"
           retention-days: 14
-  stage-epic:
-    if: github.event_name == 'pull_request_target'
-    needs: [assemble]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          ref: main
-      - uses: actions/checkout@v2
-        with:
-          ref: gh-actions
-          path: gh-actions
-      - uses: actions/download-artifact@v2
-        with:
-          name: assemble-output
-          path: ~/assemble-output
-      - uses: ./gh-actions/actions/find-files
-        id: find-aab-files
-        with:
-          pattern: "~/assemble-output/**/*.aab"
-      - uses: ./gh-actions/actions/create-deployment
-        id: create-deployment
-        with:
-          github-token: ${{ github.token }}
-          ref: refs/pull/${{ github.event.pull_request.number }}/head
-          sha: ${{ github.event.pull_request.head.sha }}
-          artifact-name: assemble-output
-          environment: deploygate-distribution
-      - uses: jmatsu/dg-upload-app-action@v0.2
-        id: upload
-        continue-on-error: true
-        with:
-          app_owner_name: droidkaigi
-          api_token: ${{ secrets.DEPLOYGATE_API_TOKEN }}
-          app_file_path: ${{ fromJSON(steps.find-aab-files.outputs.paths)[0] }}
-          message: GitHub Actions have staged an artifact of ${{ github.event.pull_request.number }}/head / ${{ github.event.pull_request.head.sha }}
-          distribution_find_by: name
-          distribution_id: ${{ format('debug/refs/pull/{0}/head', github.event.pull_request.number) }}
-          release_note: ${{ format('Workflow {0}/{1} based on {2}', github.run_id , github.run_number , github.event.pull_request.head.sha) }}
-          pin: false
-      - name: generate properties based on upload step's status
-        id: deployment-properties
-        if: steps.upload.conclusion == 'success'
-        run: |
-            if [[ "${{ steps.upload.outcome }}" == "success" ]]; then
-              echo "::set-output name=deployment-url::${{ steps.upload.outputs.distribution_url }}"
-              echo "::set-output name=description::Deployed an app successfully. Please try it through DeployGate!"
-            else
-              echo "::set-output name=deployment-url::$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-              echo "::set-output name=description::Staging an app failed. Please check the workflow."
-            fi
-      - uses: ./gh-actions/actions/commit-deployment
-        if: steps.upload.conclusion == 'success'
-        with:
-          github-token: ${{ github.token }}
-          deployment-id: ${{ fromJSON(steps.create-deployment.outputs.deployment).id }}
-          state: ${{ steps.upload.outcome }}
-          deployment-url: ${{ steps.deployment-properties.outputs.deployment-url }}
-          description: ${{ steps.deployment-properties.outputs.description }}
   stage-default:
     if: github.event_name == 'push'
     needs: [assemble]
