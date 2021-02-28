@@ -66,7 +66,7 @@ fun DrawerButton(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier
-                    .padding(vertical = 8.dp)
+                    .padding(vertical = 4.dp)
                     .fillMaxWidth()
             ) {
                 Image(
