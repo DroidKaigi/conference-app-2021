@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -88,7 +89,10 @@ enum class DrawerContents(
 }
 
 @Composable
-fun DrawerContent(onNavigate: (route: String) -> Unit) {
+fun DrawerContent(
+    currentRoute: String = DrawerContents.HOME.route,
+    onNavigate: (route: String) -> Unit,
+) {
     Column {
         Spacer(modifier = Modifier.height(52.dp))
         Row(
@@ -116,14 +120,14 @@ fun DrawerContent(onNavigate: (route: String) -> Unit) {
                 DrawerContents.Group.NEWS -> {
                     val newsContents = DrawerContents.values()
                         .filter { content -> content.group == DrawerContents.Group.NEWS }
-                    DrawerContentGroup(newsContents, onNavigate)
+                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
                     Spacer(modifier = Modifier.height(8.dp))
                     Divider()
                 }
                 DrawerContents.Group.OTHER -> {
                     val otherContents = DrawerContents.values()
                         .filter { content -> content.group == DrawerContents.Group.OTHER }
-                    DrawerContentGroup(otherContents, onNavigate)
+                    DrawerContentGroup(otherContents, currentRoute, onNavigate)
                 }
             }
         }
@@ -133,13 +137,14 @@ fun DrawerContent(onNavigate: (route: String) -> Unit) {
 @Composable
 private fun DrawerContentGroup(
     groupContents: List<DrawerContents>,
+    currentRoute: String,
     onNavigate: (route: String) -> Unit,
 ) {
     for (content in groupContents) {
         DrawerButton(
             icon = ImageVector.vectorResource(id = content.imageResId),
             label = content.label,
-            isSelected = false,
+            isSelected = content.route == currentRoute,
             {
                 onNavigate(content.route)
             }
@@ -151,7 +156,9 @@ private fun DrawerContentGroup(
 @Composable
 fun PreviewDrawerContent() {
     ConferenceAppFeederTheme {
-        DrawerContent {
+        Surface {
+            DrawerContent(currentRoute = DrawerContents.HOME.route) {
+            }
         }
     }
 }
