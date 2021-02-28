@@ -61,11 +61,15 @@ jobs:
               return '[halt]'
             }
       - uses: ./gh-actions/actions/get-artifact
+        id: get-artifact
         if: steps.get-artifact-id.outputs.result != '[halt]'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           artifact-id: ${{ steps.get-artifact-id.outputs.result }}
           path: ~/assemble-output
+      - run: >
+          unzip ${{ steps.get-artifact.outputs.archive-path }} -d ~/assemble-output &&
+          rm -f ${{ steps.get-artifact.outputs.archive-path }}
       - uses: ./gh-actions/actions/find-files
         id: find-aab-files
         with:
