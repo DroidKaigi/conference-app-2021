@@ -47,7 +47,7 @@ object Dep {
     }
 
     object Ktor {
-        const val bom = "io.ktor:ktor-bom:1.5.1"
+        const val bom = "io.ktor:ktor-bom:1.5.2"
         const val core = "io.ktor:ktor-client-core"
         const val json = "io.ktor:ktor-client-json"
         const val logging = "io.ktor:ktor-client-logging"
