@@ -72,7 +72,6 @@ fun FeedItem(
                     bottom.linkTo(parent.bottom, 12.dp)
                 }
                 .width(96.dp)
-                .width(96.dp)
 //                .aspectRatio(16F / 9F)
                 .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop
