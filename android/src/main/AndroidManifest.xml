@@ -31,7 +31,7 @@
                 android:value="androidx.startup" />
         </provider>
         <service
-            android:name=".notification.KaigiMessagingService"
+            android:name=".notification.AppMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
