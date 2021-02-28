@@ -18,10 +18,7 @@ open class FeedRepositoryImpl(
                     emit(feedApi.fetch())
                 }
             ) { favorites, apiFeed ->
-                FeedContents(apiFeed
-                    .sortedBy { it.publishedAt }
-                    .reversed(), favorites
-                )
+                FeedContents(apiFeed.sortedBy { it.publishedAt }.reversed(), favorites)
             }
     }
 
