@@ -8,13 +8,16 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -41,6 +44,7 @@ fun FeedItem(
                 onClick = { onClick(feedItem) }
             )
             .fillMaxWidth()
+            .semantics(mergeDescendants = true) { }
     ) {
         val (media, image, title, date, favorite) = createRefs()
         if (showMediaLabel) {
@@ -74,7 +78,8 @@ fun FeedItem(
                 .width(96.dp)
 //                .aspectRatio(16F / 9F)
                 .aspectRatio(1F / 1F),
-            contentScale = ContentScale.Crop
+            contentScale = ContentScale.Crop,
+            contentDescription = null
         )
         Text(
             modifier = Modifier.constrainAs(title) {
@@ -83,18 +88,21 @@ fun FeedItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = feedItem.title,
+            text = feedItem.title.jaTitle,
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
-            modifier = Modifier.constrainAs(date) {
-                bottom.linkTo(parent.bottom, 16.dp)
-                start.linkTo(image.end, 16.dp)
-            },
-            text = feedItem.publishedDateString()
-        )
+        CompositionLocalProvider(LocalContentAlpha provides 0.54f) {
+            Text(
+                modifier = Modifier.constrainAs(date) {
+                    bottom.linkTo(parent.bottom, 16.dp)
+                    start.linkTo(image.end, 16.dp)
+                },
+                text = feedItem.publishedDateString(),
+                style = typography.caption
+            )
+        }
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
