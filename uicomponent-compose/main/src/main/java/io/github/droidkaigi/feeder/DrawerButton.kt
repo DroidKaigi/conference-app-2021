@@ -14,7 +14,6 @@ import androidx.compose.material.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.vectorResource
@@ -39,15 +38,15 @@ fun DrawerButton(
     } else {
         0.6f
     }
-    val textIconColor = if (isSelected) {
-        colors.primary
+    val iconColor = if (isSelected) {
+        colors.secondary
     } else {
         colors.onSurface.copy(alpha = 0.6f)
     }
-    val backgroundColor = if (isSelected) {
-        colors.primary.copy(alpha = 0.12f)
+    val textColor = if (isSelected) {
+        colors.onSurface
     } else {
-        Color.Transparent
+        colors.onSurface.copy(alpha = 0.4f)
     }
 
     val surfaceModifier = modifier
@@ -55,7 +54,6 @@ fun DrawerButton(
         .fillMaxWidth()
     Surface(
         modifier = surfaceModifier,
-        color = backgroundColor,
         shape = MaterialTheme.shapes.small
     ) {
         TextButton(
@@ -72,15 +70,15 @@ fun DrawerButton(
                 Image(
                     imageVector = icon,
                     contentDescription = label,
-                    colorFilter = ColorFilter.tint(textIconColor),
+                    colorFilter = ColorFilter.tint(iconColor),
                     alpha = imageAlpha,
                     modifier = Modifier.padding(start = 8.dp)
                 )
                 Spacer(Modifier.width(32.dp))
                 Text(
                     text = label,
-                    style = MaterialTheme.typography.body2,
-                    color = textIconColor,
+                    style = MaterialTheme.typography.subtitle2,
+                    color = textColor,
                     modifier = Modifier.fillMaxWidth()
                 )
             }
