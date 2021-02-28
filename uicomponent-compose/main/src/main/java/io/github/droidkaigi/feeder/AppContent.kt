@@ -53,7 +53,7 @@ fun AppContent(
             val currentOtherTab = navBackStackEntry?.arguments?.getString("otherTab")
             val currentRoute = currentFeedTab?.let { "feed/$it" }
                 ?: currentOtherTab?.let { "other/$it" }
-                ?: "feed/${FeedTabs.Home.routePath}"
+                ?: DrawerContents.HOME.route
             DrawerContent(currentRoute) { route ->
                 actions.onSelectDrawerItem(route)
                 coroutineScope.launch {
