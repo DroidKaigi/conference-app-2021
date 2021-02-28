@@ -47,7 +47,7 @@ fun FeedsResponse.toFeedList() =
         )
     } +
         recordings.map { recording ->
-            FeedItem.Podcast(
+            FeedItem.Video(
                 id = recording.id,
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
@@ -64,7 +64,7 @@ fun FeedsResponse.toFeedList() =
             )
         } +
         episodes.map { recording ->
-            FeedItem.Video(
+            FeedItem.Podcast(
                 id = recording.id,
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
