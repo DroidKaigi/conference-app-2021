@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.core
+package io.github.droidkaigi.feeder.staff
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
@@ -6,6 +6,7 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.feeder.core.use
 
 @Composable
 fun StaffList() {

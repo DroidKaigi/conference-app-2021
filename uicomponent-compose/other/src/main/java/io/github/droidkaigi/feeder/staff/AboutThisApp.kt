@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.core
+package io.github.droidkaigi.feeder.staff
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
