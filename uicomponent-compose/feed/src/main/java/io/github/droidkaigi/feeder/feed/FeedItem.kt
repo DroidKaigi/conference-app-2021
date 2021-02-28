@@ -8,9 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
+import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
@@ -88,13 +90,16 @@ fun FeedItem(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
-        Text(
-            modifier = Modifier.constrainAs(date) {
-                bottom.linkTo(parent.bottom, 16.dp)
-                start.linkTo(image.end, 16.dp)
-            },
-            text = feedItem.publishedDateString()
-        )
+        CompositionLocalProvider(LocalContentAlpha provides 0.54f) {
+            Text(
+                modifier = Modifier.constrainAs(date) {
+                    bottom.linkTo(parent.bottom, 16.dp)
+                    start.linkTo(image.end, 16.dp)
+                },
+                text = feedItem.publishedDateString(),
+                style = typography.caption
+            )
+        }
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
