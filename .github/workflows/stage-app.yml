@@ -60,7 +60,7 @@ jobs:
             } else {
               return '[halt]'
             }
-      - uses: ./gh-actions/download-artifact
+      - uses: ./gh-actions/actions/get-artifact
         if: steps.get-artifact-id.outputs.result != '[halt]'
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
