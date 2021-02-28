@@ -65,15 +65,18 @@ fun DrawerButton(
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .fillMaxWidth()
             ) {
                 Image(
                     imageVector = icon,
                     contentDescription = label,
                     colorFilter = ColorFilter.tint(textIconColor),
-                    alpha = imageAlpha
+                    alpha = imageAlpha,
+                    modifier = Modifier.padding(start = 8.dp)
                 )
-                Spacer(Modifier.width(16.dp))
+                Spacer(Modifier.width(32.dp))
                 Text(
                     text = label,
                     style = MaterialTheme.typography.body2,
