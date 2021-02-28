@@ -70,7 +70,7 @@ private fun Input(text: String, onClick: () -> Unit) {
 
 @Preview(showBackground = true)
 @Composable
-fun BackLayerContentPreview() {
+fun PreviewBackLayerContent() {
     BackLayerContent(
         filterState = Filters(),
         onFavoriteFilterChanged = { }
