@@ -1,4 +1,4 @@
-# DroidKaigi 2021 official app
+# ![DroidKaigi Logo](uicomponent-compose/main/src/main/res/drawable-xxhdpi/ic_logo.png) DroidKaigi 2021 official app
 
 # Guides
 
