@@ -9,6 +9,9 @@ on:
 
 jobs:
   stage-epic:
+    if: >
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -45,7 +48,7 @@ jobs:
         with:
           result-encoding: string
           script: |
-            const { data: resp } = await github.actions.listArtifactsForWorkflowRun({
+            const { data: resp } = await github.actions.listWorkflowRunArtifacts({
               owner: context.repo.owner,
               repo: context.repo.repo,
               run_id: ${{ github.event.workflow_run.id }}
