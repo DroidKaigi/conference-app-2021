@@ -26,26 +26,30 @@ fun AboutThisApp() {
 
 @Composable
 fun AboutThisAppComponent() {
-    Text(
-        text = "このアプリとは",
-        style = typography.h6
-    )
-    Spacer(modifier = Modifier.height(16.dp))
-    Text(
-        text = "DroidKaigiが情報を発信するアプリです。",
-        style = typography.body1
-    )
+    Column {
+        Text(
+            text = "このアプリとは",
+            style = typography.h6
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = "DroidKaigiが情報を発信するアプリです。",
+            style = typography.body1
+        )
+    }
 }
 
 @Composable
 fun WhatIsDroidKaigiComponent() {
-    Text(
-        text = "What is DroidKaigi?",
-        style = typography.h6
-    )
-    Spacer(modifier = Modifier.height(24.dp))
-    // TODO: Replace DroidKaigi Logo
-    Text("ToDo: Replace me to Logo image")
-    Spacer(modifier = Modifier.height(24.dp))
-    Text("DroidKaigiはエンジニアが主役のAndroidカンファレンスです。Android技術情報の共有とコミュニケーションを目的に、イベントを開催しています。")
+    Column {
+        Text(
+            text = "What is DroidKaigi?",
+            style = typography.h6
+        )
+        Spacer(modifier = Modifier.height(24.dp))
+        // TODO: Replace DroidKaigi Logo
+        Text("ToDo: Replace me to Logo image")
+        Spacer(modifier = Modifier.height(24.dp))
+        Text("DroidKaigiはエンジニアが主役のAndroidカンファレンスです。Android技術情報の共有とコミュニケーションを目的に、イベントを開催しています。")
+    }
 }
