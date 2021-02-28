@@ -2,17 +2,17 @@
 
 # Guides
 
-- [Development](./#Development)
-  - [Features](./#Features)
-  - [Design](./#Design)
-  - [Try it out](./#Try_it_out)
-  - [Contributing](./#Contributing)
-  - [Requirements](./#Requirements)
-- [Tech Stacks](./#Tech_Stacks)
-  - [Kotlin Multiplatform](./#Kotlin_Multiplatform)
-  - [Jetpack Compose](./#Jetpack_Compose)
-- [Architecture](./#Architecture)
-- [Trouble Shooting](./#Trouble_Shooting)
+- [Development](#Development)
+  - [Features](#Features)
+  - [Design](#Design)
+  - [Try it out](#Try-it-out)
+  - [Contributing](#Contributing)
+  - [Requirements](#Requirements)
+- [Tech Stacks](#Tech-Stacks)
+  - [Kotlin Multiplatform](#Kotlin-Multiplatform)
+  - [Jetpack Compose](#Jetpack-Compose)
+- [Architecture](#Architecture)
+- [Trouble Shooting](#Trouble-Shooting)
 
 # Development
 
