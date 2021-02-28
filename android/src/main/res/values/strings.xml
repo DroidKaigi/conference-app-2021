@@ -1,3 +1,7 @@
 <resources>
-    <string name="app_name">DroidKaigi 2021</string>
+    <string name="app_name" translatable="false">DroidKaigi 2021</string>
+
+    <!-- Notification -->
+    <string name="notification_channel_name_default">Notification</string>
+    <string name="notification_channel_name_announcement">Announcement</string>
 </resources>

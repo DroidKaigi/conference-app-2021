@@ -80,4 +80,5 @@ object Dep {
         const val android = "com.google.firebase:firebase-crashlytics:17.3.1"
     }
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
+    const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
 }

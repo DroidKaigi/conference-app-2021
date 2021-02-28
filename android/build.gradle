@@ -129,6 +129,7 @@ dependencies {
     implementation Dep.FirebaseCrashlytics.android
 
     implementation Dep.firebaseAuth
+    implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
 
     testImplementation 'junit:junit:4.13.1'
