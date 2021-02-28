@@ -8,6 +8,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -15,6 +16,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
@@ -42,7 +44,13 @@ fun AppContent(
         drawerState = drawerState,
         drawerShape = MaterialTheme.shapes.large.copy(all = CornerSize(0.dp)),
         drawerContent = {
-            DrawerContent { route ->
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+            val currentFeedTab = navBackStackEntry?.arguments?.getString("feedTab")
+            val currentOtherTab = navBackStackEntry?.arguments?.getString("otherTab")
+            val currentRoute = currentFeedTab?.let { "feed/$it" }
+                ?: currentOtherTab?.let { "other/$it" }
+                ?: "feed/${FeedTabs.Home.routePath}"
+            DrawerContent(currentRoute) { route ->
                 try {
                     navController.navigate(route)
                 } finally {
