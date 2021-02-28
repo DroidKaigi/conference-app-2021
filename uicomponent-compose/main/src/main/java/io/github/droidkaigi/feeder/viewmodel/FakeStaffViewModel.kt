@@ -1,6 +1,6 @@
 package io.github.droidkaigi.feeder.viewmodel
 
-import io.github.droidkaigi.feeder.core.StaffViewModel
+import io.github.droidkaigi.feeder.staff.StaffViewModel
 import io.github.droidkaigi.feeder.fakeStaffs
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
