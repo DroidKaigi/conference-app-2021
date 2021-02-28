@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.MaterialTheme
@@ -54,10 +53,7 @@ fun FeedItem(
                     }
                     .background(
                         color = feedItem.media.color(),
-                        shape = CutCornerShape(
-                            topStart = 8.dp,
-                            bottomEnd = 8.dp
-                        )
+                        shape = MaterialTheme.shapes.small
                     )
                     .padding(vertical = 4.dp, horizontal = 8.dp),
                 text = feedItem.media.text,

@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -89,7 +88,7 @@ fun OtherScreen(
             backLayerContent = {
                 Box(modifier = Modifier.height(1.dp))
             },
-            frontLayerShape = CutCornerShape(topStart = 32.dp),
+            frontLayerShape = MaterialTheme.shapes.large,
             peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
@@ -156,10 +155,7 @@ private fun AppBar(
                             Modifier
                                 .background(
                                     color = MaterialTheme.colors.secondary,
-                                    shape = CutCornerShape(
-                                        topStart = 8.dp,
-                                        bottomEnd = 8.dp
-                                    )
+                                    shape = MaterialTheme.shapes.small
                                 )
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                         } else {
