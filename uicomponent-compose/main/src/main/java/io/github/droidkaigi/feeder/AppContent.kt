@@ -2,13 +2,16 @@ package io.github.droidkaigi.feeder
 
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.DrawerValue
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -37,6 +40,7 @@ fun AppContent(
     ModalDrawer(
         modifier = modifier,
         drawerState = drawerState,
+        drawerShape = MaterialTheme.shapes.large.copy(all = CornerSize(0.dp)),
         drawerContent = {
             DrawerContent { route ->
                 try {
