@@ -4,6 +4,7 @@ import io.github.droidkaigi.feeder.Author
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
+import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.Thumbnail
 import io.ktor.client.HttpClient
@@ -29,8 +30,14 @@ fun FeedsResponse.toFeedList() =
             publishedAt = article.publishedAt,
             image = article.thumbnail.toImage(),
             media = Media.Medium,
-            title = article.title,
-            summary = article.summary,
+            title = MultiLangText(
+                jaTitle = article.title,
+                enTitle = article.title,
+            ),
+            summary = MultiLangText(
+                jaTitle = article.summary,
+                enTitle = article.summary,
+            ),
             link = article.link,
             language = article.language,
             author = Author(
@@ -45,10 +52,14 @@ fun FeedsResponse.toFeedList() =
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
                 media = Media.YouTube,
-                // TODO: Use MultiLangText
-                title = recording.multiLangTitle.japanese,
-                // TODO: Use MultiLangText
-                summary = recording.multiLangSummary.japanese,
+                title = MultiLangText(
+                    jaTitle = recording.multiLangTitle.japanese,
+                    enTitle = recording.multiLangTitle.english,
+                ),
+                summary = MultiLangText(
+                    jaTitle = recording.multiLangSummary.japanese,
+                    enTitle = recording.multiLangSummary.english,
+                ),
                 link = recording.link,
             )
         } +
@@ -58,8 +69,14 @@ fun FeedsResponse.toFeedList() =
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
                 media = Media.DroidKaigiFM,
-                title = recording.title,
-                summary = recording.title,
+                title = MultiLangText(
+                    jaTitle = recording.title,
+                    enTitle = recording.title,
+                ),
+                summary = MultiLangText(
+                    jaTitle = recording.summary,
+                    enTitle = recording.summary,
+                ),
                 link = recording.link,
             )
         }

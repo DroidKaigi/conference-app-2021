@@ -9,8 +9,8 @@ sealed class FeedItem {
     abstract val publishedAt: Instant
     abstract val image: Image
     abstract val media: Media
-    abstract val title: String
-    abstract val summary: String
+    abstract val title: MultiLangText
+    abstract val summary: MultiLangText
     abstract val link: String
 
     data class Blog(
@@ -18,8 +18,8 @@ sealed class FeedItem {
         override val publishedAt: Instant,
         override val image: Image,
         override val media: Media,
-        override val title: String,
-        override val summary: String,
+        override val title: MultiLangText,
+        override val summary: MultiLangText,
         override val link: String,
         val language: String,
         val author: Author,
@@ -30,8 +30,8 @@ sealed class FeedItem {
         override val publishedAt: Instant,
         override val image: Image,
         override val media: Media,
-        override val title: String,
-        override val summary: String,
+        override val title: MultiLangText,
+        override val summary: MultiLangText,
         override val link: String,
     ) : FeedItem()
 
@@ -40,8 +40,8 @@ sealed class FeedItem {
         override val publishedAt: Instant,
         override val image: Image,
         override val media: Media,
-        override val title: String,
-        override val summary: String,
+        override val title: MultiLangText,
+        override val summary: MultiLangText,
         override val link: String,
     ) : FeedItem()
 
