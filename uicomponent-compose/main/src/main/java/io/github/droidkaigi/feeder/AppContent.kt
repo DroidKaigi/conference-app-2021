@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder
 
+import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.shape.CornerSize
@@ -9,10 +10,12 @@ import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -39,6 +42,7 @@ fun AppContent(
             drawerState.open()
         }
     }
+    val actions = remember(navController) { AppActions(navController) }
     ModalDrawer(
         modifier = modifier,
         drawerState = drawerState,
@@ -51,12 +55,9 @@ fun AppContent(
                 ?: currentOtherTab?.let { "other/$it" }
                 ?: "feed/${FeedTabs.Home.routePath}"
             DrawerContent(currentRoute) { route ->
-                try {
-                    navController.navigate(route)
-                } finally {
-                    coroutineScope.launch {
-                        drawerState.close()
-                    }
+                actions.onSelectDrawerItem(route)
+                coroutineScope.launch {
+                    drawerState.close()
                 }
             }
         }
@@ -77,13 +78,7 @@ fun AppContent(
                     onNavigationIconClick = onNavigationIconClick,
                     initialSelectedTab = FeedTabs.ofRoutePath(feedType),
                     onDetailClick = { feedItem: FeedItem ->
-                        // FIXME: Use navigation
-                        val builder = CustomTabsIntent.Builder()
-                            .setShowTitle(true)
-                            .setUrlBarHidingEnabled(true)
-
-                        val intent = builder.build()
-                        intent.launchUrl(context, Uri.parse(feedItem.link))
+                        actions.onSelectFeed(context, feedItem)
                     }
                 )
             }
@@ -103,5 +98,20 @@ fun AppContent(
                 )
             }
         }
+    }
+}
+
+private class AppActions(navController: NavHostController) {
+    val onSelectDrawerItem: (String) -> Unit = { route ->
+        navController.navigate(route)
+    }
+
+    val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->
+        val builder = CustomTabsIntent.Builder()
+            .setShowTitle(true)
+            .setUrlBarHidingEnabled(true)
+
+        val intent = builder.build()
+        intent.launchUrl(context, Uri.parse(feedItem.link))
     }
 }
