@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
@@ -19,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
@@ -59,26 +61,26 @@ enum class DrawerContents(
     ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_android_24,
         label = "DroidKaigiとは",
         route = "other/${OtherTabs.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
-        label = "CONTRIBUTOR",
+        imageResId = R.drawable.ic_outline_people_24,
+        label = "コントリビューター",
         route = "other/${OtherTabs.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
-        label = "STAFF",
+        imageResId = R.drawable.ic_baseline_face_24,
+        label = "スタッフ",
         route = "other/${OtherTabs.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
-        label = "SETTING",
+        imageResId = R.drawable.ic_baseline_settings_24,
+        label = "設定",
         route = "other/${OtherTabs.Settings.routePath}",
     ),
     ;
@@ -109,6 +111,8 @@ fun DrawerContent(
             Spacer(Modifier.width(12.dp))
             Text(
                 text = "DroidKaigi",
+                style = MaterialTheme.typography.h4,
+                fontWeight = FontWeight.Bold,
                 modifier = Modifier.fillMaxWidth()
             )
         }
