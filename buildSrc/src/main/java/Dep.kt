@@ -91,4 +91,10 @@ object Dep {
     }
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
+
+    object AndroidX {
+        const val core = "androidx.core:core-ktx:1.5.0-beta01"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
+        const val activity = "androidx.activity:activity-ktx:1.2.0"
+    }
 }
