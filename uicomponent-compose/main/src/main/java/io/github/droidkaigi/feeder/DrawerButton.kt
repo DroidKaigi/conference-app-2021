@@ -16,14 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.unit.dp
 
 // from JetNews
 
 @Composable
 fun DrawerButton(
-    icon: ImageVector,
+    painter: Painter,
     label: String,
     isSelected: Boolean,
     action: () -> Unit,
@@ -64,7 +64,7 @@ fun DrawerButton(
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Image(
-                    imageVector = icon,
+                    painter = painter,
                     contentDescription = label,
                     colorFilter = ColorFilter.tint(textIconColor),
                     alpha = imageAlpha
