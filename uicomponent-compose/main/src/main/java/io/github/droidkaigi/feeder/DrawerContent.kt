@@ -11,12 +11,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Divider
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.vectorResource
@@ -114,11 +112,20 @@ fun DrawerContent(onNavigate: (route: String) -> Unit) {
         Divider()
         Spacer(modifier = Modifier.height(12.dp))
         for (group in DrawerContents.Group.values()) {
-            val groupContents = DrawerContents.values()
-                .filter { content -> content.group == group }
-            DrawerContentGroup(groupContents, onNavigate)
-            Spacer(modifier = Modifier.height(2.dp))
-            Divider(thickness = 4.dp)
+            when (group) {
+                DrawerContents.Group.NEWS -> {
+                    val newsContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.NEWS }
+                    DrawerContentGroup(newsContents, onNavigate)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+                }
+                DrawerContents.Group.OTHER -> {
+                    val otherContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.OTHER }
+                    DrawerContentGroup(otherContents, onNavigate)
+                }
+            }
         }
     }
 }
@@ -132,7 +139,7 @@ private fun DrawerContentGroup(
         DrawerButton(
             icon = ImageVector.vectorResource(id = content.imageResId),
             label = content.label,
-            isSelected = true,
+            isSelected = false,
             {
                 onNavigate(content.route)
             }
