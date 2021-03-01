@@ -22,11 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -51,7 +47,7 @@ sealed class FeedTabs(val name: String, val routePath: String) {
     sealed class FilteredFeed(
         val feedItemClass: KClass<out FeedItem>,
         name: String,
-        routePath: String
+        routePath: String,
     ) :
         FeedTabs(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
@@ -71,14 +67,12 @@ sealed class FeedTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun FeedScreen(
-    initialSelectedTab: FeedTabs,
+    selectedTab: FeedTabs,
+    onSelectedTab: (FeedTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember(initialSelectedTab) {
-        mutableStateOf(initialSelectedTab)
-    }
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
 
@@ -104,8 +98,8 @@ fun FeedScreen(
         scaffoldState = scaffoldState,
         feedContents = state.filteredFeedContents,
         filters = state.filters,
-        onSelectTab = { tab: FeedTabs ->
-            selectedTab = tab
+        onSelectTab = {
+            onSelectedTab(it)
             coroutineScope.launch {
                 listState.animateScrollToItem(index = 0)
             }
@@ -262,7 +256,8 @@ fun PreviewFeedScreen() {
     ConferenceAppFeederTheme(false) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                initialSelectedTab = FeedTabs.Home,
+                selectedTab = FeedTabs.Home,
+                onSelectedTab = {},
                 onNavigationIconClick = {
                 }
             ) { feedItem: FeedItem ->
@@ -277,7 +272,8 @@ fun PreviewFeedScreenWithStartBlog() {
     ConferenceAppFeederTheme(false) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                initialSelectedTab = FeedTabs.FilteredFeed.Blog,
+                selectedTab = FeedTabs.FilteredFeed.Blog,
+                onSelectedTab = {},
                 onNavigationIconClick = {
                 }
             ) { feedItem: FeedItem ->

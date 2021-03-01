@@ -48,7 +48,7 @@ class RealFeedViewModel @Inject constructor(
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
-            filters
+            filters,
         ) { feedContentsLoadState, filters ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)

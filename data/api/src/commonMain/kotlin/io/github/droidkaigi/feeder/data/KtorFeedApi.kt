@@ -6,6 +6,7 @@ import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
+import io.github.droidkaigi.feeder.data.response.Speaker
 import io.github.droidkaigi.feeder.data.response.Thumbnail
 import io.ktor.client.HttpClient
 import io.ktor.client.request.get
@@ -78,6 +79,7 @@ fun FeedsResponse.toFeedList() =
                     enTitle = recording.summary,
                 ),
                 link = recording.link,
+                speakers = recording.speakers.map { it.toSpeaker() }
             )
         }
 
@@ -86,5 +88,12 @@ private fun Thumbnail.toImage(): Image {
         smallUrl,
         standardUrl,
         largeUrl
+    )
+}
+
+private fun Speaker.toSpeaker(): io.github.droidkaigi.feeder.Speaker {
+    return io.github.droidkaigi.feeder.Speaker(
+        name,
+        iconUrl
     )
 }
