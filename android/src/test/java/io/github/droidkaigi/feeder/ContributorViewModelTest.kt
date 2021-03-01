@@ -2,8 +2,11 @@ package io.github.droidkaigi.feeder
 
 import io.github.droidkaigi.feeder.core.ContributorViewModel
 import io.github.droidkaigi.feeder.core.fakeContributorViewModel
+import io.kotest.matchers.ints.shouldBeGreaterThan
 import kotlinx.coroutines.InternalCoroutinesApi
+import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Rule
+import org.junit.Test
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
 
@@ -16,6 +19,12 @@ class ContributorViewModelTest(
 
     @get:Rule
     val coroutineTestRule = CoroutineTestRule()
+
+    @Test
+    fun contents() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val contributorViewModel = contributorViewModelFactory.create()
+        contributorViewModel.state.value.contributorContents.size shouldBeGreaterThan 1
+    }
 
     class ContributorViewModelFactory(
         private val viewModelFactory: (errorFetchData: Boolean) -> ContributorViewModel
