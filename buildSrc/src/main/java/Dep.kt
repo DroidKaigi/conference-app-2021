@@ -100,5 +100,8 @@ object Dep {
         const val activity = "androidx.activity:activity-ktx:1.2.0"
     }
 
-    const val arbor = "com.ToxicBakery.logging:arbor-jvm:1.35.72"
+    object Arbor {
+        const val jvm = "com.ToxicBakery.logging:arbor-jvm:1.35.72"
+        const val android = "com.ToxicBakery.logging:arbor-android:1.35.72"
+    }
 }

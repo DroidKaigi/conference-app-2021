@@ -51,7 +51,7 @@ kotlin {
 
             implementation(Dep.firebaseAuth)
 
-            implementation Dep.arbor
+            implementation Dep.Arbor.jvm
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common
@@ -76,7 +76,7 @@ kotlin {
 //            testImplementation "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptTest Dep.Dagger.hiltAndroidCompiler
 
-            implementation Dep.arbor
+            implementation Dep.Arbor.jvm
         }
         androidTest.dependencies {
             implementation Dep.KotlinTest.junit
