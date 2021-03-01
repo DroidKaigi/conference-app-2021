@@ -54,6 +54,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
     }
 
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    private val selectedTab: MutableStateFlow<FeedTabs> = MutableStateFlow(FeedTabs.Home)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(mFeedContents, filters) { feedContents, filters ->
@@ -82,6 +83,9 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     mutableFeedContents.value = value.copy(
                         favorites = newFavorites
                     )
+                }
+                is FeedViewModel.Event.ToggleTab -> {
+                    selectedTab.value = event.selectedTab
                 }
             }
         }

@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
+import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
@@ -44,18 +45,21 @@ class RealFeedViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    private val selectedTab: MutableStateFlow<FeedTabs> = MutableStateFlow(FeedTabs.Home)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
-            filters
-        ) { feedContentsLoadState, filters ->
+            filters,
+            selectedTab
+        ) { feedContentsLoadState, filters, selectedTab ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             FeedViewModel.State(
                 showProgress = feedContentsLoadState.isLoading(),
                 filters = filters,
                 filteredFeedContents = filteredFeed,
+                selectedTab = selectedTab
 //                snackbarMessage = currentValue.snackbarMessage
             )
         }
@@ -83,6 +87,9 @@ class RealFeedViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(event.feedItem)
                     }
+                }
+                is FeedViewModel.Event.ToggleTab -> {
+                    selectedTab.value = event.selectedTab
                 }
             }
         }

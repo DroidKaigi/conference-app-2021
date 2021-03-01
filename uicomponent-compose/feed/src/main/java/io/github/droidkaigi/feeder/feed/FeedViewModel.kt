@@ -17,6 +17,7 @@ interface FeedViewModel :
         val showProgress: Boolean = false,
         val filters: Filters = Filters(),
         val filteredFeedContents: FeedContents = FeedContents(),
+        val selectedTab: FeedTabs = FeedTabs.Home,
     )
 
     sealed class Effect {
@@ -26,6 +27,7 @@ interface FeedViewModel :
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
         class ToggleFavorite(val feedItem: FeedItem) : Event()
+        class ToggleTab(val selectedTab: FeedTabs) : Event()
     }
 
     override val state: StateFlow<State>

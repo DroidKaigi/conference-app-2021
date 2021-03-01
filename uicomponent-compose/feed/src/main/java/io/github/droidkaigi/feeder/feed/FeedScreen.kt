@@ -67,9 +67,9 @@ fun FeedScreen(
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember(initialSelectedTab) {
-        mutableStateOf(initialSelectedTab)
-    }
+//    var selectedTab by remember(initialSelectedTab) {
+//        mutableStateOf(initialSelectedTab)
+//    }
 
     val (
         state,
@@ -89,12 +89,12 @@ fun FeedScreen(
     }
 
     FeedScreen(
-        selectedTab = selectedTab,
+        selectedTab = state.selectedTab,
         scaffoldState = scaffoldState,
         feedContents = state.filteredFeedContents,
         filters = state.filters,
         onSelectTab = { tab: FeedTabs ->
-            selectedTab = tab
+            dispatch(FeedViewModel.Event.ToggleTab(selectedTab = tab))
         },
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
