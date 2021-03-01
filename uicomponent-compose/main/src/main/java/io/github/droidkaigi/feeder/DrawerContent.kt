@@ -60,25 +60,25 @@ enum class DrawerContents(
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_android_24,
-        label = "DroidKaigiとは",
+        label = "ABOUT",
         route = "other/${OtherTabs.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
         imageResId = R.drawable.ic_outline_people_24,
-        label = "コントリビューター",
+        label = "CONTRIBUTOR",
         route = "other/${OtherTabs.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_face_24,
-        label = "スタッフ",
+        label = "STAFF",
         route = "other/${OtherTabs.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_settings_24,
-        label = "設定",
+        label = "SETTING",
         route = "other/${OtherTabs.Settings.routePath}",
     ),
     ;
