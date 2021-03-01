@@ -1,5 +1,8 @@
 package io.github.droidkaigi.feeder.core
 
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Contributor
 import kotlinx.coroutines.flow.Flow
@@ -22,3 +25,15 @@ interface ContributorViewModel:
     override val effect: Flow<Effect>
     override fun event(event: Event)
 }
+
+private val LocalContributeViewModel = compositionLocalOf<ContributorViewModel> {
+    error("Not view model provided")
+}
+
+@Composable
+fun ProvideFeedViewModel(viewModel: ContributorViewModel, block: @Composable () -> Unit) {
+    CompositionLocalProvider(LocalContributeViewModel provides viewModel, content = block)
+}
+
+@Composable
+fun contributeViewModel() = LocalContributeViewModel.current
