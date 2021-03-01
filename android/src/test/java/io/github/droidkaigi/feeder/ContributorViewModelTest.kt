@@ -8,7 +8,10 @@ import org.junit.runners.Parameterized
 
 @InternalCoroutinesApi
 @RunWith(Parameterized::class)
-class ContributorViewModelTest {
+class ContributorViewModelTest(
+    val name: String,
+    private val contributorViewModelFactory: ContributorViewModelFactory
+) {
 
     class ContributorViewModelFactory(
         private val viewModelFactory: (errorFetchData: Boolean) -> ContributorViewModel
