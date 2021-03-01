@@ -130,14 +130,14 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
   ],
   "episodes": [
     {
-      "id": "0b328510-182f-47f7-a2ae-a1afc6200baf",
+      "id": "9d264ffd-abac-40b9-83ef-9e76eb1d7e53",
       "externalId": {
         "value": "5",
         "serviceName": "droidkaigi_fm"
       },
       "title": "5. Notificiationよもやま話",
       "summary": "hidey、matsuyama、KeithYokoma、e10dokupの4人でAndroidのNotification周りの変遷や最近踏んだツラい話をしました。",
-      "duration": 1456.0,
+      "duration": 1456,
       "durationLabel": "24:16",
       "speakers": [
         {
@@ -167,51 +167,23 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
       "status": "submitted"
     },
     {
-      "id": "b7718b84-1191-440b-bf7f-b8e079ba93e0",
+      "id": "f725b41c-4375-43b5-8237-393370441c00",
       "externalId": {
-        "value": "4",
+        "value": "6",
         "serviceName": "droidkaigi_fm"
       },
-      "title": "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
-      "summary": "hidey、matsuyama、KeithYokoma、e10dokupの4人でAndroidアプリ開発時の検証端末の選定や開発PCについて話しました。なおmatsuyamaさんはPS5の購入に成功したようです。",
-      "duration": 2462.0,
-      "durationLabel": "41:2",
-      "speakers": [],
-      "thumbnail": {
-        "smallUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
-        "standardUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
-        "largeUrl": "https://droidkaigi.jp/fm/images/artwork.jpg"
-      },
-      "link": "https://droidkaigi.jp/fm/episode/4",
-      "publishedAt": "2020-11-20T03:00:00Z",
-      "status": "submitted"
-    },
-    {
-      "id": "02ff1334-19cf-4617-8834-12a59f1cf36b",
-      "externalId": {
-        "value": "3",
-        "serviceName": "droidkaigi_fm"
-      },
-      "title": "3. DroidKaigi 2020 LiteとDroidKaigi 2020",
-      "summary": "DroidKaigi 2020 Liteに向けたやっていきのため、スタッフたち（s_shimotori, satsukies, tnj, yurihondo, ymnd, e10dokup）でDroidKaigi 2020 Liteの内容やDroidKaigi 2020を支えるはずだった技術について話しました",
-      "duration": 61.0,
-      "durationLabel": "1:1",
+      "title": "6. JFrog JCenter/Bintrayのサービス終了に寄せて",
+      "summary": "hidey、ymnd、e10dokupの3人でJFrogのJCenter/Bintray等のサービス終了とそれに合わせたライブラリ使用者側、開発者側の対応について話しました。",
+      "duration": 1608,
+      "durationLabel": "26:48",
       "speakers": [
         {
-          "name": "s_shimotori",
-          "iconUrl": "https://droidkaigi.jp/fm/images/actors/s_shimotori.jpg"
+          "name": "hidey",
+          "iconUrl": "https://droidkaigi.jp/fm/images/actors/hidey.jpg"
         },
         {
-          "name": "satsukies",
-          "iconUrl": "https://droidkaigi.jp/fm/images/actors/satsukies.png"
-        },
-        {
-          "name": "tnj",
-          "iconUrl": "https://droidkaigi.jp/fm/images/actors/tnj.png"
-        },
-        {
-          "name": "yurihondo",
-          "iconUrl": "https://droidkaigi.jp/fm/images/actors/yurihondo.jpg"
+          "name": "e10dokup",
+          "iconUrl": "https://droidkaigi.jp/fm/images/actors/e10dokup.png"
         },
         {
           "name": "ymnd",
@@ -223,21 +195,34 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
         "standardUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
         "largeUrl": "https://droidkaigi.jp/fm/images/artwork.jpg"
       },
-      "link": "https://droidkaigi.jp/fm/episode/3",
-      "publishedAt": "2020-08-20T03:00:00Z",
+      "link": "https://droidkaigi.jp/fm/episode/6",
+      "publishedAt": "2020-12-21T03:00:00Z",
       "status": "submitted"
     },
     {
-      "id": "60f2e2da-8628-4d40-8eda-3ba15394af1c",
+      "id": "1bac71a9-d201-4739-b61b-0c502425c904",
       "externalId": {
         "value": "2",
         "serviceName": "droidkaigi_fm"
       },
       "title": "2. Android 11 Talks",
       "summary": "#1の続編です。引き続きKeithYokoma、ymnd、e10dokupの3名で、Android 11 Talksで取り上げられた内容についてお話しました。",
-      "duration": 1937.0,
+      "duration": 1937,
       "durationLabel": "32:17",
-      "speakers": [],
+      "speakers": [
+        {
+          "name": "KeithYokoma",
+          "iconUrl": "https://droidkaigi.jp/fm/images/actors/keithyokoma.jpg"
+        },
+        {
+          "name": "e10dokup",
+          "iconUrl": "https://droidkaigi.jp/fm/images/actors/e10dokup.png"
+        },
+        {
+          "name": "ymnd",
+          "iconUrl": "https://droidkaigi.jp/fm/images/actors/ymnd.jpg"
+        }
+      ],
       "thumbnail": {
         "smallUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
         "standardUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -245,26 +230,6 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
       },
       "link": "https://droidkaigi.jp/fm/episode/2",
       "publishedAt": "2020-07-08T15:00:00Z",
-      "status": "submitted"
-    },
-    {
-      "id": "6cc7dacd-643e-4553-b155-78c59ffbf6f7",
-      "externalId": {
-        "value": "1",
-        "serviceName": "droidkaigi_fm"
-      },
-      "title": "1. Android Studio 4.xとAndroid 11",
-      "summary": "KeithYokoma、ymnd、e10dokupの3名で、DroidKaigi On Airでも取り上げたAndroid Studio 4.x、そしてAndroid 11についてお話しました。",
-      "duration": 1679.0,
-      "durationLabel": "27:59",
-      "speakers": [],
-      "thumbnail": {
-        "smallUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
-        "standardUrl": "https://droidkaigi.jp/fm/images/artwork.jpg",
-        "largeUrl": "https://droidkaigi.jp/fm/images/artwork.jpg"
-      },
-      "link": "https://droidkaigi.jp/fm/episode/1",
-      "publishedAt": "2020-07-04T03:00:00Z",
       "status": "submitted"
     }
   ],

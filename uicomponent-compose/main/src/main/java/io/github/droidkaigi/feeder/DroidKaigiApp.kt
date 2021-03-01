@@ -7,16 +7,17 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
     ConferenceAppFeederTheme {
-        var splashShown by remember {
+        var splashShown by rememberSaveable {
             mutableStateOf(firstSplashScreenState)
         }
         val transition = updateTransition(splashShown)
@@ -41,6 +42,7 @@ fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
         AppContent(
             modifier = Modifier
                 .alpha(contentAlpha)
+                .navigationBarsPadding(bottom = false)
         )
     }
 }

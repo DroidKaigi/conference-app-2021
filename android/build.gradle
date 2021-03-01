@@ -133,6 +133,10 @@ dependencies {
     implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
 
+    // For Layout inspector
+    debugImplementation Dep.Compose.tooling
+    debugImplementation Dep.Kotlin.reflect
+
     implementation Dep.arbor
 
     testImplementation 'junit:junit:4.13.1'

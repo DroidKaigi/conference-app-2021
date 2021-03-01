@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -19,10 +20,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -43,7 +40,11 @@ import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
-    sealed class FilteredFeed(val feedItemClass: KClass<out FeedItem>, name: String, routePath: String) :
+    sealed class FilteredFeed(
+        val feedItemClass: KClass<out FeedItem>,
+        name: String,
+        routePath: String,
+    ) :
         FeedTabs(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
         object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
@@ -62,14 +63,12 @@ sealed class FeedTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun FeedScreen(
-    initialSelectedTab: FeedTabs,
+    selectedTab: FeedTabs,
+    onSelectedTab: (FeedTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember(initialSelectedTab) {
-        mutableStateOf(initialSelectedTab)
-    }
 
     val (
         state,
@@ -93,8 +92,8 @@ fun FeedScreen(
         scaffoldState = scaffoldState,
         feedContents = state.filteredFeedContents,
         filters = state.filters,
-        onSelectTab = { tab: FeedTabs ->
-            selectedTab = tab
+        onSelectTab = {
+            onSelectedTab(it)
         },
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
@@ -164,7 +163,7 @@ private fun AppBar(
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Text("DroidKaigi") },
+        title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
@@ -193,6 +192,7 @@ private fun AppBar(
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                         } else {
                             Modifier
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
                         },
                         text = tab.name
                     )
@@ -215,7 +215,8 @@ private fun FeedList(
         modifier = Modifier.fillMaxHeight()
     ) {
         LazyColumn(
-            contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(top = false)
+            contentPadding = LocalWindowInsets.current.systemBars
+                .toPaddingValues(top = false, start = false, end = false)
         ) {
             if (feedContents.size > 0) {
                 items(feedContents.contents.size * 2) { index ->
@@ -243,7 +244,8 @@ fun PreviewFeedScreen() {
     ConferenceAppFeederTheme(false) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                initialSelectedTab = FeedTabs.Home,
+                selectedTab = FeedTabs.Home,
+                onSelectedTab = {},
                 onNavigationIconClick = {
                 }
             ) { feedItem: FeedItem ->
@@ -258,7 +260,8 @@ fun PreviewFeedScreenWithStartBlog() {
     ConferenceAppFeederTheme(false) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                initialSelectedTab = FeedTabs.FilteredFeed.Blog,
+                selectedTab = FeedTabs.FilteredFeed.Blog,
+                onSelectedTab = {},
                 onNavigationIconClick = {
                 }
             ) { feedItem: FeedItem ->

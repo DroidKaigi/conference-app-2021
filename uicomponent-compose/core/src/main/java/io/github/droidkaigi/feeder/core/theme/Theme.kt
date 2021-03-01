@@ -32,7 +32,8 @@ fun ConferenceAppFeederTheme(
     // Currently dark mode is not supported
     // Please fix this https://github.com/DroidKaigi/conference-app-2021/issues/38
     darkTheme: Boolean = false,
-    content: @Composable() () -> Unit,
+    content: @Composable
+    () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette
