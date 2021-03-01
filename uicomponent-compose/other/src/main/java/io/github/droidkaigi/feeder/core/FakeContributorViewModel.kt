@@ -20,6 +20,9 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
+fun fakeContributorViewModel(errorFetchData: Boolean = false) =
+    FakeContributorViewModel(errorFetchData)
+
 class FakeContributorViewModel(errorFetchData: Boolean): ContributorViewModel {
 
     private val effectChannel = Channel<ContributorViewModel.Effect>(Channel.UNLIMITED)
