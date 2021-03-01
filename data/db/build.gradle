@@ -5,6 +5,7 @@ plugins {
     id("kotlinx-serialization")
     id("kotlin-kapt")
     id("com.android.library")
+    id("com.squareup.sqldelight")
 }
 
 apply from: rootProject.file("gradle/android.gradle")
@@ -72,6 +73,12 @@ kotlin {
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 //        }
+    }
+}
+
+sqldelight {
+    Database { // This will be the name of the generated database class.
+        packageName = "io.github.droidkaigi.feeder"
     }
 }
 
