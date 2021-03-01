@@ -170,6 +170,7 @@ private fun AppBar(
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                         } else {
                             Modifier
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
                         },
                         text = tab.name
                     )
