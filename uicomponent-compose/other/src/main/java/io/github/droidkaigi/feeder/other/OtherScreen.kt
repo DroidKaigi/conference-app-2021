@@ -110,10 +110,16 @@ fun OtherScreen(
                                     .fillMaxSize()
                                     .padding(top = 32.dp)
                                     .clickable {
+                                        val issue =
+                                            "https://github.com/DroidKaigi/" +
+                                                "conference-app-2021/issues" +
+                                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
                                         context.startActivity(
                                             Intent(
                                                 Intent.ACTION_VIEW,
-                                                Uri.parse("https://github.com/DroidKaigi/conference-app-2021/issues?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute")
+                                                Uri.parse(
+                                                    issue
+                                                )
                                             )
                                         )
                                     }
