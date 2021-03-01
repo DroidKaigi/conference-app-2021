@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -46,7 +47,7 @@ fun FeedItem(
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { }
     ) {
-        val (media, image, title, date, favorite) = createRefs()
+        val (media, image, title, date, favorite, speakers) = createRefs()
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
@@ -93,10 +94,24 @@ fun FeedItem(
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
+        val speakerModifier = Modifier.constrainAs(speakers) {
+            top.linkTo(title.bottom)
+            start.linkTo(title.start)
+            end.linkTo(title.end)
+            width = Dimension.fillToConstraints
+        }
+        if (feedItem is FeedItem.Podcast) {
+            SpeakersItem(
+                modifier = speakerModifier.padding(top = 8.dp),
+                speakers = feedItem.speakers
+            )
+        } else {
+            Box(speakerModifier)
+        }
         CompositionLocalProvider(LocalContentAlpha provides 0.54f) {
             Text(
                 modifier = Modifier.constrainAs(date) {
-                    bottom.linkTo(parent.bottom, 16.dp)
+                    top.linkTo(speakers.bottom, 16.dp)
                     start.linkTo(image.end, 16.dp)
                 },
                 text = feedItem.publishedDateString(),
@@ -167,6 +182,22 @@ fun PreviewFeedItem() {
 fun PreviewFeedItemWithMedia() {
     ConferenceAppFeederTheme {
         val feedItem = fakeFeedContents().feedItemContents[0]
+        FeedItem(
+            feedItem = feedItem,
+            favorited = false,
+            showMediaLabel = true,
+            onClick = { },
+            onFavoriteChange = { }
+        )
+    }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewFeedItemWithSpeaker() {
+    ConferenceAppFeederTheme {
+        val feedItem = fakeFeedContents().feedItemContents.first { it is FeedItem.Podcast }
         FeedItem(
             feedItem = feedItem,
             favorited = false,

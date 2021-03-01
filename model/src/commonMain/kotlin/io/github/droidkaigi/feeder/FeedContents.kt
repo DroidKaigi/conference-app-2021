@@ -39,9 +39,7 @@ fun fakeFeedContents(): FeedContents {
         feedItemContents = listOf(
             FeedItem.Blog(
                 id = "ee03fa43-a17e-4fa3-812e-a6fed30e3822",
-                publishedAt = Instant.fromEpochMilliseconds(
-                    1583544379858
-                ),
+                publishedAt = Instant.fromEpochMilliseconds(1583544379858),
                 image = Image(
                     smallUrl = "https://miro.medium.com/max/320/1*-VG74mo_-SS3GLSteVuQEA.jpeg",
                     standardUrl = "https://miro.medium.com/max/480/1*-VG74mo_-SS3GLSteVuQEA.jpeg",
@@ -50,14 +48,11 @@ fun fakeFeedContents(): FeedContents {
                 media = Media.Medium,
                 title = MultiLangText(
                     jaTitle = "DroidKaigi 2020でのCodelabsについて",
-                    enTitle = "DroidKaigi 2020 Codelabs",
+                    enTitle = "DroidKaigi 2020でのCodelabsについて"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "DroidKaigiスタッフの@tomoya0x00です。DroidKaigi " +
-                        "2020の開催日が近づいてきましたね。この記事では、DroidKaigi 2020 Day.1に実施する " +
-                        "DroidKaigiオリジナルCodelabsについてご紹介します。",
-                    enTitle = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is " +
-                        "approaching!This post is about our original codelab that you can try on…",
+                    jaTitle = "DroidKaigiスタッフの@tomoya0x00です。DroidKaigi 2020の開催日が近づいてきましたね。この記事では、DroidKaigi 2020 Day.1に実施する DroidKaigiオリジナルCodelabsについてご紹介します。",
+                    enTitle = "DroidKaigiスタッフの@tomoya0x00です。DroidKaigi 2020の開催日が近づいてきましたね。この記事では、DroidKaigi 2020 Day.1に実施する DroidKaigiオリジナルCodelabsについてご紹介します。"
                 ),
                 link = "https://medium.com/droidkaigi/droidkaigi-2020%E3%81%A7%E3%81%AEcodelabs%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4a677d7456c6",
                 language = "japanese",
@@ -68,9 +63,7 @@ fun fakeFeedContents(): FeedContents {
             ),
             FeedItem.Blog(
                 id = "7c0b46a9-3752-4050-8291-4f09b5aadb71",
-                publishedAt = Instant.fromEpochMilliseconds(
-                    1583676308319
-                ),
+                publishedAt = Instant.fromEpochMilliseconds(1583676308319),
                 image = Image(
                     smallUrl = "https://miro.medium.com/max/320/1*-VG74mo_-SS3GLSteVuQEA.jpeg",
                     standardUrl = "https://miro.medium.com/max/480/1*-VG74mo_-SS3GLSteVuQEA.jpeg",
@@ -78,15 +71,12 @@ fun fakeFeedContents(): FeedContents {
                 ),
                 media = Media.Medium,
                 title = MultiLangText(
-                    jaTitle = "DroidKaigi 2020でのCodelabsについて",
+                    jaTitle = "DroidKaigi 2020 Codelabs",
                     enTitle = "DroidKaigi 2020 Codelabs"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "DroidKaigiスタッフの@tomoya0x00です。DroidKaigi " +
-                        "2020の開催日が近づいてきましたね。この記事では、DroidKaigi 2020 Day.1に実施する " +
-                        "DroidKaigiオリジナルCodelabsについてご紹介します。",
-                    enTitle = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is " +
-                        "approaching!This post is about our original codelab that you can try on…",
+                    jaTitle = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is approaching!This post is about our original codelab that you can try on…",
+                    enTitle = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is approaching!This post is about our original codelab that you can try on…"
                 ),
                 link = "https://medium.com/droidkaigi/droidkaigi-2020-codelabs-d190fa57ed10",
                 language = "japanese",
@@ -95,30 +85,9 @@ fun fakeFeedContents(): FeedContents {
                     link = "https://medium.com/@tomoya0x00"
                 )
             ),
-            FeedItem.Video(
-                id = "6cc7dacd-643e-4553-b155-78c59ffbf6f7",
-                publishedAt = Instant.fromEpochMilliseconds(1593831600000),
-                image = Image(
-                    smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
-                    standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
-                    largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
-                ),
-                media = Media.DroidKaigiFM,
-                title = MultiLangText(
-                    jaTitle = "1. Android Studio 4.xとAndroid 11",
-                    enTitle = "1. Android Studio 4.x and Android 11",
-                ),
-                summary = MultiLangText(
-                    jaTitle = "1. Android Studio 4.xとAndroid 11",
-                    enTitle = "1. Android Studio 4.x and Android 11",
-                ),
-                link = "https://droidkaigi.jp/fm/episode/1"
-            ),
             FeedItem.Blog(
                 id = "48b631b1-b565-44c6-9f94-256f025c8e29",
-                publishedAt = Instant.fromEpochMilliseconds(
-                    1594087371822
-                ),
+                publishedAt = Instant.fromEpochMilliseconds(1594087371822),
                 image = Image(
                     smallUrl = "https://miro.medium.com/max/320/0*wT9LBn4T-JSLXhFY",
                     standardUrl = "https://miro.medium.com/max/480/0*wT9LBn4T-JSLXhFY",
@@ -127,13 +96,11 @@ fun fakeFeedContents(): FeedContents {
                 media = Media.Medium,
                 title = MultiLangText(
                     jaTitle = "DroidKaigiでデザイナーを募集します",
-                    enTitle = "Looking for a designer for DroidKaigi",
+                    enTitle = "DroidKaigiでデザイナーを募集します"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "こんにちは、DroidKaigi " +
-                        "デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、その詳細をお知らせします。",
-                    enTitle = "Hello, This is @mutoatu, a designer for DroidKaigi. We are looking" +
-                        " for a designer for DroidKaigi, and we'd like to share the details with you."
+                    jaTitle = "こんにちは、DroidKaigi デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、その詳細をお知らせします。",
+                    enTitle = "こんにちは、DroidKaigi デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、その詳細をお知らせします。"
                 ),
                 link = "https://medium.com/droidkaigi/droidkaigi%E3%81%A7%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%82%92%E5%8B%9F%E9%9B%86%E3%81%97%E3%81%BE%E3%81%99-f4b59715b96c",
                 language = "japanese",
@@ -142,8 +109,8 @@ fun fakeFeedContents(): FeedContents {
                     link = "https://medium.com/@mutoatu"
                 )
             ),
-            FeedItem.Video(
-                id = "60f2e2da-8628-4d40-8eda-3ba15394af1c",
+            FeedItem.Podcast(
+                id = "1bac71a9-d201-4739-b61b-0c502425c904",
                 publishedAt = Instant.fromEpochMilliseconds(1594220400000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -153,19 +120,31 @@ fun fakeFeedContents(): FeedContents {
                 media = Media.DroidKaigiFM,
                 title = MultiLangText(
                     jaTitle = "2. Android 11 Talks",
-                    enTitle = "2. Android 11 Talks",
+                    enTitle = "2. Android 11 Talks"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "2. Android 11 Talks",
-                    enTitle = "2. Android 11 Talks",
+                    jaTitle = "#1の続編です。引き続きKeithYokoma、ymnd、e10dokupの3名で、Android 11 Talksで取り上げられた内容についてお話しました。",
+                    enTitle = "#1の続編です。引き続きKeithYokoma、ymnd、e10dokupの3名で、Android 11 Talksで取り上げられた内容についてお話しました。"
                 ),
-                link = "https://droidkaigi.jp/fm/episode/2"
+                link = "https://droidkaigi.jp/fm/episode/2",
+                speakers = listOf(
+                    Speaker(
+                        name = "KeithYokoma",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/keithyokoma.jpg"
+                    ),
+                    Speaker(
+                        name = "e10dokup",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/e10dokup.png"
+                    ),
+                    Speaker(
+                        name = "ymnd",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/ymnd.jpg"
+                    )
+                )
             ),
             FeedItem.Blog(
                 id = "106ab422-b8e9-415c-8814-8fa9d29938d7",
-                publishedAt = Instant.fromEpochMilliseconds(
-                    1596092615466
-                ),
+                publishedAt = Instant.fromEpochMilliseconds(1596092615466),
                 image = Image(
                     smallUrl = "https://miro.medium.com/max/320/1*c-gCfGSsYkCJiCMssCFL_Q.png",
                     standardUrl = "https://miro.medium.com/max/480/1*c-gCfGSsYkCJiCMssCFL_Q.png",
@@ -174,12 +153,11 @@ fun fakeFeedContents(): FeedContents {
                 media = Media.Medium,
                 title = MultiLangText(
                     jaTitle = "DroidKaigi 2020 活動報告",
-                    enTitle = "DroidKaigi 2020 Activity Report",
+                    enTitle = "DroidKaigi 2020 活動報告"
                 ),
                 summary = MultiLangText(
                     jaTitle = "DroidKaigi 代表理事 mhidaka です。",
-                    enTitle = "This activity report consolidates the effects of the cancellation " +
-                        "of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19.",
+                    enTitle = "DroidKaigi 代表理事 mhidaka です。"
                 ),
                 link = "https://medium.com/droidkaigi/droidkaigi-2020-report-940391367b4e",
                 language = "japanese",
@@ -190,9 +168,7 @@ fun fakeFeedContents(): FeedContents {
             ),
             FeedItem.Blog(
                 id = "f6691d69-ffbb-499e-812b-12878179fe25",
-                publishedAt = Instant.fromEpochMilliseconds(
-                    1596101666223
-                ),
+                publishedAt = Instant.fromEpochMilliseconds(1596101666223),
                 image = Image(
                     smallUrl = "https://miro.medium.com/max/320/1*c-gCfGSsYkCJiCMssCFL_Q.png",
                     standardUrl = "https://miro.medium.com/max/480/1*c-gCfGSsYkCJiCMssCFL_Q.png",
@@ -200,13 +176,12 @@ fun fakeFeedContents(): FeedContents {
                 ),
                 media = Media.Medium,
                 title = MultiLangText(
-                    jaTitle = "DroidKaigi 2020 活動報告",
-                    enTitle = "DroidKaigi 2020 Activity Report",
+                    jaTitle = "DroidKaigi 2020 Activity Report",
+                    enTitle = "DroidKaigi 2020 Activity Report"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "DroidKaigi 代表理事 mhidaka です。",
-                    enTitle = "This activity report consolidates the effects of the cancellation " +
-                        "of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19.",
+                    jaTitle = "This activity report consolidates the effects of the cancellation of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19.",
+                    enTitle = "This activity report consolidates the effects of the cancellation of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19."
                 ),
                 link = "https://medium.com/droidkaigi/droidkaigi-2020-activity-report-en-cb93eea3083e",
                 language = "japanese",
@@ -216,25 +191,6 @@ fun fakeFeedContents(): FeedContents {
                 )
             ),
             FeedItem.Video(
-                id = "02ff1334-19cf-4617-8834-12a59f1cf36b",
-                publishedAt = Instant.fromEpochMilliseconds(1597892400000),
-                image = Image(
-                    smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
-                    standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
-                    largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
-                ),
-                media = Media.DroidKaigiFM,
-                title = MultiLangText(
-                    jaTitle = "3. DroidKaigi 2020 LiteとDroidKaigi 2020",
-                    enTitle = "3. DroidKaigi 2020 Lite and DroidKaigi 2020",
-                ),
-                summary = MultiLangText(
-                    jaTitle = "3. DroidKaigi 2020 LiteとDroidKaigi 2020",
-                    enTitle = "3. DroidKaigi 2020 Lite and DroidKaigi 2020",
-                ),
-                link = "https://droidkaigi.jp/fm/episode/3"
-            ),
-            FeedItem.Podcast(
                 id = "8f38a6f5-41fa-4faf-8d03-40f7c34fa8f1",
                 publishedAt = Instant.fromEpochMilliseconds(1598590811000),
                 image = Image(
@@ -244,10 +200,8 @@ fun fakeFeedContents(): FeedContents {
                 ),
                 media = Media.YouTube,
                 title = MultiLangText(
-                    jaTitle = "DroidKaigi 2020 Lite - KotlinのDelegated " +
-                        "Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]",
-                    enTitle = "DroidKaigi 2020 Lite - KotlinのDelegated " +
-                        "Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]",
+                    jaTitle = "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]",
+                    enTitle = "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]"
                 ),
                 summary = MultiLangText(
                     jaTitle = """本動画は2020/05/04に公開した動画を DroidKaigi 2020 Lite 用に編集し再公開したものです。
@@ -259,11 +213,11 @@ Day 2の再生リストはこちら: https://www.youtu""",
 
 質問は https://forms.gle/nnwMqGWtH66SNkbM7 にお願いします。 19 時から Ask the Speaker ライブ配信を行います。
 
-Day 2の再生リストはこちら: https://www.youtu""",
+Day 2の再生リストはこちら: https://www.youtu"""
                 ),
                 link = "https://youtube.com/watch?v=G5x1WUMj1gE"
             ),
-            FeedItem.Podcast(
+            FeedItem.Video(
                 id = "21a03088-1ce5-4096-a915-cbf45e58e484",
                 publishedAt = Instant.fromEpochMilliseconds(1598613661000),
                 image = Image(
@@ -274,21 +228,19 @@ Day 2の再生リストはこちら: https://www.youtu""",
                 media = Media.YouTube,
                 title = MultiLangText(
                     jaTitle = "DroidKaigi 2020 Lite - Day 2 Night Session",
-                    enTitle = "DroidKaigi 2020 Lite - Day 2 Night Session",
+                    enTitle = "DroidKaigi 2020 Lite - Day 2 Night Session"
                 ),
                 summary = MultiLangText(
-                    jaTitle = """DroidKaigi 2020
-                    Liteは3日間のオンラインチャリティイベントです。8月27日（木）～8月29日（土）の間に、オンラインセッション、Fireside chat、Ask the Speakerなどさまざまな技術トピックをお届け予定です。
+                    jaTitle = """DroidKaigi 2020 Liteは3日間のオンラインチャリティイベントです。8月27日（木）～8月29日（土）の間に、オンラインセッション、Fireside chat、Ask the Speakerなどさまざまな技術トピックをお届け予定です。
 
 Day 2のプレイリストはこちらです: https://www.youtube.com/playlist?""",
-                    enTitle = """DroidKaigi 2020
-                    Liteは3日間のオンラインチャリティイベントです。8月27日（木）～8月29日（土）の間に、オンラインセッション、Fireside chat、Ask the Speakerなどさまざまな技術トピックをお届け予定です。
+                    enTitle = """DroidKaigi 2020 Liteは3日間のオンラインチャリティイベントです。8月27日（木）～8月29日（土）の間に、オンラインセッション、Fireside chat、Ask the Speakerなどさまざまな技術トピックをお届け予定です。
 
-Day 2のプレイリストはこちらです: https://www.youtube.com/playlist?""",
+Day 2のプレイリストはこちらです: https://www.youtube.com/playlist?"""
                 ),
                 link = "https://youtube.com/watch?v=uQrzy2d7y7s"
             ),
-            FeedItem.Podcast(
+            FeedItem.Video(
                 id = "9e223801-a73e-4710-bcce-35cc48d1d75b",
                 publishedAt = Instant.fromEpochMilliseconds(1604548808000),
                 image = Image(
@@ -299,7 +251,7 @@ Day 2のプレイリストはこちらです: https://www.youtube.com/playlist?"
                 media = Media.YouTube,
                 title = MultiLangText(
                     jaTitle = "DroidKaigi 2020 - FlutterをRenderObjectまで理解する / kiri [JA]",
-                    enTitle = "DroidKaigi 2020 - FlutterをRenderObjectまで理解する / kiri [JA]",
+                    enTitle = "DroidKaigi 2020 - FlutterをRenderObjectまで理解する / kiri [JA]"
                 ),
                 summary = MultiLangText(
                     jaTitle = """FlutterはWidgetをツリー構造に組み合わせて、UIレイアウトを構築します。
@@ -309,11 +261,11 @@ RenderObjectはレンダリングの責務を担い、ElementはWidgetとRenderO
                     enTitle = """FlutterはWidgetをツリー構造に組み合わせて、UIレイアウトを構築します。
 それでは、構築されたWidgetツリーはどのようにスクリーンにレンダリングされるのでしょうか。
 重要な概念はElementとRenderObjectです。
-RenderObjectはレンダリングの責務を担い、ElementはWidgetとRenderObjectの仲介役の責""",
+RenderObjectはレンダリングの責務を担い、ElementはWidgetとRenderObjectの仲介役の責"""
                 ),
                 link = "https://youtube.com/watch?v=UCuf1vXPH3A"
             ),
-            FeedItem.Podcast(
+            FeedItem.Video(
                 id = "8bf7bd0a-2ec8-45da-b6fa-406c1e5a0b36",
                 publishedAt = Instant.fromEpochMilliseconds(1605585609000),
                 image = Image(
@@ -324,38 +276,17 @@ RenderObjectはレンダリングの責務を担い、ElementはWidgetとRenderO
                 media = Media.YouTube,
                 title = MultiLangText(
                     jaTitle = "DroidKaigi 2020 - Meta-Programming with Kotlin / Jitin Sharma [EN]",
-                    enTitle = "DroidKaigi 2020 - Meta-Programming with Kotlin / Jitin Sharma [EN]",
+                    enTitle = "DroidKaigi 2020 - Meta-Programming with Kotlin / Jitin Sharma [EN]"
                 ),
                 summary = MultiLangText(
-                    jaTitle = """Kotlin has become go-to language for Android developers all over
-                    the world and the language itself has a large number of feature sets.
+                    jaTitle = """Kotlin has become go-to language for Android developers all over the world and the language itself has a large number of feature sets.
 With greater acceptance of language, we look""",
-                    enTitle = """Kotlin has become go-to language for Android developers all over
-                    the world and the language itself has a large number of feature sets.
-With greater acceptance of language, we look""",
+                    enTitle = """Kotlin has become go-to language for Android developers all over the world and the language itself has a large number of feature sets.
+With greater acceptance of language, we look"""
                 ),
                 link = "https://youtube.com/watch?v=bsWHgePdLBg"
             ),
             FeedItem.Video(
-                id = "b7718b84-1191-440b-bf7f-b8e079ba93e0",
-                publishedAt = Instant.fromEpochMilliseconds(1605841200000),
-                image = Image(
-                    smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
-                    standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
-                    largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
-                ),
-                media = Media.DroidKaigiFM,
-                title = MultiLangText(
-                    jaTitle = "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
-                    enTitle = "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
-                ),
-                summary = MultiLangText(
-                    jaTitle = "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
-                    enTitle = "4. 大調達！検証端末ブラザーズ for 2020 秋冬",
-                ),
-                link = "https://droidkaigi.jp/fm/episode/4"
-            ),
-            FeedItem.Podcast(
                 id = "925cd30a-63b6-4536-823b-bec1e46f9ddf",
                 publishedAt = Instant.fromEpochMilliseconds(1606190409000),
                 image = Image(
@@ -365,21 +296,17 @@ With greater acceptance of language, we look""",
                 ),
                 media = Media.YouTube,
                 title = MultiLangText(
-                    jaTitle = "DroidKaigi 2020 - Widget and Integration Testing in Flutter / JB " +
-                        "Lorenzo [EN]",
-                    enTitle = "DroidKaigi 2020 - Widget and Integration Testing in Flutter / JB " +
-                        "Lorenzo [EN]",
+                    jaTitle = "DroidKaigi 2020 - Widget and Integration Testing in Flutter / JB Lorenzo [EN]",
+                    enTitle = "DroidKaigi 2020 - Widget and Integration Testing in Flutter / JB Lorenzo [EN]"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "Automated Testing is essential to making your apps " +
-                        "production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it",
-                    enTitle = "Automated Testing is essential to making your apps " +
-                        "production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it",
+                    jaTitle = "Automated Testing is essential to making your apps production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it",
+                    enTitle = "Automated Testing is essential to making your apps production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it"
                 ),
                 link = "https://youtube.com/watch?v=GuwGFpQ5om0"
             ),
-            FeedItem.Video(
-                id = "0b328510-182f-47f7-a2ae-a1afc6200baf",
+            FeedItem.Podcast(
+                id = "9d264ffd-abac-40b9-83ef-9e76eb1d7e53",
                 publishedAt = Instant.fromEpochMilliseconds(1608519600000),
                 image = Image(
                     smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
@@ -389,13 +316,64 @@ With greater acceptance of language, we look""",
                 media = Media.DroidKaigiFM,
                 title = MultiLangText(
                     jaTitle = "5. Notificiationよもやま話",
-                    enTitle = "5. Notificiationよもやま話",
+                    enTitle = "5. Notificiationよもやま話"
                 ),
                 summary = MultiLangText(
-                    jaTitle = "5. Notificiationよもやま話",
-                    enTitle = "5. Notificiationよもやま話",
+                    jaTitle = "hidey、matsuyama、KeithYokoma、e10dokupの4人でAndroidのNotification周りの変遷や最近踏んだツラい話をしました。",
+                    enTitle = "hidey、matsuyama、KeithYokoma、e10dokupの4人でAndroidのNotification周りの変遷や最近踏んだツラい話をしました。"
                 ),
-                link = "https://droidkaigi.jp/fm/episode/5"
+                link = "https://droidkaigi.jp/fm/episode/5",
+                speakers = listOf(
+                    Speaker(
+                        name = "hidey",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/hidey.jpg"
+                    ),
+                    Speaker(
+                        name = "matsuyama",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/matsuyama.jpg"
+                    ),
+                    Speaker(
+                        name = "KeithYokoma",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/keithyokoma.jpg"
+                    ),
+                    Speaker(
+                        name = "e10dokup",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/e10dokup.png"
+                    )
+                )
+            ),
+            FeedItem.Podcast(
+                id = "f725b41c-4375-43b5-8237-393370441c00",
+                publishedAt = Instant.fromEpochMilliseconds(1608519600000),
+                image = Image(
+                    smallUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
+                    standardUrl = "https://droidkaigi.jp/fm/images/artwork.jpg",
+                    largeUrl = "https://droidkaigi.jp/fm/images/artwork.jpg"
+                ),
+                media = Media.DroidKaigiFM,
+                title = MultiLangText(
+                    jaTitle = "6. JFrog JCenter/Bintrayのサービス終了に寄せて",
+                    enTitle = "6. JFrog JCenter/Bintrayのサービス終了に寄せて"
+                ),
+                summary = MultiLangText(
+                    jaTitle = "hidey、ymnd、e10dokupの3人でJFrogのJCenter/Bintray等のサービス終了とそれに合わせたライブラリ使用者側、開発者側の対応について話しました。",
+                    enTitle = "hidey、ymnd、e10dokupの3人でJFrogのJCenter/Bintray等のサービス終了とそれに合わせたライブラリ使用者側、開発者側の対応について話しました。"
+                ),
+                link = "https://droidkaigi.jp/fm/episode/6",
+                speakers = listOf(
+                    Speaker(
+                        name = "hidey",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/hidey.jpg"
+                    ),
+                    Speaker(
+                        name = "e10dokup",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/e10dokup.png"
+                    ),
+                    Speaker(
+                        name = "ymnd",
+                        iconUrl = "https://droidkaigi.jp/fm/images/actors/ymnd.jpg"
+                    )
+                )
             )
         ),
         favorites = setOf()
