@@ -51,8 +51,8 @@ class FakeContributorViewModel(errorFetchData: Boolean): ContributorViewModel {
 
     override fun event(event: ContributorViewModel.Event) {
         coroutineScope.launch {
-            @Exhaustive
-            when (event) {}
+//            @Exhaustive
+//            when (event) {}
         }
     }
 }
