@@ -20,8 +20,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -43,7 +41,11 @@ import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
-    sealed class FilteredFeed(val feedItemClass: KClass<out FeedItem>, name: String, routePath: String) :
+    sealed class FilteredFeed(
+        val feedItemClass: KClass<out FeedItem>,
+        name: String,
+        routePath: String
+    ) :
         FeedTabs(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
         object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
@@ -67,9 +69,6 @@ fun FeedScreen(
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-//    var selectedTab by remember(initialSelectedTab) {
-//        mutableStateOf(initialSelectedTab)
-//    }
 
     val (
         state,
