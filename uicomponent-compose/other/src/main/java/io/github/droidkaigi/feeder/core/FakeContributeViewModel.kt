@@ -1,12 +1,14 @@
 package io.github.droidkaigi.feeder.core
 
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 
 class FakeContributeViewModel: ContributorViewModel {
 
-    override val effect: Flow<ContributorViewModel.Effect>
-        get() = TODO("Not yet implemented")
+    private val effectChannel = Channel<ContributorViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<ContributorViewModel.Effect> = effectChannel.receiveAsFlow()
 
     override val state: StateFlow<ContributorViewModel.State>
         get() = TODO("Not yet implemented")
