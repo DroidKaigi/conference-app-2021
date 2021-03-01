@@ -83,6 +83,7 @@ fun OtherScreen(
     Column {
         val density = LocalDensity.current
         BackdropScaffold(
+            gesturesEnabled = false,
             backLayerBackgroundColor = MaterialTheme.colors.primary,
             scaffoldState = scaffoldState,
             backLayerContent = {
