@@ -12,7 +12,7 @@ interface ContributorViewModel:
     UnidirectionalViewModel<ContributorViewModel.Event, ContributorViewModel.Effect, ContributorViewModel.State> {
     data class State(
         val showProgress: Boolean = false,
-        val contributorContents: List<Contributor>
+        val contributorContents: List<Contributor> = emptyList()
     )
 
     sealed class Effect {
