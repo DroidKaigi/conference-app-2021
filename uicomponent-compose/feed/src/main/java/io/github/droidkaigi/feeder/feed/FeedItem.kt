@@ -88,7 +88,7 @@ fun FeedItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = feedItem.title.jaTitle,
+            text = feedItem.title.currentLangTitle,
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
