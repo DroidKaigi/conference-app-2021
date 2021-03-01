@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.core
 
+import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.fakeContributors
@@ -16,6 +17,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import kotlin.coroutines.CoroutineContext
 
 class FakeContributeViewModel(private val errorFetchData: Boolean): ContributorViewModel {
@@ -45,6 +47,9 @@ class FakeContributeViewModel(private val errorFetchData: Boolean): ContributorV
             .stateIn(coroutineScope, SharingStarted.Eagerly, ContributorViewModel.State())
 
     override fun event(event: ContributorViewModel.Event) {
-        TODO("Not yet implemented")
+        coroutineScope.launch {
+            @Exhaustive
+            when (event) {}
+        }
     }
 }
