@@ -5,7 +5,7 @@ import androidx.annotation.StringRes
 import androidx.core.app.NotificationManagerCompat
 import io.github.droidkaigi.feeder.R
 
-enum class KaigiNotificationChannel(
+enum class AppNotificationChannel(
     val id: String,
     @StringRes val channelName: Int,
     val importance: Int,
@@ -26,7 +26,7 @@ enum class KaigiNotificationChannel(
 
     companion object {
         @JvmStatic
-        fun fromId(id: String): KaigiNotificationChannel {
+        fun fromId(id: String): AppNotificationChannel {
             return values().find { it.id == id } ?: DEFAULT
         }
     }

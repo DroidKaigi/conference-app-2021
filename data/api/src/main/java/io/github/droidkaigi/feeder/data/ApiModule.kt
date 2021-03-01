@@ -29,6 +29,7 @@ class ApiModule {
                         serializersModule = SerializersModule {
                             contextual(InstantSerializer)
                         }
+                        ignoreUnknownKeys = true
                     }
                 )
             }

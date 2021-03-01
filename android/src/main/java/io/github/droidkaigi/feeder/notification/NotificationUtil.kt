@@ -10,7 +10,7 @@ object NotificationUtil {
     fun createNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = NotificationManagerCompat.from(context)
-            for (notificationChannel in KaigiNotificationChannel.values()) {
+            for (notificationChannel in AppNotificationChannel.values()) {
                 manager.createNotificationChannel(
                     NotificationChannelCompat
                         .Builder(
@@ -30,7 +30,7 @@ object NotificationUtil {
     fun deleteNotificationChannel(context: Context) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val manager = NotificationManagerCompat.from(context)
-            for (notificationChannelId in KaigiNotificationChannel.values().map { it.id }) {
+            for (notificationChannelId in AppNotificationChannel.values().map { it.id }) {
                 manager.deleteNotificationChannel(notificationChannelId)
             }
         }
