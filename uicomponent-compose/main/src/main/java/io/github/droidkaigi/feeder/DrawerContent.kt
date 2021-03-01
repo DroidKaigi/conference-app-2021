@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -117,19 +119,21 @@ fun DrawerContent(
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
         Spacer(modifier = Modifier.height(12.dp))
-        for (group in DrawerContents.Group.values()) {
-            when (group) {
-                DrawerContents.Group.NEWS -> {
-                    val newsContents = DrawerContents.values()
-                        .filter { content -> content.group == DrawerContents.Group.NEWS }
-                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider()
-                }
-                DrawerContents.Group.OTHER -> {
-                    val otherContents = DrawerContents.values()
-                        .filter { content -> content.group == DrawerContents.Group.OTHER }
-                    DrawerContentGroup(otherContents, currentRoute, onNavigate)
+        LazyColumn {
+            items(DrawerContents.Group.values()) { group ->
+                when (group) {
+                    DrawerContents.Group.NEWS -> {
+                        val newsContents = DrawerContents.values()
+                            .filter { content -> content.group == DrawerContents.Group.NEWS }
+                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Divider()
+                    }
+                    DrawerContents.Group.OTHER -> {
+                        val otherContents = DrawerContents.values()
+                            .filter { content -> content.group == DrawerContents.Group.OTHER }
+                        DrawerContentGroup(otherContents, currentRoute, onNavigate)
+                    }
                 }
             }
         }
