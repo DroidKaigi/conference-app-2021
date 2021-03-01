@@ -133,6 +133,10 @@ dependencies {
     implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
 
+    // For Layout inspector
+    debugImplementation Dep.Compose.tooling
+    debugImplementation Dep.Kotlin.reflect
+
     testImplementation 'junit:junit:4.13.1'
     testImplementation Dep.Coroutines.test
     testImplementation 'io.kotest:kotest-assertions-core:4.3.2'
