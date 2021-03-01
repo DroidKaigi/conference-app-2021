@@ -133,6 +133,8 @@ dependencies {
     implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
 
+    implementation Dep.arbor
+
     testImplementation 'junit:junit:4.13.1'
     testImplementation Dep.Coroutines.test
     testImplementation 'io.kotest:kotest-assertions-core:4.3.2'
