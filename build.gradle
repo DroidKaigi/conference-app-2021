@@ -61,6 +61,7 @@ allprojects {
             targetExclude('bin/**/*.kt')
 
             ktlint("0.39.0")
+                    .userData([android: "true", experimental: "true"])
         }
     }
 }

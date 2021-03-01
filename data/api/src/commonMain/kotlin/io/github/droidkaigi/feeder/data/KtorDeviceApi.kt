@@ -26,7 +26,9 @@ open class KtorDeviceApi(
 
     override suspend fun update(deviceId: String, deviceToken: String?): DeviceInfo =
         authApi.authenticated {
-            httpClient.put<DeviceResponse>("https://ssot-api-staging.an.r.appspot.com/devices/$deviceId") {
+            httpClient.put<DeviceResponse>(
+                "https://ssot-api-staging.an.r.appspot.com/devices/$deviceId"
+            ) {
                 contentType(ContentType.Application.Json)
                 body = DevicePutRequest(deviceToken)
             }.toDeviceInfo()

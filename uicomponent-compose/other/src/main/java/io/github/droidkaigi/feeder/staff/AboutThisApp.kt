@@ -51,7 +51,8 @@ fun WhatIsDroidKaigiComponent() {
         )
         Spacer(modifier = Modifier.height(24.dp))
         Image(
-            painter = painterResource(R.drawable.logo), contentDescription = "DroidKaigi Logo"
+            painter = painterResource(R.drawable.logo),
+            contentDescription = "DroidKaigi Logo"
         )
         Spacer(modifier = Modifier.height(24.dp))
         Text("DroidKaigiはエンジニアが主役のAndroidカンファレンスです。Android技術情報の共有とコミュニケーションを目的に、イベントを開催しています。")

@@ -10,6 +10,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
@@ -60,25 +62,25 @@ enum class DrawerContents(
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_android_24,
-        label = "DroidKaigiとは",
+        label = "ABOUT",
         route = "other/${OtherTabs.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
         imageResId = R.drawable.ic_outline_people_24,
-        label = "コントリビューター",
+        label = "CONTRIBUTOR",
         route = "other/${OtherTabs.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_face_24,
-        label = "スタッフ",
+        label = "STAFF",
         route = "other/${OtherTabs.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_settings_24,
-        label = "設定",
+        label = "SETTING",
         route = "other/${OtherTabs.Settings.routePath}",
     ),
     ;
@@ -117,19 +119,21 @@ fun DrawerContent(
         Spacer(modifier = Modifier.height(20.dp))
         Divider()
         Spacer(modifier = Modifier.height(12.dp))
-        for (group in DrawerContents.Group.values()) {
-            when (group) {
-                DrawerContents.Group.NEWS -> {
-                    val newsContents = DrawerContents.values()
-                        .filter { content -> content.group == DrawerContents.Group.NEWS }
-                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Divider()
-                }
-                DrawerContents.Group.OTHER -> {
-                    val otherContents = DrawerContents.values()
-                        .filter { content -> content.group == DrawerContents.Group.OTHER }
-                    DrawerContentGroup(otherContents, currentRoute, onNavigate)
+        LazyColumn {
+            items(DrawerContents.Group.values()) { group ->
+                when (group) {
+                    DrawerContents.Group.NEWS -> {
+                        val newsContents = DrawerContents.values()
+                            .filter { content -> content.group == DrawerContents.Group.NEWS }
+                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Divider()
+                    }
+                    DrawerContents.Group.OTHER -> {
+                        val otherContents = DrawerContents.values()
+                            .filter { content -> content.group == DrawerContents.Group.OTHER }
+                        DrawerContentGroup(otherContents, currentRoute, onNavigate)
+                    }
                 }
             }
         }

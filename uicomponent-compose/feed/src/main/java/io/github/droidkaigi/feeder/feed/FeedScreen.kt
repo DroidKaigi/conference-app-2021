@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -43,7 +44,11 @@ import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
-    sealed class FilteredFeed(val feedItemClass: KClass<out FeedItem>, name: String, routePath: String) :
+    sealed class FilteredFeed(
+        val feedItemClass: KClass<out FeedItem>,
+        name: String,
+        routePath: String
+    ) :
         FeedTabs(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
         object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
@@ -164,7 +169,7 @@ private fun AppBar(
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Text("DroidKaigi") },
+        title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {

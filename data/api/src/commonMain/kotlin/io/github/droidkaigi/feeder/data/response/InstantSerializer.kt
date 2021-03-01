@@ -9,7 +9,10 @@ import kotlinx.serialization.encoding.Decoder
 import kotlinx.serialization.encoding.Encoder
 
 object InstantSerializer : KSerializer<Instant> {
-    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor("Date", PrimitiveKind.LONG)
+    override val descriptor: SerialDescriptor = PrimitiveSerialDescriptor(
+        "Date",
+        PrimitiveKind.LONG
+    )
     override fun serialize(encoder: Encoder, value: Instant) = throw NotImplementedError()
     override fun deserialize(decoder: Decoder): Instant = Instant.parse(decoder.decodeString())
 }

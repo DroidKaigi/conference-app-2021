@@ -44,11 +44,11 @@ dependencies {
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlibJdk8
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation Dep.Jetpack.appcompat
     implementation Dep.Accompanist.coil
     implementation Dep.Accompanist.insets
 
-    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.1'
+    implementation Dep.Coroutines.core
 
     // Write here to get from JetNews
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66

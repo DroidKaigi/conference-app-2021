@@ -2,9 +2,9 @@ package io.github.droidkaigi.feeder.data
 
 import com.pinterest.ktlint.main
 import io.github.droidkaigi.feeder.Media
-import kotlinx.datetime.Instant
 import kotlin.test.Ignore
 import kotlin.test.Test
+import kotlinx.datetime.Instant
 
 class GenerateFakeContents {
     @Ignore
