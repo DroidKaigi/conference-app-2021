@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
-import kotlinx.datetime.Instant
 import kotlin.reflect.KClass
+import kotlinx.datetime.Instant
 
 data class FeedContents(
     val feedItemContents: List<FeedItem> = listOf(),
@@ -59,7 +59,8 @@ fun fakeFeedContents(): FeedContents {
                     enTitle = "This is tomoya0x00 from DroidKaigi Committee. DroidKaigi 2020 is " +
                         "approaching!This post is about our original codelab that you can try on…",
                 ),
-                link = "https://medium.com/droidkaigi/droidkaigi-2020%E3%81%A7%E3%81%AEcodelabs%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4a677d7456c6",
+                link = "https://medium.com/droidkaigi/droidkaigi-2020%E3%81%A7%E3%81%AE" +
+                    "codelabs%E3%81%AB%E3%81%A4%E3%81%84%E3%81%A6-4a677d7456c6",
                 language = "japanese",
                 author = Author(
                     name = "Tomoya Miwa",
@@ -131,11 +132,15 @@ fun fakeFeedContents(): FeedContents {
                 ),
                 summary = MultiLangText(
                     jaTitle = "こんにちは、DroidKaigi " +
-                        "デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、その詳細をお知らせします。",
+                        "デザイナーの@mutoatuです。今回はDroidKaigiのデザイナーを募集しますので、" +
+                        "その詳細をお知らせします。",
                     enTitle = "Hello, This is @mutoatu, a designer for DroidKaigi. We are looking" +
-                        " for a designer for DroidKaigi, and we'd like to share the details with you."
+                        " for a designer for DroidKaigi, " +
+                        "and we'd like to share the details with you."
                 ),
-                link = "https://medium.com/droidkaigi/droidkaigi%E3%81%A7%E3%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%82%92%E5%8B%9F%E9%9B%86%E3%81%97%E3%81%BE%E3%81%99-f4b59715b96c",
+                link = "https://medium.com/droidkaigi/droidkaigi%E3%81%A7%E3" +
+                    "%83%87%E3%82%B6%E3%82%A4%E3%83%8A%E3%83%BC%E3%82%92%E5%" +
+                    "8B%9F%E9%9B%86%E3%81%97%E3%81%BE%E3%81%99-f4b59715b96c",
                 language = "japanese",
                 author = Author(
                     name = "Atsushi Muto",
@@ -208,7 +213,8 @@ fun fakeFeedContents(): FeedContents {
                     enTitle = "This activity report consolidates the effects of the cancellation " +
                         "of DroidKaigi 2020 that was to be held in February 2020, due to COVID-19.",
                 ),
-                link = "https://medium.com/droidkaigi/droidkaigi-2020-activity-report-en-cb93eea3083e",
+                link = "https://medium.com/droidkaigi/droidkaigi-2020-" +
+                    "activity-report-en-cb93eea3083e",
                 language = "japanese",
                 author = Author(
                     name = "mhidaka",
@@ -372,9 +378,13 @@ With greater acceptance of language, we look""",
                 ),
                 summary = MultiLangText(
                     jaTitle = "Automated Testing is essential to making your apps " +
-                        "production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it",
+                        "production-ready and to prevent introducing bugs " +
+                        "when you change something. Flutter is an interesting case " +
+                        "for testing because it",
                     enTitle = "Automated Testing is essential to making your apps " +
-                        "production-ready and to prevent introducing bugs when you change something. Flutter is an interesting case for testing because it",
+                        "production-ready and to prevent introducing bugs when " +
+                        "you change something. " +
+                        "Flutter is an interesting case for testing because it",
                 ),
                 link = "https://youtube.com/watch?v=GuwGFpQ5om0"
             ),

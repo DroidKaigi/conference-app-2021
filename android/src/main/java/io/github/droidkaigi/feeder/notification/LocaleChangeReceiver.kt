@@ -7,7 +7,8 @@ import android.os.Build
 
 class LocaleChangeReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context, intent: Intent) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && intent.action == Intent.ACTION_LOCALE_CHANGED
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O &&
+            intent.action == Intent.ACTION_LOCALE_CHANGED
         ) {
             NotificationUtil.deleteNotificationChannel(context)
             NotificationUtil.createNotificationChannel(context)

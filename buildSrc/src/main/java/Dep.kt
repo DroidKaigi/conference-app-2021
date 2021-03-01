@@ -3,7 +3,8 @@ package io.github.droidkaigi.feeder
 object Dep {
     object Compose {
         const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+        const val constraintLayout =
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
         const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
         const val runtime = "androidx.compose.runtime:runtime:1.0.0-beta01"
         const val livedata = "androidx.compose.runtime:runtime-livedata:1.0.0-beta01"
@@ -17,6 +18,7 @@ object Dep {
     }
 
     object Jetpack {
+        const val appcompat = "androidx.appcompat:appcompat:1.2.0"
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha06"

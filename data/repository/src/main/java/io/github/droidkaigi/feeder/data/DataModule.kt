@@ -31,7 +31,9 @@ class DataModule {
     }
 
     @Provides
-    internal fun provideDeviceRepository(daggerRepository: DaggerDeviceRepositoryImpl): DeviceRepository {
+    internal fun provideDeviceRepository(
+        daggerRepository: DaggerDeviceRepositoryImpl
+    ): DeviceRepository {
         return daggerRepository
     }
 }

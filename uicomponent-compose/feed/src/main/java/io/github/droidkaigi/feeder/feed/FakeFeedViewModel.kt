@@ -30,12 +30,14 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
-    private val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
-        // for preview
-        override fun dispatch(context: CoroutineContext, block: Runnable) {
-            block.run()
+    private val coroutineScope = CoroutineScope(
+        object : CoroutineDispatcher() {
+// for preview
+            override fun dispatch(context: CoroutineContext, block: Runnable) {
+                block.run()
+            }
         }
-    })
+    )
     private val mutableFeedContents = MutableStateFlow(
         fakeFeedContents()
     )
