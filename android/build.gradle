@@ -72,6 +72,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig false
     }
     composeOptions {
         kotlinCompilerExtensionVersion "${compose_version}"
