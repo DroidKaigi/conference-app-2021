@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder
 
 import io.github.droidkaigi.feeder.core.ContributorViewModel
+import io.github.droidkaigi.feeder.core.fakeContributorViewModel
 import kotlinx.coroutines.InternalCoroutinesApi
 import org.junit.runner.RunWith
 import org.junit.runners.Parameterized
@@ -13,6 +14,19 @@ class ContributorViewModelTest {
         private val viewModelFactory: (errorFetchData: Boolean) -> ContributorViewModel
     ) {
         fun create(errorFetchData: Boolean = false) = viewModelFactory(errorFetchData)
+    }
+
+    companion object {
+        @JvmStatic
+        @Parameterized.Parameters(name = "{0}")
+        fun data() = listOf(
+            arrayOf(
+                "FakeViewModel",
+                ContributorViewModelFactory { errorFetchData ->
+                    fakeContributorViewModel(errorFetchData)
+                }
+            )
+        )
     }
 
 }
