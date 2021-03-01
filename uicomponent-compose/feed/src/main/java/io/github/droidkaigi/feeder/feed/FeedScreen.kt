@@ -192,6 +192,7 @@ private fun AppBar(
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                         } else {
                             Modifier
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
                         },
                         text = tab.name
                     )
@@ -214,7 +215,8 @@ private fun FeedList(
         modifier = Modifier.fillMaxHeight()
     ) {
         LazyColumn(
-            contentPadding = LocalWindowInsets.current.systemBars.toPaddingValues(top = false)
+            contentPadding = LocalWindowInsets.current.systemBars
+                .toPaddingValues(top = false, start = false, end = false)
         ) {
             if (feedContents.size > 0) {
                 items(feedContents.contents.size * 2) { index ->
