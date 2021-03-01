@@ -5,11 +5,12 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import dagger.hilt.android.AndroidEntryPoint
 import io.github.droidkaigi.feeder.repository.DeviceRepository
-import javax.inject.Inject
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Job
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class AppMessagingService : FirebaseMessagingService() {
@@ -17,9 +18,7 @@ class AppMessagingService : FirebaseMessagingService() {
     @Inject
     lateinit var deviceRepository: DeviceRepository
 
-    private val serviceJob: Job = Job()
-
-    private val serviceScope: CoroutineScope = CoroutineScope(Dispatchers.IO + serviceJob)
+    private val serviceScope: CoroutineScope = CoroutineScope(Dispatchers.IO + SupervisorJob())
 
     override fun onCreate() {
         super.onCreate()
@@ -37,12 +36,17 @@ class AppMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(remoteMessage: RemoteMessage) {
-        // TODO: 2021/02/28 add handling
-        NotificationUtil.showNotifications()
+        runCatching {
+            remoteMessage.notification?.let {
+                NotificationUtil.showNotifications(this, it, remoteMessage.data)
+            } ?: Log.w(TAG, "notification not found")
+        }.onFailure {
+            Log.e(TAG, "notification failed", it)
+        }
     }
 
     override fun onDestroy() {
-        serviceJob.cancel()
+        serviceScope.cancel()
         super.onDestroy()
     }
 
