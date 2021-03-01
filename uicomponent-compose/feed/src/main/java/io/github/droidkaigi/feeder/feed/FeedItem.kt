@@ -196,7 +196,6 @@ fun PreviewFeedItemWithMedia() {
     }
 }
 
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedItemWithSpeaker() {

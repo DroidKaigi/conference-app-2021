@@ -25,7 +25,7 @@ fun SpeakersItem(
     speakers: List<Speaker>,
 ) {
     Box(modifier = modifier) {
-        speakers.forEachIndexed {i, speaker ->
+        speakers.forEachIndexed { i, speaker ->
             NetworkImage(
                 url = speaker.iconUrl,
                 modifier = Modifier
