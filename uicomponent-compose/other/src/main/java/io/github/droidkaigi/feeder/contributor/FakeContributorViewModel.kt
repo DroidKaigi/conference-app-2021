@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.contributor
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.fakeContributors
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Runnable
@@ -17,7 +18,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlin.coroutines.CoroutineContext
 
 fun fakeContributorViewModel(errorFetchData: Boolean = false) =
     FakeContributorViewModel(errorFetchData)
