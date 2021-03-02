@@ -47,6 +47,7 @@ private fun Input(text: String, onClick: () -> Unit) {
     ) {
         Surface(
             color = MaterialTheme.colors.surface,
+            elevation = 1.dp,
             modifier = Modifier
                 .clickable(onClick = onClick)
                 .fillMaxWidth()
