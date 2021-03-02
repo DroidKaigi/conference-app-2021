@@ -6,14 +6,9 @@ plugins {
     id 'app.cash.exhaustive'
 }
 
-android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+apply from: rootProject.file("gradle/android.gradle")
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-    }
+android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
