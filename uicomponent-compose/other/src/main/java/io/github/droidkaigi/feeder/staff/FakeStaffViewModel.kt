@@ -1,9 +1,8 @@
-package io.github.droidkaigi.feeder.viewmodel
+package io.github.droidkaigi.feeder.staff
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Staff
 import io.github.droidkaigi.feeder.fakeStaffs
-import io.github.droidkaigi.feeder.staff.StaffViewModel
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope

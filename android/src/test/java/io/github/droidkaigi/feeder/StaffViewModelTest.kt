@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 import io.github.droidkaigi.feeder.staff.StaffViewModel
-import io.github.droidkaigi.feeder.viewmodel.fakeStaffViewModel
+import io.github.droidkaigi.feeder.staff.fakeStaffViewModel
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
