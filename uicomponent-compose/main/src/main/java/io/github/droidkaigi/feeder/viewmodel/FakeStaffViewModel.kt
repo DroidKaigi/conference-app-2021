@@ -4,6 +4,7 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Staff
 import io.github.droidkaigi.feeder.fakeStaffs
 import io.github.droidkaigi.feeder.staff.StaffViewModel
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.channels.Channel
@@ -16,7 +17,6 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
-import kotlin.coroutines.CoroutineContext
 
 fun fakeStaffViewModel(errorFetchData: Boolean = false) = FakeStaffViewModel(errorFetchData)
 class FakeStaffViewModel(errorFetchData: Boolean) : StaffViewModel {

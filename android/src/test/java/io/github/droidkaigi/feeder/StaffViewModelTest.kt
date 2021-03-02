@@ -29,7 +29,6 @@ class StaffViewModelTest(
         staffContents.size shouldBeGreaterThan 1
     }
 
-
     @Test
     fun errorWhenFetch() = coroutineTestRule.testDispatcher.runBlockingTest {
         val staffViewModel = staffViewModelFactory.create(errorFetchData = true)
