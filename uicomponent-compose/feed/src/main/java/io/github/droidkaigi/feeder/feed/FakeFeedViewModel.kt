@@ -32,7 +32,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
 
     private val coroutineScope = CoroutineScope(
         object : CoroutineDispatcher() {
-// for preview
+            // for preview
             override fun dispatch(context: CoroutineContext, block: Runnable) {
                 block.run()
             }
@@ -84,6 +84,9 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     mutableFeedContents.value = value.copy(
                         favorites = newFavorites
                     )
+                }
+                is FeedViewModel.Event.ReloadContent -> {
+                    //Sorry, Currently not implemented
                 }
             }
         }

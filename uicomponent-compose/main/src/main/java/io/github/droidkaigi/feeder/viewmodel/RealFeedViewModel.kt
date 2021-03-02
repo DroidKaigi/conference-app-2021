@@ -84,6 +84,9 @@ class RealFeedViewModel @Inject constructor(
                         repository.addFavorite(event.feedItem)
                     }
                 }
+                is FeedViewModel.Event.ReloadContent -> {
+                    //Sorry, Currently not implemented
+                }
             }
         }
     }
