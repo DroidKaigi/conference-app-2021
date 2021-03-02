@@ -85,8 +85,7 @@ fun AppContent(
                 val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
-                    selectedTab = FeedTabs.ofRoutePath(feedType),
-                    onSelectedTab = { feedTabs -> actions.onSelectTab(feedTabs) },
+                    initSelectedTab = FeedTabs.ofRoutePath(feedType),
                     onDetailClick = { feedItem: FeedItem ->
                         actions.onSelectFeed(context, feedItem)
                     }
