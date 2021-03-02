@@ -91,8 +91,7 @@ fun FeedScreen(
                     message = effect.appError.getReadableMessage(context),
                     actionLabel = "Reload",
                 )) {
-                    SnackbarResult.ActionPerformed -> {
-                    }
+                    SnackbarResult.ActionPerformed -> dispatch(FeedViewModel.Event.ReloadContent)
                     SnackbarResult.Dismissed -> {
                     }
                 }
