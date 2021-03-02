@@ -99,4 +99,9 @@ object Dep {
         const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
         const val activity = "androidx.activity:activity-ktx:1.2.0"
     }
+
+    object Arbor {
+        const val jvm = "com.ToxicBakery.logging:arbor-jvm:1.35.72"
+        const val android = "com.ToxicBakery.logging:arbor-android:1.35.72"
+    }
 }

@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.data
 
+import com.toxicbakery.logging.Arbor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -36,7 +37,7 @@ class ApiModule {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
-                        println(message)
+                        Arbor.d(message)
                     }
                 }
                 level = LogLevel.ALL

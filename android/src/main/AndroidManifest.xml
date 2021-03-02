@@ -29,6 +29,9 @@
             <meta-data
                 android:name="io.github.droidkaigi.feeder.FirebaseInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="io.github.droidkaigi.feeder.ArborInitializer"
+                android:value="androidx.startup" />
         </provider>
         <service
             android:name=".notification.AppMessagingService"
