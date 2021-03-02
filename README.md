@@ -122,7 +122,7 @@ private fun FeedScreen(
 ) {
     Column {
         BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
