@@ -180,7 +180,6 @@ fun PreviewOtherScreen() {
         OtherScreen(
             selectedTab = OtherTabs.AboutThisApp,
             onSelectTab = {
-
             },
             onNavigationIconClick = {
             }
