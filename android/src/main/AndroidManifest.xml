@@ -17,12 +17,7 @@
             android:theme="@style/Theme.ConferenceAppFeeder.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
-                <data
-                    android:host="@string/deep_link_host"
-                    android:path="@string/deep_link_path"
-                    android:scheme="https" />
             </intent-filter>
         </activity>
         <meta-data
