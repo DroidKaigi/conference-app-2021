@@ -82,7 +82,7 @@ fun FeedItem(
                 }
                 .width(96.dp)
 //                .aspectRatio(16F / 9F)
-                .aspectRatio(1F / 1F).border(1.dp, Color.Black),
+                .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
