@@ -8,7 +8,7 @@ import io.github.droidkaigi.feeder.Contributor
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-interface ContributorViewModel:
+interface ContributorViewModel :
     UnidirectionalViewModel<ContributorViewModel.Event, ContributorViewModel.Effect, ContributorViewModel.State> {
     data class State(
         val showProgress: Boolean = false,
@@ -16,7 +16,7 @@ interface ContributorViewModel:
     )
 
     sealed class Effect {
-        data class ErrorMessage(val apiError: AppError): Effect()
+        data class ErrorMessage(val apiError: AppError) : Effect()
     }
 
     sealed class Event

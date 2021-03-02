@@ -3,7 +3,6 @@ package io.github.droidkaigi.feeder
 import io.github.droidkaigi.feeder.core.ContributorViewModel
 import io.github.droidkaigi.feeder.core.fakeContributorViewModel
 import io.kotest.matchers.ints.shouldBeGreaterThan
-import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -54,5 +53,4 @@ class ContributorViewModelTest(
             )
         )
     }
-
 }

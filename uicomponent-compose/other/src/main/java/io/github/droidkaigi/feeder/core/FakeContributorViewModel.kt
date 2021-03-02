@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.core
 
-import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.fakeContributors
@@ -23,12 +22,12 @@ import kotlin.coroutines.CoroutineContext
 fun fakeContributorViewModel(errorFetchData: Boolean = false) =
     FakeContributorViewModel(errorFetchData)
 
-class FakeContributorViewModel(errorFetchData: Boolean): ContributorViewModel {
+class FakeContributorViewModel(errorFetchData: Boolean) : ContributorViewModel {
 
     private val effectChannel = Channel<ContributorViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<ContributorViewModel.Effect> = effectChannel.receiveAsFlow()
 
-    private val coroutineScope = CoroutineScope(object: CoroutineDispatcher() {
+    private val coroutineScope = CoroutineScope(object : CoroutineDispatcher() {
         override fun dispatch(context: CoroutineContext, block: Runnable) = block.run()
     })
 
