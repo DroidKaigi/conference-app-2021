@@ -9,7 +9,11 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface ContributorViewModel :
-    UnidirectionalViewModel<ContributorViewModel.Event, ContributorViewModel.Effect, ContributorViewModel.State> {
+    UnidirectionalViewModel<
+        ContributorViewModel.Event,
+        ContributorViewModel.Effect,
+        ContributorViewModel.State> {
+
     data class State(
         val showProgress: Boolean = false,
         val contributorContents: List<Contributor> = emptyList()
