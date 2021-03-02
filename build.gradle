@@ -1,8 +1,9 @@
 import io.github.droidkaigi.feeder.Dep
+import io.github.droidkaigi.feeder.Versions
 
 buildscript {
     ext {
-        compose_version = '1.0.0-beta01'
+        compose_version = Versions.compose
         nav_compose_version = "1.0.0-alpha08"
         kotlin_version = "1.4.30"
     }
@@ -59,8 +60,10 @@ allprojects {
             target '**/*.kt'
             targetExclude("$buildDir/**/*.kt")
             targetExclude('bin/**/*.kt')
+            targetExclude("**/generated/**/*.kt")
 
             ktlint("0.39.0")
+                    .userData([android: "true", experimental: "true"])
         }
     }
 }

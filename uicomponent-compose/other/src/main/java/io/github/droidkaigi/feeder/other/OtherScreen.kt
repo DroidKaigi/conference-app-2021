@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.other
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -23,10 +24,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -35,9 +32,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
-import io.github.droidkaigi.feeder.core.AboutThisApp
-import io.github.droidkaigi.feeder.core.StaffList
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.staff.AboutThisApp
+import io.github.droidkaigi.feeder.staff.StaffList
 
 sealed class OtherTabs(val name: String, val routePath: String) {
     object AboutThisApp : OtherTabs("About", "about")
@@ -56,19 +53,16 @@ sealed class OtherTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun OtherScreen(
-    initialSelectedTab: OtherTabs,
+    selectedTab: OtherTabs,
+    onSelectTab: (OtherTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember(initialSelectedTab) {
-        mutableStateOf(initialSelectedTab)
-    }
+
     OtherScreen(
         scaffoldState = scaffoldState,
         selectedTab = selectedTab,
-        onSelectTab = { tab: OtherTabs ->
-            selectedTab = tab
-        },
+        onSelectTab = onSelectTab,
         onNavigationIconClick = onNavigationIconClick,
     )
 }
@@ -83,6 +77,7 @@ fun OtherScreen(
     Column {
         val density = LocalDensity.current
         BackdropScaffold(
+            gesturesEnabled = false,
             backLayerBackgroundColor = MaterialTheme.colors.primary,
             scaffoldState = scaffoldState,
             backLayerContent = {
@@ -109,10 +104,16 @@ fun OtherScreen(
                                     .fillMaxSize()
                                     .padding(top = 32.dp)
                                     .clickable {
+                                        val issue =
+                                            "https://github.com/DroidKaigi/" +
+                                                "conference-app-2021/issues" +
+                                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
                                         context.startActivity(
                                             Intent(
                                                 Intent.ACTION_VIEW,
-                                                Uri.parse("https://github.com/DroidKaigi/conference-app-2021/issues?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute")
+                                                Uri.parse(
+                                                    issue
+                                                )
                                             )
                                         )
                                     }
@@ -133,7 +134,7 @@ private fun AppBar(
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Text("DroidKaigi") },
+        title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
@@ -162,6 +163,7 @@ private fun AppBar(
                                 .padding(vertical = 4.dp, horizontal = 8.dp)
                         } else {
                             Modifier
+                                .padding(vertical = 4.dp, horizontal = 8.dp)
                         },
                         text = tab.name
                     )
@@ -177,7 +179,9 @@ private fun AppBar(
 fun PreviewOtherScreen() {
     ConferenceAppFeederTheme {
         OtherScreen(
-            initialSelectedTab = OtherTabs.AboutThisApp,
+            selectedTab = OtherTabs.AboutThisApp,
+            onSelectTab = {
+            },
             onNavigationIconClick = {
             }
         )

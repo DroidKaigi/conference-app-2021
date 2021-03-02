@@ -5,20 +5,29 @@ import androidx.annotation.StringRes
 import androidx.core.app.NotificationManagerCompat
 import io.github.droidkaigi.feeder.R
 
-enum class KaigiNotificationChannel(
+enum class AppNotificationChannel(
     val id: String,
     @StringRes val channelName: Int,
     val importance: Int,
 ) {
-    DEFAULT(
-        "default_channel",
-        R.string.notification_channel_name_default,
-        NotificationManagerCompat.IMPORTANCE_DEFAULT
-    ),
-
     ANNOUNCEMENT(
         "announcement",
         R.string.notification_channel_name_announcement,
+        NotificationManagerCompat.IMPORTANCE_DEFAULT
+    ),
+    BLOG(
+        "blog",
+        R.string.notification_channel_name_blog,
+        NotificationManagerCompat.IMPORTANCE_DEFAULT
+    ),
+    VIDEO(
+        "video",
+        R.string.notification_channel_name_video,
+        NotificationManagerCompat.IMPORTANCE_DEFAULT
+    ),
+    PODCAST(
+        "podcast",
+        R.string.notification_channel_name_podcast,
         NotificationManagerCompat.IMPORTANCE_DEFAULT
     );
 
@@ -26,8 +35,8 @@ enum class KaigiNotificationChannel(
 
     companion object {
         @JvmStatic
-        fun fromId(id: String): KaigiNotificationChannel {
-            return values().find { it.id == id } ?: DEFAULT
+        fun fromId(id: String): AppNotificationChannel {
+            return values().find { it.id == id } ?: ANNOUNCEMENT
         }
     }
 }

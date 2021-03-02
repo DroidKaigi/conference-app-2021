@@ -19,8 +19,18 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+                <data
+                    android:host="@string/deep_link_host"
+                    android:path="@string/deep_link_path"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_logo" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/blue_200" />
         <provider
             android:name="androidx.startup.InitializationProvider"
             android:authorities="${applicationId}.androidx-startup"
@@ -29,9 +39,12 @@
             <meta-data
                 android:name="io.github.droidkaigi.feeder.FirebaseInitializer"
                 android:value="androidx.startup" />
+            <meta-data
+                android:name="io.github.droidkaigi.feeder.ArborInitializer"
+                android:value="androidx.startup" />
         </provider>
         <service
-            android:name=".notification.KaigiMessagingService"
+            android:name=".notification.AppMessagingService"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

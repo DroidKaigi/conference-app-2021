@@ -1,11 +1,11 @@
 package io.github.droidkaigi.feeder
 
+import kotlin.contracts.ExperimentalContracts
+import kotlin.contracts.contract
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onStart
-import kotlin.contracts.ExperimentalContracts
-import kotlin.contracts.contract
 
 sealed class LoadState<out T> {
 

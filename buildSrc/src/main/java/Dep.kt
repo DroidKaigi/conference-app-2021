@@ -1,22 +1,29 @@
 package io.github.droidkaigi.feeder
 
+object Versions {
+    const val compose = "1.0.0-beta01"
+}
+
 object Dep {
     object Compose {
         const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
-        const val constraintLayout = "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+        const val constraintLayout =
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
         const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
-        const val runtime = "androidx.compose.runtime:runtime:1.0.0-beta01"
-        const val livedata = "androidx.compose.runtime:runtime-livedata:1.0.0-beta01"
-        const val foundation = "androidx.compose.foundation:foundation:1.0.0-beta01"
-        const val layout = "androidx.compose.foundation:foundation-layout:1.0.0-beta01"
-        const val ui = "androidx.compose.ui:ui:1.0.0-beta01"
-        const val tooling = "androidx.compose.ui:ui-tooling:1.0.0-beta01"
-        const val material = "androidx.compose.material:material:1.0.0-beta01"
-        const val iconsExtended = "androidx.compose.material:material-icons-extended:1.0.0-beta01"
-        const val animation = "androidx.compose.animation:animation:1.0.0-beta01"
+        const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
+        const val livedata = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
+        const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
+        const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
+        const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+        const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+        const val material = "androidx.compose.material:material:${Versions.compose}1"
+        const val iconsExtended =
+            "androidx.compose.material:material-icons-extended:${Versions.compose}"
+        const val animation = "androidx.compose.animation:animation:${Versions.compose}"
     }
 
     object Jetpack {
+        const val appcompat = "androidx.appcompat:appcompat:1.2.0"
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha06"
@@ -89,6 +96,7 @@ object Dep {
         const val plugin = "com.google.firebase:firebase-crashlytics-gradle:2.5.0"
         const val android = "com.google.firebase:firebase-crashlytics:17.3.1"
     }
+
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
 
@@ -96,5 +104,10 @@ object Dep {
         const val core = "androidx.core:core-ktx:1.5.0-beta01"
         const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
         const val activity = "androidx.activity:activity-ktx:1.2.0"
+    }
+
+    object Arbor {
+        const val jvm = "com.ToxicBakery.logging:arbor-jvm:1.35.72"
+        const val android = "com.ToxicBakery.logging:arbor-android:1.35.72"
     }
 }

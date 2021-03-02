@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.data
 
+import com.toxicbakery.logging.Arbor
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import io.ktor.client.HttpClient
@@ -36,7 +37,7 @@ class AuthApi(
         }
         // not authenticated
         val result = auth.signInAnonymously()
-        println("signin:${result.user}")
+        Arbor.d("signin:${result.user}")
         val createdIdToken = result.user?.getIdToken(false).orEmpty()
         userDataStore.setIdToken(createdIdToken)
         if (createdIdToken.isNotBlank()) {

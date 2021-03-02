@@ -23,8 +23,10 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navDeepLink
 import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTabs
+import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTabs
 import kotlinx.coroutines.launch
@@ -42,6 +44,9 @@ fun AppContent(
             drawerState.open()
         }
     }
+    val deepLinkUri =
+        "https://" + LocalContext.current.getString(R.string.deep_link_host) +
+            LocalContext.current.getString(R.string.deep_link_path)
     val actions = remember(navController) { AppActions(navController) }
     ModalDrawer(
         modifier = modifier,
@@ -65,6 +70,7 @@ fun AppContent(
         NavHost(navController, startDestination = "feed/{feedTab}") {
             composable(
                 route = "feed/{feedTab}",
+                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/feed/{feedTab}" }),
                 arguments = listOf(
                     navArgument("feedTab") {
                         type = NavType.StringType
@@ -76,7 +82,8 @@ fun AppContent(
                 val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
-                    initialSelectedTab = FeedTabs.ofRoutePath(feedType),
+                    selectedTab = FeedTabs.ofRoutePath(feedType),
+                    onSelectedTab = { feedTabs -> actions.onSelectTab(feedTabs) },
                     onDetailClick = { feedItem: FeedItem ->
                         actions.onSelectFeed(context, feedItem)
                     }
@@ -84,6 +91,7 @@ fun AppContent(
             }
             composable(
                 route = "other/{otherTab}",
+                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/other/{otherTab}" }),
                 arguments = listOf(
                     navArgument("otherTab") {
                         type = NavType.StringType
@@ -93,8 +101,9 @@ fun AppContent(
                 val routePath = backStackEntry
                     .arguments?.getString("otherTab") ?: FeedTabs.Home.routePath
                 OtherScreen(
-                    OtherTabs.ofRoutePath(routePath),
-                    onNavigationIconClick
+                    selectedTab = OtherTabs.ofRoutePath(routePath),
+                    onSelectTab = actions.onSelectOtherTab,
+                    onNavigationIconClick = onNavigationIconClick
                 )
             }
         }
@@ -113,5 +122,13 @@ private class AppActions(navController: NavHostController) {
 
         val intent = builder.build()
         intent.launchUrl(context, Uri.parse(feedItem.link))
+    }
+
+    val onSelectTab: (feedTab: FeedTabs) -> Unit = { tab ->
+        navController.navigate("feed/${tab.routePath}")
+    }
+
+    val onSelectOtherTab: (otherTab: OtherTabs) -> Unit = { tab ->
+        navController.navigate("other/${tab.routePath}")
     }
 }

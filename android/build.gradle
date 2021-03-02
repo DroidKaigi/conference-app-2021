@@ -72,6 +72,7 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig false
     }
     composeOptions {
         kotlinCompilerExtensionVersion "${compose_version}"
@@ -131,6 +132,13 @@ dependencies {
     implementation Dep.firebaseAuth
     implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
+
+    // For Layout inspector
+    debugImplementation Dep.Compose.tooling
+    debugImplementation Dep.Kotlin.reflect
+
+    implementation Dep.Arbor.jvm
+    implementation Dep.Arbor.android
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation Dep.Coroutines.test

@@ -42,6 +42,17 @@ abstract class UserDataStore {
         )
     }
 
+    fun deviceId(): Flow<String?> {
+        return flowSettings.getStringOrNullFlow(KEY_DEVICE_ID)
+    }
+
+    suspend fun setDeviceId(deviceId: String) {
+        flowSettings.putString(
+            KEY_DEVICE_ID,
+            deviceId
+        )
+    }
+
     private val mutableIdToken = MutableStateFlow<String?>(null)
     val idToken: StateFlow<String?> = mutableIdToken
     suspend fun setIdToken(token: String) = mutableIdToken.emit(token)
@@ -49,6 +60,7 @@ abstract class UserDataStore {
     companion object {
         private const val KEY_FAVORITES = "KEY_FAVORITES"
         private const val KEY_AUTHENTICATED = "KEY_AUTHENTICATED"
+        private const val KEY_DEVICE_ID = "KEY_DEVICE_ID"
     }
 }
 

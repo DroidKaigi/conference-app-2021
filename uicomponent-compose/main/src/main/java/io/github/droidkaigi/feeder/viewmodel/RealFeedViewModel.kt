@@ -4,13 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.FeedContents
-import io.github.droidkaigi.feeder.FeedRepository
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
+import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.toLoadState
+import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +23,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.annotation.meta.Exhaustive
-import javax.inject.Inject
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
@@ -48,7 +48,7 @@ class RealFeedViewModel @Inject constructor(
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
-            filters
+            filters,
         ) { feedContentsLoadState, filters ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
