@@ -5,7 +5,6 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.fakeFeedContents
-import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Runnable
@@ -20,6 +19,7 @@ import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import kotlin.coroutines.CoroutineContext
 
 fun fakeFeedViewModel(errorFetchData: Boolean = false): FakeFeedViewModel {
     return FakeFeedViewModel(errorFetchData)
@@ -86,7 +86,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     )
                 }
                 is FeedViewModel.Event.ReloadContent -> {
-                    //Sorry, Currently not implemented
+                    // Sorry, Currently not implemented
                 }
             }
         }
