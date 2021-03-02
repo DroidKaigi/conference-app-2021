@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -20,6 +22,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -37,6 +40,7 @@ import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
+import kotlinx.coroutines.launch
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
@@ -69,6 +73,8 @@ fun FeedScreen(
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    val listState = rememberLazyListState()
+    val coroutineScope = rememberCoroutineScope()
 
     val (
         state,
@@ -94,6 +100,9 @@ fun FeedScreen(
         filters = state.filters,
         onSelectTab = {
             onSelectedTab(it)
+            coroutineScope.launch {
+                listState.animateScrollToItem(index = 0)
+            }
         },
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
@@ -106,7 +115,8 @@ fun FeedScreen(
                 )
             )
         },
-        onClickFeed = onDetailClick
+        onClickFeed = onDetailClick,
+        listState = listState
     )
 }
 
@@ -124,6 +134,7 @@ private fun FeedScreen(
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
+    listState: LazyListState
 ) {
     Column {
         val density = LocalDensity.current
@@ -148,7 +159,8 @@ private fun FeedScreen(
                     },
                     isHome = isHome,
                     onClickFeed = onClickFeed,
-                    onFavoriteChange = onFavoriteChange
+                    onFavoriteChange = onFavoriteChange,
+                    listState
                 )
             }
         )
@@ -209,6 +221,7 @@ private fun FeedList(
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
+    listState: LazyListState
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -216,7 +229,8 @@ private fun FeedList(
     ) {
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
-                .toPaddingValues(top = false, start = false, end = false)
+                .toPaddingValues(top = false, start = false, end = false),
+            state = listState
         ) {
             if (feedContents.size > 0) {
                 items(feedContents.contents.size * 2) { index ->
