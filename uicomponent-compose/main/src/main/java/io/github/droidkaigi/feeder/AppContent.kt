@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.Uri
 import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.shape.CornerSize
+import androidx.compose.material.DrawerDefaults
 import androidx.compose.material.DrawerValue
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
@@ -13,6 +14,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
@@ -65,7 +67,8 @@ fun AppContent(
                     drawerState.close()
                 }
             }
-        }
+        },
+        scrimColor = Color.Black.copy(alpha = DrawerDefaults.ScrimOpacity),
     ) {
         NavHost(navController, startDestination = "feed/{feedTab}") {
             composable(
