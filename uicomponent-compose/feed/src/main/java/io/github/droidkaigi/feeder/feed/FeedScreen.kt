@@ -41,8 +41,8 @@ import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
@@ -60,7 +60,7 @@ sealed class FeedTabs(val name: String, val routePath: String) {
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
 
-        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
+        fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
     }
 }
 

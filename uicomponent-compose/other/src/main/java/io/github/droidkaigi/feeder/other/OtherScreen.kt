@@ -45,7 +45,8 @@ sealed class OtherTabs(val name: String, val routePath: String) {
 
     companion object {
         fun values() = listOf(AboutThisApp, Contributor, Staff, Settings)
-        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
+        fun ofRoutePath(routePath: String) =
+            values().find { it.routePath == routePath } ?: AboutThisApp
     }
 }
 
