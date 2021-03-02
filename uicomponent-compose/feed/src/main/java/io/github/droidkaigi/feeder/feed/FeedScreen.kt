@@ -16,6 +16,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScrollableTabRow
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
@@ -86,9 +87,21 @@ fun FeedScreen(
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is FeedViewModel.Effect.ErrorMessage -> {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    effect.appError.getReadableMessage(context)
-                )
+                when (
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = effect.appError.getReadableMessage(context),
+                        actionLabel = "Reload",
+                    )
+                ) {
+                    SnackbarResult.ActionPerformed -> {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            "Sorry, Currently not implemented."
+                        )
+                        dispatch(FeedViewModel.Event.ReloadContent)
+                    }
+                    SnackbarResult.Dismissed -> {
+                    }
+                }
             }
         }
     }
@@ -134,7 +147,7 @@ private fun FeedScreen(
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
-    listState: LazyListState
+    listState: LazyListState,
 ) {
     Column {
         val density = LocalDensity.current
@@ -221,7 +234,7 @@ private fun FeedList(
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
-    listState: LazyListState
+    listState: LazyListState,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
