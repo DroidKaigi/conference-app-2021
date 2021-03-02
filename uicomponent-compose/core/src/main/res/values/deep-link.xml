@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="deep_link_host" translatable="false">droidkaigi.jp</string>
+    <string name="deep_link_path" translatable="false">/2021</string>
+</resources>
