@@ -1,0 +1,19 @@
+CREATE TABLE feedItemPodcast(
+    id Text NOT NULL PRIMARY KEY,
+    publishedAt Integer NOT NULL,
+    imageSmallUrl Text NOT NULL,
+    imageStandardUrl Text NOT NULL,
+    imageLargeUrl Text NOT NULL,
+    media Text NOT NULL,
+    jaTitle Text NOT NULL,
+    enTitle Text NOT NULL,
+    jaSummary Text NOT NULL,
+    enSummary Text NOT NULL,
+    link Text NOT NULL
+);
+
+CREATE INDEX feedItemPodcast_id ON feedItemPodcast(id);
+
+selectAll:
+SELECT *
+FROM feedItemPodcast;

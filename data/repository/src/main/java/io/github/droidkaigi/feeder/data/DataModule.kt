@@ -26,6 +26,11 @@ class DataModule {
     }
 
     @Provides
+    internal fun provideFeedItemDao(feedItemDao: DaggerSQLDelightFeedItemDao): FeedItemDao {
+        return feedItemDao
+    }
+
+    @Provides
     internal fun provideFeedRepository(daggerRepository: DaggerFeedRepositoryImpl): FeedRepository {
         return daggerRepository
     }

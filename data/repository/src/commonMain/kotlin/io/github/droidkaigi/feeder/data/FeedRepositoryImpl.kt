@@ -9,6 +9,7 @@ import kotlinx.coroutines.flow.flow
 
 open class FeedRepositoryImpl(
     private val feedApi: FeedApi,
+    private val feedItemDao: FeedItemDao,
     private val dataStore: UserDataStore,
 ) : FeedRepository {
     override fun feedContents(): Flow<FeedContents> {

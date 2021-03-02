@@ -63,6 +63,9 @@ kotlin {
             implementation Dep.Dagger.hiltAndroid
             implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
 
+            // SQLDelight
+            implementation Dep.SQLDelight.androidDriver
+
             // For local unit tests
 //            testImplementation "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptTest Dep.Dagger.hiltAndroidCompiler
@@ -78,7 +81,7 @@ kotlin {
 
 sqldelight {
     Database { // This will be the name of the generated database class.
-        packageName = "io.github.droidkaigi.feeder"
+        packageName = "io.github.droidkaigi.feeder.data"
     }
 }
 
