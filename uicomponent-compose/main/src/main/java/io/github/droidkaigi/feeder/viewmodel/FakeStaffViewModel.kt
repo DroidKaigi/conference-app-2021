@@ -33,23 +33,23 @@ class FakeStaffViewModel(errorFetchData: Boolean) : StaffViewModel {
         }
     )
 
-    private val mutableStaffs = MutableStateFlow(
+    private val mutableStaffContents = MutableStateFlow(
         fakeStaffs()
     )
 
-    private val errorStaffs = flow<List<Staff>> {
+    private val errorStaffContents = flow<List<Staff>> {
         throw AppError.ApiException.ServerException(null)
     }.catch { error ->
         effectChannel.send(StaffViewModel.Effect.ErrorMessage(error as AppError))
     }.stateIn(coroutineScope, SharingStarted.Lazily, fakeStaffs())
 
-    private val mStaffs: StateFlow<List<Staff>> = if (errorFetchData) {
-        errorStaffs
+    private val mStaffContents: StateFlow<List<Staff>> = if (errorFetchData) {
+        errorStaffContents
     } else {
-        mutableStaffs
+        mutableStaffContents
     }
 
-    override val state: StateFlow<StaffViewModel.State> = mStaffs.map {
+    override val state: StateFlow<StaffViewModel.State> = mStaffContents.map {
         StaffViewModel.State(
             showProgress = false,
             staffContents = it
