@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.core
+package io.github.droidkaigi.feeder.contributor
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Contributor
