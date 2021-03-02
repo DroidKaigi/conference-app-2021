@@ -20,6 +20,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -139,7 +140,7 @@ private fun FeedScreen(
     Column {
         val density = LocalDensity.current
         BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
