@@ -83,7 +83,7 @@ fun FeedItem(
                 .width(96.dp)
 //                .aspectRatio(16F / 9F)
                 .aspectRatio(1F / 1F).border(1.dp, Color.Black),
-            contentScale = ContentScale.Crop,
+            contentScale = ContentScale.Inside,
             contentDescription = null
         )
         Text(
