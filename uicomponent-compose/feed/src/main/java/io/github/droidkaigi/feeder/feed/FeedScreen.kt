@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.feed
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -25,8 +24,6 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -72,14 +69,14 @@ sealed class FeedTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun FeedScreen(
-    initSelectedTab: FeedTabs,
+    selectedTab: FeedTabs,
+    onSelectedTab: (FeedTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val listState = rememberLazyListState()
     val coroutineScope = rememberCoroutineScope()
-    val (selectedTab, onSelectedTab) = remember { mutableStateOf(initSelectedTab) }
 
     val (
         state,
@@ -167,20 +164,18 @@ private fun FeedScreen(
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                Crossfade(targetState = selectedTab) { selectedTab ->
-                    val isHome = selectedTab is FeedTabs.Home
-                    FeedList(
-                        feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
-                            feedContents.filterFeedType(selectedTab.feedItemClass)
-                        } else {
-                            feedContents
-                        },
-                        isHome = isHome,
-                        onClickFeed = onClickFeed,
-                        onFavoriteChange = onFavoriteChange,
-                        listState
-                    )
-                }
+                val isHome = selectedTab is FeedTabs.Home
+                FeedList(
+                    feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
+                        feedContents.filterFeedType(selectedTab.feedItemClass)
+                    } else {
+                        feedContents
+                    },
+                    isHome = isHome,
+                    onClickFeed = onClickFeed,
+                    onFavoriteChange = onFavoriteChange,
+                    listState
+                )
             }
         )
     }
@@ -277,7 +272,8 @@ fun PreviewFeedScreen() {
     ConferenceAppFeederTheme(false) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                initSelectedTab = FeedTabs.Home,
+                selectedTab = FeedTabs.Home,
+                onSelectedTab = {},
                 onNavigationIconClick = {
                 }
             ) { feedItem: FeedItem ->
@@ -292,7 +288,8 @@ fun PreviewFeedScreenWithStartBlog() {
     ConferenceAppFeederTheme(false) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                initSelectedTab = FeedTabs.FilteredFeed.Blog,
+                selectedTab = FeedTabs.FilteredFeed.Blog,
+                onSelectedTab = {},
                 onNavigationIconClick = {
                 }
             ) { feedItem: FeedItem ->
