@@ -40,8 +40,8 @@ import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
@@ -87,10 +87,12 @@ fun FeedScreen(
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is FeedViewModel.Effect.ErrorMessage -> {
-                when (scaffoldState.snackbarHostState.showSnackbar(
-                    message = effect.appError.getReadableMessage(context),
-                    actionLabel = "Reload",
-                )) {
+                when (
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = effect.appError.getReadableMessage(context),
+                        actionLabel = "Reload",
+                    )
+                ) {
                     SnackbarResult.ActionPerformed -> dispatch(FeedViewModel.Event.ReloadContent)
                     SnackbarResult.Dismissed -> {
                     }
