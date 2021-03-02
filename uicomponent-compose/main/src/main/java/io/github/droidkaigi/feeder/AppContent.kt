@@ -101,8 +101,9 @@ fun AppContent(
                 val routePath = backStackEntry
                     .arguments?.getString("otherTab") ?: FeedTabs.Home.routePath
                 OtherScreen(
-                    OtherTabs.ofRoutePath(routePath),
-                    onNavigationIconClick
+                    selectedTab = OtherTabs.ofRoutePath(routePath),
+                    onSelectTab = actions.onSelectOtherTab,
+                    onNavigationIconClick = onNavigationIconClick
                 )
             }
         }
@@ -125,5 +126,9 @@ private class AppActions(navController: NavHostController) {
 
     val onSelectTab: (feedTab: FeedTabs) -> Unit = { tab ->
         navController.navigate("feed/${tab.routePath}")
+    }
+
+    val onSelectOtherTab: (otherTab: OtherTabs) -> Unit = { tab ->
+        navController.navigate("other/${tab.routePath}")
     }
 }

@@ -24,10 +24,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
@@ -57,19 +53,16 @@ sealed class OtherTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun OtherScreen(
-    initialSelectedTab: OtherTabs,
+    selectedTab: OtherTabs,
+    onSelectTab: (OtherTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    var selectedTab by remember(initialSelectedTab) {
-        mutableStateOf(initialSelectedTab)
-    }
+
     OtherScreen(
         scaffoldState = scaffoldState,
         selectedTab = selectedTab,
-        onSelectTab = { tab: OtherTabs ->
-            selectedTab = tab
-        },
+        onSelectTab = onSelectTab,
         onNavigationIconClick = onNavigationIconClick,
     )
 }
@@ -186,7 +179,9 @@ private fun AppBar(
 fun PreviewOtherScreen() {
     ConferenceAppFeederTheme {
         OtherScreen(
-            initialSelectedTab = OtherTabs.AboutThisApp,
+            selectedTab = OtherTabs.AboutThisApp,
+            onSelectTab = {
+            },
             onNavigationIconClick = {
             }
         )
