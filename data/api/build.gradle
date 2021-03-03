@@ -78,6 +78,10 @@ kotlin {
 
             implementation Dep.Arbor.jvm
         }
+        androidDebug.dependencies {
+            implementation Dep.Flipper.flipper
+            implementation Dep.Flipper.networkPlugin
+        }
         androidTest.dependencies {
             implementation Dep.KotlinTest.junit
             implementation Dep.Kotlin.reflect
