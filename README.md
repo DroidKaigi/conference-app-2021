@@ -122,7 +122,7 @@ private fun FeedScreen(
 ) {
     Column {
         BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
@@ -270,6 +270,18 @@ Also, changes to the data layer do not affect the ui module, so you can build fa
 ## Overall architecture
 
 <img width="480" src="https://user-images.githubusercontent.com/1386930/108588059-91034300-739a-11eb-8fdb-55d79861b4b3.png" />
+
+# Thanks
+
+Thank you for contributing!
+
+## Contributors
+
+GitHub : [Contributors](https://github.com/DroidKaigi/conference-app-2021/graphs/contributors)
+
+## Designer
+
+[nontan](https://github.com/nontan)
 
 # Trouble Shooting
 

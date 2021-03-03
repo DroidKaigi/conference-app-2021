@@ -22,6 +22,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -44,7 +45,8 @@ sealed class OtherTabs(val name: String, val routePath: String) {
 
     companion object {
         fun values() = listOf(AboutThisApp, Contributor, Staff, Settings)
-        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
+        fun ofRoutePath(routePath: String) =
+            values().find { it.routePath == routePath } ?: AboutThisApp
     }
 }
 
@@ -78,7 +80,7 @@ fun OtherScreen(
         val density = LocalDensity.current
         BackdropScaffold(
             gesturesEnabled = false,
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 Box(modifier = Modifier.height(1.dp))

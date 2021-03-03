@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -82,7 +81,7 @@ fun FeedItem(
                 }
                 .width(96.dp)
 //                .aspectRatio(16F / 9F)
-                .aspectRatio(1F / 1F).border(1.dp, Color.Black),
+                .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop,
             contentDescription = null
         )
