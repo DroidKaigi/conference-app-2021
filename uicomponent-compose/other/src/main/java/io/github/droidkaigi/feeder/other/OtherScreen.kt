@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.other
 
 import android.content.Intent
 import android.net.Uri
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -95,32 +96,8 @@ fun OtherScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    when (selectedTab) {
-                        OtherTabs.AboutThisApp -> AboutThisApp()
-                        OtherTabs.Staff -> StaffList()
-                        else -> {
-                            val context = LocalContext.current
-                            Text(
-                                text = "Not implemented yet. Please create this screen!",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 32.dp)
-                                    .clickable {
-                                        val issue =
-                                            "https://github.com/DroidKaigi/" +
-                                                "conference-app-2021/issues" +
-                                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
-                                        context.startActivity(
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse(
-                                                    issue
-                                                )
-                                            )
-                                        )
-                                    }
-                            )
-                        }
+                    Crossfade(targetState = selectedTab) { selectedTab ->
+                        Content(selectedTab)
                     }
                 }
             }
@@ -171,6 +148,39 @@ private fun AppBar(
                     )
                 },
                 onClick = { onSelectTab(tab) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun Content(
+    selectedTab: OtherTabs
+) {
+    when (selectedTab) {
+        OtherTabs.AboutThisApp -> AboutThisApp()
+        OtherTabs.Staff -> StaffList()
+        else -> {
+            val context = LocalContext.current
+            Text(
+                text = "Not implemented yet. Please create this screen!",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 32.dp)
+                    .clickable {
+                        val issue =
+                            "https://github.com/DroidKaigi/" +
+                                "conference-app-2021/issues" +
+                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(
+                                    issue
+                                )
+                            )
+                        )
+                    }
             )
         }
     }

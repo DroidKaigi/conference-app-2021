@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -164,18 +165,20 @@ private fun FeedScreen(
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                val isHome = selectedTab is FeedTabs.Home
-                FeedList(
-                    feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
-                        feedContents.filterFeedType(selectedTab.feedItemClass)
-                    } else {
-                        feedContents
-                    },
-                    isHome = isHome,
-                    onClickFeed = onClickFeed,
-                    onFavoriteChange = onFavoriteChange,
-                    listState
-                )
+                Crossfade(targetState = selectedTab) { selectedTab ->
+                    val isHome = selectedTab is FeedTabs.Home
+                    FeedList(
+                        feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
+                            feedContents.filterFeedType(selectedTab.feedItemClass)
+                        } else {
+                            feedContents
+                        },
+                        isHome = isHome,
+                        onClickFeed = onClickFeed,
+                        onFavoriteChange = onFavoriteChange,
+                        listState
+                    )
+                }
             }
         )
     }
