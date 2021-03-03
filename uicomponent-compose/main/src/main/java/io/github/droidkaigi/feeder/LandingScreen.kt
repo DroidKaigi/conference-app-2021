@@ -10,8 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
-import io.github.droidkaigi.feeder.feed.ProvideFeedViewModel
-import io.github.droidkaigi.feeder.feed.fakeFeedViewModel
 import io.github.droidkaigi.feeder.main.R
 import kotlinx.coroutines.delay
 
