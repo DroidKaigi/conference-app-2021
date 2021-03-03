@@ -20,3 +20,21 @@ CREATE INDEX feedItemBlog_id ON feedItemBlog(id);
 selectAll:
 SELECT *
 FROM feedItemBlog;
+
+insert:
+INSERT INTO feedItemBlog(
+    id,
+    publishedAt,
+    imageSmallUrl,
+    imageStandardUrl,
+    imageLargeUrl,
+    media,
+    jaTitle,
+    enTitle,
+    jaSummary,
+    enSummary,
+    link,
+    language,
+    authorName,
+    authorLink
+) VALUES ?;

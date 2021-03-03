@@ -25,7 +25,9 @@ open class FeedRepositoryImpl(
                     if (cachedFeeds.isNotEmpty()) {
                         emit(cachedFeeds)
                     } else {
-                        emit(feedApi.fetch())
+                        val feeds = feedApi.fetch()
+                        feedItemDao.insert(feeds)
+                        emit(feeds)
                     }
                 }
             ) { favorites, apiFeed ->
@@ -48,6 +50,19 @@ private fun FeedItemDao.selectAll(): List<FeedItem> {
     val videoFeeds = videoQueries.selectAll(FeedItemDao.videoQueriesMapper).executeAsList()
 
     return blogFeeds + podcastFeeds + videoFeeds
+}
+
+private fun FeedItemDao.insert(feeds: List<FeedItem>) {
+    feeds.forEach { item ->
+        when (item) {
+            is FeedItem.Blog -> blogQueries.insert(item)
+            is FeedItem.Podcast -> {
+                podcastQueries.insert(item)
+                item.speakers.forEach { speaker -> podcastSpeakerQueries.insert(item.id, speaker) }
+            }
+            is FeedItem.Video -> videoQueries.insert(item)
+        }
+    }
 }
 
 private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {

@@ -21,3 +21,18 @@ SELECT
     feedItemPodcastSpeaker.iconUrl speakerIconUrl
 FROM feedItemPodcast
 JOIN feedItemPodcastSpeaker ON feedItemPodcast.id = feedItemPodcastSpeaker.feedItemPodcastId;
+
+insert:
+INSERT INTO feedItemPodcast(
+    id,
+    publishedAt,
+    imageSmallUrl,
+    imageStandardUrl,
+    imageLargeUrl,
+    media,
+    jaTitle,
+    enTitle,
+    jaSummary,
+    enSummary,
+    link
+) VALUES ?;

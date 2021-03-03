@@ -3,3 +3,10 @@ CREATE TABLE feedItemPodcastSpeaker (
     name Text NOT NULL,
     iconUrl Text NOT NULL
 );
+
+insert:
+INSERT INTO feedItemPodcastSpeaker(
+    feedItemPodcastId,
+    name,
+    iconUrl
+) VALUES ?;

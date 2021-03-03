@@ -17,3 +17,18 @@ CREATE INDEX feedItemVideo_id ON feedItemVideo(id);
 selectAll:
 SELECT *
 FROM feedItemVideo;
+
+insert:
+INSERT INTO feedItemVideo(
+    id,
+    publishedAt ,
+    imageSmallUrl ,
+    imageStandardUrl ,
+    imageLargeUrl ,
+    media ,
+    jaTitle ,
+    enTitle ,
+    jaSummary ,
+    enSummary ,
+    link
+) VALUES ?;
