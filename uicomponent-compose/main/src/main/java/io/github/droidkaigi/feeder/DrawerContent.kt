@@ -101,8 +101,21 @@ class DrawerContentState(
     var currentValue: String by mutableStateOf(initialValue)
         private set
 
-    fun onSelectDrawerContent(route: String) {
-        currentValue = route
+    fun selectDrawerContent(route: String): Boolean {
+        return if (currentValue != route) {
+            currentValue = route
+            true
+        } else {
+            false
+        }
+    }
+
+    fun onSelectDrawerContent(feedTabs: FeedTabs) {
+        selectDrawerContent("feed/${feedTabs.routePath}")
+    }
+
+    fun onSelectDrawerContent(otherTabs: OtherTabs) {
+        selectDrawerContent("other/${otherTabs.routePath}")
     }
 
     companion object {
@@ -115,9 +128,7 @@ class DrawerContentState(
 }
 
 @Composable
-fun rememberDrawerContentState(
-    initialValue: String
-): DrawerContentState {
+fun rememberDrawerContentState(initialValue: String): DrawerContentState {
     return rememberSaveable(saver = DrawerContentState.Saver()) {
         DrawerContentState(initialValue)
     }

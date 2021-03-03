@@ -51,7 +51,7 @@ fun AppContent(
         "https://" + LocalContext.current.getString(R.string.deep_link_host) +
             LocalContext.current.getString(R.string.deep_link_path)
     val actions = remember(navController, drawerContentState) {
-        AppActions(navController, drawerContentState)
+        AppActions(navController)
     }
     ModalDrawer(
         modifier = modifier,
@@ -59,7 +59,9 @@ fun AppContent(
         drawerShape = MaterialTheme.shapes.large.copy(all = CornerSize(0.dp)),
         drawerContent = {
             DrawerContent(drawerContentState.currentValue) { route ->
-                actions.onSelectDrawerItem(route)
+                if (drawerContentState.selectDrawerContent(route)) {
+                    actions.onSelectDrawerItem(route)
+                }
                 coroutineScope.launch {
                     drawerState.close()
                 }
@@ -82,14 +84,14 @@ fun AppContent(
                         ?: FeedTabs.Home.routePath
                 )
                 val selectedTab = FeedTabs.ofRoutePath(routePath.value)
-                actions.onSelectTab(selectedTab)
+                drawerContentState.onSelectDrawerContent(selectedTab)
                 val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
                     selectedTab = selectedTab,
                     onSelectedTab = { feedTabs ->
                         routePath.value = feedTabs.routePath
-                        actions.onSelectTab(feedTabs)
+                        drawerContentState.onSelectDrawerContent(feedTabs)
                     },
                     onDetailClick = { feedItem: FeedItem ->
                         actions.onSelectFeed(context, feedItem)
@@ -110,12 +112,12 @@ fun AppContent(
                         ?: OtherTabs.AboutThisApp.routePath
                 )
                 val selectedTab = OtherTabs.ofRoutePath(routePath.value)
-                actions.onSelectOtherTab(selectedTab)
+                drawerContentState.onSelectDrawerContent(selectedTab)
                 OtherScreen(
                     selectedTab = selectedTab,
                     onSelectTab = { otherTabs ->
                         routePath.value = otherTabs.routePath
-                        actions.onSelectOtherTab(otherTabs)
+                        drawerContentState.onSelectDrawerContent(otherTabs)
                     },
                     onNavigationIconClick = onNavigationIconClick
                 )
@@ -124,10 +126,9 @@ fun AppContent(
     }
 }
 
-private class AppActions(navController: NavHostController, drawerContentState: DrawerContentState) {
+private class AppActions(navController: NavHostController) {
     val onSelectDrawerItem: (String) -> Unit = { route ->
         navController.navigate(route)
-        drawerContentState.onSelectDrawerContent(route)
     }
 
     val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->
@@ -137,14 +138,6 @@ private class AppActions(navController: NavHostController, drawerContentState: D
 
         val intent = builder.build()
         intent.launchUrl(context, Uri.parse(feedItem.link))
-    }
-
-    val onSelectTab: (feedTab: FeedTabs) -> Unit = { tab ->
-        drawerContentState.onSelectDrawerContent("feed/${tab.routePath}")
-    }
-
-    val onSelectOtherTab: (otherTab: OtherTabs) -> Unit = { tab ->
-        drawerContentState.onSelectDrawerContent("other/${tab.routePath}")
     }
 }
 
