@@ -58,9 +58,9 @@ fun AppContent(
         drawerState = drawerState,
         drawerShape = MaterialTheme.shapes.large.copy(all = CornerSize(0.dp)),
         drawerContent = {
-            DrawerContent(drawerContentState.currentValue) { route ->
-                if (drawerContentState.selectDrawerContent(route)) {
-                    actions.onSelectDrawerItem(route)
+            DrawerContent(drawerContentState.currentValue) { contents ->
+                if (drawerContentState.selectDrawerContent(contents.route)) {
+                    actions.onSelectDrawerItem(contents)
                 }
                 coroutineScope.launch {
                     drawerState.close()
@@ -127,8 +127,19 @@ fun AppContent(
 }
 
 private class AppActions(navController: NavHostController) {
-    val onSelectDrawerItem: (String) -> Unit = { route ->
-        navController.navigate(route)
+    val onSelectDrawerItem: (DrawerContents) -> Unit = { contents ->
+        navController.navigate(contents.route) {
+            popUpTo(navController.graph.startDestination) {
+                inclusive = when (contents) {
+                    DrawerContents.HOME,
+                    DrawerContents.BLOG,
+                    DrawerContents.VIDEO,
+                    DrawerContents.PODCAST,
+                    -> true
+                    else -> false
+                }
+            }
+        }
     }
 
     val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->

@@ -137,7 +137,7 @@ fun rememberDrawerContentState(initialValue: String): DrawerContentState {
 @Composable
 fun DrawerContent(
     currentRoute: String = DrawerContents.HOME.route,
-    onNavigate: (route: String) -> Unit,
+    onNavigate: (contents: DrawerContents) -> Unit,
 ) {
     Column {
         Spacer(modifier = Modifier.height(52.dp))
@@ -188,7 +188,7 @@ fun DrawerContent(
 private fun DrawerContentGroup(
     groupContents: List<DrawerContents>,
     currentRoute: String,
-    onNavigate: (route: String) -> Unit,
+    onNavigate: (contents: DrawerContents) -> Unit,
 ) {
     for (content in groupContents) {
         DrawerButton(
@@ -196,7 +196,7 @@ private fun DrawerContentGroup(
             label = content.label,
             isSelected = content.route == currentRoute,
             {
-                onNavigate(content.route)
+                onNavigate(content)
             }
         )
     }
