@@ -1,3 +1,8 @@
 package io.github.droidkaigi.feeder
 
-data class Locale(val locale: String)
+enum class Locale {
+    JAPAN,
+    OTHER
+}
+
+expect fun getDefaultLocale(): Locale
