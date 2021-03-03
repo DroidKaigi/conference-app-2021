@@ -107,8 +107,7 @@ object Dep {
     }
 
     object Arbor {
-        const val jvm = "com.ToxicBakery.logging:arbor-jvm:1.35.72"
-        const val android = "com.ToxicBakery.logging:arbor-android:1.35.72"
+        const val common = "com.ToxicBakery.logging:common:1.35.72"
     }
 
     object Flipper {

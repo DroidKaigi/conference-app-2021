@@ -138,8 +138,7 @@ dependencies {
     debugImplementation Dep.Compose.tooling
     debugImplementation Dep.Kotlin.reflect
 
-    implementation Dep.Arbor.jvm
-    implementation Dep.Arbor.android
+    implementation Dep.Arbor.common
 
     debugImplementation Dep.Flipper.flipper
     debugImplementation Dep.Flipper.networkPlugin
