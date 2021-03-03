@@ -248,8 +248,10 @@ private fun FeedList(
         ) {
             if (feedContents.size > 0) {
                 items(feedContents.contents.size * 2) { index ->
-                    if (index % 2 == 0 && index != 0) {
-                        Divider()
+                    if (index % 2 == 0) {
+                        if (index != 0) {
+                            Divider()
+                        }
                     } else {
                         val (item, favorited) = feedContents.contents[index / 2]
                         FeedItem(
