@@ -142,6 +142,7 @@ dependencies {
     implementation Dep.Arbor.android
 
     debugImplementation Dep.Flipper.flipper
+    debugImplementation Dep.Flipper.networkPlugin
     debugImplementation Dep.Flipper.soLoader
 
     testImplementation 'junit:junit:4.13.1'
