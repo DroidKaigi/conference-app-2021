@@ -16,7 +16,20 @@ open class FeedRepositoryImpl(
         return dataStore.favorites()
             .combine(
                 flow {
-                    emit(feedApi.fetch())
+                    val blogFeeds = feedItemDao.blogQueries.selectAll(FeedItemDao.blogQueriesMapper)
+                        .executeAsList()
+                    val podcastFeeds =
+                        feedItemDao.podcastQueries.selectAll(FeedItemDao.podcastQueriesMapper)
+                            .executeAsList()
+                    val videoFeeds =
+                        feedItemDao.videoQueries.selectAll(FeedItemDao.videoQueriesMapper)
+                            .executeAsList()
+                    val cachedFeeds = blogFeeds + podcastFeeds + videoFeeds
+                    if (cachedFeeds.isNotEmpty()) {
+                        emit(cachedFeeds)
+                    } else {
+                        emit(feedApi.fetch())
+                    }
                 }
             ) { favorites, apiFeed ->
                 FeedContents(apiFeed.sortedByDescending { it.publishedAt }, favorites)
