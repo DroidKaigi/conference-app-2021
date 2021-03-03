@@ -6,4 +6,3 @@ actual fun getDefaultLocale(): Locale =
     } else {
         Locale.OTHER
     }
-
