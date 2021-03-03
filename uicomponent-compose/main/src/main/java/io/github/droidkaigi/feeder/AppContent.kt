@@ -50,7 +50,9 @@ fun AppContent(
     val deepLinkUri =
         "https://" + LocalContext.current.getString(R.string.deep_link_host) +
             LocalContext.current.getString(R.string.deep_link_path)
-    val actions = remember(navController, drawerContentState) { AppActions(navController, drawerContentState) }
+    val actions = remember(navController, drawerContentState) {
+        AppActions(navController, drawerContentState)
+    }
     ModalDrawer(
         modifier = modifier,
         drawerState = drawerState,
@@ -77,7 +79,8 @@ fun AppContent(
             ) { backStackEntry ->
                 val routePath = rememberRoutePath(
                     backStackEntry.arguments?.getString("feedTab")
-                        ?: FeedTabs.Home.routePath)
+                        ?: FeedTabs.Home.routePath
+                )
                 val selectedTab = FeedTabs.ofRoutePath(routePath.value)
                 actions.onSelectTab(selectedTab)
                 val context = LocalContext.current
@@ -104,7 +107,8 @@ fun AppContent(
             ) { backStackEntry ->
                 val routePath = rememberRoutePath(
                     backStackEntry.arguments?.getString("otherTab")
-                        ?: OtherTabs.AboutThisApp.routePath)
+                        ?: OtherTabs.AboutThisApp.routePath
+                )
                 val selectedTab = OtherTabs.ofRoutePath(routePath.value)
                 actions.onSelectOtherTab(selectedTab)
                 OtherScreen(
