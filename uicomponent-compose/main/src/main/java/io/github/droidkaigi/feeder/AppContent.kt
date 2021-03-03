@@ -10,9 +10,10 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
@@ -21,7 +22,6 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.compose.rememberNavController
@@ -39,6 +39,7 @@ fun AppContent(
     firstDrawerValue: DrawerValue = DrawerValue.Closed,
 ) {
     val drawerState = rememberDrawerState(firstDrawerValue)
+    val drawerContentState = rememberDrawerContentState(DrawerContents.HOME.route)
     val navController = rememberNavController()
     val coroutineScope = rememberCoroutineScope()
     val onNavigationIconClick: () -> Unit = {
@@ -49,19 +50,13 @@ fun AppContent(
     val deepLinkUri =
         "https://" + LocalContext.current.getString(R.string.deep_link_host) +
             LocalContext.current.getString(R.string.deep_link_path)
-    val actions = remember(navController) { AppActions(navController) }
+    val actions = remember(navController, drawerContentState) { AppActions(navController, drawerContentState) }
     ModalDrawer(
         modifier = modifier,
         drawerState = drawerState,
         drawerShape = MaterialTheme.shapes.large.copy(all = CornerSize(0.dp)),
         drawerContent = {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentFeedTab = navBackStackEntry?.arguments?.getString("feedTab")
-            val currentOtherTab = navBackStackEntry?.arguments?.getString("otherTab")
-            val currentRoute = currentFeedTab?.let { "feed/$it" }
-                ?: currentOtherTab?.let { "other/$it" }
-                ?: DrawerContents.HOME.route
-            DrawerContent(currentRoute) { route ->
+            DrawerContent(drawerContentState.currentValue) { route ->
                 actions.onSelectDrawerItem(route)
                 coroutineScope.launch {
                     drawerState.close()
@@ -80,13 +75,19 @@ fun AppContent(
                     }
                 )
             ) { backStackEntry ->
-                val feedType = backStackEntry
-                    .arguments?.getString("feedTab") ?: FeedTabs.Home.routePath
+                val routePath = rememberRoutePath(
+                    backStackEntry.arguments?.getString("feedTab")
+                        ?: FeedTabs.Home.routePath)
+                val selectedTab = FeedTabs.ofRoutePath(routePath.value)
+                actions.onSelectTab(selectedTab)
                 val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
-                    selectedTab = FeedTabs.ofRoutePath(feedType),
-                    onSelectedTab = { feedTabs -> actions.onSelectTab(feedTabs) },
+                    selectedTab = selectedTab,
+                    onSelectedTab = { feedTabs ->
+                        routePath.value = feedTabs.routePath
+                        actions.onSelectTab(feedTabs)
+                    },
                     onDetailClick = { feedItem: FeedItem ->
                         actions.onSelectFeed(context, feedItem)
                     }
@@ -101,11 +102,17 @@ fun AppContent(
                     }
                 )
             ) { backStackEntry ->
-                val routePath = backStackEntry
-                    .arguments?.getString("otherTab") ?: FeedTabs.Home.routePath
+                val routePath = rememberRoutePath(
+                    backStackEntry.arguments?.getString("otherTab")
+                        ?: OtherTabs.AboutThisApp.routePath)
+                val selectedTab = OtherTabs.ofRoutePath(routePath.value)
+                actions.onSelectOtherTab(selectedTab)
                 OtherScreen(
-                    selectedTab = OtherTabs.ofRoutePath(routePath),
-                    onSelectTab = actions.onSelectOtherTab,
+                    selectedTab = selectedTab,
+                    onSelectTab = { otherTabs ->
+                        routePath.value = otherTabs.routePath
+                        actions.onSelectOtherTab(otherTabs)
+                    },
                     onNavigationIconClick = onNavigationIconClick
                 )
             }
@@ -113,9 +120,10 @@ fun AppContent(
     }
 }
 
-private class AppActions(navController: NavHostController) {
+private class AppActions(navController: NavHostController, drawerContentState: DrawerContentState) {
     val onSelectDrawerItem: (String) -> Unit = { route ->
         navController.navigate(route)
+        drawerContentState.onSelectDrawerContent(route)
     }
 
     val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->
@@ -128,10 +136,17 @@ private class AppActions(navController: NavHostController) {
     }
 
     val onSelectTab: (feedTab: FeedTabs) -> Unit = { tab ->
-        navController.navigate("feed/${tab.routePath}")
+        drawerContentState.onSelectDrawerContent("feed/${tab.routePath}")
     }
 
     val onSelectOtherTab: (otherTab: OtherTabs) -> Unit = { tab ->
-        navController.navigate("other/${tab.routePath}")
+        drawerContentState.onSelectDrawerContent("other/${tab.routePath}")
     }
+}
+
+@Composable
+fun rememberRoutePath(
+    initialRoutePath: String,
+) = rememberSaveable {
+    mutableStateOf(initialRoutePath)
 }

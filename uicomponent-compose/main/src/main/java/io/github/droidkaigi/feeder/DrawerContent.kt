@@ -17,6 +17,11 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -87,6 +92,34 @@ enum class DrawerContents(
 
     enum class Group {
         NEWS, OTHER;
+    }
+}
+
+class DrawerContentState(
+    initialValue: String,
+) {
+    var currentValue: String by mutableStateOf(initialValue)
+        private set
+
+    fun onSelectDrawerContent(route: String) {
+        currentValue = route
+    }
+
+    companion object {
+
+        fun Saver() = Saver<DrawerContentState, String>(
+            save = { it.currentValue },
+            restore = { DrawerContentState(it) }
+        )
+    }
+}
+
+@Composable
+fun rememberDrawerContentState(
+    initialValue: String
+): DrawerContentState {
+    return rememberSaveable(saver = DrawerContentState.Saver()) {
+        DrawerContentState(initialValue)
     }
 }
 
