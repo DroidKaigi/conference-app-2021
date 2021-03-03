@@ -15,5 +15,9 @@ CREATE TABLE feedItemPodcast(
 CREATE INDEX feedItemPodcast_id ON feedItemPodcast(id);
 
 selectAll:
-SELECT *
-FROM feedItemPodcast;
+SELECT
+    feedItemPodcast.*,
+    feedItemPodcastSpeaker.name speakerName,
+    feedItemPodcastSpeaker.iconUrl speakerIconUrl
+FROM feedItemPodcast
+JOIN feedItemPodcastSpeaker ON feedItemPodcast.id = feedItemPodcastSpeaker.feedItemPodcastId;

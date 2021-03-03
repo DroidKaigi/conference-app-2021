@@ -43,31 +43,6 @@ open class FeedItemDao(database: Database) {
             )
         }
 
-        val podcastQueriesMapper = {
-                id: String,
-                publishedAt: Long,
-                imageSmallUrl: String,
-                imageStandardUrl: String,
-                imageLargeUrl: String,
-                media: String,
-                jaTitle: String,
-                enTitle: String,
-                jaSummary: String,
-                enSummary: String,
-                link: String,
-            ->
-            FeedItem.Podcast(
-                id = id,
-                publishedAt = Instant.fromEpochMilliseconds(publishedAt),
-                image = Image(smallUrl = imageSmallUrl, standardUrl = imageStandardUrl, largeUrl
-                = imageLargeUrl),
-                media = Media.parse(media),
-                title = MultiLangText(jaTitle = jaTitle, enTitle = enTitle),
-                summary = MultiLangText(jaTitle = jaSummary, enTitle = enSummary),
-                link = link
-            )
-        }
-
         val videoQueriesMapper = {
                 id: String,
                 publishedAt: Long,

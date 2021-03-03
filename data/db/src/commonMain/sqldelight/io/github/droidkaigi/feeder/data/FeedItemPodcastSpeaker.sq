@@ -1,0 +1,5 @@
+CREATE TABLE feedItemPodcastSpeaker (
+    feedItemPodcastId Text NOT NULL,
+    name Text NOT NULL,
+    iconUrl Text NOT NULL
+);
