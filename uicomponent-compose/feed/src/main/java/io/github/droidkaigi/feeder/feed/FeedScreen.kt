@@ -60,7 +60,7 @@ sealed class FeedTabs(val name: String, val routePath: String) {
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
 
-        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
+        fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
     }
 }
 
