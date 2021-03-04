@@ -90,6 +90,7 @@ fun AppContent(
                     onNavigationIconClick = onNavigationIconClick,
                     selectedTab = selectedTab,
                     onSelectedTab = { feedTabs ->
+                        // We don't use navigation component transitions here for animation.
                         routePath.value = feedTabs.routePath
                         drawerContentState.onSelectDrawerContent(feedTabs)
                     },
@@ -116,6 +117,7 @@ fun AppContent(
                 OtherScreen(
                     selectedTab = selectedTab,
                     onSelectTab = { otherTabs ->
+                        // We don't use navigation component transitions here for animation.
                         routePath.value = otherTabs.routePath
                         drawerContentState.onSelectDrawerContent(otherTabs)
                     },
