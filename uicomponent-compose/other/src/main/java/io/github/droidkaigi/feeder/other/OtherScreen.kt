@@ -97,7 +97,7 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     Crossfade(targetState = selectedTab) { selectedTab ->
-                        Content(selectedTab)
+                        BackdropFrontLayerContent(selectedTab)
                     }
                 }
             }
@@ -154,8 +154,8 @@ private fun AppBar(
 }
 
 @Composable
-private fun Content(
-    selectedTab: OtherTabs
+private fun BackdropFrontLayerContent(
+    selectedTab: OtherTabs,
 ) {
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()

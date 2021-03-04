@@ -50,7 +50,7 @@ fun AppContent(
     val deepLinkUri =
         "https://" + LocalContext.current.getString(R.string.deep_link_host) +
             LocalContext.current.getString(R.string.deep_link_path)
-    val actions = remember(navController, drawerContentState) {
+    val actions = remember(navController) {
         AppActions(navController)
     }
     ModalDrawer(
