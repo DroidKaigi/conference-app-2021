@@ -70,6 +70,9 @@ fun OtherScreen(
     )
 }
 
+/**
+ * stateless
+ */
 @Composable
 fun OtherScreen(
     scaffoldState: BackdropScaffoldState,
