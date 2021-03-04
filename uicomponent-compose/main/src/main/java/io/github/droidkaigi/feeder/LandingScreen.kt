@@ -8,6 +8,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.main.R
 import kotlinx.coroutines.delay
 
@@ -25,6 +27,16 @@ fun LandingScreen(modifier: Modifier = Modifier, onTimeout: () -> Unit) {
             painter = painterResource(id = R.drawable.ic_logo_big),
             contentDescription = "landing",
             modifier = Modifier.fillMaxSize(0.5F)
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewLandingScreen() {
+    ConferenceAppFeederTheme(false) {
+        LandingScreen(
+            onTimeout = {}
         )
     }
 }
