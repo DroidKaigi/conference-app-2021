@@ -17,12 +17,12 @@ open class FeedRepositoryImpl(
     private val feedItemDao: FeedItemDao,
     private val dataStore: UserDataStore,
 ) : FeedRepository {
-    override fun feedContents(): Flow<FeedContents> {
+    override fun feedContents(forceUpdate: Boolean): Flow<FeedContents> {
         return dataStore.favorites()
             .combine(
                 flow {
-                    val cachedFeeds = feedItemDao.selectAll()
-                    if (cachedFeeds.isNotEmpty()) {
+                    val cachedFeeds by lazy { feedItemDao.selectAll() }
+                    if (!forceUpdate && cachedFeeds.isNotEmpty()) {
                         emit(cachedFeeds)
                     } else {
                         val feeds = feedApi.fetch()
