@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
@@ -249,26 +250,39 @@ private fun FeedList(
                 .toPaddingValues(top = false, start = false, end = false),
             state = listState
         ) {
-            if (feedContents.size > 0) {
-                items(feedContents.contents.size * 2) { index ->
-                    if (index % 2 == 0) {
-                        if (index != 0) {
-                            Divider()
-                        }
-                    } else {
-                        val (item, favorited) = feedContents.contents[index / 2]
-                        FeedItem(
-                            feedItem = item,
-                            favorited = favorited,
-                            onClick = onClickFeed,
-                            showMediaLabel = isHome,
-                            onFavoriteChange = onFavoriteChange
-                        )
-                    }
-                }
+            itemsIndexed(feedContents.contents) { index, content ->
+                FeedItemRow(
+                    content.first,
+                    content.second,
+                    onClickFeed,
+                    isHome,
+                    onFavoriteChange,
+                    index != 0
+                )
             }
         }
     }
+}
+
+@Composable
+fun FeedItemRow(
+    item: FeedItem,
+    favorited: Boolean,
+    onClickFeed: (FeedItem) -> Unit,
+    showMediaLabel: Boolean,
+    onFavoriteChange: (FeedItem) -> Unit,
+    showDivider: Boolean
+) {
+    if (showDivider) {
+        Divider()
+    }
+    FeedItem(
+        feedItem = item,
+        favorited = favorited,
+        onClick = onClickFeed,
+        showMediaLabel = showMediaLabel,
+        onFavoriteChange = onFavoriteChange
+    )
 }
 
 @Preview(showBackground = true)
