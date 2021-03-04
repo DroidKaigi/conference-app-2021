@@ -56,7 +56,7 @@ fun AnswerSurveyItem(
                     start.linkTo(image.end, 32.dp)
                     end.linkTo(parent.end, 32.dp)
                     width = Dimension.fillToConstraints
-            },
+                },
             color = MaterialTheme.colors.primary,
             textAlign = TextAlign.End,
             style = TextStyle(
@@ -68,7 +68,7 @@ fun AnswerSurveyItem(
         Button(
             onClick = onClick,
             modifier = modifier
-                .constrainAs(answer){
+                .constrainAs(answer) {
                     top.linkTo(message.bottom, 12.dp)
                     bottom.linkTo(parent.bottom, 24.dp)
                     end.linkTo(parent.end, 32.dp)
@@ -80,7 +80,7 @@ fun AnswerSurveyItem(
             ),
             colors = ButtonDefaults
                 .buttonColors(
-                   backgroundColor = Color.White
+                    backgroundColor = Color.White
                 )
         ) {
             Text(
