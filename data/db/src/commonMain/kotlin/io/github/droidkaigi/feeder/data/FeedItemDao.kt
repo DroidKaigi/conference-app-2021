@@ -9,14 +9,45 @@ import io.github.droidkaigi.feeder.Speaker
 import kotlinx.datetime.Instant
 
 open class FeedItemDao(database: Database) {
-    val blogQueries: FeedItemBlogQueries = database.feedItemBlogQueries
-    val podcastQueries: FeedItemPodcastQueries = database.feedItemPodcastQueries
-    val videoQueries: FeedItemVideoQueries = database.feedItemVideoQueries
-    val podcastSpeakerQueries: FeedItemPodcastSpeakerQueries =
+    private val blogQueries: FeedItemBlogQueries = database.feedItemBlogQueries
+    private val podcastQueries: FeedItemPodcastQueries = database.feedItemPodcastQueries
+    private val videoQueries: FeedItemVideoQueries = database.feedItemVideoQueries
+    private val podcastSpeakerQueries: FeedItemPodcastSpeakerQueries =
         database.feedItemPodcastSpeakerQueries
 
+    fun selectAll(): List<FeedItem> {
+        val blogFeeds = blogQueries.selectAll(blogQueriesMapper).executeAsList()
+        val podcastFeeds = podcastQueries.selectAll().executeAsList().toPodcastItems()
+        val videoFeeds = videoQueries.selectAll(videoQueriesMapper).executeAsList()
+
+        return blogFeeds + podcastFeeds + videoFeeds
+    }
+
+    fun insert(feeds: List<FeedItem>) {
+        feeds.forEach { item ->
+            when (item) {
+                is FeedItem.Blog -> blogQueries.insert(item)
+                is FeedItem.Podcast -> {
+                    podcastQueries.insert(item)
+                    item.speakers.forEach { speaker ->
+                        podcastSpeakerQueries.insert(item.id,
+                            speaker)
+                    }
+                }
+                is FeedItem.Video -> videoQueries.insert(item)
+            }
+        }
+    }
+
+    fun deleteAll() {
+        blogQueries.deleteAll()
+        podcastSpeakerQueries.deleteAll()
+        podcastQueries.deleteAll()
+        videoQueries.deleteAll()
+    }
+
     companion object {
-        val blogQueriesMapper = {
+        private val blogQueriesMapper = {
                 id: String,
                 publishedAt: Long,
                 imageSmallUrl: String,
@@ -46,7 +77,7 @@ open class FeedItemDao(database: Database) {
             )
         }
 
-        val videoQueriesMapper = {
+        private val videoQueriesMapper = {
                 id: String,
                 publishedAt: Long,
                 imageSmallUrl: String,
@@ -73,7 +104,7 @@ open class FeedItemDao(database: Database) {
     }
 }
 
-fun FeedItemBlogQueries.insert(blog: FeedItem.Blog) {
+private fun FeedItemBlogQueries.insert(blog: FeedItem.Blog) {
     this.insert(
         FeedItemBlog(
             id = blog.id,
@@ -94,7 +125,7 @@ fun FeedItemBlogQueries.insert(blog: FeedItem.Blog) {
     )
 }
 
-fun FeedItemPodcastQueries.insert(podcast: FeedItem.Podcast) {
+private fun FeedItemPodcastQueries.insert(podcast: FeedItem.Podcast) {
     this.insert(
         FeedItemPodcast(
             id = podcast.id,
@@ -112,7 +143,7 @@ fun FeedItemPodcastQueries.insert(podcast: FeedItem.Podcast) {
     )
 }
 
-fun FeedItemPodcastSpeakerQueries.insert(podcastId: String, speaker: Speaker) {
+private fun FeedItemPodcastSpeakerQueries.insert(podcastId: String, speaker: Speaker) {
     this.insert(
         FeedItemPodcastSpeaker(
             feedItemPodcastId = podcastId,
@@ -122,7 +153,7 @@ fun FeedItemPodcastSpeakerQueries.insert(podcastId: String, speaker: Speaker) {
     )
 }
 
-fun FeedItemVideoQueries.insert(podcast: FeedItem.Video) {
+private fun FeedItemVideoQueries.insert(podcast: FeedItem.Video) {
     this.insert(
         FeedItemVideo(
             id = podcast.id,
@@ -138,4 +169,30 @@ fun FeedItemVideoQueries.insert(podcast: FeedItem.Video) {
             link = podcast.link,
         )
     )
+}
+
+private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
+    return this.foldRight(mapOf<String, FeedItem.Podcast>()) { row, acc ->
+        val feedItem = if (acc.containsKey(row.id)) {
+            val oldFeedItem = acc.getValue(row.id)
+            oldFeedItem.copy(speakers = oldFeedItem.speakers + Speaker(name = row.speakerName,
+                iconUrl = row.speakerIconUrl))
+        } else {
+            FeedItem.Podcast(
+                id = row.id,
+                publishedAt = Instant.fromEpochMilliseconds(row.publishedAt),
+                image = Image(
+                    smallUrl = row.imageSmallUrl,
+                    standardUrl = row.imageStandardUrl,
+                    largeUrl = row.imageLargeUrl
+                ),
+                media = Media.parse(row.media),
+                title = MultiLangText(jaTitle = row.jaTitle, enTitle = row.enTitle),
+                summary = MultiLangText(jaTitle = row.jaSummary, enTitle = row.enSummary),
+                link = row.link,
+                speakers = listOf(Speaker(name = row.speakerName, iconUrl = row.speakerIconUrl))
+            )
+        }
+        acc + mapOf(row.id to feedItem)
+    }.values.toList()
 }
