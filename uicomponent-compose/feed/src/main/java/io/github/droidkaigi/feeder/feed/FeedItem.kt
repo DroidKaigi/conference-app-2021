@@ -83,7 +83,6 @@ fun FeedItem(
                 }
                 .width(96.dp)
                 .clip(shape = RoundedCornerShape(4.dp))
-//                .aspectRatio(16F / 9F)
                 .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop,
             contentDescription = null
