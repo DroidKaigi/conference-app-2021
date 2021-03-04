@@ -22,12 +22,12 @@ open class FeedRepositoryImpl(
             .combine(
                 flow {
                     val cachedFeeds by lazy { feedItemDao.selectAll() }
-                    if (!forceUpdate && cachedFeeds.isNotEmpty()) {
-                        emit(cachedFeeds)
-                    } else {
+                    if (forceUpdate || cachedFeeds.isEmpty()) {
                         val feeds = feedApi.fetch()
                         feedItemDao.insert(feeds)
                         emit(feeds)
+                    } else {
+                        emit(cachedFeeds)
                     }
                 }
             ) { favorites, apiFeed ->
