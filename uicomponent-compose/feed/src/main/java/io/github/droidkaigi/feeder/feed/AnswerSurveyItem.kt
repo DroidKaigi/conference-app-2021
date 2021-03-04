@@ -40,9 +40,9 @@ fun AnswerSurveyItem(
             modifier = modifier
                 .size(28.dp)
                 .constrainAs(image) {
-                    top.linkTo(parent.top, 24.dp)
-                    bottom.linkTo(parent.bottom, 24.dp)
-                    start.linkTo(parent.start, 24.dp)
+                    top.linkTo(parent.top, 32.dp)
+                    bottom.linkTo(parent.bottom, 40.dp)
+                    start.linkTo(parent.start, 48.dp)
                 },
             contentScale = ContentScale.Fit,
             contentDescription = null
@@ -52,9 +52,9 @@ fun AnswerSurveyItem(
             text = surveyMessage,
             modifier = modifier
                 .constrainAs(message) {
-                    top.linkTo(parent.top, 16.dp)
-                    start.linkTo(image.end, 16.dp)
-                    end.linkTo(parent.end, 16.dp)
+                    top.linkTo(parent.top, 24.dp)
+                    start.linkTo(image.end, 32.dp)
+                    end.linkTo(parent.end, 32.dp)
                     width = Dimension.fillToConstraints
             },
             color = MaterialTheme.colors.primary,
@@ -69,9 +69,9 @@ fun AnswerSurveyItem(
             onClick = onClick,
             modifier = modifier
                 .constrainAs(answer){
-                    top.linkTo(message.bottom, 8.dp)
-                    bottom.linkTo(parent.bottom, 16.dp)
-                    end.linkTo(parent.end, 16.dp)
+                    top.linkTo(message.bottom, 12.dp)
+                    bottom.linkTo(parent.bottom, 24.dp)
+                    end.linkTo(parent.end, 32.dp)
                 },
             shape = MaterialTheme.shapes.small,
             border = BorderStroke(
