@@ -129,6 +129,11 @@ fun AppContent(
 private class AppActions(navController: NavHostController) {
     val onSelectDrawerItem: (DrawerContents) -> Unit = { contents ->
         navController.navigate(contents.route) {
+            // Pop up to the start destination of the graph to
+            // avoid building up a large stack of destinations
+            // on the back stack as users select items.
+            // And clean up all of the stacks if users select one of feed tabs.
+            // Refer to https://developer.android.com/jetpack/compose/navigation#bottom-nav
             popUpTo(navController.graph.startDestination) {
                 inclusive = when (contents) {
                     DrawerContents.HOME,
