@@ -32,3 +32,6 @@ INSERT INTO feedItemVideo(
     enSummary ,
     link
 ) VALUES ?;
+
+deleteAll:
+DELETE FROM feedItemVideo;

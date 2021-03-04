@@ -38,3 +38,6 @@ INSERT INTO feedItemBlog(
     authorName,
     authorLink
 ) VALUES ?;
+
+deleteAll:
+DELETE FROM feedItemBlog;

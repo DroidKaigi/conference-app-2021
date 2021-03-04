@@ -10,3 +10,6 @@ INSERT INTO feedItemPodcastSpeaker(
     name,
     iconUrl
 ) VALUES ?;
+
+deleteAll:
+DELETE FROM feedItemPodcastSpeaker;

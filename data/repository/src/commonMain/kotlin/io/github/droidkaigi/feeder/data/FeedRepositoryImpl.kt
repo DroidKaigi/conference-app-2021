@@ -24,6 +24,7 @@ open class FeedRepositoryImpl(
                     val cachedFeeds by lazy { feedItemDao.selectAll() }
                     if (forceUpdate || cachedFeeds.isEmpty()) {
                         val feeds = feedApi.fetch()
+                        feedItemDao.deleteAll()
                         feedItemDao.insert(feeds)
                         emit(feeds)
                     } else {
@@ -89,4 +90,11 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
         }
         acc + mapOf(row.id to feedItem)
     }.values.toList()
+}
+
+private fun FeedItemDao.deleteAll() {
+    blogQueries.deleteAll()
+    podcastSpeakerQueries.deleteAll()
+    podcastQueries.deleteAll()
+    videoQueries.deleteAll()
 }

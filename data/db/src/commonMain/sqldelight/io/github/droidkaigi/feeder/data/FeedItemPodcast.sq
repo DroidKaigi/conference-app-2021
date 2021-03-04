@@ -36,3 +36,6 @@ INSERT INTO feedItemPodcast(
     enSummary,
     link
 ) VALUES ?;
+
+deleteAll:
+DELETE FROM feedItemPodcast;
