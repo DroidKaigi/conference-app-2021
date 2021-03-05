@@ -97,9 +97,10 @@ fun <T> FadeThrough(
                         }
                     }
                 ) { if (it == key) 1f else DEFAULT_START_SCALE }
-                Box(Modifier
-                    .alpha(alpha = alpha)
-                    .scale(scale = scale)
+                Box(
+                    Modifier
+                        .alpha(alpha = alpha)
+                        .scale(scale = scale)
                 ) {
                     content(key)
                 }
