@@ -8,14 +8,20 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.Speaker
 import kotlinx.datetime.Instant
 
-open class FeedItemDao(database: Database) {
+interface FeedItemDao {
+    fun selectAll(): List<FeedItem>
+    fun insert(feeds: List<FeedItem>)
+    fun deleteAll()
+}
+
+internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
     private val blogQueries: FeedItemBlogQueries = database.feedItemBlogQueries
     private val podcastQueries: FeedItemPodcastQueries = database.feedItemPodcastQueries
     private val videoQueries: FeedItemVideoQueries = database.feedItemVideoQueries
     private val podcastSpeakerQueries: FeedItemPodcastSpeakerQueries =
         database.feedItemPodcastSpeakerQueries
 
-    fun selectAll(): List<FeedItem> {
+    override fun selectAll(): List<FeedItem> {
         val blogFeeds = blogQueries.selectAll(blogQueriesMapper).executeAsList()
         val podcastFeeds = podcastQueries.selectAll().executeAsList().toPodcastItems()
         val videoFeeds = videoQueries.selectAll(videoQueriesMapper).executeAsList()
@@ -23,7 +29,7 @@ open class FeedItemDao(database: Database) {
         return blogFeeds + podcastFeeds + videoFeeds
     }
 
-    fun insert(feeds: List<FeedItem>) {
+    override fun insert(feeds: List<FeedItem>) {
         feeds.forEach { item ->
             when (item) {
                 is FeedItem.Blog -> blogQueries.insert(item)
@@ -39,7 +45,7 @@ open class FeedItemDao(database: Database) {
         }
     }
 
-    fun deleteAll() {
+    override fun deleteAll() {
         blogQueries.deleteAll()
         podcastSpeakerQueries.deleteAll()
         podcastQueries.deleteAll()
@@ -195,4 +201,18 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
         }
         acc + mapOf(row.id to feedItem)
     }.values.toList()
+}
+
+fun fakeFeedItemDao(): FeedItemDao = object : FeedItemDao {
+    override fun selectAll(): List<FeedItem> {
+        return emptyList()
+    }
+
+    override fun insert(feeds: List<FeedItem>) {
+        // nothing to do.
+    }
+
+    override fun deleteAll() {
+        // nothing to do.
+    }
 }
