@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.staff
+package io.github.droidkaigi.feeder.about
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
