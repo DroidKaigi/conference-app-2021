@@ -2,7 +2,6 @@ package io.github.droidkaigi.feeder.other
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -35,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.about.AboutThisApp
+import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.staff.StaffList
 
@@ -99,7 +99,7 @@ fun OtherScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    Crossfade(targetState = selectedTab) { selectedTab ->
+                    FadeThrough(targetState = selectedTab) { selectedTab ->
                         BackdropFrontLayerContent(selectedTab)
                     }
                 }
