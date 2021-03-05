@@ -36,8 +36,10 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
                 is FeedItem.Podcast -> {
                     podcastQueries.insert(item)
                     item.speakers.forEach { speaker ->
-                        podcastSpeakerQueries.insert(item.id,
-                            speaker)
+                        podcastSpeakerQueries.insert(
+                            item.id,
+                            speaker
+                        )
                     }
                 }
                 is FeedItem.Video -> videoQueries.insert(item)
@@ -54,26 +56,29 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
 
     companion object {
         private val blogQueriesMapper = {
-                id: String,
-                publishedAt: Long,
-                imageSmallUrl: String,
-                imageStandardUrl: String,
-                imageLargeUrl: String,
-                media: String,
-                jaTitle: String,
-                enTitle: String,
-                jaSummary: String,
-                enSummary: String,
-                link: String,
-                language: String,
-                authorName: String,
-                authorLink: String,
+            id: String,
+            publishedAt: Long,
+            imageSmallUrl: String,
+            imageStandardUrl: String,
+            imageLargeUrl: String,
+            media: String,
+            jaTitle: String,
+            enTitle: String,
+            jaSummary: String,
+            enSummary: String,
+            link: String,
+            language: String,
+            authorName: String,
+            authorLink: String,
             ->
             FeedItem.Blog(
                 id = id,
                 publishedAt = Instant.fromEpochMilliseconds(publishedAt),
-                image = Image(smallUrl = imageSmallUrl, standardUrl = imageStandardUrl, largeUrl
-                = imageLargeUrl),
+                image = Image(
+                    smallUrl = imageSmallUrl, standardUrl = imageStandardUrl,
+                    largeUrl =
+                        imageLargeUrl
+                ),
                 media = Media.parse(media),
                 title = MultiLangText(jaTitle = jaTitle, enTitle = enTitle),
                 summary = MultiLangText(jaTitle = jaSummary, enTitle = enSummary),
@@ -84,23 +89,26 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
         }
 
         private val videoQueriesMapper = {
-                id: String,
-                publishedAt: Long,
-                imageSmallUrl: String,
-                imageStandardUrl: String,
-                imageLargeUrl: String,
-                media: String,
-                jaTitle: String,
-                enTitle: String,
-                jaSummary: String,
-                enSummary: String,
-                link: String,
+            id: String,
+            publishedAt: Long,
+            imageSmallUrl: String,
+            imageStandardUrl: String,
+            imageLargeUrl: String,
+            media: String,
+            jaTitle: String,
+            enTitle: String,
+            jaSummary: String,
+            enSummary: String,
+            link: String,
             ->
             FeedItem.Video(
                 id = id,
                 publishedAt = Instant.fromEpochMilliseconds(publishedAt),
-                image = Image(smallUrl = imageSmallUrl, standardUrl = imageStandardUrl, largeUrl
-                = imageLargeUrl),
+                image = Image(
+                    smallUrl = imageSmallUrl, standardUrl = imageStandardUrl,
+                    largeUrl =
+                        imageLargeUrl
+                ),
                 media = Media.parse(media),
                 title = MultiLangText(jaTitle = jaTitle, enTitle = enTitle),
                 summary = MultiLangText(jaTitle = jaSummary, enTitle = enSummary),
@@ -181,8 +189,12 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
     return this.foldRight(mapOf<String, FeedItem.Podcast>()) { row, acc ->
         val feedItem = if (acc.containsKey(row.id)) {
             val oldFeedItem = acc.getValue(row.id)
-            oldFeedItem.copy(speakers = oldFeedItem.speakers + Speaker(name = row.speakerName,
-                iconUrl = row.speakerIconUrl))
+            oldFeedItem.copy(
+                speakers = oldFeedItem.speakers + Speaker(
+                    name = row.speakerName,
+                    iconUrl = row.speakerIconUrl
+                )
+            )
         } else {
             FeedItem.Podcast(
                 id = row.id,
