@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
+import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
@@ -30,6 +31,9 @@ class RealFeedViewModel @Inject constructor(
 ) : ViewModel(), FeedViewModel {
 
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
+    private val loadingLatch = ProgressTimeLatch {
+        isLoading.value = it
+    }
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
     private val allFeedContents: StateFlow<LoadState<FeedContents>> = repository.feedContents()
@@ -41,9 +45,11 @@ class RealFeedViewModel @Inject constructor(
                 error.getThrowableOrNull()?.printStackTrace()
                 effectChannel.send(FeedViewModel.Effect.ErrorMessage(error.e))
             }
+            loadingLatch.loading = loadState.isLoading()
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    private val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
