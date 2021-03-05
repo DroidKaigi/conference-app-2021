@@ -1,15 +1,22 @@
 package io.github.droidkaigi.feeder.data
 
+import com.squareup.sqldelight.runtime.coroutines.asFlow
+import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.droidkaigi.feeder.Author
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.Speaker
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.zip
 import kotlinx.datetime.Instant
 
 interface FeedItemDao {
-    fun selectAll(): List<FeedItem>
+    fun selectAll(): Flow<List<FeedItem>>
     fun insert(feeds: List<FeedItem>)
     fun deleteAll()
 }
@@ -21,12 +28,16 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
     private val podcastSpeakerQueries: FeedItemPodcastSpeakerQueries =
         database.feedItemPodcastSpeakerQueries
 
-    override fun selectAll(): List<FeedItem> {
-        val blogFeeds = blogQueries.selectAll(blogQueriesMapper).executeAsList()
-        val podcastFeeds = podcastQueries.selectAll().executeAsList().toPodcastItems()
-        val videoFeeds = videoQueries.selectAll(videoQueriesMapper).executeAsList()
+    @ExperimentalCoroutinesApi
+    override fun selectAll(): Flow<List<FeedItem>> {
+        val blogFeeds = blogQueries.selectAll(blogQueriesMapper).asFlow().mapToList()
+        val podcastFeeds =
+            podcastQueries.selectAll().asFlow().mapToList().map { it.toPodcastItems() }
+        val videoFeeds = videoQueries.selectAll(videoQueriesMapper).asFlow().mapToList()
 
-        return blogFeeds + podcastFeeds + videoFeeds
+        return blogFeeds
+            .zip(podcastFeeds) { blogs, podcasts -> blogs + podcasts }
+            .zip(videoFeeds) { feeds, videos -> feeds + videos }
     }
 
     override fun insert(feeds: List<FeedItem>) {
@@ -216,8 +227,8 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
 }
 
 fun fakeFeedItemDao(): FeedItemDao = object : FeedItemDao {
-    override fun selectAll(): List<FeedItem> {
-        return emptyList()
+    override fun selectAll(): Flow<List<FeedItem>> {
+        return flowOf(emptyList())
     }
 
     override fun insert(feeds: List<FeedItem>) {

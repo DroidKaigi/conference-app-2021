@@ -47,6 +47,9 @@ kotlin {
             implementation Dep.MultiplatformSettings.datastore
             // For using in memory settings
             implementation Dep.MultiplatformSettings.test
+
+            // SQLDelight
+            implementation Dep.SQLDelight.coroutinesExtensions
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common

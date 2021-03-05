@@ -109,6 +109,7 @@ object Dep {
     object SQLDelight {
         const val plugin = "com.squareup.sqldelight:gradle-plugin:1.4.4"
         const val androidDriver = "com.squareup.sqldelight:android-driver:1.4.4"
+        const val coroutinesExtensions = "com.squareup.sqldelight:coroutines-extensions:1.4.4"
     }
 
     object Arbor {

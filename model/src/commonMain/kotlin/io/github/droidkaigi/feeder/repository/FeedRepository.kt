@@ -5,7 +5,9 @@ import io.github.droidkaigi.feeder.FeedItem
 import kotlinx.coroutines.flow.Flow
 
 interface FeedRepository {
-    fun feedContents(forceUpdate: Boolean = false): Flow<FeedContents>
+    fun feedContents(): Flow<FeedContents>
+
+    suspend fun refresh()
 
     suspend fun addFavorite(feedItem: FeedItem)
 
