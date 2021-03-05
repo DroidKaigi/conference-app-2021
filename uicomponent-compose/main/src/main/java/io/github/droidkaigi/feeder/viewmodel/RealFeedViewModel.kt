@@ -12,8 +12,6 @@ import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.toLoadState
-import javax.annotation.meta.Exhaustive
-import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -24,6 +22,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
@@ -31,8 +31,8 @@ class RealFeedViewModel @Inject constructor(
 ) : ViewModel(), FeedViewModel {
 
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
-    private val loadingLatch = ProgressTimeLatch {
-        isLoading.value = it
+    private val showProgressLatch = ProgressTimeLatch {
+        showProgress.value = it
     }
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
@@ -45,21 +45,22 @@ class RealFeedViewModel @Inject constructor(
                 error.getThrowableOrNull()?.printStackTrace()
                 effectChannel.send(FeedViewModel.Effect.ErrorMessage(error.e))
             }
-            loadingLatch.loading = loadState.isLoading()
+            showProgressLatch.loading = loadState.isLoading()
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
-    private val isLoading: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    private val showProgress: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
             filters,
-        ) { feedContentsLoadState, filters ->
+            showProgress
+        ) { feedContentsLoadState, filters, showProgress ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             FeedViewModel.State(
-                showProgress = feedContentsLoadState.isLoading(),
+                showProgress = showProgress,
                 filters = filters,
                 filteredFeedContents = filteredFeed,
 //                snackbarMessage = currentValue.snackbarMessage
