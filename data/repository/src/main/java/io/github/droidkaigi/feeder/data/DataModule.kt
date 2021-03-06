@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.droidkaigi.feeder.repository.ContributorRepository
 import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.repository.StaffRepository
@@ -23,6 +24,11 @@ class DataModule {
 
     @Provides
     internal fun provideDeviceApi(daggerApi: DaggerKtorDeviceApi): DeviceApi {
+        return daggerApi
+    }
+
+    @Provides
+    internal fun provideContributorApi(daggerApi: DaggerKtorContributorApi): ContributorApi {
         return daggerApi
     }
 
@@ -47,6 +53,13 @@ class DataModule {
     internal fun provideDeviceRepository(
         daggerRepository: DaggerDeviceRepositoryImpl
     ): DeviceRepository {
+        return daggerRepository
+    }
+
+    @Provides
+    internal fun provideContributorRepository(
+        daggerRepository: DaggerContributorRepositoryImpl,
+    ): ContributorRepository {
         return daggerRepository
     }
 }
