@@ -32,6 +32,9 @@ import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTabs
 import kotlinx.coroutines.launch
 
+private const val FEED_PATH = "feed/"
+private const val OTHER_PATH = "other/"
+
 @Composable
 fun AppContent(
     modifier: Modifier = Modifier,
@@ -68,10 +71,10 @@ fun AppContent(
         },
         scrimColor = Color.Black.copy(alpha = DrawerDefaults.ScrimOpacity),
     ) {
-        NavHost(navController, startDestination = "feed/{feedTab}") {
+        NavHost(navController, startDestination = "$FEED_PATH{feedTab}") {
             composable(
-                route = "feed/{feedTab}",
-                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/feed/{feedTab}" }),
+                route = "$FEED_PATH{feedTab}",
+                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/$FEED_PATH{feedTab}" }),
                 arguments = listOf(
                     navArgument("feedTab") {
                         type = NavType.StringType
@@ -98,8 +101,8 @@ fun AppContent(
                 )
             }
             composable(
-                route = "other/{otherTab}",
-                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/other/{otherTab}" }),
+                route = "$OTHER_PATH{otherTab}",
+                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/$OTHER_PATH{otherTab}" }),
                 arguments = listOf(
                     navArgument("otherTab") {
                         type = NavType.StringType
