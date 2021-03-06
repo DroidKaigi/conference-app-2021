@@ -102,7 +102,11 @@ fun AppContent(
             }
             composable(
                 route = "$OTHER_PATH{otherTab}",
-                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/$OTHER_PATH{otherTab}" }),
+                deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "$deepLinkUri/$OTHER_PATH{otherTab}"
+                    }
+                ),
                 arguments = listOf(
                     navArgument("otherTab") {
                         type = NavType.StringType
