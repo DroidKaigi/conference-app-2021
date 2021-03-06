@@ -47,4 +47,3 @@ private fun fakeContributorsResponse(): ContributorsResponse {
         )
     )
 }
-
