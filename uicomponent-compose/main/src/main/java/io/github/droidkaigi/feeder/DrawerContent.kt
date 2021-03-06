@@ -47,19 +47,19 @@ enum class DrawerContents(
     ),
     BLOG(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_text_snippet_24,
         label = "BLOG",
         route = "feed/${FeedTabs.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_videocam_24,
         label = "VIDEO",
         route = "feed/${FeedTabs.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_mic_none_24,
         label = "PODCAST",
         route = "feed/${FeedTabs.FilteredFeed.Podcast.routePath}"
     ),
