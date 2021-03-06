@@ -40,7 +40,7 @@ class RealContributorViewModel @Inject constructor(
         contributorsContents.map {
             val contributor = it.getValueOrNull() ?: emptyList()
             ContributorViewModel.State(false, contributor)
-        }.stateIn(viewModelScope, SharingStarted.Lazily, ContributorViewModel.State())
+        }.stateIn(viewModelScope, SharingStarted.Eagerly, ContributorViewModel.State())
 
     override fun event(event: ContributorViewModel.Event) {}
 }
