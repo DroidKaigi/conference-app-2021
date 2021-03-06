@@ -2,8 +2,10 @@ package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -16,7 +18,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
@@ -38,6 +39,8 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.core.ScrollableTabRow
+import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
@@ -201,10 +204,15 @@ private fun AppBar(
             }
         }
     )
+    val selectedTabIndex = FeedTabs.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
-        indicator = {
+        foregroundIndicator = {},
+        backgroundIndicator = { tabPositions ->
+            TabIndicator(
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+            )
         },
         divider = {}
     ) {
@@ -213,24 +221,30 @@ private fun AppBar(
                 selected = tab == selectedTab,
                 text = {
                     Text(
-                        modifier = if (selectedTab == tab) {
-                            Modifier
-                                .background(
-                                    color = MaterialTheme.colors.secondary,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        } else {
-                            Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        },
-                        text = tab.name
+                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+                        text = tab.name,
                     )
                 },
                 onClick = { onSelectTab(tab) }
             )
         }
     }
+}
+
+@Composable
+fun TabIndicator(
+    modifier: Modifier = Modifier,
+) {
+    Box(
+        modifier = modifier
+            .fillMaxWidth()
+            .fillMaxHeight()
+            .padding(vertical = 10.dp, horizontal = 12.dp)
+            .background(
+                color = MaterialTheme.colors.secondary,
+                shape = MaterialTheme.shapes.small,
+            )
+    )
 }
 
 @Composable
