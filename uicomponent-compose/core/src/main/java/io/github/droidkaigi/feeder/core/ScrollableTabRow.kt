@@ -1,5 +1,9 @@
 package io.github.droidkaigi.feeder.core
 
+/**
+ * Copied from [androidx.compose.material.ScrollableTabRow] to support background indicator.
+ */
+
 import androidx.compose.animation.core.AnimationSpec
 import androidx.compose.animation.core.FastOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
@@ -63,7 +67,10 @@ import kotlinx.coroutines.launch
  * @param edgePadding the padding between the starting and ending edge of ScrollableTabRow, and
  * the tabs inside the ScrollableTabRow. This padding helps inform the user that this tab row can
  * be scrolled, unlike a [TabRow].
- * @param indicator the indicator that represents which tab is currently selected. By default this
+ * @param foregroundIndicator the indicator displayed in foreground that represents which tab is
+ * currently selected. By default this
+ * @param backgroundIndicator the indicator displayed in background that represents which tab is
+ * currently selected.
  * will be a [TabRowDefaults.Indicator], using a [TabRowDefaults.tabIndicatorOffset]
  * modifier to animate its position. Note that this indicator will be forced to fill up the
  * entire ScrollableTabRow, so you should use [TabRowDefaults.tabIndicatorOffset] or similar to
@@ -81,11 +88,12 @@ fun ScrollableTabRow(
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
     edgePadding: Dp = TabRowDefaults.ScrollableTabRowPadding,
-    indicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
+    foregroundIndicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
         TabRowDefaults.Indicator(
             Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
         )
     },
+    backgroundIndicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { },
     divider: @Composable () -> Unit = @Composable {
         TabRowDefaults.Divider()
     },
@@ -132,7 +140,6 @@ fun ScrollableTabRow(
                 val tabPositions = mutableListOf<TabPosition>()
                 var left = padding
                 tabPlaceables.fastForEach {
-                    it.placeRelative(left, 0)
                     tabPositions.add(TabPosition(left = left.toDp(), width = it.width.toDp()))
                     left += it.width
                 }
@@ -146,10 +153,20 @@ fun ScrollableTabRow(
                     placeable.placeRelative(0, layoutHeight - placeable.height)
                 }
 
-                // The indicator container is measured to fill the entire space occupied by the tab
-                // row, and then placed on top of the divider.
-                subcompose(TabSlots.Indicator) {
-                    indicator(tabPositions)
+                subcompose(TabSlots.BackgroundIndicator) {
+                    backgroundIndicator(tabPositions)
+                }.fastForEach {
+                    it.measure(Constraints.fixed(layoutWidth, layoutHeight)).placeRelative(0, 0)
+                }
+
+                left = padding
+                tabPlaceables.fastForEach {
+                    it.placeRelative(left, 0)
+                    left += it.width
+                }
+
+                subcompose(TabSlots.ForegroundIndicator) {
+                    foregroundIndicator(tabPositions)
                 }.fastForEach {
                     it.measure(Constraints.fixed(layoutWidth, layoutHeight)).placeRelative(0, 0)
                 }
@@ -168,7 +185,8 @@ fun ScrollableTabRow(
 private enum class TabSlots {
     Tabs,
     Divider,
-    Indicator
+    ForegroundIndicator,
+    BackgroundIndicator,
 }
 
 /**
