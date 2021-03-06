@@ -50,9 +50,7 @@ fun NetworkImage(
 fun PreviewNetworkImage() {
     NetworkImage(
         url = "",
-        modifier = Modifier
-            .fillMaxHeight()
-            .fillMaxWidth(),
+        modifier = Modifier.fillMaxSize(),
         contentScale = ContentScale
             .Crop,
         contentDescription = ""
