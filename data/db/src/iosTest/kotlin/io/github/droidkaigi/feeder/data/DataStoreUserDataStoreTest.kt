@@ -1,12 +1,12 @@
 package io.github.droidkaigi.feeder.data
 
-import kotlinx.coroutines.flow.first
-import platform.Foundation.NSUserDefaults
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import kotlinx.coroutines.flow.first
+import platform.Foundation.NSUserDefaults
 
-class DataStoreUserDataStoreTest  {
+class DataStoreUserDataStoreTest {
 
     @AfterTest
     fun teardown() {
@@ -68,6 +68,7 @@ class DataStoreUserDataStoreTest  {
     }
 
     companion object {
-        private const val TEST_SUITE_NAME = "io.github.droidkaigi.feeder.data.DataStoreUserDataStoreTest"
+        private const val TEST_SUITE_NAME =
+            "io.github.droidkaigi.feeder.data.DataStoreUserDataStoreTest"
     }
 }

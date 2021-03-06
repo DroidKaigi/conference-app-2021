@@ -1,9 +1,9 @@
 package io.github.droidkaigi.feeder.data
 
-import platform.Foundation.NSUserDefaults
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import platform.Foundation.NSUserDefaults
 
 class AppleSettingsTest {
 
@@ -43,5 +43,4 @@ class AppleSettingsTest {
         // then
         assertEquals(appleSettings.getString(key), "abc")
     }
-
 }

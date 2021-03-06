@@ -4,13 +4,13 @@ import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.ObservableSettings
 import com.russhwolf.settings.Settings
 import com.russhwolf.settings.SettingsListener
+import kotlin.native.concurrent.AtomicReference
+import kotlin.native.concurrent.freeze
 import platform.Foundation.NSNotification
 import platform.Foundation.NSNotificationCenter
 import platform.Foundation.NSUserDefaults
 import platform.Foundation.NSUserDefaultsDidChangeNotification
 import platform.darwin.NSObjectProtocol
-import kotlin.native.concurrent.AtomicReference
-import kotlin.native.concurrent.freeze
 
 /*
  Reference:
@@ -54,7 +54,11 @@ class AppleSettings constructor(
          * `null` then [NSUserDefaults.standardUserDefaults] will be used instead.
          */
         override fun create(name: String?): AppleSettings {
-            val delegate = if (name == null) NSUserDefaults.standardUserDefaults else NSUserDefaults(suiteName = name)
+            val delegate = if (name == null) {
+                NSUserDefaults.standardUserDefaults
+            } else {
+                NSUserDefaults(suiteName = name)
+            }
             return AppleSettings(delegate)
         }
     }
@@ -159,7 +163,8 @@ class AppleSettings constructor(
         key: String,
         callback: () -> Unit
     ): Pair<(NSNotification?) -> Unit, AtomicReference<Any?>?> {
-        val previousValue: AtomicReference<Any?> = AtomicReference(delegate.objectForKey(key).freeze())
+        val previousValue: AtomicReference<Any?> =
+            AtomicReference(delegate.objectForKey(key).freeze())
 
         return { _: NSNotification? ->
             /*
