@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.feed
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
@@ -39,6 +38,7 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
@@ -166,7 +166,7 @@ private fun FeedScreen(
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                Crossfade(targetState = selectedTab) { selectedTab ->
+                FadeThrough(targetState = selectedTab) { selectedTab ->
                     val isHome = selectedTab is FeedTabs.Home
                     FeedList(
                         feedContents = if (selectedTab is FeedTabs.FilteredFeed) {

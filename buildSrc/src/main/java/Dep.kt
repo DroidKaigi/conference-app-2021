@@ -16,6 +16,7 @@ object Dep {
         const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
         const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+        const val util = "androidx.compose.ui:ui-util:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}1"
         const val iconsExtended =
             "androidx.compose.material:material-icons-extended:${Versions.compose}"

@@ -55,6 +55,7 @@ dependencies {
     implementation Dep.Compose.layout
     implementation Dep.Compose.ui
     implementation Dep.Compose.tooling
+    implementation Dep.Compose.util
     implementation Dep.Compose.material
     implementation Dep.Compose.iconsExtended
     implementation Dep.Compose.animation
