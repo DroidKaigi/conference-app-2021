@@ -36,6 +36,7 @@ fun fakeStaffApi(error: AppError? = null): StaffApi = object : StaffApi {
     {
       "id": "0129201b-8e62-a515-447b-ed9036956fb0",
       "name": "Ccc Ddd",
+      "githubUrl": null,
       "iconUrl": "https://via.placeholder.com/200?text=ccc"
     },
     {
