@@ -38,14 +38,14 @@ class DataModule {
 
     @Provides
     internal fun provideStaffRepository(
-        daggerRepository: DaggerStaffRepositoryImpl,
+        daggerRepository: DaggerStaffRepositoryImpl
     ): StaffRepository {
         return daggerRepository
     }
 
     @Provides
     internal fun provideDeviceRepository(
-        daggerRepository: DaggerDeviceRepositoryImpl,
+        daggerRepository: DaggerDeviceRepositoryImpl
     ): DeviceRepository {
         return daggerRepository
     }
