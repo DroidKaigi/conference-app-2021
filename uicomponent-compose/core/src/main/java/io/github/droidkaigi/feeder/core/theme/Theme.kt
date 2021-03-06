@@ -24,7 +24,7 @@ private val LightColorPalette = lightColors(
 fun ConferenceAppFeederTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable
-        () -> Unit,
+    () -> Unit,
 ) {
     val colors = if (darkTheme) {
         DarkColorPalette
@@ -45,7 +45,7 @@ fun ConferenceAppFeederTheme(
 fun AppThemeWithBackground(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable
-        () -> Unit,
+    () -> Unit,
 ) {
     Surface {
         ConferenceAppFeederTheme(darkTheme, content)
