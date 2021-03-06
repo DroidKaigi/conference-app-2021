@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.core.util
+package io.github.droidkaigi.feeder.core
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
