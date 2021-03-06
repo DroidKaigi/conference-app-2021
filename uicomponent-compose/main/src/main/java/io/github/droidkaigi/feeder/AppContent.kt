@@ -1,8 +1,5 @@
 package io.github.droidkaigi.feeder
 
-import android.content.Context
-import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.DrawerDefaults
 import androidx.compose.material.DrawerValue
@@ -24,8 +21,10 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import io.github.droidkaigi.feeder.core.navigation.chromeCustomTabs
+import io.github.droidkaigi.feeder.core.navigation.navigateChromeCustomTabs
+import io.github.droidkaigi.feeder.core.navigation.rememberCustomNavController
 import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.main.R
@@ -40,7 +39,7 @@ fun AppContent(
 ) {
     val drawerState = rememberDrawerState(firstDrawerValue)
     val drawerContentState = rememberDrawerContentState(DrawerContents.HOME.route)
-    val navController = rememberNavController()
+    val navController = rememberCustomNavController()
     val coroutineScope = rememberCoroutineScope()
     val onNavigationIconClick: () -> Unit = {
         coroutineScope.launch {
@@ -85,7 +84,6 @@ fun AppContent(
                 )
                 val selectedTab = FeedTabs.ofRoutePath(routePath.value)
                 drawerContentState.onSelectDrawerContent(selectedTab)
-                val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
                     selectedTab = selectedTab,
@@ -95,7 +93,7 @@ fun AppContent(
                         drawerContentState.onSelectDrawerContent(feedTabs)
                     },
                     onDetailClick = { feedItem: FeedItem ->
-                        actions.onSelectFeed(context, feedItem)
+                        actions.showChromeCustomTabs(feedItem.link)
                     }
                 )
             }
@@ -124,6 +122,7 @@ fun AppContent(
                     onNavigationIconClick = onNavigationIconClick
                 )
             }
+            chromeCustomTabs()
         }
     }
 }
@@ -149,13 +148,8 @@ private class AppActions(navController: NavHostController) {
         }
     }
 
-    val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->
-        val builder = CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .setUrlBarHidingEnabled(true)
-
-        val intent = builder.build()
-        intent.launchUrl(context, Uri.parse(feedItem.link))
+    val showChromeCustomTabs: (String) -> Unit = { link ->
+        navController.navigateChromeCustomTabs(link)
     }
 }
 
