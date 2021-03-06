@@ -17,7 +17,6 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
@@ -34,8 +33,11 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.about.AboutThisApp
+import io.github.droidkaigi.feeder.core.ScrollableTabRow
+import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.util.TabIndicator
 import io.github.droidkaigi.feeder.staff.StaffList
 
 sealed class OtherTabs(val name: String, val routePath: String) {
@@ -124,10 +126,15 @@ private fun AppBar(
             }
         }
     )
+    val selectedTabIndex = OtherTabs.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
-        indicator = {
+        foregroundIndicator = {},
+        backgroundIndicator = { tabPositions ->
+            TabIndicator(
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+            )
         },
         divider = {}
     ) {
@@ -136,17 +143,7 @@ private fun AppBar(
                 selected = tab == selectedTab,
                 text = {
                     Text(
-                        modifier = if (selectedTab == tab) {
-                            Modifier
-                                .background(
-                                    color = MaterialTheme.colors.secondary,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        } else {
-                            Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        },
+                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
                         text = tab.name
                     )
                 },

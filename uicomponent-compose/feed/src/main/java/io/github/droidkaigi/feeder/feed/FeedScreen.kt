@@ -45,6 +45,7 @@ import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
+import io.github.droidkaigi.feeder.core.util.TabIndicator
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
@@ -229,22 +230,6 @@ private fun AppBar(
             )
         }
     }
-}
-
-@Composable
-fun TabIndicator(
-    modifier: Modifier = Modifier,
-) {
-    Box(
-        modifier = modifier
-            .fillMaxWidth()
-            .fillMaxHeight()
-            .padding(vertical = 10.dp, horizontal = 12.dp)
-            .background(
-                color = MaterialTheme.colors.secondary,
-                shape = MaterialTheme.shapes.small,
-            )
-    )
 }
 
 @Composable
