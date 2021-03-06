@@ -30,7 +30,6 @@ kotlin {
             implementation Dep.Serialization.core
             implementation Dep.MultiplatformSettings.settings
             implementation Dep.MultiplatformSettings.coroutines
-            implementation Dep.MultiplatformSettings.datastore
             // For using in memory settings
             implementation Dep.MultiplatformSettings.test
         }
@@ -47,6 +46,7 @@ kotlin {
         androidMain.dependencies {
             // Hilt
             implementation Dep.Dagger.hiltAndroid
+            implementation Dep.MultiplatformSettings.datastore
             implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
 
             // For local unit tests
