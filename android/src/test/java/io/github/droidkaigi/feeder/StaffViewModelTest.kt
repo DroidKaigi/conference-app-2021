@@ -1,7 +1,10 @@
 package io.github.droidkaigi.feeder
 
+import io.github.droidkaigi.feeder.data.StaffRepositoryImpl
+import io.github.droidkaigi.feeder.data.fakeStaffApi
 import io.github.droidkaigi.feeder.staff.StaffViewModel
 import io.github.droidkaigi.feeder.staff.fakeStaffViewModel
+import io.github.droidkaigi.feeder.viewmodel.RealStaffViewModel
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -51,6 +54,22 @@ class StaffViewModelTest(
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = listOf(
+            arrayOf(
+                "Real ViewModel and Repository",
+                StaffViewModelFactory { errorFetchData: Boolean ->
+                    RealStaffViewModel(
+                        repository = StaffRepositoryImpl(
+                            staffApi = fakeStaffApi(
+                                if (errorFetchData) {
+                                    AppError.ApiException.ServerException(null)
+                                } else {
+                                    null
+                                }
+                            )
+                        )
+                    )
+                }
+            ),
             arrayOf(
                 "FakeViewModel",
                 StaffViewModelFactory { errorFetchData: Boolean ->

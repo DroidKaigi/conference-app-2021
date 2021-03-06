@@ -7,12 +7,18 @@ import dagger.hilt.components.SingletonComponent
 import io.github.droidkaigi.feeder.repository.ContributorRepository
 import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
+import io.github.droidkaigi.feeder.repository.StaffRepository
 
 @InstallIn(SingletonComponent::class)
 @Module
 class DataModule {
     @Provides
     internal fun provideFeedApi(daggerApi: DaggerKtorFeedApi): FeedApi {
+        return daggerApi
+    }
+
+    @Provides
+    internal fun provideStaffApi(daggerApi: DaggerKtorStaffApi): StaffApi {
         return daggerApi
     }
 
@@ -33,6 +39,13 @@ class DataModule {
 
     @Provides
     internal fun provideFeedRepository(daggerRepository: DaggerFeedRepositoryImpl): FeedRepository {
+        return daggerRepository
+    }
+
+    @Provides
+    internal fun provideStaffRepository(
+        daggerRepository: DaggerStaffRepositoryImpl
+    ): StaffRepository {
         return daggerRepository
     }
 
