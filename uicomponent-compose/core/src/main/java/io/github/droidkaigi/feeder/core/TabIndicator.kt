@@ -18,7 +18,7 @@ fun TabIndicator(
         modifier = modifier
             .fillMaxWidth()
             .fillMaxHeight()
-            .padding(vertical = 10.dp, horizontal = 12.dp)
+            .padding(vertical = 10.dp, horizontal = 16.dp)
             .background(
                 color = MaterialTheme.colors.secondary,
                 shape = MaterialTheme.shapes.small,
