@@ -88,11 +88,12 @@ fun ScrollableTabRow(
     backgroundColor: Color = MaterialTheme.colors.primarySurface,
     contentColor: Color = contentColorFor(backgroundColor),
     edgePadding: Dp = TabRowDefaults.ScrollableTabRowPadding,
-    foregroundIndicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { tabPositions ->
-        TabRowDefaults.Indicator(
-            Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
-        )
-    },
+    foregroundIndicator: @Composable (tabPositions: List<TabPosition>) -> Unit =
+        @Composable { tabPositions ->
+            TabRowDefaults.Indicator(
+                Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+            )
+        },
     backgroundIndicator: @Composable (tabPositions: List<TabPosition>) -> Unit = @Composable { },
     divider: @Composable () -> Unit = @Composable {
         TabRowDefaults.Divider()
