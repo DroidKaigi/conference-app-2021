@@ -1,0 +1,24 @@
+package io.github.droidkaigi.feeder.data
+
+import io.github.droidkaigi.feeder.Staff
+import io.github.droidkaigi.feeder.data.response.StaffResponse
+import io.ktor.client.HttpClient
+import io.ktor.client.request.get
+
+open class KtorStaffApi(
+    private val authApi: AuthApi,
+    private val httpClient: HttpClient,
+) : StaffApi {
+
+    override suspend fun fetch(): List<Staff> = authApi.authenticated {
+        val staffResponse = httpClient.get<StaffResponse>(
+            "https://ssot-api-staging.an.r.appspot.com/staff",
+        )
+        staffResponse.toStaffList()
+    }
+}
+
+fun StaffResponse.toStaffList() =
+    staff.map {
+        Staff(it.id, it.name, it.githubUrl ?: "", it.iconUrl)
+    }
