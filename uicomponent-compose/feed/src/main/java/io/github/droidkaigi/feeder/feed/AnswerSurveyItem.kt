@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.core.NetworkImage
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 
 @Composable
 fun AnswerSurveyItem(
@@ -98,7 +98,7 @@ fun AnswerSurveyItem(
 @Preview
 @Composable
 fun AnswerSurveyItemPreview() {
-    ConferenceAppFeederTheme {
+    AppThemeWithBackground {
         AnswerSurveyItem(
             surveyImage = "",
             surveyMessage = "アンケートにご協力お願いします",
