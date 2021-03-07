@@ -7,4 +7,8 @@ object Logger {
     }
 
     fun d(message: String) = println(message)
+    fun d(e: Throwable, message: String) {
+        println(message)
+        e.printStackTrace()
+    }
 }
