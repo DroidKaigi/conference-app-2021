@@ -97,7 +97,7 @@ fun AnswerSurveyItem(
 
 @Preview
 @Composable
-fun AnswerSurveyItemPreview() {
+fun PreviewAnswerSurveyItem() {
     AppThemeWithBackground {
         AnswerSurveyItem(
             surveyImage = "",
