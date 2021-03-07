@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.about.AboutThisApp
+import io.github.droidkaigi.feeder.contributor.ContributorList
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.staff.StaffList
@@ -162,6 +163,7 @@ private fun BackdropFrontLayerContent(
 ) {
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()
+        OtherTabs.Contributor -> ContributorList()
         OtherTabs.Staff -> StaffList()
         else -> {
             val context = LocalContext.current
