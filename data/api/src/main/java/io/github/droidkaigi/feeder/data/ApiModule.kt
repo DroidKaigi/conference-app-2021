@@ -1,10 +1,10 @@
 package io.github.droidkaigi.feeder.data
 
-import com.toxicbakery.logging.Arbor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.droidkaigi.feeder.Logger as DroidKaigiLogger
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
@@ -47,7 +47,7 @@ class ApiModule {
             install(Logging) {
                 logger = object : Logger {
                     override fun log(message: String) {
-                        Arbor.d(message)
+                        DroidKaigiLogger.d(message)
                     }
                 }
                 level = LogLevel.ALL

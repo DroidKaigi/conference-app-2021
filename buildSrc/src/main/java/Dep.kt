@@ -107,10 +107,6 @@ object Dep {
         const val activity = "androidx.activity:activity-ktx:1.2.0"
     }
 
-    object Arbor {
-        const val common = "com.ToxicBakery.logging:common:1.35.72"
-    }
-
     object Flipper {
         // TODO We use Flipper 0.76.0 for now because app crashes with 0.77.0 and 0.78.0.
         //      We can upgrade it to newer version once following issue is resolved.

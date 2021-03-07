@@ -10,7 +10,7 @@ import androidx.browser.customtabs.CustomTabsIntent
 import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
-import com.toxicbakery.logging.Arbor
+import io.github.droidkaigi.feeder.Logger
 
 @Navigator.Name("chrome")
 class ChromeCustomTabsNavigator(private val context: Context) :
@@ -37,7 +37,7 @@ class ChromeCustomTabsNavigator(private val context: Context) :
         try {
             intent.launchUrl(context, Uri.parse(url))
         } catch (e: ActivityNotFoundException) {
-            Arbor.d(e, "Fail ChromeCustomTabsNavigator. launchUrl($url)")
+            Logger.d(e, "Fail ChromeCustomTabsNavigator. launchUrl($url)")
         }
         return null // Do not add to the back stack, managed by Chrome Custom Tabs
     }
