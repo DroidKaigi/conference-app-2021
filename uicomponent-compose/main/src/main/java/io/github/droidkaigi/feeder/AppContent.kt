@@ -83,7 +83,7 @@ fun AppContent(
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
                     selectedTab = FeedTabs.ofRoutePath(feedType),
-                    onSelectedTab = { feedTabs -> actions.onSelectTab(feedTabs) },
+                    onSelectedTab = { feedTabs -> actions.onSelectFeedTab(feedTabs) },
                     onDetailClick = { feedItem: FeedItem ->
                         actions.onSelectFeed(context, feedItem)
                     }
@@ -124,7 +124,7 @@ private class AppActions(navController: NavHostController) {
         intent.launchUrl(context, Uri.parse(feedItem.link))
     }
 
-    val onSelectTab: (feedTab: FeedTabs) -> Unit = { tab ->
+    val onSelectFeedTab: (feedTab: FeedTabs) -> Unit = { tab ->
         navController.navigate("feed/${tab.routePath}")
     }
 
