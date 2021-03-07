@@ -68,6 +68,11 @@ kotlin {
         }
         androidTest.dependencies {
         }
+        androidAndroidTest {
+            kotlin {
+                srcDir 'src/androidTest'
+            }
+        }
 //            // For instrumentation tests
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
