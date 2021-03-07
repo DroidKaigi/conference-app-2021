@@ -2,6 +2,9 @@ package io.github.droidkaigi.feeder
 
 import io.github.droidkaigi.feeder.contributor.ContributorViewModel
 import io.github.droidkaigi.feeder.contributor.fakeContributorViewModel
+import io.github.droidkaigi.feeder.data.ContributorRepositoryImpl
+import io.github.droidkaigi.feeder.data.fakeContributorApi
+import io.github.droidkaigi.feeder.viewmodel.RealContributorViewModel
 import io.kotest.matchers.ints.shouldBeGreaterThan
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -45,6 +48,22 @@ class ContributorViewModelTest(
         @JvmStatic
         @Parameterized.Parameters(name = "{0}")
         fun data() = listOf(
+            arrayOf(
+                "Real ViewModel and Repository",
+                ContributorViewModelFactory { errorFetchData: Boolean ->
+                    RealContributorViewModel(
+                        contributorRepository = ContributorRepositoryImpl(
+                            contributorApi = fakeContributorApi(
+                                if (errorFetchData) {
+                                    AppError.ApiException.ServerException(null)
+                                } else {
+                                    null
+                                }
+                            )
+                        )
+                    )
+                }
+            ),
             arrayOf(
                 "FakeViewModel",
                 ContributorViewModelFactory { errorFetchData ->
