@@ -125,11 +125,7 @@ class FeedItemViewModelTest(
                                 }
                             ),
                             dataStore = fakeUserDataStore()
-                        ).also {
-                            runBlockingTest {
-                                if (!errorFetchData) it.refresh()
-                            }
-                        }
+                        )
                     )
                 }
             ),
