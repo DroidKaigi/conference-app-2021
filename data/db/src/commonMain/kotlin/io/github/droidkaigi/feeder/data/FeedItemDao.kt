@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.data
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Author
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Image
@@ -9,8 +10,9 @@ import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.Speaker
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flowOf
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
 import kotlinx.datetime.Instant
@@ -226,16 +228,29 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
     }.values.toList()
 }
 
-fun fakeFeedItemDao(): FeedItemDao = object : FeedItemDao {
-    override fun selectAll(): Flow<List<FeedItem>> {
-        return flowOf(emptyList())
+fun fakeFeedItemDao(error: AppError? = null): FeedItemDao = object : FeedItemDao {
+    private val channel = Channel<List<FeedItem>>(Channel.CONFLATED).apply {
+        offer(emptyList())
+    }
+
+    override fun selectAll(): Flow<List<FeedItem>> = flow {
+        try {
+            if (error != null) {
+                throw error
+            }
+            for (item in channel) {
+                emit(item)
+            }
+        } finally {
+            channel.close()
+        }
     }
 
     override fun insert(feeds: List<FeedItem>) {
-        // nothing to do.
+        channel.offer((channel.poll() ?: emptyList()) + feeds)
     }
 
     override fun deleteAll() {
-        // nothing to do.
+        channel.offer(emptyList())
     }
 }

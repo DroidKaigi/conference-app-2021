@@ -117,9 +117,19 @@ class FeedItemViewModelTest(
                                     null
                                 }
                             ),
-                            feedItemDao = fakeFeedItemDao(),
+                            feedItemDao = fakeFeedItemDao(
+                                if (errorFetchData) {
+                                    AppError.UnknownException(Throwable("Database Exception"))
+                                } else {
+                                    null
+                                }
+                            ),
                             dataStore = fakeUserDataStore()
-                        )
+                        ).also {
+                            runBlockingTest {
+                                if (!errorFetchData) it.refresh()
+                            }
+                        }
                     )
                 }
             ),
