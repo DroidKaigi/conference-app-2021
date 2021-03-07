@@ -4,6 +4,7 @@ import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
 import platform.Foundation.NSUserDefaults
 
 class DataStoreUserDataStoreTest {
