@@ -11,6 +11,8 @@ import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.toLoadState
+import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +23,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.annotation.meta.Exhaustive
-import javax.inject.Inject
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
