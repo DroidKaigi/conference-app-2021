@@ -107,6 +107,12 @@ object Dep {
         const val activity = "androidx.activity:activity-ktx:1.2.0"
     }
 
+    object SQLDelight {
+        const val plugin = "com.squareup.sqldelight:gradle-plugin:1.4.4"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:1.4.4"
+        const val coroutinesExtensions = "com.squareup.sqldelight:coroutines-extensions:1.4.4"
+    }
+
     object Flipper {
         // TODO We use Flipper 0.76.0 for now because app crashes with 0.77.0 and 0.78.0.
         //      We can upgrade it to newer version once following issue is resolved.
