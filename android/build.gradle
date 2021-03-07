@@ -138,8 +138,6 @@ dependencies {
     debugImplementation Dep.Compose.tooling
     debugImplementation Dep.Kotlin.reflect
 
-    implementation Dep.Arbor.common
-
     debugImplementation Dep.Flipper.flipper
     debugImplementation Dep.Flipper.networkPlugin
     debugImplementation Dep.Flipper.soLoader
