@@ -19,7 +19,14 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
 
 kotlin {
     android()
-    ios()
+
+    // workaround: select iOS target platform depending on the Xcode environment variables
+    if (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
+        iosArm64("ios")
+    } else {
+        iosX64("ios")
+    }
+
     sourceSets {
         commonMain.dependencies {
             api project(":model")
