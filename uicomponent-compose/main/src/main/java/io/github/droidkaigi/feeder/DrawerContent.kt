@@ -14,16 +14,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherTabs
@@ -43,19 +47,19 @@ enum class DrawerContents(
     ),
     BLOG(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_text_snippet_24,
         label = "BLOG",
         route = "feed/${FeedTabs.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_videocam_24,
         label = "VIDEO",
         route = "feed/${FeedTabs.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_mic_none_24,
         label = "PODCAST",
         route = "feed/${FeedTabs.FilteredFeed.Podcast.routePath}"
     ),
@@ -90,10 +94,49 @@ enum class DrawerContents(
     }
 }
 
+class DrawerContentState(
+    initialValue: String,
+) {
+    var currentValue: String by mutableStateOf(initialValue)
+        private set
+
+    fun selectDrawerContent(route: String): Boolean {
+        return if (currentValue != route) {
+            currentValue = route
+            true
+        } else {
+            false
+        }
+    }
+
+    fun onSelectDrawerContent(feedTabs: FeedTabs) {
+        selectDrawerContent("feed/${feedTabs.routePath}")
+    }
+
+    fun onSelectDrawerContent(otherTabs: OtherTabs) {
+        selectDrawerContent("other/${otherTabs.routePath}")
+    }
+
+    companion object {
+
+        fun Saver() = Saver<DrawerContentState, String>(
+            save = { it.currentValue },
+            restore = { DrawerContentState(it) }
+        )
+    }
+}
+
+@Composable
+fun rememberDrawerContentState(initialValue: String): DrawerContentState {
+    return rememberSaveable(saver = DrawerContentState.Saver()) {
+        DrawerContentState(initialValue)
+    }
+}
+
 @Composable
 fun DrawerContent(
     currentRoute: String = DrawerContents.HOME.route,
-    onNavigate: (route: String) -> Unit,
+    onNavigate: (contents: DrawerContents) -> Unit,
 ) {
     Column {
         Spacer(modifier = Modifier.height(52.dp))
@@ -144,7 +187,7 @@ fun DrawerContent(
 private fun DrawerContentGroup(
     groupContents: List<DrawerContents>,
     currentRoute: String,
-    onNavigate: (route: String) -> Unit,
+    onNavigate: (contents: DrawerContents) -> Unit,
 ) {
     for (content in groupContents) {
         DrawerButton(
@@ -152,7 +195,7 @@ private fun DrawerContentGroup(
             label = content.label,
             isSelected = content.route == currentRoute,
             {
-                onNavigate(content.route)
+                onNavigate(content)
             }
         )
     }
@@ -161,10 +204,8 @@ private fun DrawerContentGroup(
 @Preview
 @Composable
 fun PreviewDrawerContent() {
-    ConferenceAppFeederTheme {
-        Surface {
-            DrawerContent(currentRoute = DrawerContents.HOME.route) {
-            }
+    AppThemeWithBackground {
+        DrawerContent(currentRoute = DrawerContents.HOME.route) {
         }
     }
 }

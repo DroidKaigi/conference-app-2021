@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
@@ -16,10 +17,12 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScrollableTabRow
+import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -35,6 +38,7 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
@@ -58,7 +62,7 @@ sealed class FeedTabs(val name: String, val routePath: String) {
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
 
-        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
+        fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
     }
 }
 
@@ -86,9 +90,21 @@ fun FeedScreen(
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is FeedViewModel.Effect.ErrorMessage -> {
-                scaffoldState.snackbarHostState.showSnackbar(
-                    effect.appError.getReadableMessage(context)
-                )
+                when (
+                    scaffoldState.snackbarHostState.showSnackbar(
+                        message = effect.appError.getReadableMessage(context),
+                        actionLabel = "Reload",
+                    )
+                ) {
+                    SnackbarResult.ActionPerformed -> {
+                        scaffoldState.snackbarHostState.showSnackbar(
+                            "Sorry, Currently not implemented."
+                        )
+                        dispatch(FeedViewModel.Event.ReloadContent)
+                    }
+                    SnackbarResult.Dismissed -> {
+                    }
+                }
             }
         }
     }
@@ -134,12 +150,12 @@ private fun FeedScreen(
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
-    listState: LazyListState
+    listState: LazyListState,
 ) {
     Column {
         val density = LocalDensity.current
         BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
@@ -150,18 +166,20 @@ private fun FeedScreen(
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                val isHome = selectedTab is FeedTabs.Home
-                FeedList(
-                    feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
-                        feedContents.filterFeedType(selectedTab.feedItemClass)
-                    } else {
-                        feedContents
-                    },
-                    isHome = isHome,
-                    onClickFeed = onClickFeed,
-                    onFavoriteChange = onFavoriteChange,
-                    listState
-                )
+                FadeThrough(targetState = selectedTab) { selectedTab ->
+                    val isHome = selectedTab is FeedTabs.Home
+                    FeedList(
+                        feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
+                            feedContents.filterFeedType(selectedTab.feedItemClass)
+                        } else {
+                            feedContents
+                        },
+                        isHome = isHome,
+                        onClickFeed = onClickFeed,
+                        onFavoriteChange = onFavoriteChange,
+                        listState
+                    )
+                }
             }
         )
     }
@@ -221,7 +239,7 @@ private fun FeedList(
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
-    listState: LazyListState
+    listState: LazyListState,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -232,24 +250,39 @@ private fun FeedList(
                 .toPaddingValues(top = false, start = false, end = false),
             state = listState
         ) {
-            if (feedContents.size > 0) {
-                items(feedContents.contents.size * 2) { index ->
-                    if (index % 2 == 0) {
-                        Divider()
-                    } else {
-                        val (item, favorited) = feedContents.contents[index / 2]
-                        FeedItem(
-                            feedItem = item,
-                            favorited = favorited,
-                            onClick = onClickFeed,
-                            showMediaLabel = isHome,
-                            onFavoriteChange = onFavoriteChange
-                        )
-                    }
-                }
+            itemsIndexed(feedContents.contents) { index, content ->
+                FeedItemRow(
+                    content.first,
+                    content.second,
+                    onClickFeed,
+                    isHome,
+                    onFavoriteChange,
+                    index != 0
+                )
             }
         }
     }
+}
+
+@Composable
+fun FeedItemRow(
+    item: FeedItem,
+    favorited: Boolean,
+    onClickFeed: (FeedItem) -> Unit,
+    showMediaLabel: Boolean,
+    onFavoriteChange: (FeedItem) -> Unit,
+    showDivider: Boolean
+) {
+    if (showDivider) {
+        Divider()
+    }
+    FeedItem(
+        feedItem = item,
+        favorited = favorited,
+        onClick = onClickFeed,
+        showMediaLabel = showMediaLabel,
+        onFavoriteChange = onFavoriteChange
+    )
 }
 
 @Preview(showBackground = true)

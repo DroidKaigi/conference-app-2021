@@ -20,7 +20,9 @@
 
 Now this app has the Feed feature. We will deliver Feed and events related to DroidKaigi.
 
-<img src="https://user-images.githubusercontent.com/1386930/108440402-662fc680-7296-11eb-948d-a259957a9c53.png" width="240" />
+| Home | Drawer |
+|---|---|
+|<img src="https://user-images.githubusercontent.com/1386930/110203091-7c04d480-7eaf-11eb-87a1-3d97bf37d7db.png" width="240" />|<img src="https://user-images.githubusercontent.com/1386930/110203097-832be280-7eaf-11eb-941f-7c6a24c759b6.png" width="240" /> |
 
 ## Design
 
@@ -122,7 +124,7 @@ private fun FeedScreen(
 ) {
     Column {
         BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 BackLayerContent(filters, onFavoriteFilterChanged)
@@ -270,6 +272,18 @@ Also, changes to the data layer do not affect the ui module, so you can build fa
 ## Overall architecture
 
 <img width="480" src="https://user-images.githubusercontent.com/1386930/108588059-91034300-739a-11eb-8fdb-55d79861b4b3.png" />
+
+# Thanks
+
+Thank you for contributing!
+
+## Contributors
+
+GitHub : [Contributors](https://github.com/DroidKaigi/conference-app-2021/graphs/contributors)
+
+## Designer
+
+[nontan](https://github.com/nontan)
 
 # Trouble Shooting
 

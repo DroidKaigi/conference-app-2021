@@ -2,4 +2,6 @@
 <resources>
     <string name="deep_link_host" translatable="false">droidkaigi.jp</string>
     <string name="deep_link_path" translatable="false">/2021</string>
+    <string name="deep_link_path_pattern_feed" translatable="false">/2021/feed/.*</string>
+    <string name="deep_link_path_pattern_other" translatable="false">/2021/other/.*</string>
 </resources>

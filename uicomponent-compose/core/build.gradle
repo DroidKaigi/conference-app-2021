@@ -1,4 +1,5 @@
 import io.github.droidkaigi.feeder.Dep
+import io.github.droidkaigi.feeder.Versions
 // TODO: make this library Kotlin MPP
 plugins {
     id 'com.android.library'
@@ -6,14 +7,9 @@ plugins {
     id 'app.cash.exhaustive'
 }
 
-android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.2"
+apply from: rootProject.file("gradle/android.gradle")
 
-    defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 30
-    }
+android {
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -27,7 +23,7 @@ android {
         compose true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion "${compose_version}"
+        kotlinCompilerExtensionVersion "${Versions.compose}"
     }
 }
 
@@ -59,10 +55,13 @@ dependencies {
     implementation Dep.Compose.layout
     implementation Dep.Compose.ui
     implementation Dep.Compose.tooling
+    implementation Dep.Compose.util
     implementation Dep.Compose.material
     implementation Dep.Compose.iconsExtended
     implementation Dep.Compose.animation
 
     // Android
     implementation Dep.Jetpack.browser
+
+    implementation Dep.Arbor.common
 }

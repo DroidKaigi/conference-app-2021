@@ -22,6 +22,7 @@ import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
+import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -32,8 +33,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import io.github.droidkaigi.feeder.about.AboutThisApp
+import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
-import io.github.droidkaigi.feeder.staff.AboutThisApp
 import io.github.droidkaigi.feeder.staff.StaffList
 
 sealed class OtherTabs(val name: String, val routePath: String) {
@@ -44,7 +46,8 @@ sealed class OtherTabs(val name: String, val routePath: String) {
 
     companion object {
         fun values() = listOf(AboutThisApp, Contributor, Staff, Settings)
-        fun ofRoutePath(routePath: String) = values().first { it.routePath == routePath }
+        fun ofRoutePath(routePath: String) =
+            values().find { it.routePath == routePath } ?: AboutThisApp
     }
 }
 
@@ -67,6 +70,9 @@ fun OtherScreen(
     )
 }
 
+/**
+ * stateless
+ */
 @Composable
 fun OtherScreen(
     scaffoldState: BackdropScaffoldState,
@@ -78,7 +84,7 @@ fun OtherScreen(
         val density = LocalDensity.current
         BackdropScaffold(
             gesturesEnabled = false,
-            backLayerBackgroundColor = MaterialTheme.colors.primary,
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
             backLayerContent = {
                 Box(modifier = Modifier.height(1.dp))
@@ -93,32 +99,8 @@ fun OtherScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    when (selectedTab) {
-                        OtherTabs.AboutThisApp -> AboutThisApp()
-                        OtherTabs.Staff -> StaffList()
-                        else -> {
-                            val context = LocalContext.current
-                            Text(
-                                text = "Not implemented yet. Please create this screen!",
-                                modifier = Modifier
-                                    .fillMaxSize()
-                                    .padding(top = 32.dp)
-                                    .clickable {
-                                        val issue =
-                                            "https://github.com/DroidKaigi/" +
-                                                "conference-app-2021/issues" +
-                                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
-                                        context.startActivity(
-                                            Intent(
-                                                Intent.ACTION_VIEW,
-                                                Uri.parse(
-                                                    issue
-                                                )
-                                            )
-                                        )
-                                    }
-                            )
-                        }
+                    FadeThrough(targetState = selectedTab) { selectedTab ->
+                        BackdropFrontLayerContent(selectedTab)
                     }
                 }
             }
@@ -169,6 +151,39 @@ private fun AppBar(
                     )
                 },
                 onClick = { onSelectTab(tab) }
+            )
+        }
+    }
+}
+
+@Composable
+private fun BackdropFrontLayerContent(
+    selectedTab: OtherTabs,
+) {
+    when (selectedTab) {
+        OtherTabs.AboutThisApp -> AboutThisApp()
+        OtherTabs.Staff -> StaffList()
+        else -> {
+            val context = LocalContext.current
+            Text(
+                text = "Not implemented yet. Please create this screen!",
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 32.dp)
+                    .clickable {
+                        val issue =
+                            "https://github.com/DroidKaigi/" +
+                                "conference-app-2021/issues" +
+                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
+                        context.startActivity(
+                            Intent(
+                                Intent.ACTION_VIEW,
+                                Uri.parse(
+                                    issue
+                                )
+                            )
+                        )
+                    }
             )
         }
     }

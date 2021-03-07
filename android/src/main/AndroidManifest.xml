@@ -17,11 +17,21 @@
             android:theme="@style/Theme.ConferenceAppFeeder.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
                 <data
                     android:host="@string/deep_link_host"
-                    android:path="@string/deep_link_path"
+                    android:pathPattern="@string/deep_link_path_pattern_feed"
+                    android:scheme="https" />
+                <data
+                    android:host="@string/deep_link_host"
+                    android:pathPattern="@string/deep_link_path_pattern_other"
                     android:scheme="https" />
             </intent-filter>
         </activity>

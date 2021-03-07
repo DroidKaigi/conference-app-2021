@@ -16,6 +16,7 @@ object Dep {
         const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
         const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+        const val util = "androidx.compose.ui:ui-util:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}1"
         const val iconsExtended =
             "androidx.compose.material:material-icons-extended:${Versions.compose}"
@@ -107,7 +108,15 @@ object Dep {
     }
 
     object Arbor {
-        const val jvm = "com.ToxicBakery.logging:arbor-jvm:1.35.72"
-        const val android = "com.ToxicBakery.logging:arbor-android:1.35.72"
+        const val common = "com.ToxicBakery.logging:common:1.35.72"
+    }
+
+    object Flipper {
+        // TODO We use Flipper 0.76.0 for now because app crashes with 0.77.0 and 0.78.0.
+        //      We can upgrade it to newer version once following issue is resolved.
+        //      https://github.com/facebook/flipper/issues/1968
+        const val flipper = "com.facebook.flipper:flipper:0.76.0"
+        const val networkPlugin = "com.facebook.flipper:flipper-network-plugin:0.76.0"
+        const val soLoader = "com.facebook.soloader:soloader:0.10.1"
     }
 }
