@@ -2,12 +2,12 @@ package io.github.droidkaigi.feeder.core.util
 
 import androidx.annotation.MainThread
 import androidx.annotation.VisibleForTesting
+import kotlin.properties.Delegates
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
-import kotlin.properties.Delegates
 
 class ProgressTimeLatch(
     private val viewModelScope: CoroutineScope,
