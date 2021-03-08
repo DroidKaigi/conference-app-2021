@@ -95,7 +95,7 @@ class RealFeedViewModel @Inject constructor(
                     }
                 }
                 is FeedViewModel.Event.ReloadContent -> {
-                    // Sorry, Currently not implemented
+                    repository.refresh()
                 }
             }
         }
