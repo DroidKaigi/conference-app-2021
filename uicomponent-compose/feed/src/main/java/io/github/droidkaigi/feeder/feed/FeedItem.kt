@@ -139,7 +139,8 @@ fun FeedItem(
                     Icon(
                         painter = painterResource(R.drawable.ic_baseline_favorite_24),
                         contentDescription = "favorite",
-                        modifier = Modifier.testTag("Favorite")
+                        modifier = Modifier.testTag("Favorite"),
+                        tint = Color.Red
                     )
                 } else {
                     Icon(
