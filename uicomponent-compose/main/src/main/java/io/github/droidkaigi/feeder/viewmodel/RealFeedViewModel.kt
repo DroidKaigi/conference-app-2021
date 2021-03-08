@@ -32,6 +32,12 @@ class RealFeedViewModel @Inject constructor(
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
+    init {
+        viewModelScope.launch {
+            repository.refresh()
+        }
+    }
+
     private val allFeedContents: StateFlow<LoadState<FeedContents>> = repository.feedContents()
         .toLoadState()
         .onEach { loadState ->

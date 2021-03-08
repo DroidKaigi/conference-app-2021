@@ -7,6 +7,8 @@ import kotlinx.coroutines.flow.Flow
 interface FeedRepository {
     fun feedContents(): Flow<FeedContents>
 
+    suspend fun refresh()
+
     suspend fun addFavorite(feedItem: FeedItem)
 
     suspend fun removeFavorite(feedItem: FeedItem)

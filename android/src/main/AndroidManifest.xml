@@ -50,7 +50,7 @@
                 android:name="io.github.droidkaigi.feeder.FirebaseInitializer"
                 android:value="androidx.startup" />
             <meta-data
-                android:name="io.github.droidkaigi.feeder.ArborInitializer"
+                android:name="io.github.droidkaigi.feeder.LoggerInitializer"
                 android:value="androidx.startup" />
         </provider>
         <service

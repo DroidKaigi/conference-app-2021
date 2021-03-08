@@ -2,12 +2,10 @@ package io.github.droidkaigi.feeder
 
 import android.content.Context
 import androidx.startup.Initializer
-import com.toxicbakery.logging.Arbor
-import com.toxicbakery.logging.Seedling
 
-class ArborInitializer : Initializer<Unit> {
+class LoggerInitializer : Initializer<Unit> {
     override fun create(context: Context) {
-        Arbor.sow(Seedling())
+        Logger.init()
     }
 
     override fun dependencies(): List<Class<out Initializer<*>>> {
