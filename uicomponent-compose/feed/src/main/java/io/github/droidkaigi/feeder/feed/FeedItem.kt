@@ -15,6 +15,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.FeedItem
@@ -55,7 +58,7 @@ fun FeedItem(
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { }
     ) {
-        val (media, image, title, date, favorite, speakers) = createRefs()
+        val (media, image, title, date, favorite, favoriteAnim, speakers) = createRefs()
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
@@ -127,6 +130,17 @@ fun FeedItem(
                 style = typography.caption
             )
         }
+        FavoriteAnimation(
+            favorite = favorited,
+            modifier = Modifier
+                .constrainAs(favoriteAnim) {
+                    width = Dimension.value(80.dp)
+                    height = Dimension.value(80.dp)
+                    start.linkTo(favorite.start)
+                    end.linkTo(favorite.end)
+                    bottom.linkTo(parent.bottom, 16.dp)
+                }
+        )
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
@@ -155,6 +169,28 @@ fun FeedItem(
             }
         )
     }
+}
+
+@Composable
+fun FavoriteAnimation(
+    favorite: Boolean,
+    modifier: Modifier = Modifier
+) {
+    val transitionState = remember { mutableStateOf(favorite) }
+    val targetChanged = (favorite != transitionState.value)
+    if (targetChanged) {
+        transitionState.value = favorite
+    }
+    //TODO: Implements animation using only compose.
+    AndroidView(
+        factory = { context -> HeartAnimationView(context) },
+        modifier = modifier,
+        update = { view ->
+            if (transitionState.value) {
+                view.execute()
+            }
+        }
+    )
 }
 
 @Composable
