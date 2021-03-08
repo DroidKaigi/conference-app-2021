@@ -20,20 +20,16 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
 
 kotlin {
     android()
-//    jvm()
-    // currently firebase-auth not supported iOS
-    // https://github.com/GitLiveApp/firebase-kotlin-sdk/issues/133
-//    if (System.getProperty("idea.active") == "true") {
-//        // Fix IntelliJ Unresolved reference
-//        def onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
-//        if (onPhone) {
-//            iosArm64("ios")
-//        } else {
-//            iosX64("ios")
-//        }
-//    } else {
-//        ios()
-//    }
+
+    // workaround: select iOS target platform depending on the Xcode environment variables
+    // The multiplatform libraries do not support hierarchical structures, which breaks the IDE's completion.
+    // https://kotlinlang.org/docs/mpp-share-on-platforms.html#share-code-on-similar-platforms
+    if (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
+        iosArm64("ios")
+    } else {
+        iosX64("ios")
+    }
+
     sourceSets {
         commonMain.dependencies {
             api project(":model")
@@ -44,7 +40,6 @@ kotlin {
             implementation Dep.Serialization.core
             implementation Dep.MultiplatformSettings.settings
             implementation Dep.MultiplatformSettings.coroutines
-            implementation Dep.MultiplatformSettings.datastore
             // For using in memory settings
             implementation Dep.MultiplatformSettings.test
 
@@ -64,6 +59,7 @@ kotlin {
         androidMain.dependencies {
             // Hilt
             implementation Dep.Dagger.hiltAndroid
+            implementation Dep.MultiplatformSettings.datastore
             implementation "androidx.datastore:datastore-preferences:1.0.0-alpha04"
 
             // SQLDelight
@@ -84,6 +80,9 @@ kotlin {
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 //        }
+        iosMain.dependencies {
+            implementation "com.squareup.sqldelight:native-driver:1.4.4"
+        }
     }
 }
 
