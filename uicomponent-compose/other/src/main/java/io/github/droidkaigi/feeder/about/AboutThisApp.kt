@@ -99,7 +99,8 @@ fun AboutThisAppMenuListComponent(
         ) {
             Text(
                 modifier = textModifier,
-                text = "プライバシーポリシー"
+                text = "プライバシーポリシー",
+                style = typography.body1
             )
         }
 
@@ -110,7 +111,8 @@ fun AboutThisAppMenuListComponent(
         ) {
             Text(
                 modifier = textModifier,
-                text = "ライセンス"
+                text = "ライセンス",
+                style = typography.body1
             )
         }
 
@@ -120,12 +122,14 @@ fun AboutThisAppMenuListComponent(
                 modifier = textModifier
                     .width(0.dp)
                     .weight(1f),
-                text = "アプリバージョン"
+                text = "アプリバージョン",
+                style = typography.body1
             )
             Text(
                 modifier = textModifier,
                 text = appVersion,
-                color = Color.Gray
+                color = Color.Gray,
+                style = typography.body1
             )
         }
     }
