@@ -31,9 +31,7 @@ class RealFeedViewModel @Inject constructor(
 ) : ViewModel(), FeedViewModel {
 
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
-    private val showProgressLatch = ProgressTimeLatch {
-        showProgress.value = it
-    }
+    private val showProgressLatch = ProgressTimeLatch(viewModelScope = viewModelScope)
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
 
     private val allFeedContents: StateFlow<LoadState<FeedContents>> = repository.feedContents()
@@ -45,17 +43,16 @@ class RealFeedViewModel @Inject constructor(
                 error.getThrowableOrNull()?.printStackTrace()
                 effectChannel.send(FeedViewModel.Effect.ErrorMessage(error.e))
             }
-            showProgressLatch.loading = loadState.isLoading()
+            showProgressLatch.refresh(loadState.isLoading())
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
-    private val showProgress: MutableStateFlow<Boolean> = MutableStateFlow(false)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
             filters,
-            showProgress
+            showProgressLatch.toggleState
         ) { feedContentsLoadState, filters, showProgress ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)

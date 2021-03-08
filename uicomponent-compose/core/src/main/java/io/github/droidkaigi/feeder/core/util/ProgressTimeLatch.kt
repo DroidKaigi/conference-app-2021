@@ -1,68 +1,89 @@
-/*
- * Copyright 2017 Google, Inc.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *     http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
 package io.github.droidkaigi.feeder.core.util
 
-import android.os.Handler
-import android.os.Looper
-import android.os.SystemClock
+import androidx.annotation.MainThread
+import androidx.annotation.VisibleForTesting
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
+import kotlin.properties.Delegates
 
 class ProgressTimeLatch(
-    private val delayMs: Long = 500,
+    private val viewModelScope: CoroutineScope,
+    private val delayMs: Long = 750,
     private val minShowTime: Long = 500,
-    private val viewRefreshingToggle: ((Boolean) -> Unit)
+    private val currentTimeProvider: (() -> Long) = { System.currentTimeMillis() }
 ) {
-    private val handler = Handler(Looper.getMainLooper())
-    private var showTime = 0L
+    private sealed class State(val showProgress: Boolean) {
+        object NotRefreshNoProgress : State(false)
+        object RefreshNoProgress : State(false)
+        class RefreshProgress(val startTime: Long) : State(true)
+        object NotRefreshProgress : State(true)
+    }
 
-    private val delayedShow = Runnable(this::show)
-    private val delayedHide = Runnable(this::hideAndReset)
+    private val _toggleState = MutableStateFlow(false)
+    val toggleState: StateFlow<Boolean> = _toggleState
 
-    var loading = false
+    private var visibility: Boolean? by Delegates.observable(null) { property, oldValue, newValue ->
+        if (oldValue != newValue && newValue != null) {
+            _toggleState.value = newValue
+        }
+    }
+
+    private var state: State = State.NotRefreshNoProgress
         set(value) {
-            if (field != value) {
-                field = value
-                handler.removeCallbacks(delayedShow)
-                handler.removeCallbacks(delayedHide)
+            visibility = value.showProgress
+            field = value
+        }
 
-                if (value) {
-                    handler.postDelayed(delayedShow, delayMs)
-                } else if (showTime >= 0) {
-                    // We're already showing, lets check if we need to delay the hide
-                    val showTime = SystemClock.uptimeMillis() - showTime
-                    if (showTime < minShowTime) {
-                        handler.postDelayed(delayedHide, minShowTime - showTime)
-                    } else {
-                        // We've been showing longer than the min, so hide and clean up
-                        hideAndReset()
+    fun refresh(newRefreshing: Boolean) {
+        viewModelScope.launch {
+            refreshLogic(newRefreshing)
+        }
+    }
+
+    @MainThread
+    @VisibleForTesting
+    internal suspend fun refreshLogic(newRefreshing: Boolean) {
+        when (val localState = state) {
+            State.NotRefreshNoProgress -> {
+                if (newRefreshing) {
+                    state = State.RefreshNoProgress
+                    delay(delayMs)
+                    if (state == State.RefreshNoProgress) {
+                        state = State.RefreshProgress(currentTimeProvider())
                     }
+                }
+            }
+            State.RefreshNoProgress -> {
+                if (newRefreshing) {
+                    // do nothing
                 } else {
-                    // We're not currently show so just hide and clean up
-                    hideAndReset()
+                    state = State.NotRefreshNoProgress
+                }
+            }
+            is State.RefreshProgress -> {
+                if (newRefreshing) {
+                    // do nothing
+                } else {
+                    val shouldWaitTime =
+                        minShowTime - (currentTimeProvider() - localState.startTime)
+                    val shouldWait = shouldWaitTime > 0
+                    state = State.NotRefreshProgress
+                    if (shouldWait) {
+                        delay(shouldWaitTime)
+                    }
+                    if (state == State.NotRefreshProgress) {
+                        state = State.NotRefreshNoProgress
+                    }
+                }
+            }
+            State.NotRefreshProgress -> {
+                if (newRefreshing) {
+                    state = State.RefreshProgress(currentTimeProvider())
                 }
             }
         }
-
-    private fun show() {
-        viewRefreshingToggle(true)
-        showTime = SystemClock.uptimeMillis()
-    }
-
-    private fun hideAndReset() {
-        viewRefreshingToggle(false)
-        showTime = 0
     }
 }
