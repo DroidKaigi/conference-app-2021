@@ -43,7 +43,11 @@ import kotlin.reflect.KClass
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
-    sealed class FilteredFeed(val feedItemClass: KClass<out FeedItem>, name: String, routePath: String) :
+    sealed class FilteredFeed(
+        val feedItemClass: KClass<out FeedItem>,
+        name: String,
+        routePath: String,
+    ) :
         FeedTabs(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
         object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
@@ -219,17 +223,30 @@ private fun FeedList(
         ) {
             if (feedContents.size > 0) {
                 items(feedContents.contents.size * 2) { index ->
-                    if (index % 2 == 0) {
-                        Divider()
-                    } else {
-                        val (item, favorited) = feedContents.contents[index / 2]
-                        FeedItem(
-                            feedItem = item,
-                            favorited = favorited,
-                            onClick = onClickFeed,
-                            showMediaLabel = isHome,
-                            onFavoriteChange = onFavoriteChange
-                        )
+                    when {
+                        isHome && index == 0 -> {
+                            val (item, favorited) = feedContents.contents[index]
+                            FirstFeedItem(
+                                feedItem = item,
+                                favorited = favorited,
+                                onClick = onClickFeed,
+                                showMediaLabel = isHome,
+                                onFavoriteChange = onFavoriteChange
+                            )
+                        }
+                        index % 2 == 1 -> {
+                            Divider()
+                        }
+                        else -> {
+                            val (item, favorited) = feedContents.contents[index / 2]
+                            FeedItem(
+                                feedItem = item,
+                                favorited = favorited,
+                                onClick = onClickFeed,
+                                showMediaLabel = isHome,
+                                onFavoriteChange = onFavoriteChange
+                            )
+                        }
                     }
                 }
             }
