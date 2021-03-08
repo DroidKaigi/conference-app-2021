@@ -38,7 +38,7 @@ fun AboutThisApp() {
         AboutThisAppMenuListComponent(
             onClickPrivacyPolicy = {},
             onClickLicense = {},
-            appVersion = "1.0.0" // 動的に取得するよう修正必要
+            appVersion = "1.0.0" // Get the app version name.
         )
     }
 }
