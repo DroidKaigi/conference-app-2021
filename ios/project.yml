@@ -38,6 +38,11 @@ targets:
         platform: iOS
         deploymentTarget: "14.0"
         sources: DroidKaigi 2021
+        preBuildScripts:
+            - name: Run SwiftLint
+              script: |
+                  mint run swiftlint autocorrect
+                  mint run swiftlint
         testTargets:
             - DroidKaigi 2021Tests
     DroidKaigi 2021Tests:
