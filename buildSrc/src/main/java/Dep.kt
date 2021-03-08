@@ -15,6 +15,7 @@ object Dep {
         const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
         const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+        const val test = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
         const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
         const val util = "androidx.compose.ui:ui-util:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}1"
