@@ -22,6 +22,8 @@ kotlin {
     android()
 
     // workaround: select iOS target platform depending on the Xcode environment variables
+    // The multiplatform libraries do not support hierarchical structures, which breaks the IDE's completion.
+    // https://kotlinlang.org/docs/mpp-share-on-platforms.html#share-code-on-similar-platforms
     if (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
         iosArm64("ios")
     } else {
