@@ -3,4 +3,8 @@
     <string name="error_network">A network error has occurred.Please try again.</string>
     <string name="error_server">A server error has occurred.Please try again.</string>
     <string name="error_unknown">An unknown error has occurred.Please try again.</string>
+    <string name="system">system</string>
+    <string name="battery">battery</string>
+    <string name="dark">dark</string>
+    <string name="light">light</string>
 </resources>

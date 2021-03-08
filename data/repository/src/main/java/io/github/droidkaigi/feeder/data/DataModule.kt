@@ -6,6 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
+import io.github.droidkaigi.feeder.repository.ThemeRepository
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -34,6 +35,13 @@ class DataModule {
     internal fun provideDeviceRepository(
         daggerRepository: DaggerDeviceRepositoryImpl
     ): DeviceRepository {
+        return daggerRepository
+    }
+
+    @Provides
+    internal fun provideThemeRepository(
+        daggerRepository: DaggerThemeRepositoryImpl
+    ): ThemeRepository {
         return daggerRepository
     }
 }

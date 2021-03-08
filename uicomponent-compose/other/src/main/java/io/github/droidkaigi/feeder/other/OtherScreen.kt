@@ -36,6 +36,7 @@ import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.about.AboutThisApp
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
 
 sealed class OtherTabs(val name: String, val routePath: String) {
@@ -162,6 +163,7 @@ private fun BackdropFrontLayerContent(
 ) {
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()
+        OtherTabs.Settings -> Settings()
         OtherTabs.Staff -> StaffList()
         else -> {
             val context = LocalContext.current

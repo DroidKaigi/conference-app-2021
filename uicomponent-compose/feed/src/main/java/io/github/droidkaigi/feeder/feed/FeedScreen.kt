@@ -39,6 +39,7 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
@@ -288,7 +289,7 @@ fun FeedItemRow(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    ConferenceAppFeederTheme(false) {
+    ConferenceAppFeederTheme(Theme.LIGHT) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.Home,
@@ -304,7 +305,7 @@ fun PreviewFeedScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
-    ConferenceAppFeederTheme(false) {
+    ConferenceAppFeederTheme(Theme.LIGHT) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.FilteredFeed.Blog,

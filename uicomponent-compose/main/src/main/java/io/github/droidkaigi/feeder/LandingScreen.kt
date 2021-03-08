@@ -33,7 +33,7 @@ fun LandingScreen(modifier: Modifier = Modifier, onTimeout: () -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLandingScreen() {
-    ConferenceAppFeederTheme(false) {
+    ConferenceAppFeederTheme {
         LandingScreen(
             onTimeout = {}
         )
