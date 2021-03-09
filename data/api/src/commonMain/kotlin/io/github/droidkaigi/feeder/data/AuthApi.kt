@@ -22,9 +22,6 @@ class AuthApi(
         return block()
     }
 
-    /**
-     * @return auth id token
-     */
     private suspend fun authIfNeeded() {
         val auth = Firebase.auth
         val currentUser = auth.currentUser
