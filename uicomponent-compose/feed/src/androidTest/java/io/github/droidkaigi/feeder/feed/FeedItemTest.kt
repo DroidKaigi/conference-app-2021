@@ -5,7 +5,6 @@ import androidx.compose.ui.test.assertHasClickAction
 import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
-import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.fakeFeedContents
@@ -40,7 +39,6 @@ class FeedItemTest {
     @Test
     fun showFeedItemWithMedia_mediaLabelIsDisplayed() {
         val feedItem = fakeFeedContents().contents[0].first
-        val mediaText = feedItem.media.text
 
         composeTestRule.setContent {
             ConferenceAppFeederTheme {
@@ -54,13 +52,12 @@ class FeedItemTest {
             }
         }
 
-        composeTestRule.onNodeWithText(mediaText, useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("MediaLabel", useUnmergedTree = true).assertIsDisplayed()
     }
 
     @Test
     fun showFeedItemWithoutMedia_mediaLabelDoesNotExist() {
         val feedItem = fakeFeedContents().contents[0].first
-        val mediaText = feedItem.media.text
 
         composeTestRule.setContent {
             ConferenceAppFeederTheme {
@@ -74,6 +71,6 @@ class FeedItemTest {
             }
         }
 
-        composeTestRule.onNodeWithText(mediaText, useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithTag("MediaLabel", useUnmergedTree = true).assertDoesNotExist()
     }
 }
