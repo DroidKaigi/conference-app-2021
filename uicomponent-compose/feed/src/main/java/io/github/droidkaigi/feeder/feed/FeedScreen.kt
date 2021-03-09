@@ -41,6 +41,7 @@ import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
+import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
@@ -291,7 +292,7 @@ fun FeedItemRow(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    ConferenceAppFeederTheme(false) {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.Home,
