@@ -58,6 +58,7 @@ fun FeedItem(
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
+                    .semantics { testTag = "MediaLabel" }
                     .constrainAs(media) {
                         top.linkTo(parent.top, 12.dp)
                         start.linkTo(parent.start, 24.dp)

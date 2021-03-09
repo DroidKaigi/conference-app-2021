@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.feed
 
 import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.assertHasClickAction
+import androidx.compose.ui.test.assertIsDisplayed
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithTag
 import androidx.test.ext.junit.runners.AndroidJUnit4
@@ -33,5 +34,43 @@ class FeedItemTest {
         }
 
         composeTestRule.onNodeWithTag("FeedItem").assertHasClickAction()
+    }
+
+    @Test
+    fun showFeedItemWithMedia_mediaLabelIsDisplayed() {
+        val feedItem = fakeFeedContents().contents[0].first
+
+        composeTestRule.setContent {
+            ConferenceAppFeederTheme {
+                FeedItem(
+                    feedItem = feedItem,
+                    favorited = true,
+                    showMediaLabel = true,
+                    onClick = { },
+                    onFavoriteChange = { }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("MediaLabel", useUnmergedTree = true).assertIsDisplayed()
+    }
+
+    @Test
+    fun showFeedItemWithoutMedia_mediaLabelDoesNotExist() {
+        val feedItem = fakeFeedContents().contents[0].first
+
+        composeTestRule.setContent {
+            ConferenceAppFeederTheme {
+                FeedItem(
+                    feedItem = feedItem,
+                    favorited = true,
+                    showMediaLabel = false,
+                    onClick = { },
+                    onFavoriteChange = { }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("MediaLabel", useUnmergedTree = true).assertDoesNotExist()
     }
 }
