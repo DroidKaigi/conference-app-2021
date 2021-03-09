@@ -244,14 +244,24 @@ private fun FeedList(
             state = listState
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
-                FeedItemRow(
-                    content.first,
-                    content.second,
-                    onClickFeed,
-                    isHome,
-                    onFavoriteChange,
-                    index != 0
-                )
+                if (isHome && index == 0) {
+                    FirstFeedItem(
+                        feedItem = content.first,
+                        favorited = content.second,
+                        onClick = onClickFeed,
+                        showMediaLabel = isHome,
+                        onFavoriteChange = onFavoriteChange
+                    )
+                } else {
+                    FeedItemRow(
+                        content.first,
+                        content.second,
+                        onClickFeed,
+                        isHome,
+                        onFavoriteChange,
+                        index != 0
+                    )
+                }
             }
         }
     }
