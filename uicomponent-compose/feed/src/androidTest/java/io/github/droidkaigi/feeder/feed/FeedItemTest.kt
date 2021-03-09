@@ -17,7 +17,7 @@ class FeedItemTest {
     val composeTestRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
-    fun test() {
+    fun showFeedItem_clickListenerRegistered() {
         val feedItem = fakeFeedContents().contents[0].first
 
         composeTestRule.setContent {
