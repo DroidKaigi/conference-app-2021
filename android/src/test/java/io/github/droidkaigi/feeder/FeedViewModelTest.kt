@@ -22,7 +22,7 @@ import org.junit.runners.Parameterized
 
 @InternalCoroutinesApi
 @RunWith(Parameterized::class)
-class FeedItemViewModelTest(
+class FeedViewModelTest(
     val name: String,
     private val feedViewModelFactory: FeedViewModelFactory,
 ) {
