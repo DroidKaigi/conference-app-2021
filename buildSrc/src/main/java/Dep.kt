@@ -107,8 +107,10 @@ object Dep {
         const val activity = "androidx.activity:activity-ktx:1.2.0"
     }
 
-    object Arbor {
-        const val common = "com.ToxicBakery.logging:common:1.35.72"
+    object SQLDelight {
+        const val plugin = "com.squareup.sqldelight:gradle-plugin:1.4.4"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:1.4.4"
+        const val coroutinesExtensions = "com.squareup.sqldelight:coroutines-extensions:1.4.4"
     }
 
     object Flipper {

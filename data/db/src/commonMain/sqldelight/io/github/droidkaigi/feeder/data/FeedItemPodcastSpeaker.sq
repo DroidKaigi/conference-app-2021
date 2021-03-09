@@ -1,0 +1,15 @@
+CREATE TABLE feedItemPodcastSpeaker (
+    feedItemPodcastId Text NOT NULL,
+    name Text NOT NULL,
+    iconUrl Text NOT NULL
+);
+
+insert:
+INSERT INTO feedItemPodcastSpeaker(
+    feedItemPodcastId,
+    name,
+    iconUrl
+) VALUES ?;
+
+deleteAll:
+DELETE FROM feedItemPodcastSpeaker;

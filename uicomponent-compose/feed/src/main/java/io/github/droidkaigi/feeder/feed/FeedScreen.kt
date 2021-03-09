@@ -98,9 +98,6 @@ fun FeedScreen(
                     )
                 ) {
                     SnackbarResult.ActionPerformed -> {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            "Sorry, Currently not implemented."
-                        )
                         dispatch(FeedViewModel.Event.ReloadContent)
                     }
                     SnackbarResult.Dismissed -> {

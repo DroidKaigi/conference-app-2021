@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder
 
 import io.github.droidkaigi.feeder.data.FeedRepositoryImpl
 import io.github.droidkaigi.feeder.data.fakeFeedApi
+import io.github.droidkaigi.feeder.data.fakeFeedItemDao
 import io.github.droidkaigi.feeder.data.fakeUserDataStore
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.feed.FeedViewModel.Event.ChangeFavoriteFilter
@@ -112,6 +113,13 @@ class FeedItemViewModelTest(
                             feedApi = fakeFeedApi(
                                 if (errorFetchData) {
                                     AppError.ApiException.ServerException(null)
+                                } else {
+                                    null
+                                }
+                            ),
+                            feedItemDao = fakeFeedItemDao(
+                                if (errorFetchData) {
+                                    AppError.UnknownException(Throwable("Database Exception"))
                                 } else {
                                     null
                                 }

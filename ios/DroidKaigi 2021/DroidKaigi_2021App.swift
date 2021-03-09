@@ -11,7 +11,7 @@ import SwiftUI
 struct DroidKaigi_2021App: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            RootScreen()
         }
     }
 }
