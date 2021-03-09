@@ -8,7 +8,6 @@ buildscript {
     repositories {
         google()
         mavenCentral()
-        jcenter()
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
@@ -33,7 +32,6 @@ plugins {
 allprojects {
     repositories {
         google()
-        jcenter()
         mavenCentral()
         maven { url 'https://androidx.dev/snapshots/builds/6767375/artifacts/ui/repository' }
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
@@ -49,7 +47,6 @@ allprojects {
     repositories {
         google()
         mavenCentral()
-//        jcenter()
     }
 
     apply plugin: 'com.diffplug.spotless'
