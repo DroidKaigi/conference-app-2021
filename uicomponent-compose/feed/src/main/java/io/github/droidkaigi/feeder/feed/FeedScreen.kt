@@ -308,7 +308,7 @@ fun PreviewFeedScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
-    ConferenceAppFeederTheme(false) {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.FilteredFeed.Blog,
