@@ -45,7 +45,7 @@ For Japanese speakers, please see [CONTRIBUTING.ja.md](CONTRIBUTING.ja.md)
 ## Requirements
 
 Latest Android Studio **Arctic Fox** and higher. You can download it from [this page](https://developer.android.com/studio/preview).  
-Xcode version is 12.4. (If you do iOS development)
+Xcode version is 12.4 (If you do iOS development)
 
 # Tech Stacks
 
