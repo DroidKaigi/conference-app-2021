@@ -1,4 +1,5 @@
 import io.github.droidkaigi.feeder.Dep
+import io.github.droidkaigi.feeder.Versions
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -72,9 +73,10 @@ android {
     }
     buildFeatures {
         compose true
+        buildConfig false
     }
     composeOptions {
-        kotlinCompilerExtensionVersion "${compose_version}"
+        kotlinCompilerExtensionVersion "${Versions.compose}"
     }
 }
 
@@ -111,16 +113,16 @@ dependencies {
     implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03')
     kapt Dep.Dagger.hiltAndroidCompiler
 
-    implementation "androidx.compose.runtime:runtime:$compose_version"
-    implementation "androidx.compose.ui:ui:$compose_version"
     implementation Dep.Compose.activity
+    implementation Dep.Compose.runtime
+    implementation Dep.Compose.ui
 
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlib
-    // FIXME: move to Dep.kt
-    implementation 'androidx.core:core-ktx:1.5.0-beta01'
-    implementation "androidx.fragment:fragment-ktx:1.3.0"
-    implementation "androidx.activity:activity-ktx:1.2.0"
+
+    implementation Dep.AndroidX.core
+    implementation Dep.AndroidX.fragment
+    implementation Dep.AndroidX.activity
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
@@ -131,6 +133,14 @@ dependencies {
     implementation Dep.firebaseAuth
     implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
+
+    // For Layout inspector
+    debugImplementation Dep.Compose.tooling
+    debugImplementation Dep.Kotlin.reflect
+
+    debugImplementation Dep.Flipper.flipper
+    debugImplementation Dep.Flipper.networkPlugin
+    debugImplementation Dep.Flipper.soLoader
 
     testImplementation 'junit:junit:4.13.1'
     testImplementation Dep.Coroutines.test

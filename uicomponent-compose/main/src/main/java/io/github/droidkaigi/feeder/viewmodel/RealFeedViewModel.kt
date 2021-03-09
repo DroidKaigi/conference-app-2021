@@ -4,13 +4,16 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.FeedContents
-import io.github.droidkaigi.feeder.FeedRepository
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
+import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
+import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.toLoadState
+import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,8 +24,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.annotation.meta.Exhaustive
-import javax.inject.Inject
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
@@ -30,7 +31,14 @@ class RealFeedViewModel @Inject constructor(
 ) : ViewModel(), FeedViewModel {
 
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
+    private val showProgressLatch = ProgressTimeLatch(viewModelScope = viewModelScope)
     override val effect: Flow<FeedViewModel.Effect> = effectChannel.receiveAsFlow()
+
+    init {
+        viewModelScope.launch {
+            repository.refresh()
+        }
+    }
 
     private val allFeedContents: StateFlow<LoadState<FeedContents>> = repository.feedContents()
         .toLoadState()
@@ -41,6 +49,7 @@ class RealFeedViewModel @Inject constructor(
                 error.getThrowableOrNull()?.printStackTrace()
                 effectChannel.send(FeedViewModel.Effect.ErrorMessage(error.e))
             }
+            showProgressLatch.refresh(loadState.isLoading())
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
@@ -48,12 +57,13 @@ class RealFeedViewModel @Inject constructor(
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
-            filters
-        ) { feedContentsLoadState, filters ->
+            filters,
+            showProgressLatch.toggleState
+        ) { feedContentsLoadState, filters, showProgress ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             FeedViewModel.State(
-                showProgress = feedContentsLoadState.isLoading(),
+                showProgress = showProgress,
                 filters = filters,
                 filteredFeedContents = filteredFeed,
 //                snackbarMessage = currentValue.snackbarMessage
@@ -83,6 +93,9 @@ class RealFeedViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(event.feedItem)
                     }
+                }
+                is FeedViewModel.Event.ReloadContent -> {
+                    repository.refresh()
                 }
             }
         }

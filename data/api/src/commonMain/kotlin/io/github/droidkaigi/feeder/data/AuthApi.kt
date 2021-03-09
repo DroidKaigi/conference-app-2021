@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.data
 
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
+import io.github.droidkaigi.feeder.Logger
 import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
 import io.ktor.client.request.header
@@ -36,7 +37,7 @@ class AuthApi(
         }
         // not authenticated
         val result = auth.signInAnonymously()
-        println("signin:${result.user}")
+        Logger.d("signin:${result.user}")
         val createdIdToken = result.user?.getIdToken(false).orEmpty()
         userDataStore.setIdToken(createdIdToken)
         if (createdIdToken.isNotBlank()) {

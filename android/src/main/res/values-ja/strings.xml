@@ -1,5 +1,7 @@
 <resources>
     <!-- Notification -->
-    <string name="notification_channel_name_default">お知らせ</string>
     <string name="notification_channel_name_announcement">運営からの広報</string>
+    <string name="notification_channel_name_blog">ブログ更新</string>
+    <string name="notification_channel_name_video">ビデオ更新</string>
+    <string name="notification_channel_name_podcast">ポッドキャスト更新</string>
 </resources>

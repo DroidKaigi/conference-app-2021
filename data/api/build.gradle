@@ -74,10 +74,19 @@ kotlin {
 //            testImplementation "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptTest Dep.Dagger.hiltAndroidCompiler
         }
+        androidDebug.dependencies {
+            implementation Dep.Flipper.flipper
+            implementation Dep.Flipper.networkPlugin
+        }
         androidTest.dependencies {
             implementation Dep.KotlinTest.junit
             implementation Dep.Kotlin.reflect
             implementation Dep.ktlint
+        }
+        androidAndroidTest {
+            kotlin {
+                srcDir 'src/androidTest'
+            }
         }
 //            // For instrumentation tests
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"

@@ -43,6 +43,7 @@ sealed class FeedItem {
         override val title: MultiLangText,
         override val summary: MultiLangText,
         override val link: String,
+        val speakers: List<Speaker>
     ) : FeedItem()
 
     fun publishedDateString(): String {

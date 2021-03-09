@@ -2,10 +2,12 @@ package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
 import androidx.compose.material.LocalContentAlpha
@@ -14,13 +16,17 @@ import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.FeedItem
@@ -46,7 +52,7 @@ fun FeedItem(
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { }
     ) {
-        val (media, image, title, date, favorite) = createRefs()
+        val (media, image, title, date, favorite, speakers) = createRefs()
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
@@ -76,7 +82,7 @@ fun FeedItem(
                     bottom.linkTo(parent.bottom, 12.dp)
                 }
                 .width(96.dp)
-//                .aspectRatio(16F / 9F)
+                .clip(shape = RoundedCornerShape(4.dp))
                 .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop,
             contentDescription = null
@@ -88,11 +94,25 @@ fun FeedItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = feedItem.title.jaTitle,
-            style = typography.h5,
+            text = feedItem.title.currentLangTitle,
+            style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
         )
+        val speakerModifier = Modifier.constrainAs(speakers) {
+            start.linkTo(title.start)
+            bottom.linkTo(date.top)
+            end.linkTo(title.end)
+            width = Dimension.fillToConstraints
+        }
+        if (feedItem is FeedItem.Podcast) {
+            SpeakersItem(
+                modifier = speakerModifier.padding(top = 8.dp, bottom = 8.dp),
+                speakers = feedItem.speakers
+            )
+        } else {
+            Box(speakerModifier)
+        }
         CompositionLocalProvider(LocalContentAlpha provides 0.54f) {
             Text(
                 modifier = Modifier.constrainAs(date) {
@@ -167,6 +187,21 @@ fun PreviewFeedItem() {
 fun PreviewFeedItemWithMedia() {
     ConferenceAppFeederTheme {
         val feedItem = fakeFeedContents().feedItemContents[0]
+        FeedItem(
+            feedItem = feedItem,
+            favorited = false,
+            showMediaLabel = true,
+            onClick = { },
+            onFavoriteChange = { }
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewFeedItemWithSpeaker() {
+    ConferenceAppFeederTheme {
+        val feedItem = fakeFeedContents().feedItemContents.first { it is FeedItem.Podcast }
         FeedItem(
             feedItem = feedItem,
             favorited = false,

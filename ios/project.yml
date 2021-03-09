@@ -1,0 +1,63 @@
+name: DroidKaigi 2021
+settings:
+    PRODUCT_BUNDLE_IDENTIFIER: io.github.droidkaigi.confsched2021.DroidKaigi2021
+schemes:
+  DroidKaigi 2021-Debug:
+    build:
+      targets:
+        DroidKaigi 2021: all
+        DroidKaigi 2021UITests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+    profile:
+      config: Debug
+    analyze:
+      config: Debug
+    archive:
+      config: Debug
+  DroidKaigi 2021-Release:
+    build:
+      targets:
+        DroidKaigi 2021: all
+        DroidKaigi 2021UITests: [test]
+    run:
+      config: Release
+    test:
+      config: Release
+    profile:
+      config: Release
+    analyze:
+      config: Release
+    archive:
+      config: Release
+targets:
+    DroidKaigi 2021:
+        type: application
+        platform: iOS
+        deploymentTarget: "14.0"
+        sources: DroidKaigi 2021
+        preBuildScripts:
+            - name: Run SwiftLint
+              script: |
+                  mint run swiftlint autocorrect
+                  mint run swiftlint
+        testTargets:
+            - DroidKaigi 2021Tests
+    DroidKaigi 2021Tests:
+        type: bundle.unit-test
+        platform: iOS
+        deploymentTarget: "14.0"
+        sources: DroidKaigi 2021Tests
+        dependencies:
+            - framework: build/ioscombined.framework
+            - target: DroidKaigi 2021
+        settings:
+            INFOPLIST_FILE: DroidKaigi 2021Tests/info.plist
+            TEST_HOST: $(BUILT_PRODUCTS_DIR)/DroidKaigi 2021.app/DroidKaigi 2021
+    DroidKaigi 2021UITests:
+        type: bundle.ui-testing
+        platform: iOS
+        deploymentTarget: "14.0"
+        sources: DroidKaigi 2021UITests

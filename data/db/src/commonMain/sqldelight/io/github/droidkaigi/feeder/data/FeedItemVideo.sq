@@ -1,0 +1,37 @@
+CREATE TABLE feedItemVideo(
+    id Text NOT NULL PRIMARY KEY,
+    publishedAt Integer NOT NULL,
+    imageSmallUrl Text NOT NULL,
+    imageStandardUrl Text NOT NULL,
+    imageLargeUrl Text NOT NULL,
+    media Text NOT NULL,
+    jaTitle Text NOT NULL,
+    enTitle Text NOT NULL,
+    jaSummary Text NOT NULL,
+    enSummary Text NOT NULL,
+    link Text NOT NULL
+);
+
+CREATE INDEX feedItemVideo_id ON feedItemVideo(id);
+
+selectAll:
+SELECT *
+FROM feedItemVideo;
+
+insert:
+INSERT INTO feedItemVideo(
+    id,
+    publishedAt ,
+    imageSmallUrl ,
+    imageStandardUrl ,
+    imageLargeUrl ,
+    media ,
+    jaTitle ,
+    enTitle ,
+    jaSummary ,
+    enSummary ,
+    link
+) VALUES ?;
+
+deleteAll:
+DELETE FROM feedItemVideo;
