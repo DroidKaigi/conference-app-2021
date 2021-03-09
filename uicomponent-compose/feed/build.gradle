@@ -10,6 +10,9 @@ plugins {
 apply from: rootProject.file("gradle/android.gradle")
 
 android {
+    defaultConfig {
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -24,6 +27,11 @@ android {
     }
     composeOptions {
         kotlinCompilerExtensionVersion "${Versions.compose}"
+    }
+    packagingOptions {
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
@@ -58,6 +66,7 @@ dependencies {
     implementation Dep.Compose.material
     implementation Dep.Compose.iconsExtended
     implementation Dep.Compose.animation
+    androidTestImplementation Dep.Compose.test
 
     // Android
     implementation Dep.Jetpack.browser
