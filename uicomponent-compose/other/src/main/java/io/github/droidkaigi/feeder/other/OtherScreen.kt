@@ -32,10 +32,10 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.about.AboutThisApp
+import io.github.droidkaigi.feeder.contributor.ContributorList
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
-import io.github.droidkaigi.feeder.contributor.ContributorList
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.staff.StaffList
