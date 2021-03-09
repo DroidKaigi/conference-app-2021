@@ -13,7 +13,7 @@ jobs:
       github.event_name == 'pull_request' && 
       !contains(github.event.pull_request.head.ref, 'main')
     name: "test on feature branches"
-    runs-on: macos-11.0
+    runs-on: macos-latest
     steps:
       - name: Get HEAD to fetch
         id: fetch-head
