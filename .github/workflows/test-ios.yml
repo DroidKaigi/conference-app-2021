@@ -1,4 +1,4 @@
-name: assemble-app
+name: ios-test
 on:
   pull_request:
     types: [opened, synchronize, reopened]
@@ -12,7 +12,7 @@ jobs:
       github.event_name == 'push' || 
       github.event_name == 'pull_request' && 
       !contains(github.event.pull_request.head.ref, 'main')
-    name: "test on feature branches"
+    name: "ios test on feature branches"
     runs-on: macos-latest
     steps:
       - name: Get HEAD to fetch
