@@ -43,8 +43,8 @@ import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlinx.coroutines.launch
 import kotlin.reflect.KClass
+import kotlinx.coroutines.launch
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
@@ -278,7 +278,7 @@ fun FeedItemRow(
     onClickFeed: (FeedItem) -> Unit,
     showMediaLabel: Boolean,
     onFavoriteChange: (FeedItem) -> Unit,
-    showDivider: Boolean,
+    showDivider: Boolean
 ) {
     if (showDivider) {
         Divider()
