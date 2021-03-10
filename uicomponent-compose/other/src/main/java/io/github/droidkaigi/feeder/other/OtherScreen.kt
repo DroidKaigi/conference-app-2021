@@ -78,7 +78,6 @@ fun OtherScreen(
 /**
  * stateless
  */
-@ExperimentalMaterialApi
 @Composable
 fun OtherScreen(
     scaffoldState: BackdropScaffoldState,
