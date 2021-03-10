@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.core.theme
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
@@ -54,5 +55,16 @@ private fun systemColorPalette(): Colors {
         DarkColorPalette
     } else {
         LightColorPalette
+    }
+}
+
+@Composable
+fun AppThemeWithBackground(
+    darkTheme: Theme? = Theme.SYSTEM,
+    content: @Composable
+    () -> Unit,
+) {
+    Surface {
+        ConferenceAppFeederTheme(darkTheme, content)
     }
 }

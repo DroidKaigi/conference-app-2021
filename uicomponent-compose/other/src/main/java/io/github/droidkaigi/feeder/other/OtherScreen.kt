@@ -2,9 +2,7 @@ package io.github.droidkaigi.feeder.other
 
 import android.content.Intent
 import android.net.Uri
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -18,7 +16,6 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
@@ -35,6 +32,11 @@ import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.about.AboutThisApp
+import io.github.droidkaigi.feeder.contributor.ContributorList
+import io.github.droidkaigi.feeder.core.ScrollableTabRow
+import io.github.droidkaigi.feeder.core.TabIndicator
+import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
+import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
@@ -100,7 +102,7 @@ fun OtherScreen(
                     color = MaterialTheme.colors.background,
                     modifier = Modifier.fillMaxHeight()
                 ) {
-                    Crossfade(targetState = selectedTab) { selectedTab ->
+                    FadeThrough(targetState = selectedTab) { selectedTab ->
                         BackdropFrontLayerContent(selectedTab)
                     }
                 }
@@ -125,10 +127,15 @@ private fun AppBar(
             }
         }
     )
+    val selectedTabIndex = OtherTabs.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
-        indicator = {
+        foregroundIndicator = {},
+        backgroundIndicator = { tabPositions ->
+            TabIndicator(
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+            )
         },
         divider = {}
     ) {
@@ -137,17 +144,7 @@ private fun AppBar(
                 selected = tab == selectedTab,
                 text = {
                     Text(
-                        modifier = if (selectedTab == tab) {
-                            Modifier
-                                .background(
-                                    color = MaterialTheme.colors.secondary,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        } else {
-                            Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        },
+                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
                         text = tab.name
                     )
                 },
@@ -163,6 +160,7 @@ private fun BackdropFrontLayerContent(
 ) {
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()
+        OtherTabs.Contributor -> ContributorList()
         OtherTabs.Settings -> Settings()
         OtherTabs.Staff -> StaffList()
         else -> {

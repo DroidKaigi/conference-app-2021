@@ -21,6 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
+import androidx.compose.ui.semantics.testTag
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -46,6 +47,7 @@ fun FeedItem(
 ) {
     ConstraintLayout(
         modifier = Modifier
+            .semantics { testTag = "FeedItem" }
             .clickable(
                 onClick = { onClick(feedItem) }
             )
@@ -56,6 +58,7 @@ fun FeedItem(
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
+                    .semantics { testTag = "MediaLabel" }
                     .constrainAs(media) {
                         top.linkTo(parent.top, 12.dp)
                         start.linkTo(parent.start, 24.dp)

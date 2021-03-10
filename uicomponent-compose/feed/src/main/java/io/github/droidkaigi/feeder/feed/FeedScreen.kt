@@ -1,8 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
-import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -17,7 +15,6 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
@@ -39,6 +36,10 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.core.ScrollableTabRow
+import io.github.droidkaigi.feeder.core.TabIndicator
+import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
+import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
@@ -98,9 +99,6 @@ fun FeedScreen(
                     )
                 ) {
                     SnackbarResult.ActionPerformed -> {
-                        scaffoldState.snackbarHostState.showSnackbar(
-                            "Sorry, Currently not implemented."
-                        )
                         dispatch(FeedViewModel.Event.ReloadContent)
                     }
                     SnackbarResult.Dismissed -> {
@@ -167,7 +165,7 @@ private fun FeedScreen(
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
             frontLayerContent = {
-                Crossfade(targetState = selectedTab) { selectedTab ->
+                FadeThrough(targetState = selectedTab) { selectedTab ->
                     val isHome = selectedTab is FeedTabs.Home
                     FeedList(
                         feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
@@ -202,10 +200,15 @@ private fun AppBar(
             }
         }
     )
+    val selectedTabIndex = FeedTabs.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
-        indicator = {
+        foregroundIndicator = {},
+        backgroundIndicator = { tabPositions ->
+            TabIndicator(
+                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+            )
         },
         divider = {}
     ) {
@@ -214,18 +217,8 @@ private fun AppBar(
                 selected = tab == selectedTab,
                 text = {
                     Text(
-                        modifier = if (selectedTab == tab) {
-                            Modifier
-                                .background(
-                                    color = MaterialTheme.colors.secondary,
-                                    shape = MaterialTheme.shapes.small
-                                )
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        } else {
-                            Modifier
-                                .padding(vertical = 4.dp, horizontal = 8.dp)
-                        },
-                        text = tab.name
+                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
+                        text = tab.name,
                     )
                 },
                 onClick = { onSelectTab(tab) }
@@ -252,14 +245,24 @@ private fun FeedList(
             state = listState
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
-                FeedItemRow(
-                    content.first,
-                    content.second,
-                    onClickFeed,
-                    isHome,
-                    onFavoriteChange,
-                    index != 0
-                )
+                if (isHome && index == 0) {
+                    FirstFeedItem(
+                        feedItem = content.first,
+                        favorited = content.second,
+                        onClick = onClickFeed,
+                        showMediaLabel = isHome,
+                        onFavoriteChange = onFavoriteChange
+                    )
+                } else {
+                    FeedItemRow(
+                        content.first,
+                        content.second,
+                        onClickFeed,
+                        isHome,
+                        onFavoriteChange,
+                        index != 0
+                    )
+                }
             }
         }
     }

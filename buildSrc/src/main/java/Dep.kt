@@ -15,7 +15,9 @@ object Dep {
         const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
         const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
+        const val test = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
         const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
+        const val util = "androidx.compose.ui:ui-util:${Versions.compose}"
         const val material = "androidx.compose.material:material:${Versions.compose}1"
         const val iconsExtended =
             "androidx.compose.material:material-icons-extended:${Versions.compose}"
@@ -106,8 +108,10 @@ object Dep {
         const val activity = "androidx.activity:activity-ktx:1.2.0"
     }
 
-    object Arbor {
-        const val common = "com.ToxicBakery.logging:common:1.35.72"
+    object SQLDelight {
+        const val plugin = "com.squareup.sqldelight:gradle-plugin:1.4.4"
+        const val androidDriver = "com.squareup.sqldelight:android-driver:1.4.4"
+        const val coroutinesExtensions = "com.squareup.sqldelight:coroutines-extensions:1.4.4"
     }
 
     object Flipper {

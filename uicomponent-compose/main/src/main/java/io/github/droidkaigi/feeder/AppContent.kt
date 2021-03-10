@@ -1,8 +1,5 @@
 package io.github.droidkaigi.feeder
 
-import android.content.Context
-import android.net.Uri
-import androidx.browser.customtabs.CustomTabsIntent
 import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.material.DrawerDefaults
 import androidx.compose.material.DrawerValue
@@ -24,14 +21,19 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
-import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navDeepLink
+import io.github.droidkaigi.feeder.core.navigation.chromeCustomTabs
+import io.github.droidkaigi.feeder.core.navigation.navigateChromeCustomTabs
+import io.github.droidkaigi.feeder.core.navigation.rememberCustomNavController
 import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTabs
 import kotlinx.coroutines.launch
+
+private const val FEED_PATH = "feed/"
+private const val OTHER_PATH = "other/"
 
 @Composable
 fun AppContent(
@@ -40,7 +42,7 @@ fun AppContent(
 ) {
     val drawerState = rememberDrawerState(firstDrawerValue)
     val drawerContentState = rememberDrawerContentState(DrawerContents.HOME.route)
-    val navController = rememberNavController()
+    val navController = rememberCustomNavController()
     val coroutineScope = rememberCoroutineScope()
     val onNavigationIconClick: () -> Unit = {
         coroutineScope.launch {
@@ -69,10 +71,10 @@ fun AppContent(
         },
         scrimColor = Color.Black.copy(alpha = DrawerDefaults.ScrimOpacity),
     ) {
-        NavHost(navController, startDestination = "feed/{feedTab}") {
+        NavHost(navController, startDestination = "$FEED_PATH{feedTab}") {
             composable(
-                route = "feed/{feedTab}",
-                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/feed/{feedTab}" }),
+                route = "$FEED_PATH{feedTab}",
+                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/$FEED_PATH{feedTab}" }),
                 arguments = listOf(
                     navArgument("feedTab") {
                         type = NavType.StringType
@@ -85,7 +87,6 @@ fun AppContent(
                 )
                 val selectedTab = FeedTabs.ofRoutePath(routePath.value)
                 drawerContentState.onSelectDrawerContent(selectedTab)
-                val context = LocalContext.current
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
                     selectedTab = selectedTab,
@@ -95,13 +96,17 @@ fun AppContent(
                         drawerContentState.onSelectDrawerContent(feedTabs)
                     },
                     onDetailClick = { feedItem: FeedItem ->
-                        actions.onSelectFeed(context, feedItem)
+                        actions.showChromeCustomTabs(feedItem.link)
                     }
                 )
             }
             composable(
-                route = "other/{otherTab}",
-                deepLinks = listOf(navDeepLink { uriPattern = "$deepLinkUri/other/{otherTab}" }),
+                route = "$OTHER_PATH{otherTab}",
+                deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "$deepLinkUri/$OTHER_PATH{otherTab}"
+                    }
+                ),
                 arguments = listOf(
                     navArgument("otherTab") {
                         type = NavType.StringType
@@ -124,6 +129,7 @@ fun AppContent(
                     onNavigationIconClick = onNavigationIconClick
                 )
             }
+            chromeCustomTabs()
         }
     }
 }
@@ -149,13 +155,8 @@ private class AppActions(navController: NavHostController) {
         }
     }
 
-    val onSelectFeed: (Context, FeedItem) -> Unit = { context, feedItem ->
-        val builder = CustomTabsIntent.Builder()
-            .setShowTitle(true)
-            .setUrlBarHidingEnabled(true)
-
-        val intent = builder.build()
-        intent.launchUrl(context, Uri.parse(feedItem.link))
+    val showChromeCustomTabs: (String) -> Unit = { link ->
+        navController.navigateChromeCustomTabs(link)
     }
 }
 

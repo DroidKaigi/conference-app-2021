@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -28,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.feed.FeedTabs
 import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherTabs
@@ -48,19 +47,19 @@ enum class DrawerContents(
     ),
     BLOG(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_text_snippet_24,
         label = "BLOG",
         route = "feed/${FeedTabs.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_videocam_24,
         label = "VIDEO",
         route = "feed/${FeedTabs.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_list_alt_24,
+        imageResId = R.drawable.ic_baseline_mic_none_24,
         label = "PODCAST",
         route = "feed/${FeedTabs.FilteredFeed.Podcast.routePath}"
     ),
@@ -205,10 +204,8 @@ private fun DrawerContentGroup(
 @Preview
 @Composable
 fun PreviewDrawerContent() {
-    ConferenceAppFeederTheme {
-        Surface {
-            DrawerContent(currentRoute = DrawerContents.HOME.route) {
-            }
+    AppThemeWithBackground {
+        DrawerContent(currentRoute = DrawerContents.HOME.route) {
         }
     }
 }

@@ -4,8 +4,10 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.droidkaigi.feeder.repository.ContributorRepository
 import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
+import io.github.droidkaigi.feeder.repository.StaffRepository
 import io.github.droidkaigi.feeder.repository.ThemeRepository
 
 @InstallIn(SingletonComponent::class)
@@ -17,7 +19,17 @@ class DataModule {
     }
 
     @Provides
+    internal fun provideStaffApi(daggerApi: DaggerKtorStaffApi): StaffApi {
+        return daggerApi
+    }
+
+    @Provides
     internal fun provideDeviceApi(daggerApi: DaggerKtorDeviceApi): DeviceApi {
+        return daggerApi
+    }
+
+    @Provides
+    internal fun provideContributorApi(daggerApi: DaggerKtorContributorApi): ContributorApi {
         return daggerApi
     }
 
@@ -27,7 +39,19 @@ class DataModule {
     }
 
     @Provides
+    internal fun provideFeedItemDao(feedItemDao: DaggerSQLDelightFeedItemDao): FeedItemDao {
+        return feedItemDao
+    }
+
+    @Provides
     internal fun provideFeedRepository(daggerRepository: DaggerFeedRepositoryImpl): FeedRepository {
+        return daggerRepository
+    }
+
+    @Provides
+    internal fun provideStaffRepository(
+        daggerRepository: DaggerStaffRepositoryImpl
+    ): StaffRepository {
         return daggerRepository
     }
 
@@ -35,6 +59,13 @@ class DataModule {
     internal fun provideDeviceRepository(
         daggerRepository: DaggerDeviceRepositoryImpl
     ): DeviceRepository {
+        return daggerRepository
+    }
+
+    @Provides
+    internal fun provideContributorRepository(
+        daggerRepository: DaggerContributorRepositoryImpl,
+    ): ContributorRepository {
         return daggerRepository
     }
 
