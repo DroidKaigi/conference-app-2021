@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.semantics.testTag
@@ -134,18 +135,19 @@ fun FeedItem(
                 end.linkTo(parent.end, 16.dp)
             },
             content = {
-                Icon(
-                    painterResource(
-                        if (favorited) {
-                            R.drawable
-                                .ic_baseline_favorite_24
-                        } else {
-                            R.drawable
-                                .ic_baseline_favorite_border_24
-                        }
-                    ),
-                    "favorite"
-                )
+                if (favorited) {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_baseline_favorite_24),
+                        contentDescription = "favorite",
+                        modifier = Modifier.testTag("Favorite")
+                    )
+                } else {
+                    Icon(
+                        painter = painterResource(R.drawable.ic_baseline_favorite_border_24),
+                        contentDescription = "favorite",
+                        modifier = Modifier.testTag("NotFavorite")
+                    )
+                }
             },
             onCheckedChange = {
                 onFavoriteChange(feedItem)
