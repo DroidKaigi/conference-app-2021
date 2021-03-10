@@ -109,8 +109,8 @@ dependencies {
     testImplementation Dep.Dagger.hiltAndroidTesting
     kaptTest Dep.Dagger.hiltAndroidCompiler
 
-    implementation('androidx.hilt:hilt-common:1.0.0-alpha03')
-    implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03')
+    implementation Dep.AndroidX.hiltCommon
+    implementation Dep.AndroidX.hiltLifeCycleViewModel
     kapt Dep.Dagger.hiltAndroidCompiler
 
     implementation Dep.Compose.activity
@@ -124,8 +124,8 @@ dependencies {
     implementation Dep.AndroidX.fragment
     implementation Dep.AndroidX.activity
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation Dep.Jetpack.appcompat
+    implementation Dep.AndroidX.lifecycle
     implementation 'com.google.android.material:material:1.3.0'
 
     implementation Dep.FirebaseCrashlytics.android
@@ -148,7 +148,7 @@ dependencies {
     // https://github.com/cashapp/turbine/issues/10
     testImplementation 'app.cash.turbine:turbine:0.2.1'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation Dep.AndroidX.Test.ext
+    androidTestImplementation Dep.AndroidX.Test.espresso
 }
 

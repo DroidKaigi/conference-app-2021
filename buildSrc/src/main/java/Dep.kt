@@ -106,6 +106,14 @@ object Dep {
         const val core = "androidx.core:core-ktx:1.5.0-beta01"
         const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
         const val activity = "androidx.activity:activity-ktx:1.2.0"
+        const val lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+        const val hiltCommon = "androidx.hilt:hilt-common:1.0.0-alpha03"
+        const val hiltLifeCycleViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+
+        object Test {
+            const val ext = "androidx.test.ext:junit:1.1.2"
+            const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
+        }
     }
 
     object SQLDelight {

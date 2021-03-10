@@ -156,7 +156,10 @@ fun ThemeSelectRadioButton(
                     RadioButton(
                         selected = (theme == selectedTheme),
                         modifier = Modifier.padding(16.dp),
-                        onClick = {}
+                        onClick = {
+                            oThemeSelected(theme)
+                            onChangeTheme(theme)
+                        }
                     )
                     Text(
                         text = theme.getTitle(context),

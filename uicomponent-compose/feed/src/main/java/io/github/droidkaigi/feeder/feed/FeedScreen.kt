@@ -42,7 +42,7 @@ import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.getReadableMessage
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
@@ -292,7 +292,7 @@ fun FeedItemRow(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    ConferenceAppFeederTheme {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.Home,
@@ -308,7 +308,7 @@ fun PreviewFeedScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
-    ConferenceAppFeederTheme {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.FilteredFeed.Blog,
