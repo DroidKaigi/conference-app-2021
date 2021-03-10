@@ -110,7 +110,7 @@ fun ThemeSelectDialog(
             Text(text = "Theme")
         },
         text = {
-            RadioButton(
+            ThemeSelectRadioButton(
                 onChangeTheme = onChangeTheme,
                 theme = theme,
                 context = context
@@ -127,19 +127,15 @@ fun ThemeSelectDialog(
 }
 
 @Composable
-fun RadioButton(
+fun ThemeSelectRadioButton(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
     context: Context
 ) {
     val themes: List<Theme> = Theme.values().toList()
-    var selectedO = 0;
-    themes.forEachIndexed { index, it ->
-        if (it == theme) {
-            selectedO = index
-        }
-    }
-    val (selectedTheme, oThemeSelected) = remember { mutableStateOf(themes[selectedO]) }
+    var defaultIndex = 0;
+    themes.forEachIndexed { index, it -> if (it == theme) defaultIndex = index }
+    val (selectedTheme, oThemeSelected) = remember { mutableStateOf(themes[defaultIndex]) }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -160,10 +156,7 @@ fun RadioButton(
                     RadioButton(
                         selected = (theme == selectedTheme),
                         modifier = Modifier.padding(16.dp),
-                        onClick = {
-                            oThemeSelected(theme)
-                            onChangeTheme(theme)
-                        }
+                        onClick = {}
                     )
                     Text(
                         text = theme.getTitle(context),
