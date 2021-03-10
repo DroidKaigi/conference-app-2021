@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.data
 
-import com.russhwolf.settings.ExperimentalSettingsApi
 import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.coroutines.FlowSettings
 import com.russhwolf.settings.coroutines.toFlowSettings

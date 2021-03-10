@@ -54,23 +54,22 @@ fun Settings() {
     }
 }
 
-
 @Composable
 fun Theme(
     context: Context,
     theme: Theme?,
     onClick: (Theme?) -> Unit
 ) {
-    val openDialog = remember { mutableStateOf(false)  }
+    val openDialog = remember { mutableStateOf(false) }
     Row(
         verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier
             .clickable {
-            openDialog.value = true
-        }
+                openDialog.value = true
+            }
             .fillMaxWidth()
             .padding(vertical = 24.dp)
-        ){
+    ) {
         Text(
             text = "Theme",
             style = typography.h5,
@@ -133,7 +132,7 @@ fun ThemeSelectRadioButton(
     context: Context
 ) {
     val themes: List<Theme> = Theme.values().toList()
-    var defaultIndex = 0;
+    var defaultIndex = 0
     themes.forEachIndexed { index, it -> if (it == theme) defaultIndex = index }
     val (selectedTheme, oThemeSelected) = remember { mutableStateOf(themes[defaultIndex]) }
     Column(

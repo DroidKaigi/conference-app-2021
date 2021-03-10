@@ -32,8 +32,10 @@ private val LocalDroidKaigiAppViewModel = compositionLocalOf<DroidKaigiAppViewMo
 }
 
 @Composable
-fun ProvideDroidKaigiAppViewModel(viewModel: DroidKaigiAppViewModel, block: @Composable () ->
-Unit) {
+fun ProvideDroidKaigiAppViewModel(
+    viewModel: DroidKaigiAppViewModel,
+    block: @Composable () -> Unit
+) {
     CompositionLocalProvider(LocalDroidKaigiAppViewModel provides viewModel, content = block)
 }
 

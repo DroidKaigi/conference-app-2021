@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.data
 
-import io.github.droidkaigi.feeder.repository.ThemeRepository
 import javax.inject.Inject
 import javax.inject.Singleton
 

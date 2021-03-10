@@ -11,11 +11,9 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.lifecycle.viewmodel.compose.viewModel
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
-import io.github.droidkaigi.feeder.viewmodel.RealDroidKaigiAppViewModel
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
