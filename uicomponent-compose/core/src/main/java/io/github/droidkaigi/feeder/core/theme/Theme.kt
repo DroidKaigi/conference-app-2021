@@ -42,10 +42,9 @@ fun ConferenceAppFeederTheme(
 private fun colorPalette(theme: Theme?): Colors {
     return when (theme) {
         Theme.SYSTEM -> systemColorPalette()
-        Theme.BATTERY -> DarkColorPalette
         Theme.DARK -> DarkColorPalette
         Theme.LIGHT -> LightColorPalette
-        else -> throw IllegalArgumentException("should not happen")
+        else -> systemColorPalette()
     }
 }
 
@@ -60,11 +59,11 @@ private fun systemColorPalette(): Colors {
 
 @Composable
 fun AppThemeWithBackground(
-    darkTheme: Theme? = Theme.SYSTEM,
+    theme: Theme? = Theme.SYSTEM,
     content: @Composable
     () -> Unit,
 ) {
     Surface {
-        ConferenceAppFeederTheme(darkTheme, content)
+        ConferenceAppFeederTheme(theme, content)
     }
 }

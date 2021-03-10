@@ -10,7 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface SettingViewModel :
-    UnidirectionalViewModel<SettingViewModel.Event, SettingViewModel.Effect, SettingViewModel.State> {
+    UnidirectionalViewModel<
+        SettingViewModel.Event,
+        SettingViewModel.Effect,
+        SettingViewModel.State> {
     data class State(
         val theme: Theme? = Theme.SYSTEM,
     )

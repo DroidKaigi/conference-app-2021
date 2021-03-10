@@ -11,8 +11,7 @@ interface DroidKaigiAppViewModel :
     UnidirectionalViewModel<
         DroidKaigiAppViewModel.Event,
         DroidKaigiAppViewModel.Effect,
-        DroidKaigiAppViewModel.State>
-{
+        DroidKaigiAppViewModel.State> {
     data class State(
         val theme: Theme? = Theme.SYSTEM,
     )

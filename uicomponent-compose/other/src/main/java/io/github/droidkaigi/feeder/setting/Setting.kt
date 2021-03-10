@@ -1,26 +1,28 @@
 package io.github.droidkaigi.feeder.setting
 import android.content.Context
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.material.AlertDialog
 import androidx.compose.material.Button
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.RadioButton
+import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.theme.getTitle
@@ -33,134 +35,139 @@ fun Settings() {
     ProvideSettingViewModel(viewModel = settingViewModel()) {
         val (
             state,
-            effectFlow,
+            _,
             dispatch,
         ) = use(settingViewModel())
-
         val context = LocalContext.current
-        Column(
-            modifier = Modifier
-                .padding(vertical = 48.dp, horizontal = 20.dp)
+
+        Surface(
+            color = MaterialTheme.colors.background,
         ) {
-            AboutThisAppComponent(
+            Theme(
                 context = context,
                 theme = state.theme,
-                onChangeTheme = {
+                onClick = {
                     dispatch(SettingViewModel.Event.ChangeTheme(theme = it))
                 }
             )
-            Spacer(modifier = Modifier.height(68.dp))
         }
     }
 }
 
 
 @Composable
-fun AboutThisAppComponent(
+fun Theme(
     context: Context,
     theme: Theme?,
-    onChangeTheme: (Theme?) -> Unit
+    onClick: (Theme?) -> Unit
 ) {
-    Column {
-        if (theme != null) {
-            Text(
-                text = theme.getTitle(context),
-                style = typography.h6
+    val openDialog = remember { mutableStateOf(false)  }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clickable {
+            openDialog.value = true
+        }
+            .fillMaxWidth()
+            .padding(vertical = 24.dp)
+        ){
+        Text(
+            text = "Theme",
+            style = typography.h5,
+            modifier = Modifier.padding(start = 36.dp),
+        )
+        Text(
+            text = theme.getTitle(context),
+            style = TextStyle(
+                color = Color.Gray
+            ),
+            modifier = Modifier.fillMaxWidth().padding(end = 36.dp),
+            textAlign = TextAlign.Right
+        )
+        if (openDialog.value) {
+            ThemeSelectDialog(
+                onChangeTheme = onClick,
+                theme = theme,
+                context = context,
+                onClick = {
+                    openDialog.value = false
+                }
             )
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        AlertDialog(
-            onChangeTheme = onChangeTheme,
-            theme = theme,
-            context = context,
-        )
     }
 }
 
 @Composable
-fun AlertDialog(
+fun ThemeSelectDialog(
+    onChangeTheme: (Theme?) -> Unit,
+    theme: Theme?,
+    context: Context,
+    onClick: () -> Unit
+) {
+    AlertDialog(
+        onDismissRequest = onClick,
+        title = {
+            Text(text = "Theme")
+        },
+        text = {
+            RadioButton(
+                onChangeTheme = onChangeTheme,
+                theme = theme,
+                context = context
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onClick
+            ) {
+                Text("OK")
+            }
+        },
+    )
+}
+
+@Composable
+fun RadioButton(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
     context: Context
 ) {
-    MaterialTheme {
-        Column {
-            val openDialog = remember { mutableStateOf(false)  }
-
-            Button(onClick = {
-                openDialog.value = true
-            }) {
-                Text("Change theme")
-            }
-
-            if (openDialog.value) {
-
-                AlertDialog(
-                    onDismissRequest = {
-                        openDialog.value = false
-                    },
-                    title = {
-                        Text(text = "Theme")
-                    },
-                    text = {
-                        SimpleRadioButtonComponent(
-                            onChangeTheme = onChangeTheme,
-                            theme = theme,
-                            context = context
-                        )
-                    },
-                    confirmButton = {
-                        Button(
-                            onClick = {
-                                openDialog.value = false
-                            }) {
-                            Text("OK")
-                        }
-                    },
-                )
-            }
+    val themes: List<Theme> = Theme.values().toList()
+    var selectedO = 0;
+    themes.forEachIndexed { index, it ->
+        if (it == theme) {
+            selectedO = index
         }
-
     }
-}
-
-@Composable
-fun SimpleRadioButtonComponent(
-    onChangeTheme: (Theme?) -> Unit,
-    theme: Theme?,
-    context: Context
-) {
-    val radioOptions: Array<Theme> = Theme.values()
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(theme?.name ?: Theme
-        .SYSTEM) }
+    val (selectedTheme, oThemeSelected) = remember { mutableStateOf(themes[selectedO]) }
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
         Column {
-            radioOptions.forEach { text ->
+            themes.forEach { theme ->
                 Row(
                     Modifier
                         .fillMaxWidth()
                         .selectable(
-                            selected = (text == selectedOption),
+                            selected = (theme == selectedTheme),
                             onClick = {
-                                onOptionSelected(text)
-                                onChangeTheme(text)
+                                oThemeSelected(theme)
+                                onChangeTheme(theme)
                             }
                         )
                 ) {
                     RadioButton(
-                        selected = (text == selectedOption),
-                        modifier = Modifier.padding(all = Dp(value = 8F)),
+                        selected = (theme == selectedTheme),
+                        modifier = Modifier.padding(16.dp),
                         onClick = {
-                            onOptionSelected(text)
-                            onChangeTheme(text)
+                            oThemeSelected(theme)
+                            onChangeTheme(theme)
                         }
                     )
                     Text(
-                        text = text.getTitle(context),
-                        modifier = Modifier.padding(all = Dp(value = 8F)),
+                        text = theme.getTitle(context),
+                        modifier = Modifier.padding(16.dp),
                     )
                 }
             }

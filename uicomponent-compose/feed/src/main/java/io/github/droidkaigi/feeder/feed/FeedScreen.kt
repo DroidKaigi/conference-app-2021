@@ -292,7 +292,7 @@ fun FeedItemRow(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    ConferenceAppFeederTheme(Theme.LIGHT) {
+    ConferenceAppFeederTheme {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.Home,
@@ -308,7 +308,7 @@ fun PreviewFeedScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
-    ConferenceAppFeederTheme(Theme.LIGHT) {
+    ConferenceAppFeederTheme {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.FilteredFeed.Blog,
