@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.feed
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -25,11 +26,15 @@ import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
@@ -42,6 +47,7 @@ import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
+import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
@@ -263,6 +269,15 @@ private fun FeedList(
                     )
                 }
             }
+            if (listState.firstVisibleItemIndex != 0) {
+                item {
+                    RobotItem(
+                        robotText = "Finished!",
+                        robotIcon = painterResource(id = R.drawable.ic_android_green_24dp),
+                        robotIconColor = greenDroid
+                    )
+                }
+            }
         }
     }
 }
@@ -286,6 +301,43 @@ fun FeedItemRow(
         showMediaLabel = showMediaLabel,
         onFavoriteChange = onFavoriteChange
     )
+}
+
+@Composable
+fun RobotItem(
+    robotText: String,
+    robotIcon: Painter,
+    robotIconColor: Color,
+) {
+    Divider()
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) { }
+    ) {
+        val (text, icon) = createRefs()
+        Text(modifier = Modifier
+            .constrainAs(text) {
+                top.linkTo(parent.top)
+                bottom.linkTo(icon.top)
+                start.linkTo(parent.start, 24.dp)
+            }
+            .padding(vertical = 0.dp, horizontal = 8.dp),
+            text = robotText,
+            color = Color.Gray
+        )
+        Icon(
+            modifier = Modifier
+                .constrainAs(icon) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(text.start)
+                    end.linkTo(text.end)
+                }
+                .padding(horizontal = 8.dp),
+            painter = robotIcon,
+            contentDescription = "",
+            tint = robotIconColor)
+    }
 }
 
 @Preview(showBackground = true)
