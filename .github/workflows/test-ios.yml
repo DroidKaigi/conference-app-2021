@@ -1,0 +1,55 @@
+name: ios-test
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+  push:
+    branches:
+      - main
+
+jobs:
+  test:
+    if: >
+      github.event_name == 'push' || 
+      github.event_name == 'pull_request' && 
+      !contains(github.event.pull_request.head.ref, 'main')
+    name: "ios test on feature branches"
+    runs-on: macos-latest
+    steps:
+      - name: Get HEAD to fetch
+        id: fetch-head
+        run: |
+          if [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "::set-output name=ref::${{ github.ref }}"
+          else
+            echo "::set-output name=ref::refs/pull/${{ github.event.pull_request.number }}/merge"
+          fi
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ steps.fetch-head.outputs.ref }}
+      - run: rm -fr ./gh-actions
+      - uses: actions/checkout@v2
+        with:
+          ref: gh-actions
+          path: gh-actions
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: Select Xcode version
+        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+      - name: Show Xcode version
+        run: xcodebuild -version
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: iosTest
+          dependencies-cache-key: |
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/src/**/*.kt
+            **/gradle.properties
+            gradle/**
+      - uses: actions/upload-artifact@v2
+        with:
+          name: unit-test-ios-reports
+          path: "./**/reports"
+          retention-days: 14
+
