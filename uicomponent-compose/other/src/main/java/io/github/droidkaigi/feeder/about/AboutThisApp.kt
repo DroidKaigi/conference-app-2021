@@ -42,7 +42,10 @@ fun AboutThisApp() {
         Spacer(modifier = Modifier.height(34.dp))
         AboutThisAppMenuListComponent(
             onClickPrivacyPolicy = {},
-            onClickLicense = {context.startActivity(Intent(context, OssLicensesMenuActivity::class.java))},
+            onClickLicense = {
+                val intent = Intent(context, OssLicensesMenuActivity::class.java)
+                context.startActivity(intent)
+            },
             appVersion = "1.0.0" // Get the app version name.
         )
     }
