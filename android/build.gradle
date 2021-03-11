@@ -9,6 +9,8 @@ plugins {
     id 'com.google.firebase.crashlytics'
 }
 
+apply plugin: 'com.google.android.gms.oss-licenses-plugin'
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
