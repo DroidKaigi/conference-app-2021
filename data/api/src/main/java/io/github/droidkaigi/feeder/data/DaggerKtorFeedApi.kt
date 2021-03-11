@@ -7,5 +7,5 @@ import javax.inject.Singleton
 @Singleton
 class DaggerKtorFeedApi @Inject constructor(
     authApi: AuthApi,
-    httpClient: HttpClient,
-) : KtorFeedApi(authApi, httpClient)
+    networkService: NetworkService,
+) : KtorFeedApi(authApi, networkService)
