@@ -85,7 +85,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                         favorites = newFavorites
                     )
                 }
-                is FeedViewModel.Event.ChangePodcastPlayingState -> {
+                is FeedViewModel.Event.ChangePlayingPodcastState -> {
                     // Sorry, Currently not implemented
                 }
                 is FeedViewModel.Event.ReloadContent -> {

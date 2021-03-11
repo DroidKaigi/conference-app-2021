@@ -134,7 +134,7 @@ fun FeedScreen(
         onClickFeed = onDetailClick,
         listState = listState,
         onClickPlayPodcastButton = {
-            dispatch(FeedViewModel.Event.ChangePodcastPlayingState(it))
+            dispatch(FeedViewModel.Event.ChangePlayingPodcastState(it))
         }
     )
 }

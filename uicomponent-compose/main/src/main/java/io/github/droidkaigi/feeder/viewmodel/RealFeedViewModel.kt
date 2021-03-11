@@ -131,7 +131,7 @@ class RealFeedViewModel @Inject constructor(
                         repository.addFavorite(event.feedItem)
                     }
                 }
-                is FeedViewModel.Event.ChangePodcastPlayingState -> {
+                is FeedViewModel.Event.ChangePlayingPodcastState -> {
                     val state = playingPodcastState.value
                     val isPlaying = event.feedItem.id == state?.id && state.isPlaying
 

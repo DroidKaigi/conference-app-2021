@@ -28,7 +28,7 @@ interface FeedViewModel :
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
         class ToggleFavorite(val feedItem: FeedItem) : Event()
-        class ChangePodcastPlayingState(val feedItem: FeedItem) : Event()
+        class ChangePlayingPodcastState(val feedItem: FeedItem) : Event()
         object ReloadContent : Event()
     }
 
