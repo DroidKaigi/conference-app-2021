@@ -116,7 +116,6 @@ object Dep {
         }
     }
 
-    const val ossLicenses = "com.google.gms:oss-licenses:0.10.2"
     const val playServicesOssLicenses ="com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object SQLDelight {
