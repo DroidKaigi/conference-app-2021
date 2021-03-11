@@ -44,11 +44,12 @@ class AuthApi(
 
     private suspend fun registerToServer(createdIdToken: String) {
         runCatching {
-            networkService.httpClient.post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
-                header(HttpHeaders.Authorization, "Bearer $createdIdToken")
-                contentType(ContentType.Application.Json)
-                body = "{}"
-            }
+            networkService.httpClient
+                .post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
+                    header(HttpHeaders.Authorization, "Bearer $createdIdToken")
+                    contentType(ContentType.Application.Json)
+                    body = "{}"
+                }
         }.getOrElse {
             if (it !is ResponseException || it.response.status != HttpStatusCode.Conflict) {
                 throw it

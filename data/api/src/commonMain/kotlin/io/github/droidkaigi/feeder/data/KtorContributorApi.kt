@@ -2,7 +2,6 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.data.response.ContributorsResponse
-import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
 open class KtorContributorApi(

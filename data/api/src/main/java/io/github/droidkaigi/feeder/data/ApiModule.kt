@@ -5,8 +5,8 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import io.ktor.client.engine.okhttp.OkHttp
-import okhttp3.Interceptor
 import javax.inject.Singleton
+import okhttp3.Interceptor
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -16,10 +16,12 @@ class ApiModule {
     @Provides
     internal fun provideNetworkService(
         userDataStore: UserDataStore,
-        networkInterceptors: List<@JvmSuppressWildcards Interceptor>) : NetworkService {
+        networkInterceptors: List<@JvmSuppressWildcards Interceptor>
+    ): NetworkService {
         return NetworkService.create(
             engineFactory = OkHttp,
-            userDataStore = userDataStore) {
+            userDataStore = userDataStore
+        ) {
             networkInterceptors.forEach { addNetworkInterceptor(it) }
         }
     }

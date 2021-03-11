@@ -18,9 +18,11 @@ import kotlinx.serialization.modules.contextual
 class NetworkService private constructor(val httpClient: HttpClient) {
 
     companion object {
-        fun <T> create(engineFactory: HttpClientEngineFactory<T>,
-                       userDataStore: UserDataStore,
-                       block: T.() -> Unit = {}) : NetworkService where T: HttpClientEngineConfig {
+        fun <T> create(
+            engineFactory: HttpClientEngineFactory<T>,
+            userDataStore: UserDataStore,
+            block: T.() -> Unit = {}
+        ): NetworkService where T : HttpClientEngineConfig {
             val httpClient = HttpClient(engineFactory) {
                 engine(block)
                 install(JsonFeature) {
@@ -52,5 +54,4 @@ class NetworkService private constructor(val httpClient: HttpClient) {
             return NetworkService(httpClient)
         }
     }
-
 }
