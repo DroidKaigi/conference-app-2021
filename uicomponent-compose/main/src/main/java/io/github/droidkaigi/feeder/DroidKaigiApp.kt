@@ -17,8 +17,8 @@ import io.github.droidkaigi.feeder.core.use
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
-    ProvideDroidKaigiAppViewModel(viewModel = droidKaigiAppViewModel()) {
-        val (state) = use(droidKaigiAppViewModel())
+    ProvideAppViewModel(viewModel = appViewModel()) {
+        val (state) = use(appViewModel())
 
         ConferenceAppFeederTheme(state.theme) {
             var splashShown by rememberSaveable {

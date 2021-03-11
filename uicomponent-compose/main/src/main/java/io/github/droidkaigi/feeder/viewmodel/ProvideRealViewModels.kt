@@ -2,7 +2,7 @@ package io.github.droidkaigi.feeder.viewmodel
 
 import androidx.compose.runtime.Composable
 import androidx.lifecycle.viewmodel.compose.viewModel
-import io.github.droidkaigi.feeder.ProvideDroidKaigiAppViewModel
+import io.github.droidkaigi.feeder.ProvideAppViewModel
 import io.github.droidkaigi.feeder.contributor.ProvideContributorViewModel
 import io.github.droidkaigi.feeder.contributor.fakeContributorViewModel
 import io.github.droidkaigi.feeder.feed.ProvideFeedViewModel
@@ -12,7 +12,7 @@ import io.github.droidkaigi.feeder.staff.fakeStaffViewModel
 
 @Composable
 fun ProvideViewModels(content: @Composable () -> Unit) {
-    ProvideDroidKaigiAppViewModel(viewModel<RealDroidKaigiAppViewModel>()) {
+    ProvideAppViewModel(viewModel<RealAppViewModel>()) {
         ProvideFeedViewModel(viewModel<RealFeedViewModel>()) {
             ProvideSettingViewModel(viewModel<RealSettingViewModel>()) {
                 ProvideStaffViewModel(viewModel = fakeStaffViewModel()) {

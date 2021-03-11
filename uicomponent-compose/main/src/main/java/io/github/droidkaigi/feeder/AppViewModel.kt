@@ -7,11 +7,11 @@ import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-interface DroidKaigiAppViewModel :
+interface AppViewModel :
     UnidirectionalViewModel<
-        DroidKaigiAppViewModel.Event,
-        DroidKaigiAppViewModel.Effect,
-        DroidKaigiAppViewModel.State> {
+        AppViewModel.Event,
+        AppViewModel.Effect,
+        AppViewModel.State> {
     data class State(
         val theme: Theme? = Theme.SYSTEM,
     )
@@ -27,17 +27,17 @@ interface DroidKaigiAppViewModel :
     override fun event(event: Event)
 }
 
-private val LocalDroidKaigiAppViewModel = compositionLocalOf<DroidKaigiAppViewModel> {
+private val LocalAppViewModel = compositionLocalOf<AppViewModel> {
     error("not LocalDroidKaigiAppViewModel provided")
 }
 
 @Composable
-fun ProvideDroidKaigiAppViewModel(
-    viewModel: DroidKaigiAppViewModel,
+fun ProvideAppViewModel(
+    viewModel: AppViewModel,
     block: @Composable () -> Unit
 ) {
-    CompositionLocalProvider(LocalDroidKaigiAppViewModel provides viewModel, content = block)
+    CompositionLocalProvider(LocalAppViewModel provides viewModel, content = block)
 }
 
 @Composable
-fun droidKaigiAppViewModel() = LocalDroidKaigiAppViewModel.current
+fun appViewModel() = LocalAppViewModel.current
