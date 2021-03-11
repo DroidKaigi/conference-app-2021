@@ -71,6 +71,7 @@ object Dep {
         const val json = "io.ktor:ktor-client-json"
         const val logging = "io.ktor:ktor-client-logging"
         const val okHttp = "io.ktor:ktor-client-okhttp"
+        const val ios = "io.ktor:ktor-client-ios"
         const val serialization = "io.ktor:ktor-client-serialization"
         const val mock = "io.ktor:ktor-client-mock"
     }

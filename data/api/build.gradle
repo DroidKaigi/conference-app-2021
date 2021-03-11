@@ -19,20 +19,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
 
 kotlin {
     android()
-//    jvm()
-    // currently firebase-auth not supported iOS
-    // https://github.com/GitLiveApp/firebase-kotlin-sdk/issues/133
-//    if (System.getProperty("idea.active") == "true") {
-//        // Fix IntelliJ Unresolved reference
-//        def onPhone = System.getenv("SDK_NAME")?.startsWith("iphoneos") ?: false
-//        if (onPhone) {
-//            iosArm64("ios")
-//        } else {
-//            iosX64("ios")
-//        }
-//    } else {
-//        ios()
-//    }
+    ios()
+
     sourceSets {
         commonMain.dependencies {
             api project(":model")
@@ -87,6 +75,9 @@ kotlin {
             kotlin {
                 srcDir 'src/androidTest'
             }
+        }
+        iosMain.dependencies {
+            implementation Dep.Ktor.ios
         }
 //            // For instrumentation tests
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
