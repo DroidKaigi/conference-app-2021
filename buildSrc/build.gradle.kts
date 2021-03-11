@@ -7,5 +7,5 @@ repositories {
 }
 
 dependencies {
-//    implementation("org.jetbrains.kotlin:kotlin-bom:1.4.30")
+//    implementation("org.jetbrains.kotlin:kotlin-bom:1.4.31")
 }
