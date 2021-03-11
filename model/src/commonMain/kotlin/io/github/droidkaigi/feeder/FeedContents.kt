@@ -5,6 +5,7 @@ import kotlin.reflect.KClass
 
 data class PlayingPodcastState(
     val id: String,
+    val url: String,
     val isPlaying: Boolean = false,
 )
 
