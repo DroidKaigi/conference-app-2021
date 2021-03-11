@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.about.AboutThisApp
 import io.github.droidkaigi.feeder.contributor.ContributorList
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
@@ -62,6 +63,7 @@ fun OtherScreen(
     selectedTab: OtherTabs,
     onSelectTab: (OtherTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onClickContributor: (Contributor) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
 
@@ -70,6 +72,7 @@ fun OtherScreen(
         selectedTab = selectedTab,
         onSelectTab = onSelectTab,
         onNavigationIconClick = onNavigationIconClick,
+        onClickContributor = onClickContributor
     )
 }
 
@@ -82,6 +85,7 @@ fun OtherScreen(
     selectedTab: OtherTabs,
     onSelectTab: (OtherTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onClickContributor: (Contributor) -> Unit,
 ) {
     Column {
         val density = LocalDensity.current
@@ -103,7 +107,7 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     FadeThrough(targetState = selectedTab) { selectedTab ->
-                        BackdropFrontLayerContent(selectedTab)
+                        BackdropFrontLayerContent(selectedTab, onClickContributor)
                     }
                 }
             }
@@ -157,10 +161,11 @@ private fun AppBar(
 @Composable
 private fun BackdropFrontLayerContent(
     selectedTab: OtherTabs,
+    onClickContributor: (Contributor) -> Unit,
 ) {
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()
-        OtherTabs.Contributor -> ContributorList()
+        OtherTabs.Contributor -> ContributorList(onClickContributor)
         OtherTabs.Settings -> Settings()
         OtherTabs.Staff -> StaffList()
         else -> {
@@ -198,6 +203,8 @@ fun PreviewOtherScreen() {
             onSelectTab = {
             },
             onNavigationIconClick = {
+            },
+            onClickContributor = {
             }
         )
     }
