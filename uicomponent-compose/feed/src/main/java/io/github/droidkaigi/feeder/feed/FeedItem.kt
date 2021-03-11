@@ -55,7 +55,7 @@ fun FeedItem(
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { }
     ) {
-        val (media, image, title, date, favorite, speakers) = createRefs()
+        val (media, image, title, date, favorite, favoriteAnim, speakers) = createRefs()
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
@@ -127,6 +127,17 @@ fun FeedItem(
                 style = typography.caption
             )
         }
+        FavoriteAnimation(
+            visible = favorited,
+            modifier = Modifier
+                .constrainAs(favoriteAnim) {
+                    width = Dimension.value(80.dp)
+                    height = Dimension.value(80.dp)
+                    start.linkTo(favorite.start)
+                    end.linkTo(favorite.end)
+                    bottom.linkTo(favorite.bottom, 12.dp)
+                }
+        )
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
@@ -139,7 +150,8 @@ fun FeedItem(
                     Icon(
                         painter = painterResource(R.drawable.ic_baseline_favorite_24),
                         contentDescription = "favorite",
-                        modifier = Modifier.testTag("Favorite")
+                        modifier = Modifier.testTag("Favorite"),
+                        tint = Color.Red
                     )
                 } else {
                     Icon(
