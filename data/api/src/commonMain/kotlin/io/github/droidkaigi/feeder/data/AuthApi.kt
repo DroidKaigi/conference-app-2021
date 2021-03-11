@@ -3,7 +3,6 @@ package io.github.droidkaigi.feeder.data
 import dev.gitlive.firebase.Firebase
 import dev.gitlive.firebase.auth.auth
 import io.github.droidkaigi.feeder.Logger
-import io.ktor.client.HttpClient
 import io.ktor.client.features.ResponseException
 import io.ktor.client.request.header
 import io.ktor.client.request.post
@@ -14,7 +13,7 @@ import io.ktor.http.contentType
 import kotlinx.coroutines.flow.first
 
 class AuthApi(
-    private val httpClient: HttpClient,
+    private val networkService: NetworkService,
     private val userDataStore: UserDataStore,
 ) {
     suspend fun <T> authenticated(block: suspend () -> T): T {
@@ -45,7 +44,7 @@ class AuthApi(
 
     private suspend fun registerToServer(createdIdToken: String) {
         runCatching {
-            httpClient.post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
+            networkService.httpClient.post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
                 header(HttpHeaders.Authorization, "Bearer $createdIdToken")
                 contentType(ContentType.Application.Json)
                 body = "{}"

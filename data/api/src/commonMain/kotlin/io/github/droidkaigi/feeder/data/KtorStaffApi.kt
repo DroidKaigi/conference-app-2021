@@ -7,11 +7,11 @@ import io.ktor.client.request.get
 
 open class KtorStaffApi(
     private val authApi: AuthApi,
-    private val httpClient: HttpClient,
+    private val networkService: NetworkService,
 ) : StaffApi {
 
     override suspend fun fetch(): List<Staff> = authApi.authenticated {
-        val staffResponse = httpClient.get<StaffResponse>(
+        val staffResponse = networkService.httpClient.get<StaffResponse>(
             "https://ssot-api-staging.an.r.appspot.com/staff",
         )
         staffResponse.toStaffList()
