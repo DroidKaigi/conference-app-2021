@@ -6,6 +6,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
+import io.github.droidkaigi.feeder.PlayingPodcastState
 import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
@@ -53,18 +54,21 @@ class RealFeedViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    private val playingPodcastState = MutableStateFlow<PlayingPodcastState?>(null)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
             filters,
+            playingPodcastState,
             showProgressLatch.toggleState
-        ) { feedContentsLoadState, filters, showProgress ->
+        ) { feedContentsLoadState, filters, playingPodcastState, showProgress ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             FeedViewModel.State(
                 showProgress = showProgress,
                 filters = filters,
+                playingPodcastState = playingPodcastState,
                 filteredFeedContents = filteredFeed,
 //                snackbarMessage = currentValue.snackbarMessage
             )
@@ -93,6 +97,14 @@ class RealFeedViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(event.feedItem)
                     }
+                }
+                is FeedViewModel.Event.ChangePodcastPlayingState -> {
+                    val state = playingPodcastState.value
+                    val isPlaying = event.feedItem.id == state?.id && state.isPlaying
+                    playingPodcastState.value = PlayingPodcastState(
+                        event.feedItem.id,
+                        isPlaying.not()
+                    )
                 }
                 is FeedViewModel.Event.ReloadContent -> {
                     repository.refresh()

@@ -36,7 +36,7 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.PodcastPlayingState
+import io.github.droidkaigi.feeder.PlayingPodcastState
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
@@ -112,6 +112,7 @@ fun FeedScreen(
         selectedTab = selectedTab,
         scaffoldState = scaffoldState,
         feedContents = state.filteredFeedContents,
+        playingPodcastState = state.playingPodcastState,
         filters = state.filters,
         onSelectTab = {
             onSelectedTab(it)
@@ -146,6 +147,7 @@ private fun FeedScreen(
     selectedTab: FeedTabs,
     scaffoldState: BackdropScaffoldState,
     feedContents: FeedContents,
+    playingPodcastState: PlayingPodcastState?,
     filters: Filters,
     onSelectTab: (FeedTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
@@ -177,6 +179,7 @@ private fun FeedScreen(
                         } else {
                             feedContents
                         },
+                        playingPodcastState = playingPodcastState,
                         isHome = isHome,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
@@ -235,6 +238,7 @@ private fun AppBar(
 @Composable
 private fun FeedList(
     feedContents: FeedContents,
+    playingPodcastState: PlayingPodcastState?,
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
@@ -253,21 +257,23 @@ private fun FeedList(
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
                     FirstFeedItem(
-                        feedItem = content.feedItem,
-                        favorited = content.favorited,
+                        feedItem = content.first,
+                        favorited = content.second,
                         onClick = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange
                     )
                 } else {
                     FeedItemRow(
-                        item = content.feedItem,
-                        favorited = content.favorited,
+                        item = content.first,
+                        favorited = content.second,
                         onClickFeed = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        podcastPlayingType = content.podcastPlayingType,
+                        isPlayingPodcast =
+                        content.first.id == playingPodcastState?.id
+                            && playingPodcastState.isPlaying,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
@@ -280,7 +286,7 @@ private fun FeedList(
 fun FeedItemRow(
     item: FeedItem,
     favorited: Boolean,
-    podcastPlayingType: PodcastPlayingState.Type? = null,
+    isPlayingPodcast: Boolean = false,
     onClickFeed: (FeedItem) -> Unit,
     showMediaLabel: Boolean,
     onFavoriteChange: (FeedItem) -> Unit,
@@ -293,7 +299,7 @@ fun FeedItemRow(
     FeedItem(
         feedItem = item,
         favorited = favorited,
-        podcastPlayingType = podcastPlayingType,
+        isPlayingPodcast = isPlayingPodcast,
         onClick = onClickFeed,
         showMediaLabel = showMediaLabel,
         onFavoriteChange = onFavoriteChange,

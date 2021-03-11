@@ -4,7 +4,6 @@ import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.PodcastPlayingState
 import io.github.droidkaigi.feeder.fakeFeedContents
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
@@ -87,23 +86,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     )
                 }
                 is FeedViewModel.Event.ChangePodcastPlayingState -> {
-                    val value = mFeedContents.value
-                    val state = value.podcastPlayingState
-                    val newState = if (event.feedItem.id == state?.id) {
-                        state.copy(
-                            playingType = if (state.playingType == PodcastPlayingState.Type.PLAY) {
-                                PodcastPlayingState.Type.PAUSE
-                            } else {
-                                PodcastPlayingState.Type.PLAY
-                            }
-                        )
-                    } else {
-                        PodcastPlayingState(
-                            id = event.feedItem.id,
-                            playingType = PodcastPlayingState.Type.STOP
-                        )
-                    }
-                    mutableFeedContents.value = value.copy(podcastPlayingState = newState)
+                    // Sorry, Currently not implemented
                 }
                 is FeedViewModel.Event.ReloadContent -> {
                     // Sorry, Currently not implemented
