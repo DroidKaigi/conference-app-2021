@@ -3,13 +3,44 @@ package io.github.droidkaigi.feeder
 import io.github.droidkaigi.feeder.generated._fakeFeedContents
 import kotlin.reflect.KClass
 
+data class PodcastPlayingState(
+    val id: String,
+    val playingType: Type
+) {
+    enum class Type {
+        PLAY,
+        PAUSE,
+        STOP
+    }
+}
+
 data class FeedContents(
     val feedItemContents: List<FeedItem> = listOf(),
     val favorites: Set<String> = setOf(),
+    val podcastPlayingState: PodcastPlayingState? = null
 ) {
+
+    data class Content(
+        val feedItem: FeedItem,
+        val favorited: Boolean,
+        val podcastPlayingType: PodcastPlayingState.Type? = null
+    )
+
     val contents by lazy {
-        feedItemContents.map {
-            it to favorites.contains(it.id)
+        feedItemContents.map { feedItem ->
+            when (feedItem) {
+                is FeedItem.Podcast -> Content(
+                    feedItem = feedItem,
+                    favorited = favorites.contains(feedItem.id),
+                    podcastPlayingType = if (feedItem.id == podcastPlayingState?.id) {
+                        podcastPlayingState.playingType
+                    } else {
+                        PodcastPlayingState.Type.STOP
+                    }
+                )
+                is FeedItem.Video, is FeedItem.Blog ->
+                    Content(feedItem, favorites.contains(feedItem.id))
+            }
         }
     }
 

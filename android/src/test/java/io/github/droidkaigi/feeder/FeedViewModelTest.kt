@@ -76,7 +76,7 @@ class FeedViewModelTest(
         feedViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
 
         val secondContent = feedViewModel.state.value.filteredFeedContents
-        secondContent.contents[0].first.id shouldBe favoriteContents.id
+        secondContent.contents[0].feedItem.id shouldBe favoriteContents.id
     }
 
     @Test
