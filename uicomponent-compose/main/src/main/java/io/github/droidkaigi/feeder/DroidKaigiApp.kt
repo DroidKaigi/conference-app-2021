@@ -13,37 +13,42 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.use
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
-    ConferenceAppFeederTheme {
-        var splashShown by rememberSaveable {
-            mutableStateOf(firstSplashScreenState)
-        }
-        val transition = updateTransition(splashShown)
-        val splashAlpha: Float by transition.animateFloat(
-            transitionSpec = { tween(durationMillis = 100) }
-        ) { state ->
-            if (state == SplashState.Shown) 1f else 0f
-        }
-        val contentAlpha: Float by transition.animateFloat(
-            transitionSpec = { tween(durationMillis = 300) }
-        ) { state ->
-            if (state == SplashState.Shown) 0f else 1f
-        }
+    ProvideAppViewModel(viewModel = appViewModel()) {
+        val (state) = use(appViewModel())
 
-        Box {
-            LandingScreen(
-                modifier = Modifier.alpha(splashAlpha),
-            ) {
-                splashShown = SplashState.Completed
+        ConferenceAppFeederTheme(state.theme) {
+            var splashShown by rememberSaveable {
+                mutableStateOf(firstSplashScreenState)
             }
+            val transition = updateTransition(splashShown)
+            val splashAlpha: Float by transition.animateFloat(
+                transitionSpec = { tween(durationMillis = 100) }
+            ) { state ->
+                if (state == SplashState.Shown) 1f else 0f
+            }
+            val contentAlpha: Float by transition.animateFloat(
+                transitionSpec = { tween(durationMillis = 300) }
+            ) { state ->
+                if (state == SplashState.Shown) 0f else 1f
+            }
+
+            Box {
+                LandingScreen(
+                    modifier = Modifier.alpha(splashAlpha),
+                ) {
+                    splashShown = SplashState.Completed
+                }
+            }
+            AppContent(
+                modifier = Modifier
+                    .alpha(contentAlpha)
+                    .navigationBarsPadding(bottom = false)
+            )
         }
-        AppContent(
-            modifier = Modifier
-                .alpha(contentAlpha)
-                .navigationBarsPadding(bottom = false)
-        )
     }
 }
 

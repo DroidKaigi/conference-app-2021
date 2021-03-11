@@ -39,6 +39,7 @@ import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
 
 sealed class OtherTabs(val name: String, val routePath: String) {
@@ -165,6 +166,7 @@ private fun BackdropFrontLayerContent(
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()
         OtherTabs.Contributor -> ContributorList(onClickContributor)
+        OtherTabs.Settings -> Settings()
         OtherTabs.Staff -> StaffList()
         else -> {
             val context = LocalContext.current

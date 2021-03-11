@@ -44,7 +44,7 @@ fun ContributorList(onClickContributor: (Contributor) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewContributorScreen() {
-    ConferenceAppFeederTheme(false) {
+    ConferenceAppFeederTheme {
         ProvideContributorViewModel(viewModel = fakeContributorViewModel()) {
             ContributorList() {
             }

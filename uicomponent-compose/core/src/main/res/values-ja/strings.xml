@@ -3,4 +3,7 @@
     <string name="error_network">ネットワークエラーが発生しました。もう一度お試しください。</string>
     <string name="error_server">サーバーエラーが発生しました。もう一度お試しください。</string>
     <string name="error_unknown">予期しないエラーが発生しました。もう一度お試しください。</string>
+    <string name="system">端末設定に従う</string>
+    <string name="dark">ダーク</string>
+    <string name="light">ライト</string>
 </resources>
