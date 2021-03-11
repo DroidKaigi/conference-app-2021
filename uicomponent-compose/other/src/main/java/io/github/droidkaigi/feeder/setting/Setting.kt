@@ -43,7 +43,7 @@ fun Settings() {
         Surface(
             color = MaterialTheme.colors.background,
         ) {
-            Theme(
+            ThemeSetting(
                 context = context,
                 theme = state.theme,
                 onClick = {
@@ -55,7 +55,7 @@ fun Settings() {
 }
 
 @Composable
-fun Theme(
+private fun ThemeSetting(
     context: Context,
     theme: Theme?,
     onClick: (Theme?) -> Unit
@@ -97,7 +97,7 @@ fun Theme(
 }
 
 @Composable
-fun ThemeSelectDialog(
+private fun ThemeSelectDialog(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
     context: Context,
@@ -126,7 +126,7 @@ fun ThemeSelectDialog(
 }
 
 @Composable
-fun ThemeSelectRadioButton(
+private fun ThemeSelectRadioButton(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
     context: Context
