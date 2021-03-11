@@ -63,7 +63,7 @@ fun ContributorItem(contributor: Contributor, onClickItem: (Contributor) -> Unit
 @Preview(showBackground = true)
 @Composable
 fun PreviewContributorItem() {
-    ConferenceAppFeederTheme(false) {
+    ConferenceAppFeederTheme {
         val contributor = fakeContributors().first()
         ProvideContributorViewModel(viewModel = fakeContributorViewModel()) {
             ContributorItem(contributor = contributor) {
