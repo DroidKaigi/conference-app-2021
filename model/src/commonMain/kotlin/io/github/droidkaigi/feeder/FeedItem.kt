@@ -51,7 +51,7 @@ sealed class FeedItem {
 
     fun podcastLink(): String = with(Url(link)) {
         val number = fullPath.split("/").last()
-        "${protocol.name}://${authority}/fm/audio/droidkaigi-fm_${number}.mp3"
+        "${protocol.name}://$authority/fm/audio/droidkaigi-fm_$number.mp3"
     }
 
     fun publishedDateString(): String {
