@@ -33,6 +33,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Media
+import io.github.droidkaigi.feeder.PodcastPlayingState
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
@@ -42,9 +43,11 @@ import io.github.droidkaigi.feeder.fakeFeedContents
 fun FeedItem(
     feedItem: FeedItem,
     favorited: Boolean,
+    podcastPlayingType: PodcastPlayingState.Type? = null,
     showMediaLabel: Boolean = false,
     onClick: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem) -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -194,7 +197,8 @@ fun PreviewFeedItem() {
             favorited = false,
             showMediaLabel = false,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            onClickPlayPodcastButton = { },
         )
     }
 }
@@ -209,7 +213,8 @@ fun PreviewFeedItemWithMedia() {
             favorited = false,
             showMediaLabel = true,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            onClickPlayPodcastButton = { },
         )
     }
 }
@@ -224,7 +229,8 @@ fun PreviewFeedItemWithSpeaker() {
             favorited = false,
             showMediaLabel = true,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            onClickPlayPodcastButton = { },
         )
     }
 }

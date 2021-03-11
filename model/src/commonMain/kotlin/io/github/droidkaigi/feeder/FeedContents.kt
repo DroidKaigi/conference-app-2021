@@ -17,13 +17,13 @@ data class PodcastPlayingState(
 data class FeedContents(
     val feedItemContents: List<FeedItem> = listOf(),
     val favorites: Set<String> = setOf(),
-    val podcastPlayingState: PodcastPlayingState? = null
+    val podcastPlayingState: PodcastPlayingState? = null,
 ) {
 
     data class Content(
         val feedItem: FeedItem,
         val favorited: Boolean,
-        val podcastPlayingType: PodcastPlayingState.Type? = null
+        val podcastPlayingType: PodcastPlayingState.Type? = null,
     )
 
     val contents by lazy {
