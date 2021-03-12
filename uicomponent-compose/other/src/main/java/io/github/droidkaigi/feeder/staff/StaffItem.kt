@@ -80,7 +80,8 @@ fun PreviewStaffItem() {
     ConferenceAppFeederTheme{
         val staff = fakeStaffs().first()
         ProvideStaffViewModel(viewModel = fakeStaffViewModel()) {
-            StaffItem(staff = staff) {}
+            StaffItem(staff = staff) {
+            }
         }
     }
 }
