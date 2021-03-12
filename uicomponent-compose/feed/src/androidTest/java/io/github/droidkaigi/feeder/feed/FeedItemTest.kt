@@ -28,7 +28,9 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = true,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
@@ -47,7 +49,9 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = true,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
@@ -66,7 +70,9 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = false,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
@@ -85,7 +91,9 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = true,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
@@ -105,7 +113,9 @@ class FeedItemTest {
                     favorited = false,
                     showMediaLabel = true,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
