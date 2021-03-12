@@ -77,7 +77,7 @@ fun StaffItem(staff: Staff, onClickItem: (Staff) -> Unit) {
 @Preview(showBackground = true)
 @Composable
 fun PreviewStaffItem() {
-    ConferenceAppFeederTheme{
+    ConferenceAppFeederTheme {
         val staff = fakeStaffs().first()
         ProvideStaffViewModel(viewModel = fakeStaffViewModel()) {
             StaffItem(staff = staff) {
