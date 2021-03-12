@@ -127,8 +127,11 @@ fun AppContent(
                         drawerContentState.onSelectDrawerContent(otherTabs)
                     },
                     onNavigationIconClick = onNavigationIconClick,
-                    onClickContributor = { contributor ->
+                    onContributorClick = { contributor ->
                         actions.showChromeCustomTabs(contributor.url)
+                    },
+                    onStaffClick = { staff ->
+                        actions.showChromeCustomTabs(staff.url)
                     }
                 )
             }

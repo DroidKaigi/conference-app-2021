@@ -62,6 +62,7 @@ dependencies {
     implementation Dep.Compose.material
     implementation Dep.Compose.iconsExtended
     implementation Dep.Compose.animation
+    implementation Dep.Compose.constraintLayout
 
     // Android
     implementation Dep.Jetpack.browser
