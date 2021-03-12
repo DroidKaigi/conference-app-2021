@@ -8,16 +8,15 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.Speaker
 import io.github.droidkaigi.feeder.data.response.Thumbnail
-import io.ktor.client.HttpClient
 import io.ktor.client.request.get
 
 open class KtorFeedApi(
     private val authApi: AuthApi,
-    private val httpClient: HttpClient,
+    private val networkService: NetworkService,
 ) : FeedApi {
 
     override suspend fun fetch(): List<FeedItem> = authApi.authenticated {
-        val feedsResponse = httpClient.get<FeedsResponse>(
+        val feedsResponse = networkService.httpClient.get<FeedsResponse>(
             "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
         )
         feedsResponse.toFeedList()

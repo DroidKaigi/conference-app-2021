@@ -8,7 +8,7 @@ object Dep {
     object Compose {
         const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
         const val constraintLayout =
-            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha03"
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha04"
         const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
         const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
         const val livedata = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
@@ -71,6 +71,7 @@ object Dep {
         const val json = "io.ktor:ktor-client-json"
         const val logging = "io.ktor:ktor-client-logging"
         const val okHttp = "io.ktor:ktor-client-okhttp"
+        const val ios = "io.ktor:ktor-client-ios"
         const val serialization = "io.ktor:ktor-client-serialization"
         const val mock = "io.ktor:ktor-client-mock"
     }

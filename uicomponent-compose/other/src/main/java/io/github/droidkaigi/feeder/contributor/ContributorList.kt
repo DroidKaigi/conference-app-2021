@@ -16,7 +16,7 @@ import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 
 @Composable
-fun ContributorList(onClickContributor: (Contributor) -> Unit) {
+fun ContributorList(onContributorClick: (Contributor) -> Unit) {
 
     val (
         state,
@@ -34,7 +34,7 @@ fun ContributorList(onClickContributor: (Contributor) -> Unit) {
                 .toPaddingValues(top = false, start = false, end = false),
             content = {
                 items(state.contributorContents) { contributor ->
-                    ContributorItem(contributor = contributor, onClickContributor)
+                    ContributorItem(contributor = contributor, onContributorClick)
                 }
             }
         )

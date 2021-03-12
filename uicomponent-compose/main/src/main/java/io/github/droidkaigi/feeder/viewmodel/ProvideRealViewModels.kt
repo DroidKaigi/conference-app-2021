@@ -8,14 +8,13 @@ import io.github.droidkaigi.feeder.contributor.fakeContributorViewModel
 import io.github.droidkaigi.feeder.feed.ProvideFeedViewModel
 import io.github.droidkaigi.feeder.setting.ProvideSettingViewModel
 import io.github.droidkaigi.feeder.staff.ProvideStaffViewModel
-import io.github.droidkaigi.feeder.staff.fakeStaffViewModel
 
 @Composable
 fun ProvideViewModels(content: @Composable () -> Unit) {
     ProvideAppViewModel(viewModel<RealAppViewModel>()) {
         ProvideFeedViewModel(viewModel<RealFeedViewModel>()) {
             ProvideSettingViewModel(viewModel<RealSettingViewModel>()) {
-                ProvideStaffViewModel(viewModel = fakeStaffViewModel()) {
+                ProvideStaffViewModel(viewModel<RealStaffViewModel>()) {
                     ProvideContributorViewModel(viewModel = fakeContributorViewModel()) {
                         content()
                     }
