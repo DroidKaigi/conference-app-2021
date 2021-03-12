@@ -272,8 +272,8 @@ private fun FeedList(
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
                         isPlayingPodcast =
-                        content.first.id == playingPodcastState?.id
-                            && playingPodcastState.isPlaying,
+                            content.first.id == playingPodcastState?.id &&
+                                playingPodcastState.isPlaying,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
