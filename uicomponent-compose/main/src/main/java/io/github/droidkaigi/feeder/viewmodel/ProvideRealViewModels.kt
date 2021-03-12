@@ -15,7 +15,7 @@ fun ProvideViewModels(content: @Composable () -> Unit) {
     ProvideAppViewModel(viewModel<RealAppViewModel>()) {
         ProvideFeedViewModel(viewModel<RealFeedViewModel>()) {
             ProvideSettingViewModel(viewModel<RealSettingViewModel>()) {
-                ProvideStaffViewModel(viewModel = fakeStaffViewModel()) {
+                ProvideStaffViewModel(viewModel<RealStaffViewModel>()) {
                     ProvideContributorViewModel(viewModel = fakeContributorViewModel()) {
                         content()
                     }

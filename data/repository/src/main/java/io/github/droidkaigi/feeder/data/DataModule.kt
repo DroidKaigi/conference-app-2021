@@ -20,7 +20,7 @@ class DataModule {
 
     @Provides
     internal fun provideStaffApi(daggerApi: DaggerKtorStaffApi): StaffApi {
-        return daggerApi
+        return fakeStaffApi()
     }
 
     @Provides
