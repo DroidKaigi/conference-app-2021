@@ -1,3 +1,4 @@
+import io.github.droidkaigi.feeder.AppVersions
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
 // TODO: make this library Kotlin MPP
@@ -10,6 +11,14 @@ plugins {
 apply from: rootProject.file("gradle/android.gradle")
 
 android {
+    buildTypes {
+        debug {
+            resValue "string", "app_version_name", "$AppVersions.versionName-debug"
+        }
+        release {
+            resValue "string", "app_version_name", AppVersions.versionName
+        }
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
