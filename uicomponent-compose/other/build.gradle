@@ -11,13 +11,8 @@ plugins {
 apply from: rootProject.file("gradle/android.gradle")
 
 android {
-    buildTypes {
-        debug {
-            resValue "string", "app_version_name", "$AppVersions.versionName-debug"
-        }
-        release {
-            resValue "string", "app_version_name", AppVersions.versionName
-        }
+    defaultConfig {
+        resValue "string", "app_version_name", AppVersions.versionName
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
