@@ -316,8 +316,8 @@ fun RobotItem(
             .semantics(mergeDescendants = true) { }
     ) {
         val (text, icon) = createRefs()
-        Text(modifier = Modifier
-            .constrainAs(text) {
+        Text(
+            modifier = Modifier.constrainAs(text) {
                 top.linkTo(parent.top)
                 bottom.linkTo(icon.top)
                 start.linkTo(parent.start, 24.dp)
@@ -336,7 +336,8 @@ fun RobotItem(
                 .padding(horizontal = 8.dp),
             painter = robotIcon,
             contentDescription = "",
-            tint = robotIconColor)
+            tint = robotIconColor
+        )
     }
 }
 
