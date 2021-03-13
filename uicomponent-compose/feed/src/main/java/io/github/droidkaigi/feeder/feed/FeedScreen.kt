@@ -67,19 +67,7 @@ sealed class FeedTabs(val name: String, val routePath: String) {
     }
 
     companion object {
-
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
-
-        fun rightTab(selectedTab: FeedTabs): FeedTabs {
-            val currentPosition = values().indexOf(selectedTab)
-            return values().getOrElse(currentPosition + 1) { selectedTab }
-        }
-
-        fun leftTab(selectedTab: FeedTabs): FeedTabs {
-            val currentPosition = values().indexOf(selectedTab)
-            return values().getOrElse(currentPosition - 1) { selectedTab }
-        }
-
         fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
     }
 }
@@ -157,11 +145,13 @@ fun FeedScreen(
             val threshold = 500
             if (threshold > abs(velocity)) return@onDragStopped
 
-            if (0 > velocity) {
-                onSelectedTab(FeedTabs.rightTab(selectedTab))
-            } else {
-                onSelectedTab(FeedTabs.leftTab(selectedTab))
-            }
+            onSelectedTab(
+                if (0 > velocity) {
+                    selectedTab.rightTab
+                } else {
+                    selectedTab.leftTabs
+                }
+            )
         },
         draggableState = draggableState
     )
@@ -223,6 +213,18 @@ private fun FeedScreen(
         )
     }
 }
+
+private val FeedTabs.rightTab: FeedTabs
+    get() {
+        val currentPosition = FeedTabs.values().indexOf(this)
+        return FeedTabs.values().getOrElse(currentPosition + 1) { this }
+    }
+
+private val FeedTabs.leftTabs: FeedTabs
+    get() {
+        val currentPosition = FeedTabs.values().indexOf(this)
+        return FeedTabs.values().getOrElse(currentPosition - 1) { this }
+    }
 
 @Composable
 private fun AppBar(
@@ -311,9 +313,8 @@ private fun FeedList(
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        isPlayingPodcast =
-                            content.first.id == playingPodcastState?.id &&
-                                playingPodcastState.isPlaying,
+                        isPlayingPodcast = content.first.id == playingPodcastState?.id &&
+                            playingPodcastState.isPlaying,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
