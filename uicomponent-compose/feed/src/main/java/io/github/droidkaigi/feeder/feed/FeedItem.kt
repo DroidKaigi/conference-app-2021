@@ -42,9 +42,11 @@ import io.github.droidkaigi.feeder.fakeFeedContents
 fun FeedItem(
     feedItem: FeedItem,
     favorited: Boolean,
+    isPlayingPodcast: Boolean = false,
     showMediaLabel: Boolean = false,
     onClick: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem) -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -55,7 +57,16 @@ fun FeedItem(
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { }
     ) {
-        val (media, image, title, date, favorite, favoriteAnim, speakers) = createRefs()
+        val (
+            media,
+            image,
+            title,
+            date,
+            favorite,
+            favoriteAnim,
+            speakers,
+            audioControl,
+        ) = createRefs()
         if (showMediaLabel) {
             Text(
                 modifier = Modifier
@@ -90,6 +101,18 @@ fun FeedItem(
                 .aspectRatio(1F / 1F),
             contentScale = ContentScale.Crop,
             contentDescription = null
+        )
+        AudioControlButton(
+            isPlayingPodcast = isPlayingPodcast,
+            isVisible = feedItem is FeedItem.Podcast,
+            modifier = Modifier
+                .constrainAs(audioControl) {
+                    top.linkTo(image.top)
+                    start.linkTo(image.start)
+                    bottom.linkTo(image.bottom)
+                    end.linkTo(image.end)
+                }
+                .clickable { onClickPlayPodcastButton(feedItem) }
         )
         Text(
             modifier = Modifier.constrainAs(title) {
@@ -169,6 +192,29 @@ fun FeedItem(
 }
 
 @Composable
+private fun AudioControlButton(
+    modifier: Modifier,
+    isVisible: Boolean,
+    isPlayingPodcast: Boolean,
+) {
+    if (isVisible) {
+        if (isPlayingPodcast) {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_pause_24),
+                modifier = modifier,
+                contentDescription = "pause"
+            )
+        } else {
+            Icon(
+                painter = painterResource(id = R.drawable.ic_baseline_play_arrow_24),
+                modifier = modifier,
+                contentDescription = "play"
+            )
+        }
+    }
+}
+
+@Composable
 private fun Media.color() = when (this) {
     Media.YouTube -> {
         Color.Red
@@ -194,7 +240,8 @@ fun PreviewFeedItem() {
             favorited = false,
             showMediaLabel = false,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            onClickPlayPodcastButton = { },
         )
     }
 }
@@ -209,7 +256,8 @@ fun PreviewFeedItemWithMedia() {
             favorited = false,
             showMediaLabel = true,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            onClickPlayPodcastButton = { },
         )
     }
 }
@@ -223,8 +271,10 @@ fun PreviewFeedItemWithSpeaker() {
             feedItem = feedItem,
             favorited = false,
             showMediaLabel = true,
+            isPlayingPodcast = false,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            onClickPlayPodcastButton = { },
         )
     }
 }
