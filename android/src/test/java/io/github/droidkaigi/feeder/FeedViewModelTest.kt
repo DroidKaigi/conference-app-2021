@@ -23,6 +23,7 @@ import org.junit.runners.Parameterized
 @InternalCoroutinesApi
 @RunWith(Parameterized::class)
 class FeedViewModelTest(
+    @Suppress("unused")
     val name: String,
     private val feedViewModelFactory: FeedViewModelFactory,
 ) {
