@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.about
 
+import android.content.Intent
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.indication
@@ -18,16 +19,20 @@ import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.content.ContextCompat.startActivity
+import com.google.android.gms.oss.licenses.OssLicensesMenuActivity
 import io.github.droidkaigi.feeder.core.theme.typography
 import io.github.droidkaigi.feeder.other.R
 
 @Preview
 @Composable
 fun AboutThisApp() {
+    val context = LocalContext.current
     Column(
         modifier = Modifier
             .padding(vertical = 48.dp, horizontal = 20.dp)
@@ -38,7 +43,10 @@ fun AboutThisApp() {
         Spacer(modifier = Modifier.height(34.dp))
         AboutThisAppMenuListComponent(
             onClickPrivacyPolicy = {},
-            onClickLicense = {},
+            onClickLicense = {
+                val intent = Intent(context, OssLicensesMenuActivity::class.java)
+                context.startActivity(intent)
+            },
             appVersion = stringResource(R.string.app_version_name)
         )
     }

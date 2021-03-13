@@ -66,4 +66,5 @@ dependencies {
 
     // Android
     implementation Dep.Jetpack.browser
+    implementation Dep.playServicesOssLicenses
 }

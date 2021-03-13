@@ -117,6 +117,8 @@ object Dep {
         }
     }
 
+    const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
+
     object SQLDelight {
         const val plugin = "com.squareup.sqldelight:gradle-plugin:1.4.4"
         const val androidDriver = "com.squareup.sqldelight:android-driver:1.4.4"
