@@ -49,9 +49,9 @@ import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import kotlin.math.abs
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
-import kotlin.math.abs
 
 sealed class FeedTabs(val name: String, val routePath: String) {
     object Home : FeedTabs("Home", "home")
@@ -155,10 +155,12 @@ fun FeedScreen(
         },
         onDragStopped = onDragStopped@{ velocity ->
             val threshold = 500
-            when {
-                threshold > abs(velocity) -> return@onDragStopped
-                0 > velocity -> onSelectedTab(FeedTabs.rightTab(selectedTab))
-                0 < velocity -> onSelectedTab(FeedTabs.leftTab(selectedTab))
+            if (threshold > abs(velocity)) return@onDragStopped
+
+            if (0 > velocity) {
+                onSelectedTab(FeedTabs.rightTab(selectedTab))
+            } else {
+                onSelectedTab(FeedTabs.leftTab(selectedTab))
             }
         },
         draggableState = draggableState
@@ -310,8 +312,8 @@ private fun FeedList(
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
                         isPlayingPodcast =
-                        content.first.id == playingPodcastState?.id &&
-                            playingPodcastState.isPlaying,
+                            content.first.id == playingPodcastState?.id &&
+                                playingPodcastState.isPlaying,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
