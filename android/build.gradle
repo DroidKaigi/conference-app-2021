@@ -1,3 +1,4 @@
+import io.github.droidkaigi.feeder.AppVersions
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
 plugins {
@@ -18,8 +19,8 @@ android {
         applicationId "io.github.droidkaigi.feeder"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode AppVersions.versionCode
+        versionName AppVersions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }

@@ -126,7 +126,13 @@ fun AppContent(
                         routePath.value = otherTabs.routePath
                         drawerContentState.onSelectDrawerContent(otherTabs)
                     },
-                    onNavigationIconClick = onNavigationIconClick
+                    onNavigationIconClick = onNavigationIconClick,
+                    onContributorClick = { contributor ->
+                        actions.showChromeCustomTabs(contributor.url)
+                    },
+                    onStaffClick = { staff ->
+                        actions.showChromeCustomTabs(staff.url)
+                    }
                 )
             }
             chromeCustomTabs()

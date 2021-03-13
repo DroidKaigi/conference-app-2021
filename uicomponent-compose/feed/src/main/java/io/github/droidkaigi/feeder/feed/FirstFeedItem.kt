@@ -46,7 +46,7 @@ fun FirstFeedItem(
             .fillMaxWidth()
             .semantics(mergeDescendants = true) { }
     ) {
-        val (image, title, media, date, favorite) = createRefs()
+        val (image, title, media, date, favorite, favoriteAnim) = createRefs()
         NetworkImage(
             url = feedItem.image.standardUrl,
             modifier = Modifier
@@ -104,6 +104,17 @@ fun FirstFeedItem(
                 style = typography.caption
             )
         }
+        FavoriteAnimation(
+            visible = favorited,
+            modifier = Modifier
+                .constrainAs(favoriteAnim) {
+                    width = Dimension.value(80.dp)
+                    height = Dimension.value(80.dp)
+                    start.linkTo(favorite.start)
+                    end.linkTo(favorite.end)
+                    bottom.linkTo(favorite.bottom, 12.dp)
+                }
+        )
         IconToggleButton(
             checked = false,
             modifier = Modifier.constrainAs(favorite) {
@@ -111,18 +122,18 @@ fun FirstFeedItem(
                 end.linkTo(parent.end, 20.dp)
             },
             content = {
-                Icon(
-                    painterResource(
-                        if (favorited) {
-                            R.drawable
-                                .ic_baseline_favorite_24
-                        } else {
-                            R.drawable
-                                .ic_baseline_favorite_border_24
-                        }
-                    ),
-                    "favorite"
-                )
+                if (favorited) {
+                    Icon(
+                        painterResource(R.drawable.ic_baseline_favorite_24),
+                        "favorite",
+                        tint = Color.Red
+                    )
+                } else {
+                    Icon(
+                        painterResource(R.drawable.ic_baseline_favorite_border_24),
+                        "favorite"
+                    )
+                }
             },
             onCheckedChange = {
                 onFavoriteChange(feedItem)

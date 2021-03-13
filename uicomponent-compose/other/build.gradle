@@ -1,3 +1,4 @@
+import io.github.droidkaigi.feeder.AppVersions
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
 // TODO: make this library Kotlin MPP
@@ -10,6 +11,9 @@ plugins {
 apply from: rootProject.file("gradle/android.gradle")
 
 android {
+    defaultConfig {
+        resValue "string", "app_version_name", AppVersions.versionName
+    }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -17,6 +21,7 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
         freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
+        freeCompilerArgs += "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi"
         freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
     }
     buildFeatures {
@@ -57,6 +62,7 @@ dependencies {
     implementation Dep.Compose.material
     implementation Dep.Compose.iconsExtended
     implementation Dep.Compose.animation
+    implementation Dep.Compose.constraintLayout
 
     // Android
     implementation Dep.Jetpack.browser

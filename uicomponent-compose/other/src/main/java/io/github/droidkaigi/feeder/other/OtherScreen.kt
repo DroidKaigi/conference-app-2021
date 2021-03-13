@@ -1,13 +1,9 @@
 package io.github.droidkaigi.feeder.other
 
-import android.content.Intent
-import android.net.Uri
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BackdropScaffold
@@ -24,13 +20,14 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
+import io.github.droidkaigi.feeder.Contributor
+import io.github.droidkaigi.feeder.Staff
 import io.github.droidkaigi.feeder.about.AboutThisApp
 import io.github.droidkaigi.feeder.contributor.ContributorList
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
@@ -38,6 +35,7 @@ import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
 
 sealed class OtherTabs(val name: String, val routePath: String) {
@@ -61,6 +59,8 @@ fun OtherScreen(
     selectedTab: OtherTabs,
     onSelectTab: (OtherTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onContributorClick: (Contributor) -> Unit,
+    onStaffClick: (Staff) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
 
@@ -69,6 +69,8 @@ fun OtherScreen(
         selectedTab = selectedTab,
         onSelectTab = onSelectTab,
         onNavigationIconClick = onNavigationIconClick,
+        onContributorClick = onContributorClick,
+        onStaffClick = onStaffClick
     )
 }
 
@@ -81,6 +83,8 @@ fun OtherScreen(
     selectedTab: OtherTabs,
     onSelectTab: (OtherTabs) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onContributorClick: (Contributor) -> Unit,
+    onStaffClick: (Staff) -> Unit,
 ) {
     Column {
         val density = LocalDensity.current
@@ -102,7 +106,7 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     FadeThrough(targetState = selectedTab) { selectedTab ->
-                        BackdropFrontLayerContent(selectedTab)
+                        BackdropFrontLayerContent(selectedTab, onContributorClick, onStaffClick)
                     }
                 }
             }
@@ -156,34 +160,14 @@ private fun AppBar(
 @Composable
 private fun BackdropFrontLayerContent(
     selectedTab: OtherTabs,
+    onContributorClick: (Contributor) -> Unit,
+    onStaffClick: (Staff) -> Unit,
 ) {
     when (selectedTab) {
         OtherTabs.AboutThisApp -> AboutThisApp()
-        OtherTabs.Contributor -> ContributorList()
-        OtherTabs.Staff -> StaffList()
-        else -> {
-            val context = LocalContext.current
-            Text(
-                text = "Not implemented yet. Please create this screen!",
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(top = 32.dp)
-                    .clickable {
-                        val issue =
-                            "https://github.com/DroidKaigi/" +
-                                "conference-app-2021/issues" +
-                                "?q=is%3Aissue+is%3Aopen+label%3Awelcome_contribute"
-                        context.startActivity(
-                            Intent(
-                                Intent.ACTION_VIEW,
-                                Uri.parse(
-                                    issue
-                                )
-                            )
-                        )
-                    }
-            )
-        }
+        OtherTabs.Contributor -> ContributorList(onContributorClick)
+        OtherTabs.Settings -> Settings()
+        OtherTabs.Staff -> StaffList(onStaffClick)
     }
 }
 
@@ -196,6 +180,10 @@ fun PreviewOtherScreen() {
             onSelectTab = {
             },
             onNavigationIconClick = {
+            },
+            onContributorClick = {
+            },
+            onStaffClick = {
             }
         )
     }
