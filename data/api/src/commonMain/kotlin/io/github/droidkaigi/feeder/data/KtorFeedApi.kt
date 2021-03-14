@@ -24,7 +24,7 @@ open class KtorFeedApi(
         }
     } catch (e: Throwable) {
         // null value is not come here
-        throw e.toAppError()!!
+        throw e.toAppError()
     }
 }
 

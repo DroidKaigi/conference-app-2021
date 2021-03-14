@@ -6,9 +6,8 @@ import io.ktor.network.sockets.SocketTimeoutException
 import io.ktor.util.cio.ChannelReadException
 import kotlinx.coroutines.TimeoutCancellationException
 
-fun Throwable?.toAppError(): AppError? {
+fun Throwable.toAppError(): AppError {
     return when (this) {
-        null -> null
         is AppError -> this
         is ResponseException ->
             return AppError.ApiException.ServerException(this)
