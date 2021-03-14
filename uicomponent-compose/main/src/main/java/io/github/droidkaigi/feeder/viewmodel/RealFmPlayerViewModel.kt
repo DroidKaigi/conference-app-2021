@@ -6,15 +6,16 @@ import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.droidkaigi.feeder.feed.FmPlayerViewModel
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
 
 class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
 
-    private val effectSharedFlow = MutableSharedFlow<FmPlayerViewModel.Effect>()
+    private val effectSharedFlow = Channel<FmPlayerViewModel.Effect>(Channel.UNLIMITED)
     private val mutableState = MutableStateFlow(FmPlayerViewModel.State())
 
     private val fmPlayer = MediaPlayer().apply {
@@ -25,7 +26,7 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
         )
     }
 
-    override val effect: Flow<FmPlayerViewModel.Effect> = effectSharedFlow
+    override val effect: Flow<FmPlayerViewModel.Effect> = effectSharedFlow.receiveAsFlow()
     override val state: StateFlow<FmPlayerViewModel.State> = mutableState
 
     override fun onCleared() {
