@@ -43,7 +43,7 @@ class RealFeedViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            refreshFeed()
+            refreshRepository()
         }
     }
 
@@ -149,13 +149,13 @@ class RealFeedViewModel @Inject constructor(
                     playingPodcastState.value = newState
                 }
                 is FeedViewModel.Event.ReloadContent -> {
-                    refreshFeed()
+                    refreshRepository()
                 }
             }
         }
     }
 
-    private suspend fun refreshFeed() {
+    private suspend fun refreshRepository() {
         try {
             repository.refresh()
         } catch (e: AppError) {
