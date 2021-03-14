@@ -21,7 +21,7 @@ import kotlinx.serialization.modules.contextual
 
 class NetworkService private constructor(val httpClient: HttpClient) {
 
-    suspend inline fun <reified T:Any> get(url: String): T {
+    suspend inline fun <reified T : Any> get(url: String): T {
         return httpClient.get(url)
     }
 
@@ -34,7 +34,6 @@ class NetworkService private constructor(val httpClient: HttpClient) {
         urlString: String,
         block: HttpRequestBuilder.() -> Unit = {}
     ): T = httpClient.put<T>(urlString, block)
-
 
     companion object {
         fun <T> create(
