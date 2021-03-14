@@ -322,7 +322,7 @@ fun RobotItem(
                 bottom.linkTo(icon.top)
                 start.linkTo(parent.start, 24.dp)
             }
-            .padding(vertical = 0.dp, horizontal = 8.dp),
+                .padding(vertical = 0.dp, horizontal = 8.dp),
             text = robotText,
             color = Color.Gray
         )
