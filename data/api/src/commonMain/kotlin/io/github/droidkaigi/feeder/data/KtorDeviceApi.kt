@@ -5,8 +5,6 @@ import io.github.droidkaigi.feeder.data.request.DevicePostRequest
 import io.github.droidkaigi.feeder.data.request.DevicePutRequest
 import io.github.droidkaigi.feeder.data.request.platform
 import io.github.droidkaigi.feeder.data.response.DeviceResponse
-import io.ktor.client.request.post
-import io.ktor.client.request.put
 import io.ktor.http.ContentType
 import io.ktor.http.contentType
 
@@ -17,7 +15,7 @@ open class KtorDeviceApi(
 
     override suspend fun create(): DeviceInfo =
         authApi.authenticated {
-            networkService.httpClient.post<DeviceResponse>(
+            networkService.post<DeviceResponse>(
                 "https://ssot-api-staging.an.r.appspot" +
                     ".com/devices"
             ) {
@@ -28,7 +26,7 @@ open class KtorDeviceApi(
 
     override suspend fun update(deviceId: String, deviceToken: String?): DeviceInfo =
         authApi.authenticated {
-            networkService.httpClient.put<DeviceResponse>(
+            networkService.put<DeviceResponse>(
                 "https://ssot-api-staging.an.r.appspot.com/devices/$deviceId"
             ) {
                 contentType(ContentType.Application.Json)

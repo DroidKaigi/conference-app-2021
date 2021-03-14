@@ -44,7 +44,9 @@ class AuthApi(
 
     private suspend fun registerToServer(createdIdToken: String) {
         runCatching {
-            networkService.httpClient
+            networkService
+                // Use httpClient for bypass auth process
+                .httpClient
                 .post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
                     header(HttpHeaders.Authorization, "Bearer $createdIdToken")
                     contentType(ContentType.Application.Json)
