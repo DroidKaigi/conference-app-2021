@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import javax.inject.Singleton
 import okhttp3.Interceptor
@@ -14,11 +15,11 @@ class ApiModule {
 
     @Singleton
     @Provides
-    internal fun provideNetworkService(
+    internal fun provideHttpClient(
         userDataStore: UserDataStore,
-        networkInterceptors: List<@JvmSuppressWildcards Interceptor>
-    ): NetworkService {
-        return NetworkService.create(
+        networkInterceptors: List<@JvmSuppressWildcards Interceptor>,
+    ): HttpClient {
+        return ApiHttpClient.create(
             engineFactory = OkHttp,
             userDataStore = userDataStore
         ) {
@@ -28,10 +29,19 @@ class ApiModule {
 
     @Singleton
     @Provides
+    internal fun provideNetworkService(
+        httpClient: HttpClient,
+        authApi: AuthApi,
+    ): NetworkService {
+        return NetworkService(httpClient, authApi)
+    }
+
+    @Singleton
+    @Provides
     internal fun provideFirebaseAuthApi(
-        networkService: NetworkService,
+        httpClient: HttpClient,
         userDataStore: UserDataStore,
     ): AuthApi {
-        return AuthApi(networkService, userDataStore)
+        return AuthApi(httpClient, userDataStore)
     }
 }
