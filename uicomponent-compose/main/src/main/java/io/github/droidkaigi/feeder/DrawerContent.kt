@@ -28,9 +28,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
-import io.github.droidkaigi.feeder.feed.FeedTabs
+import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.main.R
-import io.github.droidkaigi.feeder.other.OtherTabs
+import io.github.droidkaigi.feeder.other.OtherTab
 
 enum class DrawerContents(
     val group: Group,
@@ -43,49 +43,49 @@ enum class DrawerContents(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_home_24,
         label = "HOME",
-        route = "feed/${FeedTabs.Home.routePath}"
+        route = "feed/${FeedTab.Home.routePath}"
     ),
     BLOG(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_text_snippet_24,
         label = "BLOG",
-        route = "feed/${FeedTabs.FilteredFeed.Blog.routePath}"
+        route = "feed/${FeedTab.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_videocam_24,
         label = "VIDEO",
-        route = "feed/${FeedTabs.FilteredFeed.Video.routePath}"
+        route = "feed/${FeedTab.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
         imageResId = R.drawable.ic_baseline_mic_none_24,
         label = "PODCAST",
-        route = "feed/${FeedTabs.FilteredFeed.Podcast.routePath}"
+        route = "feed/${FeedTab.FilteredFeed.Podcast.routePath}"
     ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_android_24,
         label = "ABOUT",
-        route = "other/${OtherTabs.AboutThisApp.routePath}"
+        route = "other/${OtherTab.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
         imageResId = R.drawable.ic_outline_people_24,
         label = "CONTRIBUTOR",
-        route = "other/${OtherTabs.Contributor.routePath}"
+        route = "other/${OtherTab.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_face_24,
         label = "STAFF",
-        route = "other/${OtherTabs.Staff.routePath}"
+        route = "other/${OtherTab.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_settings_24,
         label = "SETTING",
-        route = "other/${OtherTabs.Settings.routePath}",
+        route = "other/${OtherTab.Settings.routePath}",
     ),
     ;
 
@@ -109,12 +109,12 @@ class DrawerContentState(
         }
     }
 
-    fun onSelectDrawerContent(feedTabs: FeedTabs) {
-        selectDrawerContent("feed/${feedTabs.routePath}")
+    fun onSelectDrawerContent(feedTab: FeedTab) {
+        selectDrawerContent("feed/${feedTab.routePath}")
     }
 
-    fun onSelectDrawerContent(otherTabs: OtherTabs) {
-        selectDrawerContent("other/${otherTabs.routePath}")
+    fun onSelectDrawerContent(otherTab: OtherTab) {
+        selectDrawerContent("other/${otherTab.routePath}")
     }
 
     companion object {
