@@ -1,6 +1,10 @@
 package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.DraggableState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.padding
@@ -45,6 +49,7 @@ import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import kotlin.math.abs
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 
@@ -63,7 +68,6 @@ sealed class FeedTabs(val name: String, val routePath: String) {
 
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
-
         fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
     }
 }
@@ -80,6 +84,7 @@ fun FeedScreen(
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val listState = rememberLazyListState()
+    val draggableState = rememberDraggableState(onDelta = { })
     val coroutineScope = rememberCoroutineScope()
 
     val (
@@ -135,7 +140,20 @@ fun FeedScreen(
         listState = listState,
         onClickPlayPodcastButton = {
             dispatch(FeedViewModel.Event.ChangePlayingPodcastState(it))
-        }
+        },
+        onDragStopped = onDragStopped@{ velocity ->
+            val threshold = 500
+            if (threshold > abs(velocity)) return@onDragStopped
+
+            onSelectedTab(
+                if (0 > velocity) {
+                    selectedTab.rightTab
+                } else {
+                    selectedTab.leftTabs
+                }
+            )
+        },
+        draggableState = draggableState
     )
 }
 
@@ -156,6 +174,8 @@ private fun FeedScreen(
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem) -> Unit,
     listState: LazyListState,
+    onDragStopped: (Float) -> Unit,
+    draggableState: DraggableState,
 ) {
     Column {
         val density = LocalDensity.current
@@ -184,13 +204,27 @@ private fun FeedScreen(
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
                         listState = listState,
-                        onClickPlayPodcastButton = onClickPlayPodcastButton
+                        onClickPlayPodcastButton = onClickPlayPodcastButton,
+                        onDragStopped = onDragStopped,
+                        draggableState = draggableState
                     )
                 }
             }
         )
     }
 }
+
+private val FeedTabs.rightTab: FeedTabs
+    get() {
+        val currentPosition = FeedTabs.values().indexOf(this)
+        return FeedTabs.values().getOrElse(currentPosition + 1) { this }
+    }
+
+private val FeedTabs.leftTabs: FeedTabs
+    get() {
+        val currentPosition = FeedTabs.values().indexOf(this)
+        return FeedTabs.values().getOrElse(currentPosition - 1) { this }
+    }
 
 @Composable
 private fun AppBar(
@@ -244,10 +278,18 @@ private fun FeedList(
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem) -> Unit,
     listState: LazyListState,
+    onDragStopped: (Float) -> Unit,
+    draggableState: DraggableState,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .fillMaxHeight()
+            .draggable(
+                state = draggableState,
+                orientation = Orientation.Horizontal,
+                onDragStopped = { velocity -> onDragStopped(velocity) }
+            )
     ) {
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
@@ -271,9 +313,8 @@ private fun FeedList(
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        isPlayingPodcast =
-                            content.first.id == playingPodcastState?.id &&
-                                playingPodcastState.isPlaying,
+                        isPlayingPodcast = content.first.id == playingPodcastState?.id &&
+                            playingPodcastState.isPlaying,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
