@@ -52,6 +52,7 @@ import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
@@ -352,15 +353,17 @@ fun FeedItemRow(
     if (showDivider) {
         Divider()
     }
-    FeedItem(
-        feedItem = item,
-        favorited = favorited,
-        isPlayingPodcast = isPlayingPodcast,
-        onClick = onClickFeed,
-        showMediaLabel = showMediaLabel,
-        onFavoriteChange = onFavoriteChange,
-        onClickPlayPodcastButton = onClickPlayPodcastButton
-    )
+    ConferenceAppFeederTheme {
+        FeedItem(
+            feedItem = item,
+            favorited = favorited,
+            isPlayingPodcast = isPlayingPodcast,
+            onClick = onClickFeed,
+            showMediaLabel = showMediaLabel,
+            onFavoriteChange = onFavoriteChange,
+            onClickPlayPodcastButton = onClickPlayPodcastButton
+        )
+    }
 }
 
 @Composable
@@ -377,11 +380,12 @@ fun RobotItem(
     ) {
         val (text, icon) = createRefs()
         Text(
-            modifier = Modifier.constrainAs(text) {
-                top.linkTo(parent.top)
-                bottom.linkTo(icon.top)
-                start.linkTo(parent.start, 24.dp)
-            }
+            modifier = Modifier
+                .constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(icon.top)
+                    start.linkTo(parent.start, 24.dp)
+                }
                 .padding(vertical = 0.dp, horizontal = 8.dp),
             text = robotText,
             color = Color.Gray
