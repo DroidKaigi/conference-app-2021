@@ -5,7 +5,7 @@ import android.media.AudioManager
 import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import io.github.droidkaigi.feeder.FmPlayerViewModel
+import io.github.droidkaigi.feeder.feed.FmPlayerViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,11 +39,9 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
             when (event) {
                 is FmPlayerViewModel.Event.PlayFmPlayer -> with(fmPlayer) {
                     val state = mutableState.value
-                    val newState = FmPlayerViewModel.State(
-                        url = event.url,
-                        type = FmPlayerViewModel.State.Type.PLAY
-                    )
-                    // player restart
+                    val newState =
+                        FmPlayerViewModel.State(event.url, FmPlayerViewModel.State.Type.PLAY)
+
                     if (state.url == newState.url) {
                         start()
                     } else {

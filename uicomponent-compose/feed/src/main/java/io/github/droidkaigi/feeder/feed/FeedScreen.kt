@@ -99,6 +99,12 @@ fun FeedScreen(
         dispatch,
     ) = use(feedViewModel())
 
+    val (
+        fmPlayerState,
+        fmPlayerEffectFlow,
+        fmPlayerDispatch,
+    ) = use(fmPlayerViewModel())
+
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
@@ -115,6 +121,18 @@ fun FeedScreen(
                     SnackbarResult.Dismissed -> {
                     }
                 }
+            }
+            is FeedViewModel.Effect.ControlFmPlayer -> {
+                val playingPodcastState =
+                    effect.playingPodcastState ?: return@collectInLaunchedEffect
+
+                fmPlayerDispatch(
+                    if (playingPodcastState.isPlaying) {
+                        FmPlayerViewModel.Event.PlayFmPlayer(playingPodcastState.url)
+                    } else {
+                        FmPlayerViewModel.Event.PauseFmPlayer
+                    }
+                )
             }
         }
     }
@@ -377,11 +395,12 @@ fun RobotItem(
     ) {
         val (text, icon) = createRefs()
         Text(
-            modifier = Modifier.constrainAs(text) {
-                top.linkTo(parent.top)
-                bottom.linkTo(icon.top)
-                start.linkTo(parent.start, 24.dp)
-            }
+            modifier = Modifier
+                .constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(icon.top)
+                    start.linkTo(parent.start, 24.dp)
+                }
                 .padding(vertical = 0.dp, horizontal = 8.dp),
             text = robotText,
             color = Color.Gray

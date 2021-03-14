@@ -23,6 +23,9 @@ interface FeedViewModel :
 
     sealed class Effect {
         data class ErrorMessage(val appError: AppError) : Effect()
+        data class ControlFmPlayer(
+            val playingPodcastState: PlayingPodcastState? = null,
+        ) : Effect()
     }
 
     sealed class Event {

@@ -1,8 +1,5 @@
 package io.github.droidkaigi.feeder.viewmodel
 
-import android.media.AudioAttributes
-import android.media.AudioManager
-import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +16,6 @@ import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.toLoadState
 import javax.annotation.meta.Exhaustive
 import javax.inject.Inject
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -30,7 +26,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
@@ -44,16 +39,6 @@ class RealFeedViewModel @Inject constructor(
     init {
         viewModelScope.launch {
             refreshRepository()
-        }
-    }
-
-    private val mediaPlayer by lazy {
-        MediaPlayer().apply {
-            setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setLegacyStreamType(AudioManager.STREAM_MUSIC)
-                    .build()
-            )
         }
     }
 
@@ -71,24 +56,6 @@ class RealFeedViewModel @Inject constructor(
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
     private val playingPodcastState = MutableStateFlow<PlayingPodcastState?>(null)
-
-    @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun playPodcast(
-        url: String,
-        isRestart: Boolean,
-    ) = withContext(Dispatchers.IO) {
-        with(mediaPlayer) {
-            if (isRestart) return@with start()
-            reset()
-            setDataSource(url)
-            prepare()
-            start()
-        }
-    }
-
-    private fun pausePodcast() {
-        if (mediaPlayer.isPlaying) mediaPlayer.pause()
-    }
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
@@ -135,18 +102,13 @@ class RealFeedViewModel @Inject constructor(
                 is FeedViewModel.Event.ChangePlayingPodcastState -> {
                     val state = playingPodcastState.value
                     val isPlaying = event.feedItem.id == state?.id && state.isPlaying
-
                     val newState = PlayingPodcastState(
                         id = event.feedItem.id,
                         url = event.feedItem.podcastLink(),
                         isPlaying = isPlaying.not()
                     )
-                    if (newState.isPlaying) {
-                        playPodcast(newState.url, state?.url == newState.url)
-                    } else {
-                        pausePodcast()
-                    }
                     playingPodcastState.value = newState
+                    effectChannel.send(FeedViewModel.Effect.ControlFmPlayer(newState))
                 }
                 is FeedViewModel.Event.ReloadContent -> {
                     refreshRepository()

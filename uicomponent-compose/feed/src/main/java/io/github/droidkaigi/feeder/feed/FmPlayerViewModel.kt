@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder
+package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -15,7 +15,6 @@ interface FmPlayerViewModel : UnidirectionalViewModel<FmPlayerViewModel.Event,
         val url: String? = null,
         val type: Type = Type.STOP,
     ) {
-
         enum class Type { PLAY, PAUSE, STOP }
     }
 
