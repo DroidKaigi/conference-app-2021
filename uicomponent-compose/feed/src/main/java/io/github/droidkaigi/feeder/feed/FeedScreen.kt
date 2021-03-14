@@ -59,14 +59,14 @@ import kotlin.math.abs
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 
-sealed class FeedTabs(val name: String, val routePath: String) {
-    object Home : FeedTabs("Home", "home")
+sealed class FeedTab(val name: String, val routePath: String) {
+    object Home : FeedTab("Home", "home")
     sealed class FilteredFeed(
         val feedItemClass: KClass<out FeedItem>,
         name: String,
         routePath: String,
     ) :
-        FeedTabs(name, routePath) {
+        FeedTab(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
         object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
         object Podcast : FilteredFeed(FeedItem.Podcast::class, "Podcast", "podcast")
@@ -83,8 +83,8 @@ sealed class FeedTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun FeedScreen(
-    selectedTab: FeedTabs,
-    onSelectedTab: (FeedTabs) -> Unit,
+    selectedTab: FeedTab,
+    onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
@@ -155,7 +155,7 @@ fun FeedScreen(
                 if (0 > velocity) {
                     selectedTab.rightTab
                 } else {
-                    selectedTab.leftTabs
+                    selectedTab.leftTab
                 }
             )
         },
@@ -168,12 +168,12 @@ fun FeedScreen(
  */
 @Composable
 private fun FeedScreen(
-    selectedTab: FeedTabs,
+    selectedTab: FeedTab,
     scaffoldState: BackdropScaffoldState,
     feedContents: FeedContents,
     playingPodcastState: PlayingPodcastState?,
     filters: Filters,
-    onSelectTab: (FeedTabs) -> Unit,
+    onSelectTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
@@ -198,9 +198,9 @@ private fun FeedScreen(
             },
             frontLayerContent = {
                 FadeThrough(targetState = selectedTab) { selectedTab ->
-                    val isHome = selectedTab is FeedTabs.Home
+                    val isHome = selectedTab is FeedTab.Home
                     FeedList(
-                        feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
+                        feedContents = if (selectedTab is FeedTab.FilteredFeed) {
                             feedContents.filterFeedType(selectedTab.feedItemClass)
                         } else {
                             feedContents
@@ -220,23 +220,23 @@ private fun FeedScreen(
     }
 }
 
-private val FeedTabs.rightTab: FeedTabs
+private val FeedTab.rightTab: FeedTab
     get() {
-        val currentPosition = FeedTabs.values().indexOf(this)
-        return FeedTabs.values().getOrElse(currentPosition + 1) { this }
+        val currentPosition = FeedTab.values().indexOf(this)
+        return FeedTab.values().getOrElse(currentPosition + 1) { this }
     }
 
-private val FeedTabs.leftTabs: FeedTabs
+private val FeedTab.leftTab: FeedTab
     get() {
-        val currentPosition = FeedTabs.values().indexOf(this)
-        return FeedTabs.values().getOrElse(currentPosition - 1) { this }
+        val currentPosition = FeedTab.values().indexOf(this)
+        return FeedTab.values().getOrElse(currentPosition - 1) { this }
     }
 
 @Composable
 private fun AppBar(
     onNavigationIconClick: () -> Unit,
-    selectedTab: FeedTabs,
-    onSelectTab: (FeedTabs) -> Unit,
+    selectedTab: FeedTab,
+    onSelectTab: (FeedTab) -> Unit,
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -248,7 +248,7 @@ private fun AppBar(
             }
         }
     )
-    val selectedTabIndex = FeedTabs.values().indexOf(selectedTab)
+    val selectedTabIndex = FeedTab.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
@@ -260,7 +260,7 @@ private fun AppBar(
         },
         divider = {}
     ) {
-        FeedTabs.values().forEach { tab ->
+        FeedTab.values().forEach { tab ->
             Tab(
                 selected = tab == selectedTab,
                 text = {
@@ -407,7 +407,7 @@ fun PreviewFeedScreen() {
     AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                selectedTab = FeedTabs.Home,
+                selectedTab = FeedTab.Home,
                 onSelectedTab = {},
                 onNavigationIconClick = {
                 }
@@ -423,7 +423,7 @@ fun PreviewFeedScreenWithStartBlog() {
     AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                selectedTab = FeedTabs.FilteredFeed.Blog,
+                selectedTab = FeedTab.FilteredFeed.Blog,
                 onSelectedTab = {},
                 onNavigationIconClick = {
                 }

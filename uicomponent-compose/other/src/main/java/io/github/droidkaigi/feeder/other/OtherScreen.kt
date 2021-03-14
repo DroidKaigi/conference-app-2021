@@ -38,11 +38,11 @@ import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
 
-sealed class OtherTabs(val name: String, val routePath: String) {
-    object AboutThisApp : OtherTabs("About", "about")
-    object Contributor : OtherTabs("Contributor", "contributor")
-    object Staff : OtherTabs("Staff", "about_this_app")
-    object Settings : OtherTabs("Setting", "setting")
+sealed class OtherTab(val name: String, val routePath: String) {
+    object AboutThisApp : OtherTab("About", "about")
+    object Contributor : OtherTab("Contributor", "contributor")
+    object Staff : OtherTab("Staff", "about_this_app")
+    object Settings : OtherTab("Setting", "setting")
 
     companion object {
         fun values() = listOf(AboutThisApp, Contributor, Staff, Settings)
@@ -56,8 +56,8 @@ sealed class OtherTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun OtherScreen(
-    selectedTab: OtherTabs,
-    onSelectTab: (OtherTabs) -> Unit,
+    selectedTab: OtherTab,
+    onSelectTab: (OtherTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
@@ -80,8 +80,8 @@ fun OtherScreen(
 @Composable
 fun OtherScreen(
     scaffoldState: BackdropScaffoldState,
-    selectedTab: OtherTabs,
-    onSelectTab: (OtherTabs) -> Unit,
+    selectedTab: OtherTab,
+    onSelectTab: (OtherTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
@@ -117,8 +117,8 @@ fun OtherScreen(
 @Composable
 private fun AppBar(
     onNavigationIconClick: () -> Unit,
-    selectedTab: OtherTabs,
-    onSelectTab: (OtherTabs) -> Unit,
+    selectedTab: OtherTab,
+    onSelectTab: (OtherTab) -> Unit,
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -130,7 +130,7 @@ private fun AppBar(
             }
         }
     )
-    val selectedTabIndex = OtherTabs.values().indexOf(selectedTab)
+    val selectedTabIndex = OtherTab.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
@@ -142,7 +142,7 @@ private fun AppBar(
         },
         divider = {}
     ) {
-        OtherTabs.values().forEach { tab ->
+        OtherTab.values().forEach { tab ->
             Tab(
                 selected = tab == selectedTab,
                 text = {
@@ -159,15 +159,15 @@ private fun AppBar(
 
 @Composable
 private fun BackdropFrontLayerContent(
-    selectedTab: OtherTabs,
+    selectedTab: OtherTab,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
 ) {
     when (selectedTab) {
-        OtherTabs.AboutThisApp -> AboutThisApp()
-        OtherTabs.Contributor -> ContributorList(onContributorClick)
-        OtherTabs.Settings -> Settings()
-        OtherTabs.Staff -> StaffList(onStaffClick)
+        OtherTab.AboutThisApp -> AboutThisApp()
+        OtherTab.Contributor -> ContributorList(onContributorClick)
+        OtherTab.Settings -> Settings()
+        OtherTab.Staff -> StaffList(onStaffClick)
     }
 }
 
@@ -176,7 +176,7 @@ private fun BackdropFrontLayerContent(
 fun PreviewOtherScreen() {
     ConferenceAppFeederTheme {
         OtherScreen(
-            selectedTab = OtherTabs.AboutThisApp,
+            selectedTab = OtherTab.AboutThisApp,
             onSelectTab = {
             },
             onNavigationIconClick = {
