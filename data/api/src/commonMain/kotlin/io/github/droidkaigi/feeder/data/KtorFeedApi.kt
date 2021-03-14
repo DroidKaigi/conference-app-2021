@@ -8,20 +8,17 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.Speaker
 import io.github.droidkaigi.feeder.data.response.Thumbnail
-import io.ktor.client.request.get
 
 open class KtorFeedApi(
-    private val authApi: AuthApi,
     private val networkService: NetworkService,
 ) : FeedApi {
 
     override suspend fun fetch(): List<FeedItem> = try {
-        authApi.authenticated {
-            val feedsResponse = networkService.httpClient.get<FeedsResponse>(
-                "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
-            )
-            feedsResponse.toFeedList()
-        }
+        val feedsResponse = networkService.get<FeedsResponse>(
+            "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
+            needAuth = true
+        )
+        feedsResponse.toFeedList()
     } catch (e: Throwable) {
         // null value is not come here
         throw e.toAppError()

@@ -2,17 +2,14 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.data.response.ContributorsResponse
-import io.ktor.client.request.get
 
 open class KtorContributorApi(
-    private val authApi: AuthApi,
     private val networkService: NetworkService,
 ) : ContributorApi {
-    override suspend fun fetch(): List<Contributor> = authApi.authenticated {
-        networkService.get<ContributorsResponse>(
-            "https://ssot-api-staging.an.r.appspot.com/contributors"
-        ).toContributorList()
-    }
+    override suspend fun fetch(): List<Contributor> = networkService.get<ContributorsResponse>(
+        "https://ssot-api-staging.an.r.appspot.com/contributors",
+        needAuth = true
+    ).toContributorList()
 }
 
 fun ContributorsResponse.toContributorList(): List<Contributor> {

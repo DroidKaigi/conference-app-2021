@@ -9,30 +9,26 @@ import io.ktor.http.ContentType
 import io.ktor.http.contentType
 
 open class KtorDeviceApi(
-    private val authApi: AuthApi,
     private val networkService: NetworkService,
 ) : DeviceApi {
 
-    override suspend fun create(): DeviceInfo =
-        authApi.authenticated {
-            networkService.post<DeviceResponse>(
-                "https://ssot-api-staging.an.r.appspot" +
-                    ".com/devices"
-            ) {
-                contentType(ContentType.Application.Json)
-                body = DevicePostRequest(platform())
-            }.toDeviceInfo()
-        }
+    override suspend fun create(): DeviceInfo = networkService.post<DeviceResponse>(
+        "https://ssot-api-staging.an.r.appspot" +
+            ".com/devices",
+        needAuth = true
+    ) {
+        contentType(ContentType.Application.Json)
+        body = DevicePostRequest(platform())
+    }.toDeviceInfo()
 
     override suspend fun update(deviceId: String, deviceToken: String?): DeviceInfo =
-        authApi.authenticated {
-            networkService.put<DeviceResponse>(
-                "https://ssot-api-staging.an.r.appspot.com/devices/$deviceId"
-            ) {
-                contentType(ContentType.Application.Json)
-                body = DevicePutRequest(deviceToken)
-            }.toDeviceInfo()
-        }
+        networkService.put<DeviceResponse>(
+            "https://ssot-api-staging.an.r.appspot.com/devices/$deviceId",
+            needAuth = true
+        ) {
+            contentType(ContentType.Application.Json)
+            body = DevicePutRequest(deviceToken)
+        }.toDeviceInfo()
 }
 
 private fun DeviceResponse.toDeviceInfo(): DeviceInfo {
