@@ -9,7 +9,7 @@ open class KtorContributorApi(
     private val networkService: NetworkService,
 ) : ContributorApi {
     override suspend fun fetch(): List<Contributor> = authApi.authenticated {
-        networkService.httpClient.get<ContributorsResponse>(
+        networkService.get<ContributorsResponse>(
             "https://ssot-api-staging.an.r.appspot.com/contributors"
         ).toContributorList()
     }

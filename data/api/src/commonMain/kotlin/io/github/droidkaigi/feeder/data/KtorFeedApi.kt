@@ -16,7 +16,7 @@ open class KtorFeedApi(
 ) : FeedApi {
 
     override suspend fun fetch(): List<FeedItem> = authApi.authenticated {
-        val feedsResponse = networkService.httpClient.get<FeedsResponse>(
+        val feedsResponse = networkService.get<FeedsResponse>(
             "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
         )
         feedsResponse.toFeedList()

@@ -10,18 +10,37 @@ import io.ktor.client.features.json.serializer.KotlinxSerializer
 import io.ktor.client.features.logging.LogLevel
 import io.ktor.client.features.logging.Logger
 import io.ktor.client.features.logging.Logging
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.client.request.get
 import io.ktor.client.request.headers
+import io.ktor.client.request.post
+import io.ktor.client.request.put
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
 class NetworkService private constructor(val httpClient: HttpClient) {
 
+    suspend inline fun <reified T:Any> get(url: String): T {
+        return httpClient.get(url)
+    }
+
+    suspend inline fun <reified T> post(
+        urlString: String,
+        block: HttpRequestBuilder.() -> Unit = {}
+    ): T = httpClient.post<T>(urlString, block)
+
+    suspend inline fun <reified T> put(
+        urlString: String,
+        block: HttpRequestBuilder.() -> Unit = {}
+    ): T = httpClient.put<T>(urlString, block)
+
+
     companion object {
         fun <T> create(
             engineFactory: HttpClientEngineFactory<T>,
             userDataStore: UserDataStore,
-            block: T.() -> Unit = {}
+            block: T.() -> Unit = {},
         ): NetworkService where T : HttpClientEngineConfig {
             val httpClient = HttpClient(engineFactory) {
                 engine(block)
