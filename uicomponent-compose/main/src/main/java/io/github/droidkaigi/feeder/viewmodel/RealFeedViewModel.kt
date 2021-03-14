@@ -6,6 +6,7 @@ import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
@@ -42,7 +43,7 @@ class RealFeedViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.refresh()
+            refreshFeed()
         }
     }
 
@@ -148,9 +149,17 @@ class RealFeedViewModel @Inject constructor(
                     playingPodcastState.value = newState
                 }
                 is FeedViewModel.Event.ReloadContent -> {
-                    repository.refresh()
+                    refreshFeed()
                 }
             }
+        }
+    }
+
+    private suspend fun refreshFeed() {
+        try {
+            repository.refresh()
+        } catch (e: AppError) {
+            effectChannel.send(FeedViewModel.Effect.ErrorMessage(e))
         }
     }
 }
