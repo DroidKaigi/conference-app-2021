@@ -7,7 +7,6 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
-import io.github.droidkaigi.feeder.PlayingPodcastState
 import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
@@ -55,21 +54,18 @@ class RealFeedViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
-    private val playingPodcastState = MutableStateFlow<PlayingPodcastState?>(null)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
             filters,
-            playingPodcastState,
             showProgressLatch.toggleState
-        ) { feedContentsLoadState, filters, playingPodcastState, showProgress ->
+        ) { feedContentsLoadState, filters, showProgress ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             FeedViewModel.State(
                 showProgress = showProgress,
                 filters = filters,
-                playingPodcastState = playingPodcastState,
                 filteredFeedContents = filteredFeed,
 //                snackbarMessage = currentValue.snackbarMessage
             )
@@ -98,17 +94,6 @@ class RealFeedViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(event.feedItem)
                     }
-                }
-                is FeedViewModel.Event.ChangePlayingPodcastState -> {
-                    val state = playingPodcastState.value
-                    val isPlaying = event.feedItem.id == state?.id && state.isPlaying
-                    val newState = PlayingPodcastState(
-                        id = event.feedItem.id,
-                        url = event.feedItem.podcastLink(),
-                        isPlaying = isPlaying.not()
-                    )
-                    playingPodcastState.value = newState
-                    effectChannel.send(FeedViewModel.Effect.ControlFmPlayer(newState))
                 }
                 is FeedViewModel.Event.ReloadContent -> {
                     refreshRepository()

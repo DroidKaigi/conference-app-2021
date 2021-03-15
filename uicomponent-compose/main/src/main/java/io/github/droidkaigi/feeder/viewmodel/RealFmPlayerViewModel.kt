@@ -6,12 +6,14 @@ import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.droidkaigi.feeder.feed.FmPlayerViewModel
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
 
@@ -26,6 +28,24 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
         )
     }
 
+    @Suppress("BlockingMethodInNonBlockingContext")
+    private suspend fun play(url: String) = withContext(Dispatchers.IO) {
+        fmPlayer.run {
+            reset()
+            setDataSource(url)
+            prepare()
+            start()
+        }
+    }
+
+    private fun restart() {
+        fmPlayer.start()
+    }
+
+    private fun pause() {
+        fmPlayer.pause()
+    }
+
     override val effect: Flow<FmPlayerViewModel.Effect> = effectSharedFlow.receiveAsFlow()
     override val state: StateFlow<FmPlayerViewModel.State> = mutableState
 
@@ -38,27 +58,27 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
     override fun event(event: FmPlayerViewModel.Event) {
         viewModelScope.launch {
             when (event) {
-                is FmPlayerViewModel.Event.PlayFmPlayer -> with(fmPlayer) {
+                is FmPlayerViewModel.Event.ChangePlayerState -> {
                     val state = mutableState.value
-                    val newState =
-                        FmPlayerViewModel.State(event.url, FmPlayerViewModel.State.Type.PLAY)
 
-                    if (state.url == newState.url) {
-                        start()
-                    } else {
-                        reset()
-                        setDataSource(newState.url)
-                        prepare()
-                        start()
-                    }
-                    mutableState.emit(newState)
-                }
-                is FmPlayerViewModel.Event.PauseFmPlayer -> with(fmPlayer) {
-                    pause()
-                    val newValue = mutableState.value.copy(
-                        type = FmPlayerViewModel.State.Type.PAUSE
+                    val isPlay = state.url == event.url
+                        && state.type == FmPlayerViewModel.State.Type.PLAY
+                    val isPause = state.url == event.url
+                        && state.type == FmPlayerViewModel.State.Type.PAUSE
+
+                    mutableState.value = state.copy(
+                        url = event.url,
+                        type = if (isPlay) {
+                            FmPlayerViewModel.State.Type.PAUSE
+                        } else {
+                            FmPlayerViewModel.State.Type.PLAY
+                        }
                     )
-                    mutableState.emit(newValue)
+                    when {
+                        isPlay -> pause()
+                        isPause -> restart()
+                        else -> play(event.url)
+                    }
                 }
             }
         }

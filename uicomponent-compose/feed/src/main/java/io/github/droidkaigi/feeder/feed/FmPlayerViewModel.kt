@@ -8,21 +8,22 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface FmPlayerViewModel : UnidirectionalViewModel<FmPlayerViewModel.Event,
-        FmPlayerViewModel.Effect,
-        FmPlayerViewModel.State> {
+    FmPlayerViewModel.Effect,
+    FmPlayerViewModel.State> {
 
     data class State(
         val url: String? = null,
         val type: Type = Type.STOP,
     ) {
         enum class Type { PLAY, PAUSE, STOP }
+
+        fun isPlaying() = type == Type.PLAY
     }
 
     sealed class Effect
 
     sealed class Event {
-        data class PlayFmPlayer(val url: String?) : Event()
-        object PauseFmPlayer : Event()
+        data class ChangePlayerState(val url: String) : Event()
     }
 
     override val effect: Flow<Effect>

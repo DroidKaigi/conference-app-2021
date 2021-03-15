@@ -7,7 +7,6 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.PlayingPodcastState
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -17,21 +16,16 @@ interface FeedViewModel :
     data class State(
         val showProgress: Boolean = false,
         val filters: Filters = Filters(),
-        val playingPodcastState: PlayingPodcastState? = null,
         val filteredFeedContents: FeedContents = FeedContents(),
     )
 
     sealed class Effect {
         data class ErrorMessage(val appError: AppError) : Effect()
-        data class ControlFmPlayer(
-            val playingPodcastState: PlayingPodcastState? = null,
-        ) : Effect()
     }
 
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
         class ToggleFavorite(val feedItem: FeedItem) : Event()
-        class ChangePlayingPodcastState(val feedItem: FeedItem) : Event()
         object ReloadContent : Event()
     }
 
