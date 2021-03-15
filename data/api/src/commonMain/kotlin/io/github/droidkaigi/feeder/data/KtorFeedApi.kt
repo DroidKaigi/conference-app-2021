@@ -13,16 +13,10 @@ open class KtorFeedApi(
     private val networkService: NetworkService,
 ) : FeedApi {
 
-    override suspend fun fetch(): List<FeedItem> = try {
-        val feedsResponse = networkService.get<FeedsResponse>(
-            "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
-            needAuth = true
-        )
-        feedsResponse.toFeedList()
-    } catch (e: Throwable) {
-        // null value is not come here
-        throw e.toAppError()
-    }
+    override suspend fun fetch(): List<FeedItem> = networkService.get<FeedsResponse>(
+        "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
+        needAuth = true
+    ).toFeedList()
 }
 
 fun FeedsResponse.toFeedList() =
