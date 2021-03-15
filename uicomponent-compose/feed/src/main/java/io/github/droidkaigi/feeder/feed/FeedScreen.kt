@@ -46,13 +46,13 @@ import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.PlayingPodcastState
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
@@ -353,17 +353,15 @@ fun FeedItemRow(
     if (showDivider) {
         Divider()
     }
-    ConferenceAppFeederTheme {
-        FeedItem(
-            feedItem = item,
-            favorited = favorited,
-            isPlayingPodcast = isPlayingPodcast,
-            onClick = onClickFeed,
-            showMediaLabel = showMediaLabel,
-            onFavoriteChange = onFavoriteChange,
-            onClickPlayPodcastButton = onClickPlayPodcastButton
-        )
-    }
+    FeedItem(
+        feedItem = item,
+        favorited = favorited,
+        isPlayingPodcast = isPlayingPodcast,
+        onClick = onClickFeed,
+        showMediaLabel = showMediaLabel,
+        onFavoriteChange = onFavoriteChange,
+        onClickPlayPodcastButton = onClickPlayPodcastButton
+    )
 }
 
 @Composable
@@ -408,7 +406,9 @@ fun RobotItem(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    AppThemeWithBackground {
+    AppThemeWithBackground(
+        theme = Theme.DARK
+    ) {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTabs.Home,
