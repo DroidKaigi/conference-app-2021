@@ -45,7 +45,6 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.PlayingPodcastState
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
@@ -99,6 +98,12 @@ fun FeedScreen(
         dispatch,
     ) = use(feedViewModel())
 
+    val (
+        fmPlayerState,
+        fmPlayerEffectFlow,
+        fmPlayerDispatch,
+    ) = use(fmPlayerViewModel())
+
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
@@ -123,7 +128,7 @@ fun FeedScreen(
         selectedTab = selectedTab,
         scaffoldState = scaffoldState,
         feedContents = state.filteredFeedContents,
-        playingPodcastState = state.playingPodcastState,
+        fmPlayerState = fmPlayerState,
         filters = state.filters,
         onSelectTab = {
             onSelectedTab(it)
@@ -145,7 +150,7 @@ fun FeedScreen(
         onClickFeed = onDetailClick,
         listState = listState,
         onClickPlayPodcastButton = {
-            dispatch(FeedViewModel.Event.ChangePlayingPodcastState(it))
+            fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink()))
         },
         onDragStopped = onDragStopped@{ velocity ->
             val threshold = 500
@@ -171,7 +176,7 @@ private fun FeedScreen(
     selectedTab: FeedTab,
     scaffoldState: BackdropScaffoldState,
     feedContents: FeedContents,
-    playingPodcastState: PlayingPodcastState?,
+    fmPlayerState: FmPlayerViewModel.State?,
     filters: Filters,
     onSelectTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
@@ -205,7 +210,7 @@ private fun FeedScreen(
                         } else {
                             feedContents
                         },
-                        playingPodcastState = playingPodcastState,
+                        fmPlayerState = fmPlayerState,
                         isHome = isHome,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
@@ -278,7 +283,7 @@ private fun AppBar(
 @Composable
 private fun FeedList(
     feedContents: FeedContents,
-    playingPodcastState: PlayingPodcastState?,
+    fmPlayerState: FmPlayerViewModel.State?,
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
@@ -319,8 +324,8 @@ private fun FeedList(
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        isPlayingPodcast = content.first.id == playingPodcastState?.id &&
-                            playingPodcastState.isPlaying,
+                        isPlayingPodcast = content.first.podcastLink() == fmPlayerState?.url &&
+                            fmPlayerState.isPlaying(),
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
@@ -377,11 +382,12 @@ fun RobotItem(
     ) {
         val (text, icon) = createRefs()
         Text(
-            modifier = Modifier.constrainAs(text) {
-                top.linkTo(parent.top)
-                bottom.linkTo(icon.top)
-                start.linkTo(parent.start, 24.dp)
-            }
+            modifier = Modifier
+                .constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(icon.top)
+                    start.linkTo(parent.start, 24.dp)
+                }
                 .padding(vertical = 0.dp, horizontal = 8.dp),
             text = robotText,
             color = Color.Gray
