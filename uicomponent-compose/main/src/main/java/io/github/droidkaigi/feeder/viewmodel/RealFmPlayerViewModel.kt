@@ -61,10 +61,10 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
                 is FmPlayerViewModel.Event.ChangePlayerState -> {
                     val state = mutableState.value
 
-                    val isPlay = state.url == event.url
-                        && state.type == FmPlayerViewModel.State.Type.PLAY
-                    val isPause = state.url == event.url
-                        && state.type == FmPlayerViewModel.State.Type.PAUSE
+                    val isPlay = state.url == event.url &&
+                        state.type == FmPlayerViewModel.State.Type.PLAY
+                    val isPause = state.url == event.url &&
+                        state.type == FmPlayerViewModel.State.Type.PAUSE
 
                     mutableState.value = state.copy(
                         url = event.url,

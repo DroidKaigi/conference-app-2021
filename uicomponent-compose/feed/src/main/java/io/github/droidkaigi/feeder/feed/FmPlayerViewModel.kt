@@ -8,8 +8,8 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
 interface FmPlayerViewModel : UnidirectionalViewModel<FmPlayerViewModel.Event,
-    FmPlayerViewModel.Effect,
-    FmPlayerViewModel.State> {
+        FmPlayerViewModel.Effect,
+        FmPlayerViewModel.State> {
 
     data class State(
         val url: String? = null,
