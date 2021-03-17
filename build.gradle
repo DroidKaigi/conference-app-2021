@@ -8,6 +8,15 @@ buildscript {
     repositories {
         google()
         mavenCentral()
+        // This snippet enables jcenter only for the dependencies described within the block.
+        // Once they are on maven central you can just remove it.
+        // https://github.com/Kotlin/kotlinx.html/issues/173#issuecomment-800504909
+        jcenter {
+            content {
+                includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
+                includeModule("org.jetbrains.kotlinx", "kotlinx-collections-immutable-jvm")
+            }
+        }
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:7.0.0-alpha09'
@@ -33,6 +42,15 @@ allprojects {
     repositories {
         google()
         mavenCentral()
+        // This snippet enables jcenter only for the dependencies described within the block.
+        // Once they are on maven central you can just remove it.
+        // https://github.com/Kotlin/kotlinx.html/issues/173#issuecomment-800504909
+        jcenter {
+            content {
+                includeModule("org.jetbrains.kotlinx", "kotlinx-html-jvm")
+                includeModule("org.jetbrains.kotlinx", "kotlinx-collections-immutable-jvm")
+            }
+        }
         maven { url 'https://androidx.dev/snapshots/builds/6767375/artifacts/ui/repository' }
         maven { url 'https://oss.sonatype.org/content/repositories/snapshots' }
     }
