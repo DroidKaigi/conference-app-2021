@@ -50,6 +50,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true // https://github.com/DroidKaigi/conference-app-2021/issues/373
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -98,6 +99,9 @@ hilt {
 dependencies {
     implementation project(':data:repository')
     implementation project(':uicomponent-compose:main')
+
+    // Java 8+ API desugaring support
+    coreLibraryDesugaring Dep.desugarJdkLibs
 
     // Hilt
     implementation Dep.Dagger.hiltAndroid

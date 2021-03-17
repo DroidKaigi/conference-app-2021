@@ -11,9 +11,8 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        # Currently, lower terminals fail. ref: https://github.com/Kotlin/kotlinx-datetime#using-in-your-projects
         # Currently, no API 30 virtual image
-        api-level: [26, 27, 28, 29]
+        api-level: [21, 23, 26, 29]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2

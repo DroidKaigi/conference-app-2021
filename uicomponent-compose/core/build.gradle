@@ -11,6 +11,7 @@ apply from: rootProject.file("gradle/android.gradle")
 
 android {
     compileOptions {
+        coreLibraryDesugaringEnabled true // need for test. https://github.com/DroidKaigi/conference-app-2021/issues/373
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -37,6 +38,10 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 
 dependencies {
     api project(":model")
+
+    // Java 8+ API desugaring support
+    coreLibraryDesugaring Dep.desugarJdkLibs
+
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlibJdk8
 

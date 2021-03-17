@@ -15,6 +15,7 @@ android {
         resValue "string", "app_version_name", AppVersions.versionName
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true // need for test. https://github.com/DroidKaigi/conference-app-2021/issues/373
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -43,6 +44,9 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 dependencies {
     api project(":uicomponent-compose:core")
     api project(":model")
+
+    // Java 8+ API desugaring support
+    coreLibraryDesugaring Dep.desugarJdkLibs
 
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation Dep.Accompanist.coil

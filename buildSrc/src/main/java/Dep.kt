@@ -133,4 +133,6 @@ object Dep {
         const val networkPlugin = "com.facebook.flipper:flipper-network-plugin:0.76.0"
         const val soLoader = "com.facebook.soloader:soloader:0.10.1"
     }
+
+    const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 }
