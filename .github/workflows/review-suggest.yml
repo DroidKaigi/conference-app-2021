@@ -22,3 +22,4 @@ jobs:
       # Since "reviewdog/action-suggester" using "spotlessKotlinApply" does not work with forked PR,
       # perform "spotlessKotlinCheck".
       - run: ./gradlew spotlessKotlinCheck
+      - run: ./gradlew lintDebug

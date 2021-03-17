@@ -1,3 +1,4 @@
+import io.github.droidkaigi.feeder.AppVersions
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
 plugins {
@@ -7,6 +8,7 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
+    id 'com.google.android.gms.oss-licenses-plugin'
 }
 
 android {
@@ -17,8 +19,8 @@ android {
         applicationId "io.github.droidkaigi.feeder"
         minSdkVersion 21
         targetSdkVersion 30
-        versionCode 1
-        versionName "1.0"
+        versionCode AppVersions.versionCode
+        versionName AppVersions.versionName
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -48,6 +50,7 @@ android {
         }
     }
     compileOptions {
+        coreLibraryDesugaringEnabled true // https://github.com/DroidKaigi/conference-app-2021/issues/373
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -97,6 +100,9 @@ dependencies {
     implementation project(':data:repository')
     implementation project(':uicomponent-compose:main')
 
+    // Java 8+ API desugaring support
+    coreLibraryDesugaring Dep.desugarJdkLibs
+
     // Hilt
     implementation Dep.Dagger.hiltAndroid
     kapt Dep.Dagger.hiltAndroidCompiler
@@ -109,8 +115,8 @@ dependencies {
     testImplementation Dep.Dagger.hiltAndroidTesting
     kaptTest Dep.Dagger.hiltAndroidCompiler
 
-    implementation('androidx.hilt:hilt-common:1.0.0-alpha03')
-    implementation('androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03')
+    implementation Dep.AndroidX.hiltCommon
+    implementation Dep.AndroidX.hiltLifeCycleViewModel
     kapt Dep.Dagger.hiltAndroidCompiler
 
     implementation Dep.Compose.activity
@@ -124,8 +130,8 @@ dependencies {
     implementation Dep.AndroidX.fragment
     implementation Dep.AndroidX.activity
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
-    implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+    implementation Dep.Jetpack.appcompat
+    implementation Dep.AndroidX.lifecycle
     implementation 'com.google.android.material:material:1.3.0'
 
     implementation Dep.FirebaseCrashlytics.android
@@ -148,7 +154,7 @@ dependencies {
     // https://github.com/cashapp/turbine/issues/10
     testImplementation 'app.cash.turbine:turbine:0.2.1'
 
-    androidTestImplementation 'androidx.test.ext:junit:1.1.2'
-    androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
+    androidTestImplementation Dep.AndroidX.Test.ext
+    androidTestImplementation Dep.AndroidX.Test.espresso
 }
 

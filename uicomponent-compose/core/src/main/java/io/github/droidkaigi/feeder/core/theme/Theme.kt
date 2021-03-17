@@ -1,12 +1,14 @@
 package io.github.droidkaigi.feeder.core.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
+import io.github.droidkaigi.feeder.Theme
 
 private val DarkColorPalette = darkColors(
     primary = blue200,
@@ -22,18 +24,13 @@ private val LightColorPalette = lightColors(
 
 @Composable
 fun ConferenceAppFeederTheme(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    theme: Theme? = Theme.SYSTEM,
     content: @Composable
     () -> Unit,
 ) {
-    val colors = if (darkTheme) {
-        DarkColorPalette
-    } else {
-        LightColorPalette
-    }
     ProvideWindowInsets {
         MaterialTheme(
-            colors = colors,
+            colors = colorPalette(theme),
             typography = typography,
             shapes = shapes,
             content = content
@@ -42,12 +39,31 @@ fun ConferenceAppFeederTheme(
 }
 
 @Composable
+private fun colorPalette(theme: Theme?): Colors {
+    return when (theme) {
+        Theme.SYSTEM -> systemColorPalette()
+        Theme.DARK -> DarkColorPalette
+        Theme.LIGHT -> LightColorPalette
+        else -> systemColorPalette()
+    }
+}
+
+@Composable
+private fun systemColorPalette(): Colors {
+    return if (isSystemInDarkTheme()) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+}
+
+@Composable
 fun AppThemeWithBackground(
-    darkTheme: Boolean = isSystemInDarkTheme(),
+    theme: Theme? = Theme.SYSTEM,
     content: @Composable
     () -> Unit,
 ) {
     Surface {
-        ConferenceAppFeederTheme(darkTheme, content)
+        ConferenceAppFeederTheme(theme, content)
     }
 }

@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
@@ -36,7 +37,7 @@ class RealFeedViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            repository.refresh()
+            refreshRepository()
         }
     }
 
@@ -95,9 +96,17 @@ class RealFeedViewModel @Inject constructor(
                     }
                 }
                 is FeedViewModel.Event.ReloadContent -> {
-                    repository.refresh()
+                    refreshRepository()
                 }
             }
+        }
+    }
+
+    private suspend fun refreshRepository() {
+        try {
+            repository.refresh()
+        } catch (e: AppError) {
+            effectChannel.send(FeedViewModel.Effect.ErrorMessage(e))
         }
     }
 }

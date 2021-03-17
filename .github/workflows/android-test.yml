@@ -1,0 +1,43 @@
+name: android-test
+on:
+  push: # Since it takes time and is unstable, execute only when merging
+    branches:
+      - main
+
+jobs:
+  test:
+    name: "android test on main branch"
+    runs-on: macos-latest # To use emulator
+    timeout-minutes: 30
+    strategy:
+      matrix:
+        # Currently, no API 30 virtual image
+        api-level: [21, 23, 26, 29]
+      fail-fast: false
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: ${{ github.ref }}
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - uses: actions/cache@v2
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle', '**/*.gradle.kts', 'buildSrc/src/**/*.kt', '**/gradle.properties', 'gradle/**') }}
+      - uses: reactivecircus/android-emulator-runner@v2
+        with:
+          api-level: ${{ matrix.api-level }}
+          arch: x86
+          disable-animations: true
+          script: ./gradlew uicomponent-compose:main:connectedCheck uicomponent-compose:feed:connectedCheck uicomponent-compose:other:connectedCheck uicomponent-compose:core:connectedCheck
+      - uses: actions/upload-artifact@v2
+        if: cancelled() != true # Upload even if there is an error in the test
+        with:
+          name: android-test-reports-${{ matrix.api-level }}
+          path: |
+            **/reports
+            !buildSrc/build/reports
+          retention-days: 14

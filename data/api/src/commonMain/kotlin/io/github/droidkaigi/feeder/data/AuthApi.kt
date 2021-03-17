@@ -17,12 +17,7 @@ class AuthApi(
     private val httpClient: HttpClient,
     private val userDataStore: UserDataStore,
 ) {
-    suspend fun <T> authenticated(block: suspend () -> T): T {
-        authIfNeeded()
-        return block()
-    }
-
-    private suspend fun authIfNeeded() {
+    suspend fun authIfNeeded() {
         val auth = Firebase.auth
         val currentUser = auth.currentUser
         val isAuthenticated = userDataStore.isAuthenticated().first()
@@ -45,11 +40,13 @@ class AuthApi(
 
     private suspend fun registerToServer(createdIdToken: String) {
         runCatching {
-            httpClient.post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
-                header(HttpHeaders.Authorization, "Bearer $createdIdToken")
-                contentType(ContentType.Application.Json)
-                body = "{}"
-            }
+            // Use httpClient for bypass auth process
+            httpClient
+                .post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
+                    header(HttpHeaders.Authorization, "Bearer $createdIdToken")
+                    contentType(ContentType.Application.Json)
+                    body = "{}"
+                }
         }.getOrElse {
             if (it !is ResponseException || it.response.status != HttpStatusCode.Conflict) {
                 throw it

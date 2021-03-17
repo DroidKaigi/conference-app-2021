@@ -28,7 +28,9 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = true,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
@@ -47,7 +49,9 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = true,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
@@ -66,11 +70,57 @@ class FeedItemTest {
                     favorited = true,
                     showMediaLabel = false,
                     onClick = { },
-                    onFavoriteChange = { }
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
                 )
             }
         }
 
         composeTestRule.onNodeWithTag("MediaLabel", useUnmergedTree = true).assertDoesNotExist()
+    }
+
+    @Test
+    fun showFeedItem_isFavoriteButtonDisplayed() {
+        val feedItem = fakeFeedContents().contents[0].first
+
+        composeTestRule.setContent {
+            ConferenceAppFeederTheme {
+                FeedItem(
+                    feedItem = feedItem,
+                    favorited = true,
+                    showMediaLabel = true,
+                    onClick = { },
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("Favorite", useUnmergedTree = true).assertIsDisplayed()
+        composeTestRule.onNodeWithTag("NotFavorite", useUnmergedTree = true).assertDoesNotExist()
+    }
+
+    @Test
+    fun showFeedItem_isNotFavoriteButtonDisplayed() {
+        val feedItem = fakeFeedContents().contents[0].first
+
+        composeTestRule.setContent {
+            ConferenceAppFeederTheme {
+                FeedItem(
+                    feedItem = feedItem,
+                    favorited = false,
+                    showMediaLabel = true,
+                    onClick = { },
+                    onFavoriteChange = { },
+                    isPlayingPodcast = false,
+                    onClickPlayPodcastButton = { }
+                )
+            }
+        }
+
+        composeTestRule.onNodeWithTag("Favorite", useUnmergedTree = true).assertDoesNotExist()
+        composeTestRule.onNodeWithTag("NotFavorite", useUnmergedTree = true).assertIsDisplayed()
     }
 }

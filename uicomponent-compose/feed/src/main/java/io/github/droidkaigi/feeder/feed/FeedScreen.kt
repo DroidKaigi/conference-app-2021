@@ -1,8 +1,13 @@
 package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.gestures.DraggableState
+import androidx.compose.foundation.gestures.Orientation
+import androidx.compose.foundation.gestures.draggable
+import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
@@ -25,11 +30,15 @@ import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.constraintlayout.compose.ConstraintLayout
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
@@ -41,20 +50,22 @@ import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
 import io.github.droidkaigi.feeder.core.animation.FadeThrough
 import io.github.droidkaigi.feeder.core.getReadableMessage
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
+import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
+import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import kotlin.math.abs
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 
-sealed class FeedTabs(val name: String, val routePath: String) {
-    object Home : FeedTabs("Home", "home")
+sealed class FeedTab(val name: String, val routePath: String) {
+    object Home : FeedTab("Home", "home")
     sealed class FilteredFeed(
         val feedItemClass: KClass<out FeedItem>,
         name: String,
         routePath: String,
     ) :
-        FeedTabs(name, routePath) {
+        FeedTab(name, routePath) {
         object Blog : FilteredFeed(FeedItem.Blog::class, "Blog", "blog")
         object Video : FilteredFeed(FeedItem.Video::class, "Video", "video")
         object Podcast : FilteredFeed(FeedItem.Podcast::class, "Podcast", "podcast")
@@ -62,7 +73,6 @@ sealed class FeedTabs(val name: String, val routePath: String) {
 
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
-
         fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
     }
 }
@@ -72,13 +82,14 @@ sealed class FeedTabs(val name: String, val routePath: String) {
  */
 @Composable
 fun FeedScreen(
-    selectedTab: FeedTabs,
-    onSelectedTab: (FeedTabs) -> Unit,
+    selectedTab: FeedTab,
+    onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val listState = rememberLazyListState()
+    val draggableState = rememberDraggableState(onDelta = { })
     val coroutineScope = rememberCoroutineScope()
 
     val (
@@ -86,6 +97,12 @@ fun FeedScreen(
         effectFlow,
         dispatch,
     ) = use(feedViewModel())
+
+    val (
+        fmPlayerState,
+        fmPlayerEffectFlow,
+        fmPlayerDispatch,
+    ) = use(fmPlayerViewModel())
 
     val context = LocalContext.current
     effectFlow.collectInLaunchedEffect { effect ->
@@ -111,6 +128,7 @@ fun FeedScreen(
         selectedTab = selectedTab,
         scaffoldState = scaffoldState,
         feedContents = state.filteredFeedContents,
+        fmPlayerState = fmPlayerState,
         filters = state.filters,
         onSelectTab = {
             onSelectedTab(it)
@@ -130,7 +148,23 @@ fun FeedScreen(
             )
         },
         onClickFeed = onDetailClick,
-        listState = listState
+        listState = listState,
+        onClickPlayPodcastButton = {
+            fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink()))
+        },
+        onDragStopped = onDragStopped@{ velocity ->
+            val threshold = 500
+            if (threshold > abs(velocity)) return@onDragStopped
+
+            onSelectedTab(
+                if (0 > velocity) {
+                    selectedTab.rightTab
+                } else {
+                    selectedTab.leftTab
+                }
+            )
+        },
+        draggableState = draggableState
     )
 }
 
@@ -139,16 +173,20 @@ fun FeedScreen(
  */
 @Composable
 private fun FeedScreen(
-    selectedTab: FeedTabs,
+    selectedTab: FeedTab,
     scaffoldState: BackdropScaffoldState,
     feedContents: FeedContents,
+    fmPlayerState: FmPlayerViewModel.State?,
     filters: Filters,
-    onSelectTab: (FeedTabs) -> Unit,
+    onSelectTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem) -> Unit,
     listState: LazyListState,
+    onDragStopped: (Float) -> Unit,
+    draggableState: DraggableState,
 ) {
     Column {
         val density = LocalDensity.current
@@ -165,17 +203,21 @@ private fun FeedScreen(
             },
             frontLayerContent = {
                 FadeThrough(targetState = selectedTab) { selectedTab ->
-                    val isHome = selectedTab is FeedTabs.Home
+                    val isHome = selectedTab is FeedTab.Home
                     FeedList(
-                        feedContents = if (selectedTab is FeedTabs.FilteredFeed) {
+                        feedContents = if (selectedTab is FeedTab.FilteredFeed) {
                             feedContents.filterFeedType(selectedTab.feedItemClass)
                         } else {
                             feedContents
                         },
+                        fmPlayerState = fmPlayerState,
                         isHome = isHome,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
-                        listState
+                        listState = listState,
+                        onClickPlayPodcastButton = onClickPlayPodcastButton,
+                        onDragStopped = onDragStopped,
+                        draggableState = draggableState
                     )
                 }
             }
@@ -183,11 +225,23 @@ private fun FeedScreen(
     }
 }
 
+private val FeedTab.rightTab: FeedTab
+    get() {
+        val currentPosition = FeedTab.values().indexOf(this)
+        return FeedTab.values().getOrElse(currentPosition + 1) { this }
+    }
+
+private val FeedTab.leftTab: FeedTab
+    get() {
+        val currentPosition = FeedTab.values().indexOf(this)
+        return FeedTab.values().getOrElse(currentPosition - 1) { this }
+    }
+
 @Composable
 private fun AppBar(
     onNavigationIconClick: () -> Unit,
-    selectedTab: FeedTabs,
-    onSelectTab: (FeedTabs) -> Unit,
+    selectedTab: FeedTab,
+    onSelectTab: (FeedTab) -> Unit,
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
@@ -199,7 +253,7 @@ private fun AppBar(
             }
         }
     )
-    val selectedTabIndex = FeedTabs.values().indexOf(selectedTab)
+    val selectedTabIndex = FeedTab.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
@@ -211,7 +265,7 @@ private fun AppBar(
         },
         divider = {}
     ) {
-        FeedTabs.values().forEach { tab ->
+        FeedTab.values().forEach { tab ->
             Tab(
                 selected = tab == selectedTab,
                 text = {
@@ -229,14 +283,24 @@ private fun AppBar(
 @Composable
 private fun FeedList(
     feedContents: FeedContents,
+    fmPlayerState: FmPlayerViewModel.State?,
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem) -> Unit,
     listState: LazyListState,
+    onDragStopped: (Float) -> Unit,
+    draggableState: DraggableState,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier
+            .fillMaxHeight()
+            .draggable(
+                state = draggableState,
+                orientation = Orientation.Horizontal,
+                onDragStopped = { velocity -> onDragStopped(velocity) }
+            )
     ) {
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
@@ -254,12 +318,24 @@ private fun FeedList(
                     )
                 } else {
                     FeedItemRow(
-                        content.first,
-                        content.second,
-                        onClickFeed,
-                        isHome,
-                        onFavoriteChange,
-                        index != 0
+                        item = content.first,
+                        favorited = content.second,
+                        onClickFeed = onClickFeed,
+                        showMediaLabel = isHome,
+                        onFavoriteChange = onFavoriteChange,
+                        showDivider = index != 0,
+                        isPlayingPodcast = content.first.podcastLink() == fmPlayerState?.url &&
+                            fmPlayerState.isPlaying(),
+                        onClickPlayPodcastButton = onClickPlayPodcastButton
+                    )
+                }
+            }
+            if (listState.firstVisibleItemIndex != 0) {
+                item {
+                    RobotItem(
+                        robotText = "Finished!",
+                        robotIcon = painterResource(id = R.drawable.ic_android_green_24dp),
+                        robotIconColor = greenDroid
                     )
                 }
             }
@@ -271,10 +347,12 @@ private fun FeedList(
 fun FeedItemRow(
     item: FeedItem,
     favorited: Boolean,
+    isPlayingPodcast: Boolean = false,
     onClickFeed: (FeedItem) -> Unit,
     showMediaLabel: Boolean,
     onFavoriteChange: (FeedItem) -> Unit,
-    showDivider: Boolean
+    onClickPlayPodcastButton: (FeedItem) -> Unit,
+    showDivider: Boolean,
 ) {
     if (showDivider) {
         Divider()
@@ -282,19 +360,60 @@ fun FeedItemRow(
     FeedItem(
         feedItem = item,
         favorited = favorited,
+        isPlayingPodcast = isPlayingPodcast,
         onClick = onClickFeed,
         showMediaLabel = showMediaLabel,
-        onFavoriteChange = onFavoriteChange
+        onFavoriteChange = onFavoriteChange,
+        onClickPlayPodcastButton = onClickPlayPodcastButton
     )
+}
+
+@Composable
+fun RobotItem(
+    robotText: String,
+    robotIcon: Painter,
+    robotIconColor: Color,
+) {
+    Divider()
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+            .semantics(mergeDescendants = true) { }
+    ) {
+        val (text, icon) = createRefs()
+        Text(
+            modifier = Modifier
+                .constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(icon.top)
+                    start.linkTo(parent.start, 24.dp)
+                }
+                .padding(vertical = 0.dp, horizontal = 8.dp),
+            text = robotText,
+            color = Color.Gray
+        )
+        Icon(
+            modifier = Modifier
+                .constrainAs(icon) {
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(text.start)
+                    end.linkTo(text.end)
+                }
+                .padding(horizontal = 8.dp),
+            painter = robotIcon,
+            contentDescription = "",
+            tint = robotIconColor
+        )
+    }
 }
 
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    ConferenceAppFeederTheme(false) {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                selectedTab = FeedTabs.Home,
+                selectedTab = FeedTab.Home,
                 onSelectedTab = {},
                 onNavigationIconClick = {
                 }
@@ -307,10 +426,10 @@ fun PreviewFeedScreen() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
-    ConferenceAppFeederTheme(false) {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
-                selectedTab = FeedTabs.FilteredFeed.Blog,
+                selectedTab = FeedTab.FilteredFeed.Blog,
                 onSelectedTab = {},
                 onNavigationIconClick = {
                 }
