@@ -132,6 +132,9 @@ fun AppContent(
                     },
                     onStaffClick = { staff ->
                         actions.showChromeCustomTabs(staff.url)
+                    },
+                    onPrivacyPolicyClick = {
+                        actions.showChromeCustomTabs(it)
                     }
                 )
             }
