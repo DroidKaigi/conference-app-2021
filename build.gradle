@@ -12,7 +12,7 @@ buildscript {
         maven { url = "https://dl.bintray.com/kotlin/kotlin-eap" }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha09'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha10'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8
