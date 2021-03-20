@@ -15,8 +15,6 @@ kotlin {
         android
         commonMain.dependencies {
             implementation Dep.Kotlin.bom
-            implementation Dep.Ktor.bom
-            implementation Dep.Ktor.serialization
             api project.dependencies.platform(Dep.Coroutines.bom)
             api Dep.Coroutines.core
             api Dep.datetime

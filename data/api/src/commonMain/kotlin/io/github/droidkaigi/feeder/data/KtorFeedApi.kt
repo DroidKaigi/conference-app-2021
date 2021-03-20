@@ -8,6 +8,9 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.data.response.FeedsResponse
 import io.github.droidkaigi.feeder.data.response.Speaker
 import io.github.droidkaigi.feeder.data.response.Thumbnail
+import io.ktor.http.Url
+import io.ktor.http.authority
+import io.ktor.http.fullPath
 
 open class KtorFeedApi(
     private val networkService: NetworkService,
@@ -74,7 +77,11 @@ fun FeedsResponse.toFeedList() =
                     enTitle = recording.summary,
                 ),
                 link = recording.link,
-                speakers = recording.speakers.map { it.toSpeaker() }
+                speakers = recording.speakers.map { it.toSpeaker() },
+                podcastLink = with(Url(recording.link)) {
+                    val number = fullPath.split("/").last()
+                    "${protocol.name}://$authority/fm/audio/droidkaigi-fm_$number.mp3"
+                }
             )
         }
 

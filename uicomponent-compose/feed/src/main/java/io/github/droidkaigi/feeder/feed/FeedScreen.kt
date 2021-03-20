@@ -150,7 +150,7 @@ fun FeedScreen(
         onClickFeed = onDetailClick,
         listState = listState,
         onClickPlayPodcastButton = {
-            fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink()))
+            fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
         onDragStopped = onDragStopped@{ velocity ->
             val threshold = 500
@@ -183,7 +183,7 @@ private fun FeedScreen(
     onFavoriteChange: (FeedItem) -> Unit,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
-    onClickPlayPodcastButton: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     listState: LazyListState,
     onDragStopped: (Float) -> Unit,
     draggableState: DraggableState,
@@ -287,7 +287,7 @@ private fun FeedList(
     isHome: Boolean,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
-    onClickPlayPodcastButton: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     listState: LazyListState,
     onDragStopped: (Float) -> Unit,
     draggableState: DraggableState,
@@ -324,8 +324,9 @@ private fun FeedList(
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        isPlayingPodcast = content.first.podcastLink() == fmPlayerState?.url &&
-                            fmPlayerState.isPlaying(),
+                        isPlayingPodcast = (content.first as? FeedItem.Podcast)
+                            ?.podcastLink == fmPlayerState?.url &&
+                            fmPlayerState?.isPlaying() == true,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
@@ -351,7 +352,7 @@ fun FeedItemRow(
     onClickFeed: (FeedItem) -> Unit,
     showMediaLabel: Boolean,
     onFavoriteChange: (FeedItem) -> Unit,
-    onClickPlayPodcastButton: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     showDivider: Boolean,
 ) {
     if (showDivider) {

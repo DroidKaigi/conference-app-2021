@@ -115,7 +115,8 @@ internal fun _fakeFeedContents(): FeedContents = FeedContents(
                     name = "ymnd",
                     iconUrl = "https://droidkaigi.jp/fm/images/actors/ymnd.jpg"
                 )
-            )
+            ),
+            podcastLink = "https://droidkaigi.jp/fm/audio/droidkaigi-fm_2.mp3"
         ),
         FeedItem.Blog(
             id = "106ab422-b8e9-415c-8814-8fa9d29938d7",
@@ -315,7 +316,8 @@ With greater acceptance of language, we look"""
                     name = "e10dokup",
                     iconUrl = "https://droidkaigi.jp/fm/images/actors/e10dokup.png"
                 )
-            )
+            ),
+            podcastLink = "https://droidkaigi.jp/fm/audio/droidkaigi-fm_5.mp3"
         ),
         FeedItem.Podcast(
             id = "f725b41c-4375-43b5-8237-393370441c00",
@@ -348,7 +350,8 @@ With greater acceptance of language, we look"""
                     name = "ymnd",
                     iconUrl = "https://droidkaigi.jp/fm/images/actors/ymnd.jpg"
                 )
-            )
+            ),
+            "https://droidkaigi.jp/fm/audio/droidkaigi-fm_6.mp3"
         )
     ),
     favorites = setOf()
