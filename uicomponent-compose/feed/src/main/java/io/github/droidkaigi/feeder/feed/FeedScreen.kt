@@ -412,9 +412,23 @@ fun RobotItem(
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
-    AppThemeWithBackground(
-        theme = Theme.DARK
-    ) {
+    AppThemeWithBackground {
+        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+            FeedScreen(
+                selectedTab = FeedTab.Home,
+                onSelectedTab = {},
+                onNavigationIconClick = {
+                }
+            ) { feedItem: FeedItem ->
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDarkFeedScreen() {
+    AppThemeWithBackground {
         ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
