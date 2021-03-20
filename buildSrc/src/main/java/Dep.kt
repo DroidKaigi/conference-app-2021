@@ -134,5 +134,11 @@ object Dep {
         const val soLoader = "com.facebook.soloader:soloader:0.10.1"
     }
 
+    object Koin {
+        const val core = "io.insert-koin:koin-core:3.0.1-beta-1"
+        const val test = "io.insert-koin:koin-test:3.0.1-beta-1"
+        const val ktor = "io.insert-koin:koin-ktor:3.0.1-beta-1"
+    }
+
     const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 }
