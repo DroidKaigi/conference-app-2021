@@ -12,5 +12,4 @@ val databaseModule = module {
     single<UserDataStore> {
         DataStoreUserDataStore()
     }
-
 }
