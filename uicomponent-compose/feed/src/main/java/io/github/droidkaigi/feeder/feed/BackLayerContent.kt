@@ -1,6 +1,8 @@
 package io.github.droidkaigi.feeder.feed
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -58,15 +60,17 @@ private fun Input(
     isChecked: Boolean = false,
     onClick: () -> Unit,
 ) {
-    Surface(
-        color = if (isChecked) {
-            ConferenceAppFeederTheme.filterMuskColor
-        } else {
-            Color.Transparent
-        },
+    Box(
         modifier = Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
+            .background(
+                if (isChecked) {
+                    ConferenceAppFeederTheme.filterMuskColor
+                } else {
+                    Color.Transparent
+                }
+            )
     ) {
         Row(
             Modifier.padding(all = 12.dp)
