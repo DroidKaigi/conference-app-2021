@@ -2,7 +2,6 @@ package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -60,8 +59,8 @@ private fun Input(
     isChecked: Boolean = false,
     onClick: () -> Unit,
 ) {
-    Box(
-        modifier = Modifier
+    Row(
+        Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
             .background(
@@ -71,27 +70,24 @@ private fun Input(
                     Color.Transparent
                 }
             )
+            .padding(all = 12.dp)
     ) {
-        Row(
-            Modifier.padding(all = 12.dp)
-        ) {
-            Icon(
-                imageVector = if (isChecked) {
-                    Icons.Rounded.CheckBox
-                } else {
-                    Icons.Rounded.CheckBoxOutlineBlank
-                },
-                contentDescription = "filter $text"
-            )
-            Spacer(Modifier.width(8.dp))
-            Text(
-                modifier = Modifier
-                    .align(Alignment.CenterVertically),
-                text = text,
-                style = MaterialTheme.typography.body1
-            )
-            Spacer(Modifier.width(8.dp))
-        }
+        Icon(
+            imageVector = if (isChecked) {
+                Icons.Rounded.CheckBox
+            } else {
+                Icons.Rounded.CheckBoxOutlineBlank
+            },
+            contentDescription = "filter $text"
+        )
+        Spacer(Modifier.width(8.dp))
+        Text(
+            modifier = Modifier
+                .align(Alignment.CenterVertically),
+            text = text,
+            style = MaterialTheme.typography.body1
+        )
+        Spacer(Modifier.width(8.dp))
     }
 }
 
