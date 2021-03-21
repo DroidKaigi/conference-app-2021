@@ -1,0 +1,1 @@
+DROP TABLE feedItemPodcast IF EXISTS TABLE_NAME
