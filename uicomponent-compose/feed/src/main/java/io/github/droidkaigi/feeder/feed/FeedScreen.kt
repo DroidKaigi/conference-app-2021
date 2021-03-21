@@ -45,8 +45,6 @@ import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.PlayingPodcastState
-import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
