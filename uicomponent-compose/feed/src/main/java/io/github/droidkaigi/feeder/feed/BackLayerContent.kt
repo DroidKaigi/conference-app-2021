@@ -1,8 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,10 +17,11 @@ import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.core.theme.contentMusk
+import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 enum class FilterState(val text: String) {
     All("All"), Favorite("Favorites")
@@ -47,11 +46,6 @@ fun BackLayerContent(
                 isChecked = isChecked,
                 onClick = {
                     onFavoriteFilterChanged(filter == FilterState.Favorite)
-                },
-                modifier = if (isChecked) {
-                    Modifier.background(contentMusk)
-                } else {
-                    Modifier
                 }
             )
         }
@@ -60,13 +54,17 @@ fun BackLayerContent(
 
 @Composable
 private fun Input(
-    modifier: Modifier = Modifier,
     text: String,
     isChecked: Boolean = false,
     onClick: () -> Unit,
 ) {
-    Box(
-        modifier = modifier
+    Surface(
+        color = if (isChecked) {
+            ConferenceAppFeederTheme.filterMuskColor
+        } else {
+            Color.Transparent
+        },
+        modifier = Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
     ) {

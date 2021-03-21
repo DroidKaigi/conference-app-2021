@@ -7,6 +7,8 @@ import androidx.compose.material.Surface
 import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.graphics.Color
 import dev.chrisbanes.accompanist.insets.ProvideWindowInsets
 import io.github.droidkaigi.feeder.Theme
 
@@ -22,19 +24,25 @@ private val LightColorPalette = lightColors(
     secondary = green200,
 )
 
+private val DarkFilterMuskColor = gray
+private val LightFilterMuskColor = blue300
+
 @Composable
 fun ConferenceAppFeederTheme(
     theme: Theme? = Theme.SYSTEM,
     content: @Composable
     () -> Unit,
 ) {
+    val filterMuskColor = filterMuskColor(theme = theme)
     ProvideWindowInsets {
-        MaterialTheme(
-            colors = colorPalette(theme),
-            typography = typography,
-            shapes = shapes,
-            content = content
-        )
+        CompositionLocalProvider(LocalFilterMuskColor provides filterMuskColor) {
+            MaterialTheme(
+                colors = colorPalette(theme),
+                typography = typography,
+                shapes = shapes,
+                content = content
+            )
+        }
     }
 }
 
@@ -58,6 +66,25 @@ private fun systemColorPalette(): Colors {
 }
 
 @Composable
+private fun filterMuskColor(theme: Theme?): Color {
+    return when (theme) {
+        Theme.SYSTEM -> systemFilterMuskColor()
+        Theme.DARK -> DarkFilterMuskColor
+        Theme.LIGHT -> LightFilterMuskColor
+        else -> systemFilterMuskColor()
+    }
+}
+
+@Composable
+private fun systemFilterMuskColor(): Color {
+    return if (isSystemInDarkTheme()) {
+        DarkFilterMuskColor
+    } else {
+        LightFilterMuskColor
+    }
+}
+
+@Composable
 fun AppThemeWithBackground(
     theme: Theme? = Theme.SYSTEM,
     content: @Composable
@@ -66,4 +93,10 @@ fun AppThemeWithBackground(
     Surface {
         ConferenceAppFeederTheme(theme, content)
     }
+}
+
+object ConferenceAppFeederTheme {
+    val filterMuskColor: Color
+        @Composable
+        get() = LocalFilterMuskColor.current
 }
