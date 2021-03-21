@@ -61,7 +61,7 @@ fun OtherScreen(
     onNavigationIconClick: () -> Unit,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
-    onPrivacyPolicyClick: (String) -> Unit
+    onPrivacyPolicyClick: (String) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
 
@@ -87,7 +87,7 @@ fun OtherScreen(
     onNavigationIconClick: () -> Unit,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
-    onPrivacyPolicyClick: (String) -> Unit
+    onPrivacyPolicyClick: (String) -> Unit,
 ) {
     Column {
         val density = LocalDensity.current
@@ -165,7 +165,7 @@ private fun BackdropFrontLayerContent(
     selectedTab: OtherTab,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
-    onPrivacyPolicyClick: (String) -> Unit
+    onPrivacyPolicyClick: (String) -> Unit,
 ) {
     when (selectedTab) {
         OtherTab.AboutThisApp -> AboutThisApp(onPrivacyPolicyClick)
