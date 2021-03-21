@@ -6,3 +6,5 @@ val blue200 = Color(0xFF00B5E2)
 val blue700 = Color(0xFF00639D)
 val green200 = Color(0xFF48D597)
 val greenDroid = Color(0xFF3DDC84)
+
+val contentMusk = Color(0x33000000)
