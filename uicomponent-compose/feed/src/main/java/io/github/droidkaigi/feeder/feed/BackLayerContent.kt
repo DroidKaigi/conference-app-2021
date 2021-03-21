@@ -94,10 +94,12 @@ private fun Input(
 @Preview(showBackground = true)
 @Composable
 fun PreviewBackLayerContent() {
-    Surface {
-        BackLayerContent(
-            filterState = Filters(),
-            onFavoriteFilterChanged = { }
-        )
+    ConferenceAppFeederTheme {
+        Surface(color = MaterialTheme.colors.primary) {
+            BackLayerContent(
+                filterState = Filters(),
+                onFavoriteFilterChanged = { }
+            )
+        }
     }
 }
