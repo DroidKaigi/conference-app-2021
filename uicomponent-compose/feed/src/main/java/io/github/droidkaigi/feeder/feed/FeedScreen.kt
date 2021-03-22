@@ -20,6 +20,7 @@ import androidx.compose.material.Divider
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SnackbarHost
 import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
@@ -40,6 +41,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
+import dev.chrisbanes.accompanist.insets.navigationBarsPadding
 import dev.chrisbanes.accompanist.insets.statusBarsPadding
 import dev.chrisbanes.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
@@ -221,6 +223,12 @@ private fun FeedScreen(
                         draggableState = draggableState
                     )
                 }
+            },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = it,
+                    modifier = Modifier.navigationBarsPadding()
+                )
             }
         )
     }
