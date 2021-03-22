@@ -81,6 +81,7 @@ kotlin {
 //            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 //        }
         iosMain.dependencies {
+            implementation Dep.Koin.core
             implementation "com.squareup.sqldelight:native-driver:1.4.4"
         }
     }

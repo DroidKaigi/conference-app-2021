@@ -19,7 +19,13 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile.class).all {
 
 kotlin {
     android()
-    ios()
+
+    // Add after resolving Firebase auth dependencies
+    // if (System.getenv("SDK_NAME")?.startsWith("iphoneos")) {
+    //     iosArm64("ios")
+    // } else {
+    //     iosX64("ios")
+    // }
 
     sourceSets {
         commonMain.dependencies {
@@ -78,6 +84,7 @@ kotlin {
         }
         iosMain.dependencies {
             implementation Dep.Ktor.ios
+            implementation Dep.Koin.core
         }
 //            // For instrumentation tests
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
