@@ -109,7 +109,9 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     FadeThrough(targetState = selectedTab) { selectedTab ->
-                        BackdropFrontLayerContent(selectedTab, onContributorClick, onStaffClick, onPrivacyPolicyClick)
+                        BackdropFrontLayerContent(
+                            selectedTab, onContributorClick, onStaffClick, onPrivacyPolicyClick
+                        )
                     }
                 }
             }
