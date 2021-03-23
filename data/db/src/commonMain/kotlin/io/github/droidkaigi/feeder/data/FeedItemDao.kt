@@ -166,6 +166,7 @@ private fun FeedItemPodcastQueries.insert(podcast: FeedItem.Podcast) {
             jaSummary = podcast.summary.jaTitle,
             enSummary = podcast.summary.enTitle,
             link = podcast.link,
+            podcastLink = podcast.podcastLink
         )
     )
 }
@@ -221,7 +222,8 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
                 title = MultiLangText(jaTitle = row.jaTitle, enTitle = row.enTitle),
                 summary = MultiLangText(jaTitle = row.jaSummary, enTitle = row.enSummary),
                 link = row.link,
-                speakers = listOf(Speaker(name = row.speakerName, iconUrl = row.speakerIconUrl))
+                speakers = listOf(Speaker(name = row.speakerName, iconUrl = row.speakerIconUrl)),
+                podcastLink = row.podcastLink
             )
         }
         acc + mapOf(row.id to feedItem)

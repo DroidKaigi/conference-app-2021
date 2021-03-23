@@ -1,8 +1,5 @@
 package io.github.droidkaigi.feeder
 
-import io.ktor.http.Url
-import io.ktor.http.authority
-import io.ktor.http.fullPath
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -47,12 +44,8 @@ sealed class FeedItem {
         override val summary: MultiLangText,
         override val link: String,
         val speakers: List<Speaker>,
+        val podcastLink: String
     ) : FeedItem()
-
-    fun podcastLink(): String = with(Url(link)) {
-        val number = fullPath.split("/").last()
-        "${protocol.name}://$authority/fm/audio/droidkaigi-fm_$number.mp3"
-    }
 
     fun publishedDateString(): String {
         val localDate = publishedAt

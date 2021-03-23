@@ -46,7 +46,7 @@ fun FeedItem(
     showMediaLabel: Boolean = false,
     onClick: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
-    onClickPlayPodcastButton: (FeedItem) -> Unit,
+    onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -112,7 +112,9 @@ fun FeedItem(
                     bottom.linkTo(image.bottom)
                     end.linkTo(image.end)
                 }
-                .clickable { onClickPlayPodcastButton(feedItem) }
+                .clickable {
+                    if (feedItem is FeedItem.Podcast) onClickPlayPodcastButton(feedItem)
+                }
         )
         Text(
             modifier = Modifier.constrainAs(title) {

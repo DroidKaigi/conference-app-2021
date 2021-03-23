@@ -9,7 +9,8 @@ CREATE TABLE feedItemPodcast(
     enTitle Text NOT NULL,
     jaSummary Text NOT NULL,
     enSummary Text NOT NULL,
-    link Text NOT NULL
+    link Text NOT NULL,
+    podcastLink Text NOT NULL
 );
 
 CREATE INDEX feedItemPodcast_id ON feedItemPodcast(id);
@@ -34,7 +35,8 @@ INSERT INTO feedItemPodcast(
     enTitle,
     jaSummary,
     enSummary,
-    link
+    link,
+    podcastLink
 ) VALUES ?;
 
 deleteAll:
