@@ -17,6 +17,7 @@ interface FeedViewModel :
         val showProgress: Boolean = false,
         val filters: Filters = Filters(),
         val filteredFeedContents: FeedContents = FeedContents(),
+        val robotTarget: Float = -200f,
     )
 
     sealed class Effect {
@@ -27,6 +28,7 @@ interface FeedViewModel :
         class ChangeFavoriteFilter(val filters: Filters) : Event()
         class ToggleFavorite(val feedItem: FeedItem) : Event()
         object ReloadContent : Event()
+        class ToggleRobotAnimation(val isFinished: Boolean) : Event()
     }
 
     override val state: StateFlow<State>

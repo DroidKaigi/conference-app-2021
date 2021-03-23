@@ -1,14 +1,22 @@
 package io.github.droidkaigi.feeder.feed
 
+import android.util.Log
+import androidx.compose.animation.core.Spring
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
+import androidx.compose.foundation.gestures.stopScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -29,6 +37,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -38,6 +47,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import dev.chrisbanes.accompanist.insets.LocalWindowInsets
@@ -108,6 +118,14 @@ fun FeedScreen(
     ) = use(fmPlayerViewModel())
 
     val context = LocalContext.current
+    val robotAnimValue by animateFloatAsState(
+        targetValue = state.robotTarget,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy,
+            stiffness = Spring.StiffnessMedium,
+        )
+    )
+
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
             is FeedViewModel.Effect.ErrorMessage -> {
@@ -167,7 +185,13 @@ fun FeedScreen(
                 }
             )
         },
-        draggableState = draggableState
+        draggableState = draggableState,
+        robotAnimValue = robotAnimValue,
+        onListFinishedListener = {
+            dispatch(
+                FeedViewModel.Event.ToggleRobotAnimation(isFinished = it)
+            )
+        },
     )
 }
 
@@ -190,6 +214,8 @@ private fun FeedScreen(
     listState: LazyListState,
     onDragStopped: (Float) -> Unit,
     draggableState: DraggableState,
+    robotAnimValue: Float,
+    onListFinishedListener: (Boolean) -> Unit,
 ) {
     Column {
         val density = LocalDensity.current
@@ -220,7 +246,9 @@ private fun FeedScreen(
                         listState = listState,
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
                         onDragStopped = onDragStopped,
-                        draggableState = draggableState
+                        draggableState = draggableState,
+                        robotAnimValue = robotAnimValue,
+                        onListFinishedListener = onListFinishedListener,
                     )
                 }
             },
@@ -300,6 +328,8 @@ private fun FeedList(
     listState: LazyListState,
     onDragStopped: (Float) -> Unit,
     draggableState: DraggableState,
+    robotAnimValue: Float,
+    onListFinishedListener: (Boolean) -> Unit,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -340,12 +370,18 @@ private fun FeedList(
                     )
                 }
             }
+            onListFinishedListener(
+                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size ==
+                listState.layoutInfo.totalItemsCount
+            )
             if (listState.firstVisibleItemIndex != 0) {
                 item {
                     RobotItem(
                         robotText = "Finished!",
                         robotIcon = painterResource(id = R.drawable.ic_android_green_24dp),
-                        robotIconColor = greenDroid
+                        robotIconColor = greenDroid,
+                        targetValue = robotAnimValue.dp
+
                     )
                 }
             }
@@ -383,11 +419,13 @@ fun RobotItem(
     robotText: String,
     robotIcon: Painter,
     robotIconColor: Color,
+    targetValue: Dp,
 ) {
     Divider()
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
+            .offset(x = targetValue)
             .semantics(mergeDescendants = true) { }
     ) {
         val (text, icon) = createRefs()

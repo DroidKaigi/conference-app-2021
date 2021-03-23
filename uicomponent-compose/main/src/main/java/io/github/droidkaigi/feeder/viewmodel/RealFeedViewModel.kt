@@ -54,19 +54,22 @@ class RealFeedViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
+    private val robotTarget: MutableStateFlow<Float> = MutableStateFlow(-200f)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
             allFeedContents,
             filters,
-            showProgressLatch.toggleState
-        ) { feedContentsLoadState, filters, showProgress ->
+            showProgressLatch.toggleState,
+            robotTarget
+        ) { feedContentsLoadState, filters, showProgress, robotTarget ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             FeedViewModel.State(
                 showProgress = showProgress,
                 filters = filters,
                 filteredFeedContents = filteredFeed,
+                robotTarget = robotTarget,
 //                snackbarMessage = currentValue.snackbarMessage
             )
         }
@@ -97,6 +100,9 @@ class RealFeedViewModel @Inject constructor(
                 }
                 is FeedViewModel.Event.ReloadContent -> {
                     refreshRepository()
+                }
+                is FeedViewModel.Event.ToggleRobotAnimation -> {
+                    robotTarget.value = if (event.isFinished) 0f else -200f
                 }
             }
         }

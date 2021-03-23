@@ -57,12 +57,15 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
 
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
+    private val robotTarget: MutableStateFlow<Float> = MutableStateFlow(-200f)
+
     override val state: StateFlow<FeedViewModel.State> =
-        combine(mFeedContents, filters) { feedContents, filters ->
+        combine(mFeedContents, filters, robotTarget) { feedContents, filters, robotTarget ->
             val filteredFeed = feedContents.filtered(filters)
             FeedViewModel.State(
                 filters = filters,
-                filteredFeedContents = filteredFeed
+                filteredFeedContents = filteredFeed,
+                robotTarget = robotTarget,
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, FeedViewModel.State())
@@ -87,6 +90,9 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                 }
                 is FeedViewModel.Event.ReloadContent -> {
                     // Sorry, Currently not implemented
+                }
+                is FeedViewModel.Event.ToggleRobotAnimation -> {
+                    robotTarget.value = if (event.isFinished) 0f else -200f
                 }
             }
         }
