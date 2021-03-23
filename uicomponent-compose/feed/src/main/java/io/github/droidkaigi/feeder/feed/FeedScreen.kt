@@ -1,22 +1,18 @@
 package io.github.droidkaigi.feeder.feed
 
-import android.util.Log
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
 import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.gestures.rememberDraggableState
-import androidx.compose.foundation.gestures.stopScroll
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -372,7 +368,7 @@ private fun FeedList(
             }
             onListFinishedListener(
                 listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size ==
-                listState.layoutInfo.totalItemsCount
+                    listState.layoutInfo.totalItemsCount
             )
             if (listState.firstVisibleItemIndex != 0) {
                 item {
