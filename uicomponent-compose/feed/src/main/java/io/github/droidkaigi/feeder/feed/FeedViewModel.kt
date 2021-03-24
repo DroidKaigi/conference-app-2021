@@ -17,7 +17,7 @@ interface FeedViewModel :
         val showProgress: Boolean = false,
         val filters: Filters = Filters(),
         val filteredFeedContents: FeedContents = FeedContents(),
-        val robotTarget: Float = -200f,
+        val robotTarget: Float = -20f,
     )
 
     sealed class Effect {

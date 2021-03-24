@@ -57,7 +57,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
 
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
-    private val robotTarget: MutableStateFlow<Float> = MutableStateFlow(-200f)
+    private val robotTarget: MutableStateFlow<Float> = MutableStateFlow(-20f)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(mFeedContents, filters, robotTarget) { feedContents, filters, robotTarget ->
@@ -92,7 +92,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     // Sorry, Currently not implemented
                 }
                 is FeedViewModel.Event.ToggleRobotAnimation -> {
-                    robotTarget.value = if (event.isFinished) 0f else -200f
+                    robotTarget.value = if (event.isFinished) 0f else -20f
                 }
             }
         }

@@ -421,7 +421,7 @@ fun RobotItem(
     ConstraintLayout(
         modifier = Modifier
             .fillMaxWidth()
-            .offset(x = targetValue)
+            .offset(y = targetValue)
             .semantics(mergeDescendants = true) { }
     ) {
         val (text, icon) = createRefs()

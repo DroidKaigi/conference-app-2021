@@ -54,7 +54,7 @@ class RealFeedViewModel @Inject constructor(
         }
         .stateIn(viewModelScope, SharingStarted.Lazily, LoadState.Loading)
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
-    private val robotTarget: MutableStateFlow<Float> = MutableStateFlow(-200f)
+    private val robotTarget: MutableStateFlow<Float> = MutableStateFlow(-20f)
 
     override val state: StateFlow<FeedViewModel.State> =
         combine(
@@ -102,7 +102,7 @@ class RealFeedViewModel @Inject constructor(
                     refreshRepository()
                 }
                 is FeedViewModel.Event.ToggleRobotAnimation -> {
-                    robotTarget.value = if (event.isFinished) 0f else -200f
+                    robotTarget.value = if (event.isFinished) 0f else -20f
                 }
             }
         }
