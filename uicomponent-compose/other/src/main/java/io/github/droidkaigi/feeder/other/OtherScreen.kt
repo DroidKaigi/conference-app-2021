@@ -61,6 +61,7 @@ fun OtherScreen(
     onNavigationIconClick: () -> Unit,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
+    onPrivacyPolicyClick: (String) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
 
@@ -70,7 +71,8 @@ fun OtherScreen(
         onSelectTab = onSelectTab,
         onNavigationIconClick = onNavigationIconClick,
         onContributorClick = onContributorClick,
-        onStaffClick = onStaffClick
+        onStaffClick = onStaffClick,
+        onPrivacyPolicyClick = onPrivacyPolicyClick
     )
 }
 
@@ -85,6 +87,7 @@ fun OtherScreen(
     onNavigationIconClick: () -> Unit,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
+    onPrivacyPolicyClick: (String) -> Unit,
 ) {
     Column {
         val density = LocalDensity.current
@@ -106,7 +109,9 @@ fun OtherScreen(
                     modifier = Modifier.fillMaxHeight()
                 ) {
                     FadeThrough(targetState = selectedTab) { selectedTab ->
-                        BackdropFrontLayerContent(selectedTab, onContributorClick, onStaffClick)
+                        BackdropFrontLayerContent(
+                            selectedTab, onContributorClick, onStaffClick, onPrivacyPolicyClick
+                        )
                     }
                 }
             }
@@ -162,9 +167,10 @@ private fun BackdropFrontLayerContent(
     selectedTab: OtherTab,
     onContributorClick: (Contributor) -> Unit,
     onStaffClick: (Staff) -> Unit,
+    onPrivacyPolicyClick: (String) -> Unit,
 ) {
     when (selectedTab) {
-        OtherTab.AboutThisApp -> AboutThisApp()
+        OtherTab.AboutThisApp -> AboutThisApp(onPrivacyPolicyClick)
         OtherTab.Contributor -> ContributorList(onContributorClick)
         OtherTab.Settings -> Settings()
         OtherTab.Staff -> StaffList(onStaffClick)
@@ -184,6 +190,8 @@ fun PreviewOtherScreen() {
             onContributorClick = {
             },
             onStaffClick = {
+            },
+            onPrivacyPolicyClick = {
             }
         )
     }

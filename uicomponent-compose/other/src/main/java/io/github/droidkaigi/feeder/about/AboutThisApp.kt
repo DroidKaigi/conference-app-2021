@@ -30,7 +30,7 @@ import io.github.droidkaigi.feeder.other.R
 
 @Preview
 @Composable
-fun AboutThisApp() {
+fun AboutThisApp(onPrivacyPolicyClick: (String) -> Unit) {
     val context = LocalContext.current
     Column(
         modifier = Modifier
@@ -41,7 +41,9 @@ fun AboutThisApp() {
         WhatIsDroidKaigiComponent()
         Spacer(modifier = Modifier.height(34.dp))
         AboutThisAppMenuListComponent(
-            onClickPrivacyPolicy = {},
+            onClickPrivacyPolicy = {
+                onPrivacyPolicyClick("http://www.association.droidkaigi.jp/privacy.html")
+            },
             onClickLicense = {
                 val intent = Intent(context, OssLicensesMenuActivity::class.java)
                 context.startActivity(intent)
