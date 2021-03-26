@@ -1,8 +1,10 @@
 package io.github.droidkaigi.feeder.feed
 
+import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.gestures.DraggableState
 import androidx.compose.foundation.gestures.Orientation
@@ -119,7 +121,7 @@ fun FeedScreen(
     val context = LocalContext.current
     val isListFinished = remember { mutableStateOf(false) }
     val robotAnimValue by animateFloatAsState(
-        targetValue = if (isListFinished.value) 0f else -20f,
+        targetValue = if (isListFinished.value) 0f else 10f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioHighBouncy,
             stiffness = Spring.StiffnessMedium,
