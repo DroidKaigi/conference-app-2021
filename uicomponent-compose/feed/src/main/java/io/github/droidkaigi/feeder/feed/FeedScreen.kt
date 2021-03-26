@@ -33,7 +33,10 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -114,8 +117,9 @@ fun FeedScreen(
     ) = use(fmPlayerViewModel())
 
     val context = LocalContext.current
+    val isListFinished = remember { mutableStateOf(false) }
     val robotAnimValue by animateFloatAsState(
-        targetValue = state.robotTarget,
+        targetValue = if (isListFinished.value) 0f else -20f,
         animationSpec = spring(
             dampingRatio = Spring.DampingRatioHighBouncy,
             stiffness = Spring.StiffnessMedium,
@@ -183,11 +187,7 @@ fun FeedScreen(
         },
         draggableState = draggableState,
         robotAnimValue = robotAnimValue,
-        onListFinishedListener = {
-            dispatch(
-                FeedViewModel.Event.ToggleRobotAnimation(isFinished = it)
-            )
-        },
+        isListFinished = isListFinished,
     )
 }
 
@@ -211,7 +211,7 @@ private fun FeedScreen(
     onDragStopped: (Float) -> Unit,
     draggableState: DraggableState,
     robotAnimValue: Float,
-    onListFinishedListener: (Boolean) -> Unit,
+    isListFinished: MutableState<Boolean>,
 ) {
     Column {
         val density = LocalDensity.current
@@ -244,7 +244,7 @@ private fun FeedScreen(
                         onDragStopped = onDragStopped,
                         draggableState = draggableState,
                         robotAnimValue = robotAnimValue,
-                        onListFinishedListener = onListFinishedListener,
+                        isListFinished = isListFinished
                     )
                 }
             },
@@ -325,7 +325,7 @@ private fun FeedList(
     onDragStopped: (Float) -> Unit,
     draggableState: DraggableState,
     robotAnimValue: Float,
-    onListFinishedListener: (Boolean) -> Unit,
+    isListFinished: MutableState<Boolean>,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -366,10 +366,8 @@ private fun FeedList(
                     )
                 }
             }
-            onListFinishedListener(
-                listState.firstVisibleItemIndex + listState.layoutInfo.visibleItemsInfo.size ==
-                    listState.layoutInfo.totalItemsCount
-            )
+            isListFinished.value = listState.firstVisibleItemIndex + listState.layoutInfo
+                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             if (listState.firstVisibleItemIndex != 0) {
                 item {
                     RobotItem(
