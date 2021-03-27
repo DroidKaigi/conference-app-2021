@@ -59,7 +59,7 @@ class RealFeedViewModel @Inject constructor(
         combine(
             allFeedContents,
             filters,
-            showProgressLatch.toggleState
+            showProgressLatch.toggleState,
         ) { feedContentsLoadState, filters, showProgress ->
             val filteredFeed =
                 feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)

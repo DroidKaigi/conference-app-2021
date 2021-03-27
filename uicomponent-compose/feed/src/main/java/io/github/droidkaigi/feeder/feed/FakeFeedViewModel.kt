@@ -62,7 +62,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
             val filteredFeed = feedContents.filtered(filters)
             FeedViewModel.State(
                 filters = filters,
-                filteredFeedContents = filteredFeed
+                filteredFeedContents = filteredFeed,
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, FeedViewModel.State())
