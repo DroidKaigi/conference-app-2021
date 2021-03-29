@@ -1,0 +1,49 @@
+{
+  "comment": "TODO: This file exists for IDE sync. Please override in release build",
+  "project_info": {
+    "project_number": "1046519477136",
+    "project_id": "ssot-api-staging",
+    "storage_bucket": "ssot-api-staging.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1046519477136:android:197a948a3cf5dfd0a8f915",
+        "android_client_info": {
+          "comment":  "for build this app does not exists",
+          "package_name": "io.github.droidkaigi.feeder"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1046519477136-tb8jc7d3ovh07rf0hvj2pj4ldvi3e3b2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "io.github.droidkaigi.feeder",
+            "certificate_hash": "0772dcf27fb9f39293fe9b154ac9c260d26a333e"
+          }
+        },
+        {
+          "client_id": "1046519477136-68ce7mi69ss85q4ro3ti579ldr7q4e6p.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCKhycW0XhuhkjZovzvTN6gvJ8fIFpYRCA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1046519477136-68ce7mi69ss85q4ro3ti579ldr7q4e6p.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

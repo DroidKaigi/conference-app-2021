@@ -19,7 +19,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha10'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha12'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8

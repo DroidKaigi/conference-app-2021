@@ -9,7 +9,6 @@ apply from: rootProject.file("gradle/android.gradle")
 
 kotlin {
     android()
-    jvm()
     ios()
     sourceSets {
         android
