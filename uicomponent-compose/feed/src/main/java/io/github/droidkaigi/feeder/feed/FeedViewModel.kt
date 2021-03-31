@@ -38,10 +38,8 @@ private val LocalFeedViewModel = compositionLocalOf<FeedViewModel> {
     error("not LocalFeedViewModel provided")
 }
 
-@Composable
-fun ProvideFeedViewModel(viewModel: FeedViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalFeedViewModel provides viewModel, content = block)
-}
+fun feedViewModelProviderValue(viewModel: FeedViewModel) =
+    LocalFeedViewModel provides viewModel
 
 @Composable
 fun feedViewModel() = LocalFeedViewModel.current

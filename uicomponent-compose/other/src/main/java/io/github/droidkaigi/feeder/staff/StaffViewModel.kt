@@ -31,10 +31,7 @@ private val LocalStaffViewModel = compositionLocalOf<StaffViewModel> {
     error("Not view model provided")
 }
 
-@Composable
-fun ProvideStaffViewModel(viewModel: StaffViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalStaffViewModel provides viewModel, content = block)
-}
+fun staffViewModelProviderValue(viewModel: StaffViewModel) = LocalStaffViewModel provides viewModel
 
 @Composable
 fun staffViewModel() = LocalStaffViewModel.current

@@ -35,10 +35,7 @@ private val LocalContributeViewModel = compositionLocalOf<ContributorViewModel> 
     error("Not view model provided")
 }
 
-@Composable
-fun ProvideContributorViewModel(viewModel: ContributorViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalContributeViewModel provides viewModel, content = block)
-}
+fun contributorViewModelProviderValue(viewModel: ContributorViewModel) = LocalContributeViewModel provides viewModel
 
 @Composable
 fun contributeViewModel() = LocalContributeViewModel.current

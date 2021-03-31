@@ -31,13 +31,7 @@ private val LocalAppViewModel = compositionLocalOf<AppViewModel> {
     error("not LocalDroidKaigiAppViewModel provided")
 }
 
-@Composable
-fun ProvideAppViewModel(
-    viewModel: AppViewModel,
-    block: @Composable () -> Unit
-) {
-    CompositionLocalProvider(LocalAppViewModel provides viewModel, content = block)
-}
+fun appViewModelProviderValue(viewModel: AppViewModel) = LocalAppViewModel provides viewModel
 
 @Composable
 fun appViewModel() = LocalAppViewModel.current

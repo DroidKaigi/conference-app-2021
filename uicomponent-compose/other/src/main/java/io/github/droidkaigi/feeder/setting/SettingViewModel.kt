@@ -35,10 +35,8 @@ private val LocalSettingViewModel = compositionLocalOf<SettingViewModel> {
     error("not LocalSettingViewModel provided")
 }
 
-@Composable
-fun ProvideSettingViewModel(viewModel: SettingViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalSettingViewModel provides viewModel, content = block)
-}
+fun settingViewModelProviderValue(viewModel: SettingViewModel) =
+    LocalSettingViewModel provides viewModel
 
 @Composable
 fun settingViewModel() = LocalSettingViewModel.current

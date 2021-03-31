@@ -33,6 +33,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -66,9 +67,9 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import kotlinx.coroutines.launch
 import kotlin.math.abs
 import kotlin.reflect.KClass
-import kotlinx.coroutines.launch
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -453,7 +454,7 @@ fun RobotItem(
 @Composable
 fun PreviewFeedScreen() {
     AppThemeWithBackground {
-        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+        CompositionLocalProvider(feedViewModelProviderValue(fakeFeedViewModel())) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
@@ -471,7 +472,7 @@ fun PreviewDarkFeedScreen() {
     AppThemeWithBackground(
         theme = Theme.DARK
     ) {
-        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+        CompositionLocalProvider(feedViewModelProviderValue(fakeFeedViewModel())) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
@@ -487,7 +488,7 @@ fun PreviewDarkFeedScreen() {
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
     AppThemeWithBackground {
-        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+        CompositionLocalProvider(feedViewModelProviderValue(fakeFeedViewModel())) {
             FeedScreen(
                 selectedTab = FeedTab.FilteredFeed.Blog,
                 onSelectedTab = {},
