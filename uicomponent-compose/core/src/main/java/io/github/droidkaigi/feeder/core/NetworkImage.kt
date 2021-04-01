@@ -11,8 +11,8 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import dev.chrisbanes.accompanist.coil.CoilImage
-import dev.chrisbanes.accompanist.imageloading.ImageLoadState
+import com.google.accompanist.coil.CoilImage
+import com.google.accompanist.imageloading.ImageLoadState
 
 @Composable
 fun NetworkImage(

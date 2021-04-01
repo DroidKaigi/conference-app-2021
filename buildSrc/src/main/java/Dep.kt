@@ -91,8 +91,8 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "dev.chrisbanes.accompanist:accompanist-insets:0.6.0"
-        const val coil = "dev.chrisbanes.accompanist:accompanist-coil:0.6.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.7.0"
+        const val coil = "com.google.accompanist:accompanist-coil:0.7.0"
     }
 
     object FirebaseCrashlytics {
