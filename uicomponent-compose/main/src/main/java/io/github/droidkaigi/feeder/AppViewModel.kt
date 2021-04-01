@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow

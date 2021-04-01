@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.contributor
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Contributor
@@ -17,7 +16,7 @@ interface ContributorViewModel :
 
     data class State(
         val showProgress: Boolean = false,
-        val contributorContents: List<Contributor> = emptyList()
+        val contributorContents: List<Contributor> = emptyList(),
     )
 
     sealed class Effect {
@@ -35,7 +34,8 @@ private val LocalContributeViewModel = compositionLocalOf<ContributorViewModel> 
     error("Not view model provided")
 }
 
-fun contributorViewModelProviderValue(viewModel: ContributorViewModel) = LocalContributeViewModel provides viewModel
+fun contributorViewModelProviderValue(viewModel: ContributorViewModel) =
+    LocalContributeViewModel provides viewModel
 
 @Composable
 fun contributeViewModel() = LocalContributeViewModel.current

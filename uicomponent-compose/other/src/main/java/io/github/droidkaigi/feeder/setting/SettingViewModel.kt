@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.setting
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Theme
