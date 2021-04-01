@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.FeedContents
@@ -38,10 +37,8 @@ private val LocalFeedViewModel = compositionLocalOf<FeedViewModel> {
     error("not LocalFeedViewModel provided")
 }
 
-@Composable
-fun ProvideFeedViewModel(viewModel: FeedViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalFeedViewModel provides viewModel, content = block)
-}
+fun feedViewModelProviderValue(viewModel: FeedViewModel) =
+    LocalFeedViewModel provides viewModel
 
 @Composable
 fun feedViewModel() = LocalFeedViewModel.current

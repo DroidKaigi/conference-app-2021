@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
@@ -65,7 +66,7 @@ fun ContributorItem(contributor: Contributor, onClickItem: (Contributor) -> Unit
 fun PreviewContributorItem() {
     ConferenceAppFeederTheme {
         val contributor = fakeContributors().first()
-        ProvideContributorViewModel(viewModel = fakeContributorViewModel()) {
+        CompositionLocalProvider(contributorViewModelProviderValue(fakeContributorViewModel())) {
             ContributorItem(contributor = contributor) {
             }
         }

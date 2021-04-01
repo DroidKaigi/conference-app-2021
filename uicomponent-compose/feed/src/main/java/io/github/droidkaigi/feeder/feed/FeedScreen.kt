@@ -33,6 +33,7 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -453,7 +454,7 @@ fun RobotItem(
 @Composable
 fun PreviewFeedScreen() {
     AppThemeWithBackground {
-        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+        CompositionLocalProvider(feedViewModelProviderValue(fakeFeedViewModel())) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
@@ -471,7 +472,7 @@ fun PreviewDarkFeedScreen() {
     AppThemeWithBackground(
         theme = Theme.DARK
     ) {
-        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+        CompositionLocalProvider(feedViewModelProviderValue(fakeFeedViewModel())) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
@@ -487,7 +488,7 @@ fun PreviewDarkFeedScreen() {
 @Composable
 fun PreviewFeedScreenWithStartBlog() {
     AppThemeWithBackground {
-        ProvideFeedViewModel(viewModel = fakeFeedViewModel()) {
+        CompositionLocalProvider(feedViewModelProviderValue(fakeFeedViewModel())) {
             FeedScreen(
                 selectedTab = FeedTab.FilteredFeed.Blog,
                 onSelectedTab = {},

@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.setting
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Theme
@@ -35,10 +34,8 @@ private val LocalSettingViewModel = compositionLocalOf<SettingViewModel> {
     error("not LocalSettingViewModel provided")
 }
 
-@Composable
-fun ProvideSettingViewModel(viewModel: SettingViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalSettingViewModel provides viewModel, content = block)
-}
+fun settingViewModelProviderValue(viewModel: SettingViewModel) =
+    LocalSettingViewModel provides viewModel
 
 @Composable
 fun settingViewModel() = LocalSettingViewModel.current

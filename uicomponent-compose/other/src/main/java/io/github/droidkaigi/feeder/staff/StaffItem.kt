@@ -9,6 +9,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.semantics.semantics
@@ -79,7 +80,7 @@ fun StaffItem(staff: Staff, onClickItem: (Staff) -> Unit) {
 fun PreviewStaffItem() {
     ConferenceAppFeederTheme {
         val staff = fakeStaffs().first()
-        ProvideStaffViewModel(viewModel = fakeStaffViewModel()) {
+        CompositionLocalProvider(staffViewModelProviderValue(fakeStaffViewModel())) {
             StaffItem(staff = staff) {
             }
         }
