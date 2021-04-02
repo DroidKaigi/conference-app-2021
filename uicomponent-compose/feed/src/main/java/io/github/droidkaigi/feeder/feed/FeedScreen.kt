@@ -418,6 +418,7 @@ fun RobotItem(
     }
 }
 
+// ref : https://google.github.io/accompanist/pager/#integration-with-tabs
 @OptIn(ExperimentalPagerApi::class)
 fun Modifier.pagerTabIndicatorOffset(
     pagerState: PagerState,
