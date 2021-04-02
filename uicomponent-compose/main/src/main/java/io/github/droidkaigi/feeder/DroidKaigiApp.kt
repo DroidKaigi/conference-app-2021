@@ -17,38 +17,36 @@ import io.github.droidkaigi.feeder.core.use
 
 @Composable
 fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
-    ProvideAppViewModel(viewModel = appViewModel()) {
-        val (state) = use(appViewModel())
+    val (state) = use(appViewModel())
 
-        ConferenceAppFeederTheme(state.theme) {
-            var splashShown by rememberSaveable {
-                mutableStateOf(firstSplashScreenState)
-            }
-            val transition = updateTransition(splashShown)
-            val splashAlpha: Float by transition.animateFloat(
-                transitionSpec = { tween(durationMillis = 100) }
-            ) { state ->
-                if (state == SplashState.Shown) 1f else 0f
-            }
-            val contentAlpha: Float by transition.animateFloat(
-                transitionSpec = { tween(durationMillis = 300) }
-            ) { state ->
-                if (state == SplashState.Shown) 0f else 1f
-            }
-
-            Box {
-                LandingScreen(
-                    modifier = Modifier.alpha(splashAlpha),
-                ) {
-                    splashShown = SplashState.Completed
-                }
-            }
-            AppContent(
-                modifier = Modifier
-                    .alpha(contentAlpha)
-                    .navigationBarsPadding(bottom = false)
-            )
+    ConferenceAppFeederTheme(state.theme) {
+        var splashShown by rememberSaveable {
+            mutableStateOf(firstSplashScreenState)
         }
+        val transition = updateTransition(splashShown)
+        val splashAlpha: Float by transition.animateFloat(
+            transitionSpec = { tween(durationMillis = 100) }
+        ) { state ->
+            if (state == SplashState.Shown) 1f else 0f
+        }
+        val contentAlpha: Float by transition.animateFloat(
+            transitionSpec = { tween(durationMillis = 300) }
+        ) { state ->
+            if (state == SplashState.Shown) 0f else 1f
+        }
+
+        Box {
+            LandingScreen(
+                modifier = Modifier.alpha(splashAlpha),
+            ) {
+                splashShown = SplashState.Completed
+            }
+        }
+        AppContent(
+            modifier = Modifier
+                .alpha(contentAlpha)
+                .navigationBarsPadding(bottom = false)
+        )
     }
 }
 

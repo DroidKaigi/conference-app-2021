@@ -1,4 +1,5 @@
 package io.github.droidkaigi.feeder.setting
+
 import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -32,25 +33,23 @@ import io.github.droidkaigi.feeder.core.use
 @Preview
 @Composable
 fun Settings() {
-    ProvideSettingViewModel(viewModel = settingViewModel()) {
-        val (
-            state,
-            _,
-            dispatch,
-        ) = use(settingViewModel())
-        val context = LocalContext.current
+    val (
+        state,
+        _,
+        dispatch,
+    ) = use(settingViewModel())
+    val context = LocalContext.current
 
-        Surface(
-            color = MaterialTheme.colors.background,
-        ) {
-            ThemeSetting(
-                context = context,
-                theme = state.theme,
-                onClick = {
-                    dispatch(SettingViewModel.Event.ChangeTheme(theme = it))
-                }
-            )
-        }
+    Surface(
+        color = MaterialTheme.colors.background,
+    ) {
+        ThemeSetting(
+            context = context,
+            theme = state.theme,
+            onClick = {
+                dispatch(SettingViewModel.Event.ChangeTheme(theme = it))
+            }
+        )
     }
 }
 
@@ -58,7 +57,7 @@ fun Settings() {
 private fun ThemeSetting(
     context: Context,
     theme: Theme?,
-    onClick: (Theme?) -> Unit
+    onClick: (Theme?) -> Unit,
 ) {
     val openDialog = remember { mutableStateOf(false) }
     Row(
@@ -101,7 +100,7 @@ private fun ThemeSelectDialog(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
     context: Context,
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     AlertDialog(
         onDismissRequest = onClick,
@@ -129,7 +128,7 @@ private fun ThemeSelectDialog(
 private fun ThemeSelectRadioButton(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
-    context: Context
+    context: Context,
 ) {
     val themes: List<Theme> = Theme.values().toList()
     var defaultIndex = 0

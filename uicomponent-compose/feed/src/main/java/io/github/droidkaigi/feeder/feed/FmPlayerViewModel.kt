@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.feed
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
@@ -35,10 +34,8 @@ private val LocalFmPlayerViewModel = compositionLocalOf<FmPlayerViewModel> {
     error("not LocalFmPlayerViewModel provided")
 }
 
-@Composable
-fun ProvideFmPlayerViewModel(viewModel: FmPlayerViewModel, block: @Composable () -> Unit) {
-    CompositionLocalProvider(LocalFmPlayerViewModel provides viewModel, content = block)
-}
+fun fmPlayerViewModelProviderValue(viewModel: FmPlayerViewModel) =
+    LocalFmPlayerViewModel provides viewModel
 
 @Composable
 fun fmPlayerViewModel() = LocalFmPlayerViewModel.current

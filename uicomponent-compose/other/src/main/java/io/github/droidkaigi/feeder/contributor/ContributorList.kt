@@ -7,6 +7,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.google.accompanist.insets.LocalWindowInsets
@@ -45,7 +46,7 @@ fun ContributorList(onContributorClick: (Contributor) -> Unit) {
 @Composable
 fun PreviewContributorScreen() {
     ConferenceAppFeederTheme {
-        ProvideContributorViewModel(viewModel = fakeContributorViewModel()) {
+        CompositionLocalProvider(contributorViewModelProviderValue(fakeContributorViewModel())) {
             ContributorList() {
             }
         }
