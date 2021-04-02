@@ -31,9 +31,8 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -124,14 +123,6 @@ fun FeedScreen(
     ) = use(fmPlayerViewModel())
 
     val context = LocalContext.current
-    val isListFinished = remember { mutableStateOf(false) }
-    val robotAnimValue by animateFloatAsState(
-        targetValue = if (isListFinished.value) 0f else 10f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioHighBouncy,
-            stiffness = Spring.StiffnessMedium,
-        )
-    )
 
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
@@ -174,8 +165,6 @@ fun FeedScreen(
         onClickPlayPodcastButton = {
             fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
-        robotAnimValue = robotAnimValue,
-        isListFinished = isListFinished,
     )
 }
 
@@ -196,8 +185,6 @@ private fun FeedScreen(
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
-    robotAnimValue: Float,
-    isListFinished: MutableState<Boolean>,
 ) {
     Column {
         val density = LocalDensity.current
@@ -218,7 +205,6 @@ private fun FeedScreen(
                     modifier = Modifier.fillMaxSize()
                 ) { page ->
                     val selectedTab = FeedTab.values()[page]
-                    val isHome = selectedTab is FeedTab.Home
                     FeedList(
                         feedContents = if (selectedTab is FeedTab.FilteredFeed) {
                             feedContents.filterFeedType(selectedTab.feedItemClass)
@@ -226,13 +212,11 @@ private fun FeedScreen(
                             feedContents
                         },
                         fmPlayerState = fmPlayerState,
-                        isHome = isHome,
+                        feedTab = selectedTab,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
                         listState = selectedTab.listState,
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
-                        robotAnimValue = robotAnimValue,
-                        isListFinished = isListFinished
                     )
                 }
             },
@@ -300,14 +284,26 @@ private fun AppBar(
 private fun FeedList(
     feedContents: FeedContents,
     fmPlayerState: FmPlayerViewModel.State?,
-    isHome: Boolean,
+    feedTab: FeedTab,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     listState: LazyListState,
-    robotAnimValue: Float,
-    isListFinished: MutableState<Boolean>,
 ) {
+    val isHome = feedTab is FeedTab.Home
+    val isListFinished by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex + listState.layoutInfo
+                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+        }
+    }
+    val robotAnimValue by animateFloatAsState(
+        targetValue = if (isListFinished) 0f else 10f,
+        animationSpec = spring(
+            dampingRatio = Spring.DampingRatioHighBouncy,
+            stiffness = Spring.StiffnessMedium,
+        )
+    )
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
@@ -315,7 +311,7 @@ private fun FeedList(
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
                 .toPaddingValues(top = false, start = false, end = false),
-            state = listState
+            state = feedTab.listState
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
@@ -341,9 +337,6 @@ private fun FeedList(
                     )
                 }
             }
-            // TODO enable animation
-//            isListFinished.value = listState.firstVisibleItemIndex + listState.layoutInfo
-//                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             if (listState.firstVisibleItemIndex != 0) {
                 item {
                     RobotItem(
