@@ -5,7 +5,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -87,6 +85,8 @@ sealed class FeedTab(val name: String, val routePath: String) {
         object Podcast : FilteredFeed(FeedItem.Podcast::class, "Podcast", "podcast")
     }
 
+    val listState = LazyListState()
+
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
         fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
@@ -109,8 +109,6 @@ fun FeedScreen(
         pageCount = FeedTab.values().size,
         initialPage = FeedTab.values().indexOf(selectedTab)
     )
-    val listState = rememberLazyListState()
-    val coroutineScope = rememberCoroutineScope()
 
     val (
         state,
@@ -159,12 +157,7 @@ fun FeedScreen(
         feedContents = state.filteredFeedContents,
         fmPlayerState = fmPlayerState,
         filters = state.filters,
-        onSelectTab = {
-            onSelectedTab(it)
-            coroutineScope.launch {
-                listState.animateScrollToItem(index = 0)
-            }
-        },
+        onSelectTab = onSelectedTab,
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
             dispatch(FeedViewModel.Event.ToggleFavorite(feedItem = it))
@@ -177,7 +170,6 @@ fun FeedScreen(
             )
         },
         onClickFeed = onDetailClick,
-        listState = listState,
         onClickPlayPodcastButton = {
             fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
@@ -203,7 +195,6 @@ private fun FeedScreen(
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
-    listState: LazyListState,
     robotAnimValue: Float,
     isListFinished: MutableState<Boolean>,
 ) {
@@ -237,7 +228,7 @@ private fun FeedScreen(
                         isHome = isHome,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
-                        listState = listState,
+                        listState = selectedTab.listState,
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
                         robotAnimValue = robotAnimValue,
                         isListFinished = isListFinished
@@ -296,6 +287,7 @@ private fun AppBar(
                     onSelectTab(tab)
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(index)
+                        tab.listState.animateScrollToItem(index = 0)
                     }
                 }
             )
@@ -317,7 +309,7 @@ private fun FeedList(
 ) {
     Surface(
         color = MaterialTheme.colors.background,
-        modifier = Modifier.fillMaxHeight()
+        modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
@@ -348,8 +340,9 @@ private fun FeedList(
                     )
                 }
             }
-            isListFinished.value = listState.firstVisibleItemIndex + listState.layoutInfo
-                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+            // TODO enable animation
+//            isListFinished.value = listState.firstVisibleItemIndex + listState.layoutInfo
+//                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             if (listState.firstVisibleItemIndex != 0) {
                 item {
                     RobotItem(
