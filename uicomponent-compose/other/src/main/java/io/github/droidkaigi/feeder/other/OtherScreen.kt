@@ -20,12 +20,9 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.google.accompanist.insets.LocalWindowInsets
-import com.google.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.Staff
 import io.github.droidkaigi.feeder.about.AboutThisApp
@@ -90,7 +87,6 @@ fun OtherScreen(
     onPrivacyPolicyClick: (String) -> Unit,
 ) {
     Column {
-        val density = LocalDensity.current
         BackdropScaffold(
             gesturesEnabled = false,
             backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
@@ -99,7 +95,7 @@ fun OtherScreen(
                 Box(modifier = Modifier.height(1.dp))
             },
             frontLayerShape = MaterialTheme.shapes.large,
-            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+            peekHeight = 104.dp,
             appBar = {
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
@@ -126,7 +122,6 @@ private fun AppBar(
     onSelectTab: (OtherTab) -> Unit,
 ) {
     TopAppBar(
-        modifier = Modifier.statusBarsPadding(),
         title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {

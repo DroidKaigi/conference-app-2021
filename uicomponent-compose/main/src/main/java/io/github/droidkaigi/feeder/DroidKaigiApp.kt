@@ -12,6 +12,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.use
 
@@ -46,6 +47,7 @@ fun DroidKaigiApp(firstSplashScreenState: SplashState = SplashState.Shown) {
             modifier = Modifier
                 .alpha(contentAlpha)
                 .navigationBarsPadding(bottom = false)
+                .statusBarsPadding()
         )
     }
 }

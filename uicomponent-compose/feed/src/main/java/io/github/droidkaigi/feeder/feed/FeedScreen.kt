@@ -43,7 +43,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
@@ -52,7 +51,6 @@ import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
-import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.toPaddingValues
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
@@ -215,7 +213,6 @@ private fun FeedScreen(
     isListFinished: MutableState<Boolean>,
 ) {
     Column {
-        val density = LocalDensity.current
         BackdropScaffold(
             backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = scaffoldState,
@@ -223,7 +220,7 @@ private fun FeedScreen(
                 BackLayerContent(filters, onFavoriteFilterChanged)
             },
             frontLayerShape = MaterialTheme.shapes.large,
-            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+            peekHeight = 104.dp,
             appBar = {
                 AppBar(onNavigationIconClick, selectedTab, onSelectTab)
             },
@@ -278,7 +275,6 @@ private fun AppBar(
     onSelectTab: (FeedTab) -> Unit,
 ) {
     TopAppBar(
-        modifier = Modifier.statusBarsPadding(),
         title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {

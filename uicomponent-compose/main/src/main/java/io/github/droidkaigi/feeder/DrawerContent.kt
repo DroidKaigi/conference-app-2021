@@ -139,7 +139,7 @@ fun DrawerContent(
     onNavigate: (contents: DrawerContents) -> Unit,
 ) {
     Column {
-        Spacer(modifier = Modifier.height(52.dp))
+        Spacer(modifier = Modifier.height(20.dp))
         Row(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically,
