@@ -245,7 +245,8 @@ private fun FeedScreen(
                         onDragStopped = onDragStopped,
                         draggableState = draggableState,
                         robotAnimValue = robotAnimValue,
-                        isListFinished = isListFinished
+                        isListFinished = isListFinished,
+                        scaffoldState = scaffoldState
                     )
                 }
             },
@@ -327,6 +328,7 @@ private fun FeedList(
     draggableState: DraggableState,
     robotAnimValue: Float,
     isListFinished: MutableState<Boolean>,
+    scaffoldState: BackdropScaffoldState,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -345,6 +347,9 @@ private fun FeedList(
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
+                    if (scaffoldState.isRevealed) {
+                        FilterItemCountRow(feedContents.size.toString())
+                    }
                     FirstFeedItem(
                         feedItem = content.first,
                         favorited = content.second,
@@ -447,6 +452,25 @@ fun RobotItem(
             contentDescription = "",
             tint = robotIconColor
         )
+    }
+}
+
+@Composable
+fun FilterItemCountRow(count: String) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        val text = createRef()
+        Text(
+            modifier = Modifier
+                .constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start, 44.dp)
+                }
+                .padding(vertical = 8.dp, horizontal = 0.dp),
+            text = "該当アイテム:$count")
     }
 }
 
