@@ -470,7 +470,8 @@ fun FilterItemCountRow(count: String) {
                     start.linkTo(parent.start, 44.dp)
                 }
                 .padding(vertical = 8.dp, horizontal = 0.dp),
-            text = "該当アイテム:$count")
+            text = "該当アイテム:$count"
+        )
     }
 }
 
