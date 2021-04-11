@@ -246,7 +246,7 @@ private fun FeedScreen(
                         draggableState = draggableState,
                         robotAnimValue = robotAnimValue,
                         isListFinished = isListFinished,
-                        scaffoldState = scaffoldState
+                        isRevealed = scaffoldState.isRevealed,
                     )
                 }
             },
@@ -328,7 +328,7 @@ private fun FeedList(
     draggableState: DraggableState,
     robotAnimValue: Float,
     isListFinished: MutableState<Boolean>,
-    scaffoldState: BackdropScaffoldState,
+    isRevealed: Boolean,
 ) {
     Surface(
         color = MaterialTheme.colors.background,
@@ -347,7 +347,7 @@ private fun FeedList(
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
-                    if (scaffoldState.isRevealed) {
+                    if (isRevealed) {
                         FilterItemCountRow(feedContents.size.toString())
                     }
                     FirstFeedItem(
