@@ -8,7 +8,9 @@ plugins {
     id 'dagger.hilt.android.plugin'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
-    id 'com.google.android.gms.oss-licenses-plugin'
+    // Add this plugin when this issue is fixed
+    // https://github.com/google/play-services-plugins/issues/172
+    // id 'com.google.android.gms.oss-licenses-plugin'
 }
 
 android {

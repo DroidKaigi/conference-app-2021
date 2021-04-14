@@ -217,6 +217,7 @@ private fun FeedScreen(
                         onFavoriteChange = onFavoriteChange,
                         listState = selectedTab.listState,
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
+                        isRevealed = scaffoldState.isRevealed,
                     )
                 }
             },
@@ -289,6 +290,7 @@ private fun FeedList(
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     listState: LazyListState,
+    isRevealed: Boolean,
 ) {
     val isHome = feedTab is FeedTab.Home
     val isListFinished by remember {
@@ -315,6 +317,9 @@ private fun FeedList(
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
+                    if (isRevealed) {
+                        FilterItemCountRow(feedContents.size.toString())
+                    }
                     FirstFeedItem(
                         feedItem = content.first,
                         favorited = content.second,
@@ -443,6 +448,26 @@ fun Modifier.pagerTabIndicatorOffset(
         .wrapContentSize(Alignment.BottomStart)
         .offset(x = targetIndicatorOffset)
         .width(indicatorWidth)
+}
+
+@Composable
+fun FilterItemCountRow(count: String) {
+    ConstraintLayout(
+        modifier = Modifier
+            .fillMaxWidth()
+    ) {
+        val text = createRef()
+        Text(
+            modifier = Modifier
+                .constrainAs(text) {
+                    top.linkTo(parent.top)
+                    bottom.linkTo(parent.bottom)
+                    start.linkTo(parent.start, 44.dp)
+                }
+                .padding(vertical = 8.dp, horizontal = 0.dp),
+            text = "該当アイテム:$count"
+        )
+    }
 }
 
 @Preview(showBackground = true)
