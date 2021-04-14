@@ -313,7 +313,7 @@ private fun FeedList(
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
                 .toPaddingValues(top = false, start = false, end = false),
-            state = feedTab.listState
+            state = listState
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
