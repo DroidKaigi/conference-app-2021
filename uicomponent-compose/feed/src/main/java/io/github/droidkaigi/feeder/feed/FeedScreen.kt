@@ -293,19 +293,6 @@ private fun FeedList(
     isRevealed: Boolean,
 ) {
     val isHome = feedTab is FeedTab.Home
-    val isListFinished by remember {
-        derivedStateOf {
-            listState.firstVisibleItemIndex + listState.layoutInfo
-                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
-        }
-    }
-    val robotAnimValue by animateFloatAsState(
-        targetValue = if (isListFinished) 0f else 10f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioHighBouncy,
-            stiffness = Spring.StiffnessMedium,
-        )
-    )
     Surface(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
@@ -344,6 +331,19 @@ private fun FeedList(
             }
             if (listState.firstVisibleItemIndex != 0) {
                 item {
+                    val isListFinished by remember {
+                        derivedStateOf {
+                            listState.firstVisibleItemIndex + listState.layoutInfo
+                                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+                        }
+                    }
+                    val robotAnimValue by animateFloatAsState(
+                        targetValue = if (isListFinished) 0f else 10f,
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioHighBouncy,
+                            stiffness = Spring.StiffnessMedium,
+                        )
+                    )
                     RobotItem(
                         robotText = "Finished!",
                         robotIcon = painterResource(id = R.drawable.ic_android_green_24dp),
