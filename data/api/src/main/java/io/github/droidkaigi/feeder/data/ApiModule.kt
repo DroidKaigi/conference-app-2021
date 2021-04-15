@@ -4,6 +4,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import io.github.droidkaigi.feeder.Authenticator
 import io.ktor.client.HttpClient
 import io.ktor.client.engine.okhttp.OkHttp
 import javax.inject.Singleton
@@ -36,12 +37,20 @@ class ApiModule {
         return NetworkService(httpClient, authApi)
     }
 
+    @Provides
+    internal fun provideAuthenticator(
+        authenticatorImpl: AuthenticatorImpl
+    ) : Authenticator {
+        return authenticatorImpl
+    }
+
     @Singleton
     @Provides
     internal fun provideFirebaseAuthApi(
         httpClient: HttpClient,
         userDataStore: UserDataStore,
+        authenticator: Authenticator,
     ): AuthApi {
-        return AuthApi(httpClient, userDataStore)
+        return AuthApi(httpClient, userDataStore, authenticator)
     }
 }
