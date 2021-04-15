@@ -44,8 +44,6 @@ kotlin {
             implementation Dep.Coroutines.core
 
             implementation Dep.Serialization.core
-
-            implementation(Dep.firebaseAuth)
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common
@@ -65,7 +63,7 @@ kotlin {
 
             // Hilt
             implementation Dep.Dagger.hiltAndroid
-
+            implementation Dep.firebaseAuth
             // For local unit tests
 //            testImplementation "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptTest Dep.Dagger.hiltAndroidCompiler
