@@ -215,7 +215,7 @@ private fun FeedScreen(
                         feedTab = selectedTab,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
-                        listState = selectedTab.listState,
+                        lazyListState = selectedTab.listState,
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
                         isRevealed = scaffoldState.isRevealed,
                     )
@@ -289,9 +289,10 @@ private fun FeedList(
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
-    listState: LazyListState,
+    lazyListState: LazyListState,
     isRevealed: Boolean,
 ) {
+    val listState = remember { lazyListState }
     val isHome = feedTab is FeedTab.Home
     Surface(
         color = MaterialTheme.colors.background,
