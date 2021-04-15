@@ -13,7 +13,7 @@ val apiModule = module {
     }
 
     single {
-        AuthApi(get(), get())
+        AuthApi(get(), get(), get())
     }
 
     single {
