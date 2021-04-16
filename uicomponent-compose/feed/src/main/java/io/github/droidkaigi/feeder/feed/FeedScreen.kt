@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -85,8 +86,6 @@ sealed class FeedTab(val name: String, val routePath: String) {
         object Podcast : FilteredFeed(FeedItem.Podcast::class, "Podcast", "podcast")
     }
 
-    val listState = LazyListState()
-
     companion object {
         fun values() = listOf(Home, FilteredFeed.Blog, FilteredFeed.Video, FilteredFeed.Podcast)
         fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Home
@@ -142,10 +141,14 @@ fun FeedScreen(
             }
         }
     }
+    val tabLazyListStates = FeedTab.values()
+        .map {it to rememberLazyListState()}
+        .toMap()
 
     FeedScreen(
         scaffoldState = scaffoldState,
         pagerState = pagerState,
+        tabLazyListStates = tabLazyListStates,
         feedContents = state.filteredFeedContents,
         fmPlayerState = fmPlayerState,
         filters = state.filters,
@@ -177,6 +180,7 @@ private fun FeedScreen(
     scaffoldState: BackdropScaffoldState,
     pagerState: PagerState,
     feedContents: FeedContents,
+    tabLazyListStates: Map<FeedTab, LazyListState>,
     fmPlayerState: FmPlayerViewModel.State?,
     filters: Filters,
     onSelectTab: (FeedTab) -> Unit,
@@ -197,7 +201,7 @@ private fun FeedScreen(
             frontLayerShape = MaterialTheme.shapes.large,
             peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
-                AppBar(onNavigationIconClick, pagerState, onSelectTab)
+                AppBar(onNavigationIconClick, pagerState, tabLazyListStates, onSelectTab)
             },
             frontLayerContent = {
                 HorizontalPager(
@@ -215,7 +219,7 @@ private fun FeedScreen(
                         feedTab = selectedTab,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
-                        lazyListState = selectedTab.listState,
+                        listState = tabLazyListStates.getValue(selectedTab),
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
                         isRevealed = scaffoldState.isRevealed,
                     )
@@ -236,6 +240,7 @@ private fun FeedScreen(
 private fun AppBar(
     onNavigationIconClick: () -> Unit,
     pagerState: PagerState,
+    tabLazyListStates: Map<FeedTab, LazyListState>,
     onSelectTab: (FeedTab) -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
@@ -273,7 +278,7 @@ private fun AppBar(
                     onSelectTab(tab)
                     coroutineScope.launch {
                         pagerState.animateScrollToPage(index)
-                        tab.listState.animateScrollToItem(index = 0)
+                        tabLazyListStates.getValue(tab).animateScrollToItem(index = 0)
                     }
                 }
             )
@@ -289,10 +294,9 @@ private fun FeedList(
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
-    lazyListState: LazyListState,
+    listState: LazyListState,
     isRevealed: Boolean,
 ) {
-    val listState = remember { lazyListState }
     val isHome = feedTab is FeedTab.Home
     Surface(
         color = MaterialTheme.colors.background,
