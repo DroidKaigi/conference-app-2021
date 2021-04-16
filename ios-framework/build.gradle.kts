@@ -26,7 +26,14 @@ kotlin {
     }
 
     sourceSets {
-        val commonMain by getting
+        val commonMain by getting {
+            dependencies {
+                implementation(project(":model"))
+                implementation(project(":data:api"))
+                implementation(project(":data:db"))
+                implementation(project(":data:repository"))
+            }
+        }
         val commonTest by getting {
             dependencies {
                 implementation(kotlin("test-common"))
