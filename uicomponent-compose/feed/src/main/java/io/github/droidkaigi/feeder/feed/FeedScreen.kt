@@ -142,7 +142,7 @@ fun FeedScreen(
         }
     }
     val tabLazyListStates = FeedTab.values()
-        .map {it to rememberLazyListState()}
+        .map { it to rememberLazyListState() }
         .toMap()
 
     FeedScreen(
