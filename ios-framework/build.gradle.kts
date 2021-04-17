@@ -21,6 +21,7 @@ kotlin {
         binaries {
             framework {
                 baseName = "Shared"
+                linkerOpts.add("-lsqlite3")
             }
         }
     }
