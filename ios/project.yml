@@ -43,15 +43,20 @@ targets:
               script: |
                   mint run swiftlint autocorrect
                   mint run swiftlint
+            - name: Make kotlin framework
+              script: |
+                  cd "$SRCROOT/.."
+                  ./gradlew :ios-framework:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}
         testTargets:
             - DroidKaigi 2021Tests
+        dependencies:
+            - framework: ../ios-framework/build/xcode-frameworks/Shared.framework
     DroidKaigi 2021Tests:
         type: bundle.unit-test
         platform: iOS
         deploymentTarget: "14.0"
         sources: DroidKaigi 2021Tests
         dependencies:
-            - framework: build/ioscombined.framework
             - target: DroidKaigi 2021
         settings:
             INFOPLIST_FILE: DroidKaigi 2021Tests/info.plist
