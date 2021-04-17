@@ -61,3 +61,6 @@ val packForXcode by tasks.creating(Sync::class) {
     into(targetDir)
 }
 tasks.getByName("build").dependsOn(packForXcode)
+
+// Workaround for issues where types defined in iOS native code cannot be referenced in Android Studio
+tasks.getByName("preBuild").dependsOn(tasks.getByName("iosMainKlibrary"))
