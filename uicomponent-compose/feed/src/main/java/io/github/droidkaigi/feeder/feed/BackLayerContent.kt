@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.feed
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -18,14 +17,13 @@ import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 
 enum class FilterState(val text: String) {
-    All("All"), Favorite("Favorites")
+    Favorite("Favorites")
 }
 
 @Composable
@@ -37,19 +35,13 @@ fun BackLayerContent(
         modifier = Modifier
             .padding(vertical = 12.dp)
     ) {
-        FilterState.values().forEach { filter ->
-            val isChecked = when (filter) {
-                FilterState.All -> !filterState.filterFavorite
-                FilterState.Favorite -> filterState.filterFavorite
+        Input(
+            text = FilterState.Favorite.text,
+            isChecked = filterState.filterFavorite,
+            onClick = {
+                onFavoriteFilterChanged(!filterState.filterFavorite)
             }
-            Input(
-                text = filter.text,
-                isChecked = isChecked,
-                onClick = {
-                    onFavoriteFilterChanged(filter == FilterState.Favorite)
-                }
-            )
-        }
+        )
     }
 }
 
@@ -63,13 +55,6 @@ private fun Input(
         Modifier
             .clickable(onClick = onClick)
             .fillMaxWidth()
-            .background(
-                if (isChecked) {
-                    ConferenceAppFeederTheme.filterMuskColor
-                } else {
-                    Color.Transparent
-                }
-            )
             .padding(all = 12.dp)
     ) {
         Icon(
