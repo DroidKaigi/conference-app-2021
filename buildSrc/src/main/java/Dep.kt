@@ -93,6 +93,8 @@ object Dep {
     object Accompanist {
         const val insets = "com.google.accompanist:accompanist-insets:0.7.0"
         const val coil = "com.google.accompanist:accompanist-coil:0.7.0"
+        const val pager = "com.google.accompanist:accompanist-pager:0.7.0"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.7.0"
     }
 
     object FirebaseCrashlytics {

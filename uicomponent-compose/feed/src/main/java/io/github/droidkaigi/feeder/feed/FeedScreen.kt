@@ -4,15 +4,13 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.gestures.DraggableState
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
-import androidx.compose.foundation.gestures.rememberDraggableState
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -34,12 +32,13 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.composed
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.platform.LocalContext
@@ -49,25 +48,28 @@ import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.lerp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.toPaddingValues
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.PagerState
+import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.ScrollableTabRow
 import io.github.droidkaigi.feeder.core.TabIndicator
-import io.github.droidkaigi.feeder.core.TabRowDefaults.tabIndicatorOffset
-import io.github.droidkaigi.feeder.core.animation.FadeThrough
+import io.github.droidkaigi.feeder.core.TabPosition
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.math.abs
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 
@@ -93,6 +95,7 @@ sealed class FeedTab(val name: String, val routePath: String) {
 /**
  * stateful
  */
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun FeedScreen(
     selectedTab: FeedTab,
@@ -101,9 +104,10 @@ fun FeedScreen(
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val listState = rememberLazyListState()
-    val draggableState = rememberDraggableState(onDelta = { })
-    val coroutineScope = rememberCoroutineScope()
+    val pagerState = rememberPagerState(
+        pageCount = FeedTab.values().size,
+        initialPage = FeedTab.values().indexOf(selectedTab)
+    )
 
     val (
         state,
@@ -118,14 +122,6 @@ fun FeedScreen(
     ) = use(fmPlayerViewModel())
 
     val context = LocalContext.current
-    val isListFinished = remember { mutableStateOf(false) }
-    val robotAnimValue by animateFloatAsState(
-        targetValue = if (isListFinished.value) 0f else 10f,
-        animationSpec = spring(
-            dampingRatio = Spring.DampingRatioHighBouncy,
-            stiffness = Spring.StiffnessMedium,
-        )
-    )
 
     effectFlow.collectInLaunchedEffect { effect ->
         when (effect) {
@@ -145,19 +141,18 @@ fun FeedScreen(
             }
         }
     }
+    val tabLazyListStates = FeedTab.values()
+        .map { it to rememberLazyListState() }
+        .toMap()
 
     FeedScreen(
-        selectedTab = selectedTab,
         scaffoldState = scaffoldState,
+        pagerState = pagerState,
+        tabLazyListStates = tabLazyListStates,
         feedContents = state.filteredFeedContents,
         fmPlayerState = fmPlayerState,
         filters = state.filters,
-        onSelectTab = {
-            onSelectedTab(it)
-            coroutineScope.launch {
-                listState.animateScrollToItem(index = 0)
-            }
-        },
+        onSelectTab = onSelectedTab,
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
             dispatch(FeedViewModel.Event.ToggleFavorite(feedItem = it))
@@ -170,36 +165,22 @@ fun FeedScreen(
             )
         },
         onClickFeed = onDetailClick,
-        listState = listState,
         onClickPlayPodcastButton = {
             fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
-        onDragStopped = onDragStopped@{ velocity ->
-            val threshold = 500
-            if (threshold > abs(velocity)) return@onDragStopped
-
-            onSelectedTab(
-                if (0 > velocity) {
-                    selectedTab.rightTab
-                } else {
-                    selectedTab.leftTab
-                }
-            )
-        },
-        draggableState = draggableState,
-        robotAnimValue = robotAnimValue,
-        isListFinished = isListFinished,
     )
 }
 
 /**
  * stateless
  */
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun FeedScreen(
-    selectedTab: FeedTab,
     scaffoldState: BackdropScaffoldState,
+    pagerState: PagerState,
     feedContents: FeedContents,
+    tabLazyListStates: Map<FeedTab, LazyListState>,
     fmPlayerState: FmPlayerViewModel.State?,
     filters: Filters,
     onSelectTab: (FeedTab) -> Unit,
@@ -208,11 +189,6 @@ private fun FeedScreen(
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
-    listState: LazyListState,
-    onDragStopped: (Float) -> Unit,
-    draggableState: DraggableState,
-    robotAnimValue: Float,
-    isListFinished: MutableState<Boolean>,
 ) {
     Column {
         val density = LocalDensity.current
@@ -225,11 +201,14 @@ private fun FeedScreen(
             frontLayerShape = MaterialTheme.shapes.large,
             peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
             appBar = {
-                AppBar(onNavigationIconClick, selectedTab, onSelectTab)
+                AppBar(onNavigationIconClick, pagerState, tabLazyListStates, onSelectTab)
             },
             frontLayerContent = {
-                FadeThrough(targetState = selectedTab) { selectedTab ->
-                    val isHome = selectedTab is FeedTab.Home
+                HorizontalPager(
+                    state = pagerState,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    val selectedTab = FeedTab.values()[page]
                     FeedList(
                         feedContents = if (selectedTab is FeedTab.FilteredFeed) {
                             feedContents.filterFeedType(selectedTab.feedItemClass)
@@ -237,15 +216,11 @@ private fun FeedScreen(
                             feedContents
                         },
                         fmPlayerState = fmPlayerState,
-                        isHome = isHome,
+                        feedTab = selectedTab,
                         onClickFeed = onClickFeed,
                         onFavoriteChange = onFavoriteChange,
-                        listState = listState,
+                        listState = tabLazyListStates.getValue(selectedTab),
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
-                        onDragStopped = onDragStopped,
-                        draggableState = draggableState,
-                        robotAnimValue = robotAnimValue,
-                        isListFinished = isListFinished,
                         isRevealed = scaffoldState.isRevealed,
                     )
                 }
@@ -260,24 +235,15 @@ private fun FeedScreen(
     }
 }
 
-private val FeedTab.rightTab: FeedTab
-    get() {
-        val currentPosition = FeedTab.values().indexOf(this)
-        return FeedTab.values().getOrElse(currentPosition + 1) { this }
-    }
-
-private val FeedTab.leftTab: FeedTab
-    get() {
-        val currentPosition = FeedTab.values().indexOf(this)
-        return FeedTab.values().getOrElse(currentPosition - 1) { this }
-    }
-
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 private fun AppBar(
     onNavigationIconClick: () -> Unit,
-    selectedTab: FeedTab,
+    pagerState: PagerState,
+    tabLazyListStates: Map<FeedTab, LazyListState>,
     onSelectTab: (FeedTab) -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
         title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
@@ -288,28 +254,33 @@ private fun AppBar(
             }
         }
     )
-    val selectedTabIndex = FeedTab.values().indexOf(selectedTab)
     ScrollableTabRow(
         selectedTabIndex = 0,
         edgePadding = 0.dp,
         foregroundIndicator = {},
         backgroundIndicator = { tabPositions ->
             TabIndicator(
-                modifier = Modifier.tabIndicatorOffset(tabPositions[selectedTabIndex])
+                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
             )
         },
         divider = {}
     ) {
-        FeedTab.values().forEach { tab ->
+        FeedTab.values().forEachIndexed { index, tab ->
             Tab(
-                selected = tab == selectedTab,
+                selected = index == pagerState.currentPage,
                 text = {
                     Text(
                         modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
                         text = tab.name,
                     )
                 },
-                onClick = { onSelectTab(tab) }
+                onClick = {
+                    onSelectTab(tab)
+                    coroutineScope.launch {
+                        pagerState.animateScrollToPage(index)
+                        tabLazyListStates.getValue(tab).animateScrollToItem(index = 0)
+                    }
+                }
             )
         }
     }
@@ -319,26 +290,17 @@ private fun AppBar(
 private fun FeedList(
     feedContents: FeedContents,
     fmPlayerState: FmPlayerViewModel.State?,
-    isHome: Boolean,
+    feedTab: FeedTab,
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     listState: LazyListState,
-    onDragStopped: (Float) -> Unit,
-    draggableState: DraggableState,
-    robotAnimValue: Float,
-    isListFinished: MutableState<Boolean>,
     isRevealed: Boolean,
 ) {
+    val isHome = feedTab is FeedTab.Home
     Surface(
         color = MaterialTheme.colors.background,
-        modifier = Modifier
-            .fillMaxHeight()
-            .draggable(
-                state = draggableState,
-                orientation = Orientation.Horizontal,
-                onDragStopped = { velocity -> onDragStopped(velocity) }
-            )
+        modifier = Modifier.fillMaxSize()
     ) {
         LazyColumn(
             contentPadding = LocalWindowInsets.current.systemBars
@@ -372,10 +334,21 @@ private fun FeedList(
                     )
                 }
             }
-            isListFinished.value = listState.firstVisibleItemIndex + listState.layoutInfo
-                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             if (listState.firstVisibleItemIndex != 0) {
                 item {
+                    val isListFinished by remember {
+                        derivedStateOf {
+                            listState.firstVisibleItemIndex + listState.layoutInfo
+                                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+                        }
+                    }
+                    val robotAnimValue by animateFloatAsState(
+                        targetValue = if (isListFinished) 0f else 10f,
+                        animationSpec = spring(
+                            dampingRatio = Spring.DampingRatioHighBouncy,
+                            stiffness = Spring.StiffnessMedium,
+                        )
+                    )
                     RobotItem(
                         robotText = "Finished!",
                         robotIcon = painterResource(id = R.drawable.ic_android_green_24dp),
@@ -453,6 +426,33 @@ fun RobotItem(
             tint = robotIconColor
         )
     }
+}
+
+// ref : https://google.github.io/accompanist/pager/#integration-with-tabs
+@OptIn(ExperimentalPagerApi::class)
+fun Modifier.pagerTabIndicatorOffset(
+    pagerState: PagerState,
+    tabPositions: List<TabPosition>,
+): Modifier = composed {
+    val targetIndicatorOffset: Dp
+    val indicatorWidth: Dp
+
+    val currentTab = tabPositions[pagerState.currentPage]
+    val nextTab = tabPositions.getOrNull(pagerState.currentPage + 1)
+    if (nextTab != null) {
+        // If we have a next tab, lerp between the size and offset
+        targetIndicatorOffset = lerp(currentTab.left, nextTab.left, pagerState.currentPageOffset)
+        indicatorWidth = lerp(currentTab.width, nextTab.width, pagerState.currentPageOffset)
+    } else {
+        // Otherwise we just use the current tab/page
+        targetIndicatorOffset = currentTab.left
+        indicatorWidth = currentTab.width
+    }
+
+    fillMaxWidth()
+        .wrapContentSize(Alignment.BottomStart)
+        .offset(x = targetIndicatorOffset)
+        .width(indicatorWidth)
 }
 
 @Composable
