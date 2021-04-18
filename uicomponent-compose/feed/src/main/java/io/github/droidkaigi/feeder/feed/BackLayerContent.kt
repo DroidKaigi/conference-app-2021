@@ -4,17 +4,11 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.rounded.CheckBox
-import androidx.compose.material.icons.rounded.CheckBoxOutlineBlank
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -70,24 +64,14 @@ private fun Input(
                     Color.Transparent
                 }
             )
-            .padding(all = 12.dp)
+            .padding(horizontal = 20.dp, vertical = 12.dp)
     ) {
-        Icon(
-            imageVector = if (isChecked) {
-                Icons.Rounded.CheckBox
-            } else {
-                Icons.Rounded.CheckBoxOutlineBlank
-            },
-            contentDescription = "filter $text"
-        )
-        Spacer(Modifier.width(8.dp))
         Text(
             modifier = Modifier
                 .align(Alignment.CenterVertically),
             text = text,
             style = MaterialTheme.typography.body1
         )
-        Spacer(Modifier.width(8.dp))
     }
 }
 
