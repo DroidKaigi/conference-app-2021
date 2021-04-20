@@ -21,6 +21,8 @@ kotlin {
         binaries {
             framework {
                 baseName = "Shared"
+                export(project(":model"))
+                export(project(":data:repository"))
                 linkerOpts.add("-lsqlite3")
             }
         }
@@ -29,10 +31,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                implementation(project(":model"))
+                api(project(":model"))
                 implementation(project(":data:api"))
                 implementation(project(":data:db"))
-                implementation(project(":data:repository"))
+                api(project(":data:repository"))
             }
         }
         val commonTest by getting {
