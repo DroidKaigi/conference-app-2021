@@ -30,6 +30,10 @@ kotlin {
         iosX64("ios")
     }
 
+    targets.getByName("ios").binaries.forEach {
+        it.linkerOpts.add("-lsqlite3")
+    }
+
     sourceSets {
         commonMain.dependencies {
             api project(":model")
