@@ -5,8 +5,6 @@ data class User(
 )
 
 interface Authenticator {
-
-    suspend fun currentUser() : User?
-    suspend fun signInAnonymously() : User?
-
+    suspend fun currentUser(): User?
+    suspend fun signInAnonymously(): User?
 }

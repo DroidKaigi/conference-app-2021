@@ -40,7 +40,7 @@ class ApiModule {
     @Provides
     internal fun provideAuthenticator(
         authenticatorImpl: AuthenticatorImpl
-    ) : Authenticator {
+    ): Authenticator {
         return authenticatorImpl
     }
 
