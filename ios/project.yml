@@ -50,7 +50,7 @@ targets:
         testTargets:
             - DroidKaigi 2021Tests
         dependencies:
-            - framework: ../ios-framework/build/xcode-frameworks/Shared.framework
+            - framework: ../ios-framework/build/xcode-frameworks/DroidKaigiMPP.framework
     DroidKaigi 2021Tests:
         type: bundle.unit-test
         platform: iOS

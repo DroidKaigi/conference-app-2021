@@ -20,7 +20,7 @@ kotlin {
     iosTarget("ios") {
         binaries {
             framework {
-                baseName = "Shared"
+                baseName = "DroidKaigiMPP"
                 export(project(":model"))
                 export(project(":data:repository"))
                 linkerOpts.add("-lsqlite3")
