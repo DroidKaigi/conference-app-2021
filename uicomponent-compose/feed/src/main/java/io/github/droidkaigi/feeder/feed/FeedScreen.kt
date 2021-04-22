@@ -221,7 +221,7 @@ private fun FeedScreen(
                         onFavoriteChange = onFavoriteChange,
                         listState = tabLazyListStates.getValue(selectedTab),
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
-                        showItemCount = scaffoldState.isRevealed || filters.filterFavorite,
+                        showItemCount = filters.filterFavorite,
                     )
                 }
             },
