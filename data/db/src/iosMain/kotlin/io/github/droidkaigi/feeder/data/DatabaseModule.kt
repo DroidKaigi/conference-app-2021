@@ -12,4 +12,8 @@ val databaseModule = module {
     single<UserDataStore> {
         DataStoreUserDataStore()
     }
+
+    single<FeedItemDao> {
+        FeedItemDaoImpl(get())
+    }
 }
