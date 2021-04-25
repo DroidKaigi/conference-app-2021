@@ -1,5 +1,6 @@
 import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
 import io.github.droidkaigi.feeder.Dep
+import io.github.droidkaigi.feeder.Versions
 
 plugins {
     kotlin("multiplatform")
@@ -35,6 +36,13 @@ kotlin {
                 implementation(project(":data:api"))
                 implementation(project(":data:db"))
                 api(project(":data:repository"))
+
+                implementation(Dep.Coroutines.bom)
+                implementation(Dep.Coroutines.core) {
+                    version {
+                        strictly(Versions.coroutines)
+                    }
+                }
             }
         }
         val commonTest by getting {
