@@ -15,7 +15,7 @@ class DataStoreUserDataStore(name: String? = null) : UserDataStore() {
             NSUserDefaults.standardUserDefaults
         }
 
-        appleSetting = AppleSettings(userDefaults)
+        appleSetting = AppleSettings(userDefaults, useFrozenListeners = true)
     }
 
     override val flowSettings = appleSetting.toFlowSettings()
