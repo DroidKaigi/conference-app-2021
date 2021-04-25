@@ -1,6 +1,6 @@
 package io.github.droidkaigi.feeder
 
-import androidx.annotation.IdRes
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -34,7 +34,7 @@ import io.github.droidkaigi.feeder.other.OtherTab
 
 enum class DrawerContents(
     val group: Group,
-    @IdRes
+    @DrawableRes
     val imageResId: Int,
     val label: String,
     val route: String,
