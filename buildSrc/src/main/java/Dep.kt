@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.0-beta02"
+    const val compose = "1.0.0-beta05"
 }
 
 object Dep {
@@ -91,10 +91,10 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.7.0"
-        const val coil = "com.google.accompanist:accompanist-coil:0.7.0"
-        const val pager = "com.google.accompanist:accompanist-pager:0.7.0"
-        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.7.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.8.1"
+        const val coil = "com.google.accompanist:accompanist-coil:0.8.1"
+        const val pager = "com.google.accompanist:accompanist-pager:0.8.1"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.8.1"
     }
 
     object FirebaseCrashlytics {
