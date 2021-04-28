@@ -221,7 +221,7 @@ private fun FeedScreen(
                         onFavoriteChange = onFavoriteChange,
                         listState = tabLazyListStates.getValue(selectedTab),
                         onClickPlayPodcastButton = onClickPlayPodcastButton,
-                        showItemCount = filters.filterFavorite,
+                        isFilterState = filters.filterFavorite,
                     )
                 }
             },
@@ -295,7 +295,7 @@ private fun FeedList(
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     listState: LazyListState,
-    showItemCount: Boolean,
+    isFilterState: Boolean,
 ) {
     val isHome = feedTab is FeedTab.Home
     Surface(
@@ -309,7 +309,7 @@ private fun FeedList(
         ) {
             itemsIndexed(feedContents.contents) { index, content ->
                 if (isHome && index == 0) {
-                    if (showItemCount) {
+                    if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
                     }
                     FirstFeedItem(
@@ -317,7 +317,8 @@ private fun FeedList(
                         favorited = content.second,
                         onClick = onClickFeed,
                         showMediaLabel = isHome,
-                        onFavoriteChange = onFavoriteChange
+                        onFavoriteChange = onFavoriteChange,
+                        shouldPadding = isFilterState
                     )
                 } else {
                     FeedItemRow(
