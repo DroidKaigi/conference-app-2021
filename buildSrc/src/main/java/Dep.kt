@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder
 
 object Versions {
     const val compose = "1.0.0-beta05"
+    const val coroutines = "1.4.2-native-mt"
 }
 
 object Dep {
@@ -50,9 +51,9 @@ object Dep {
     }
 
     object Coroutines {
-        const val bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:1.4.2"
-        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core:1.4.2"
-        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test:1.4.2"
+        const val bom = "org.jetbrains.kotlinx:kotlinx-coroutines-bom:${Versions.coroutines}"
+        const val core = "org.jetbrains.kotlinx:kotlinx-coroutines-core"
+        const val test = "org.jetbrains.kotlinx:kotlinx-coroutines-test"
     }
 
     object Serialization {

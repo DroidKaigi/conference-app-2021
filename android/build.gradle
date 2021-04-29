@@ -126,6 +126,12 @@ dependencies {
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlib
 
+    implementation (Dep.Coroutines.core) {
+        version {
+            strictly Versions.coroutines
+        }
+    }
+
     implementation Dep.AndroidX.core
     implementation Dep.AndroidX.fragment
     implementation Dep.AndroidX.activity
