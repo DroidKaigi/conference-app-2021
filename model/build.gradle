@@ -15,11 +15,7 @@ kotlin {
         android
         commonMain.dependencies {
             api project.dependencies.platform(Dep.Coroutines.bom)
-            api (Dep.Coroutines.core) {
-                version {
-                    strictly Versions.coroutines
-                }
-            }
+            api Dep.Coroutines.core
             api Dep.datetime
         }
         android {}

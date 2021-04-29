@@ -40,11 +40,6 @@ kotlin {
             implementation project(":data:db")
 
             implementation Dep.Ktor.bom
-            implementation (Dep.Coroutines.core) {
-                version {
-                    strictly Versions.coroutines
-                }
-            }
             implementation Dep.Ktor.json
             implementation Dep.Ktor.serialization
             implementation Dep.Ktor.logging

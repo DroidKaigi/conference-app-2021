@@ -40,11 +40,6 @@ kotlin {
             api project(":model")
 
             implementation Dep.Coroutines.bom
-            implementation (Dep.Coroutines.core) {
-                version {
-                    strictly Versions.coroutines
-                }
-            }
 
             implementation Dep.Serialization.core
             implementation Dep.MultiplatformSettings.settings

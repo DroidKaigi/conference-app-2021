@@ -41,11 +41,6 @@ kotlin {
             api project(":data:db")
 
             implementation Dep.Coroutines.bom
-            implementation (Dep.Coroutines.core) {
-                version {
-                    strictly Versions.coroutines
-                }
-            }
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common
