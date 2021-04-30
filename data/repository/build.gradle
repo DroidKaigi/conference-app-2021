@@ -1,5 +1,4 @@
 import io.github.droidkaigi.feeder.Dep
-import io.github.droidkaigi.feeder.Versions
 
 plugins {
     id("kotlin-multiplatform")
@@ -41,11 +40,6 @@ kotlin {
             api project(":data:db")
 
             implementation Dep.Coroutines.bom
-            implementation (Dep.Coroutines.core) {
-                version {
-                    strictly Versions.coroutines
-                }
-            }
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common

@@ -1,5 +1,4 @@
 import io.github.droidkaigi.feeder.Dep
-import io.github.droidkaigi.feeder.Versions
 
 plugins {
     id("kotlin-multiplatform")
@@ -40,11 +39,6 @@ kotlin {
             api project(":model")
 
             implementation Dep.Coroutines.bom
-            implementation (Dep.Coroutines.core) {
-                version {
-                    strictly Versions.coroutines
-                }
-            }
 
             implementation Dep.Serialization.core
             implementation Dep.MultiplatformSettings.settings
