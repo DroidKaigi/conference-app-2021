@@ -96,6 +96,7 @@ object Dep {
         const val coil = "com.google.accompanist:accompanist-coil:0.8.1"
         const val pager = "com.google.accompanist:accompanist-pager:0.8.1"
         const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.8.1"
+        const val systemuicontroller = "com.google.accompanist:accompanist-systemuicontroller:0.8.1"
     }
 
     object FirebaseCrashlytics {
