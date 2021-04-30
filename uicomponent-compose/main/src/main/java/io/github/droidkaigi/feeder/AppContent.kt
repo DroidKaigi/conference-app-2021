@@ -22,6 +22,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.compose.navigate
 import androidx.navigation.navDeepLink
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.github.droidkaigi.feeder.core.navigation.chromeCustomTabs
 import io.github.droidkaigi.feeder.core.navigation.navigateChromeCustomTabs
 import io.github.droidkaigi.feeder.core.navigation.rememberCustomNavController
@@ -35,16 +36,27 @@ import kotlinx.coroutines.launch
 private const val FEED_PATH = "feed/"
 private const val OTHER_PATH = "other/"
 
+private val drawerOpenedStatusBarColor = Color.Black.copy(alpha = 0.48f)
+
 @Composable
 fun AppContent(
     modifier: Modifier = Modifier,
     firstDrawerValue: DrawerValue = DrawerValue.Closed,
 ) {
-    val drawerState = rememberDrawerState(firstDrawerValue)
+    val systemUiController = rememberSystemUiController()
+    val drawerState = rememberDrawerState(firstDrawerValue) {
+        if (it == DrawerValue.Closed) {
+            systemUiController.setStatusBarColor(Color.Transparent)
+        } else {
+            systemUiController.setStatusBarColor(drawerOpenedStatusBarColor)
+        }
+        true
+    }
     val drawerContentState = rememberDrawerContentState(DrawerContents.HOME.route)
     val navController = rememberCustomNavController()
     val coroutineScope = rememberCoroutineScope()
     val onNavigationIconClick: () -> Unit = {
+        systemUiController.setStatusBarColor(drawerOpenedStatusBarColor)
         coroutineScope.launch {
             drawerState.open()
         }
@@ -64,6 +76,7 @@ fun AppContent(
                 if (drawerContentState.selectDrawerContent(contents.route)) {
                     actions.onSelectDrawerItem(contents)
                 }
+                systemUiController.setStatusBarColor(Color.Transparent)
                 coroutineScope.launch {
                     drawerState.close()
                 }
