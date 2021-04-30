@@ -37,6 +37,7 @@ fun FirstFeedItem(
     showMediaLabel: Boolean = false,
     onClick: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
+    shouldPadding: Boolean
 ) {
     ConstraintLayout(
         modifier = Modifier
@@ -47,6 +48,8 @@ fun FirstFeedItem(
             .semantics(mergeDescendants = true) { }
     ) {
         val (image, title, media, date, favorite, favoriteAnim) = createRefs()
+        val horizontalPadding = if (shouldPadding) 20.dp else 0.dp
+        val verticalPadding = if (shouldPadding) 48.dp else 0.dp
         NetworkImage(
             url = feedItem.image.standardUrl,
             modifier = Modifier
@@ -55,6 +58,11 @@ fun FirstFeedItem(
                     start.linkTo(parent.start)
                     end.linkTo(parent.end)
                 }
+                .padding(
+                    start = horizontalPadding,
+                    end = horizontalPadding,
+                    top = verticalPadding
+                )
                 .wrapContentWidth()
                 .aspectRatio(16F / 9F),
             contentScale = ContentScale.Crop,
@@ -168,7 +176,8 @@ fun PreviewFirstFeedItem() {
             favorited = false,
             showMediaLabel = false,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            shouldPadding = false
         )
     }
 }
@@ -183,7 +192,24 @@ fun PreviewFirstFeedItemWithMedia() {
             favorited = false,
             showMediaLabel = true,
             onClick = { },
-            onFavoriteChange = { }
+            onFavoriteChange = { },
+            shouldPadding = false
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewFirstFeedItemWithFiltered() {
+    ConferenceAppFeederTheme {
+        val feedItem = fakeFeedContents().feedItemContents[0]
+        FirstFeedItem(
+            feedItem = feedItem,
+            favorited = false,
+            showMediaLabel = true,
+            onClick = { },
+            onFavoriteChange = { },
+            shouldPadding = true
         )
     }
 }
