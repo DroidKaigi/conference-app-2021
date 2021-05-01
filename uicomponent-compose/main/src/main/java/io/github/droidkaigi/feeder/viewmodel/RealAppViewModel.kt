@@ -1,11 +1,9 @@
 package io.github.droidkaigi.feeder.viewmodel
 
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.AppViewModel
-import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.repository.ThemeRepository
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
@@ -24,21 +22,12 @@ class RealAppViewModel @Inject constructor(
     override val effect: Flow<AppViewModel.Effect> = effectChannel.receiveAsFlow()
 
     override val state: StateFlow<AppViewModel.State> =
-        repository.theme().map {  theme ->
-            AppCompatDelegate.setDefaultNightMode(
-                when (theme) {
-                    Theme.SYSTEM -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                    Theme.DARK -> AppCompatDelegate.MODE_NIGHT_YES
-                    Theme.LIGHT -> AppCompatDelegate.MODE_NIGHT_NO
-                    null -> AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM
-                }
+        repository.theme().map { AppViewModel.State(theme = it) }
+            .stateIn(
+                scope = viewModelScope,
+                started = SharingStarted.Eagerly,
+                initialValue = AppViewModel.State()
             )
-            AppViewModel.State(theme = theme)
-        }.stateIn(
-            scope = viewModelScope,
-            started = SharingStarted.Eagerly,
-            initialValue = AppViewModel.State()
-        )
 
     override fun event(event: AppViewModel.Event) {}
 }
