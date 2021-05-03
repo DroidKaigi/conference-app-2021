@@ -129,10 +129,7 @@ object Dep {
     }
 
     object Flipper {
-        // TODO We use Flipper 0.76.0 for now because app crashes with 0.77.0 and 0.78.0.
-        //      We can upgrade it to newer version once following issue is resolved.
-        //      https://github.com/facebook/flipper/issues/1968
-        const val flipper = "com.facebook.flipper:flipper:0.76.0"
+        const val flipper = "com.facebook.flipper:flipper:0.82.1"
         const val networkPlugin = "com.facebook.flipper:flipper-network-plugin:0.76.0"
         const val soLoader = "com.facebook.soloader:soloader:0.10.1"
     }
