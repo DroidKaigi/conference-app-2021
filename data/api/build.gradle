@@ -1,4 +1,5 @@
 import io.github.droidkaigi.feeder.Dep
+import io.github.droidkaigi.feeder.Versions
 
 plugins {
     id("kotlin-multiplatform")
@@ -39,6 +40,11 @@ kotlin {
             implementation project(":data:db")
 
             implementation Dep.Ktor.bom
+            implementation (Dep.Coroutines.core) {
+                version {
+                    strictly Versions.coroutines
+                }
+            }
             implementation Dep.Ktor.json
             implementation Dep.Ktor.serialization
             implementation Dep.Ktor.logging
