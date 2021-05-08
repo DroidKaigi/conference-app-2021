@@ -29,7 +29,7 @@ fun NetworkImage(
         contentScale = contentScale,
         onRequestCompleted = { result ->
             when (result) {
-                is ImageLoadState.Error -> result.throwable.printStackTrace()
+                is ImageLoadState.Error -> result.throwable?.printStackTrace()
                 else -> {
                 }
             }
