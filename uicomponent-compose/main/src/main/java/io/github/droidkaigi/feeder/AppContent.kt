@@ -7,6 +7,7 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ModalDrawer
 import androidx.compose.material.rememberDrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -44,19 +45,18 @@ fun AppContent(
     firstDrawerValue: DrawerValue = DrawerValue.Closed,
 ) {
     val systemUiController = rememberSystemUiController()
-    val drawerState = rememberDrawerState(firstDrawerValue) {
-        if (it == DrawerValue.Closed) {
+    val drawerState = rememberDrawerState(firstDrawerValue)
+    LaunchedEffect(drawerState.currentValue) {
+        if (drawerState.currentValue == DrawerValue.Closed) {
             systemUiController.setStatusBarColor(Color.Transparent)
         } else {
             systemUiController.setStatusBarColor(drawerOpenedStatusBarColor)
         }
-        true
     }
     val drawerContentState = rememberDrawerContentState(DrawerContents.HOME.route)
     val navController = rememberCustomNavController()
     val coroutineScope = rememberCoroutineScope()
     val onNavigationIconClick: () -> Unit = {
-        systemUiController.setStatusBarColor(drawerOpenedStatusBarColor)
         coroutineScope.launch {
             drawerState.open()
         }
@@ -76,7 +76,6 @@ fun AppContent(
                 if (drawerContentState.selectDrawerContent(contents.route)) {
                     actions.onSelectDrawerItem(contents)
                 }
-                systemUiController.setStatusBarColor(Color.Transparent)
                 coroutineScope.launch {
                     drawerState.close()
                 }
