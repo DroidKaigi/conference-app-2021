@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.0-beta05"
+    const val compose = "1.0.0-beta06"
     const val coroutines = "1.4.2-native-mt"
 }
 
@@ -40,13 +40,13 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.4.31"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.4.32"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.31"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.4.31"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.4.32"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.31"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
@@ -92,10 +92,10 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.8.1"
-        const val coil = "com.google.accompanist:accompanist-coil:0.8.1"
-        const val pager = "com.google.accompanist:accompanist-pager:0.8.1"
-        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.8.1"
+        const val insets = "com.google.accompanist:accompanist-insets:0.9.0"
+        const val coil = "com.google.accompanist:accompanist-coil:0.9.0"
+        const val pager = "com.google.accompanist:accompanist-pager:0.9.0"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.9.0"
     }
 
     object FirebaseCrashlytics {
