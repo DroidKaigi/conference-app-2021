@@ -3,7 +3,7 @@ import io.github.droidkaigi.feeder.Dep
 buildscript {
     ext {
         nav_compose_version = "1.0.0-alpha08"
-        kotlin_version = "1.4.31"
+        kotlin_version = "1.4.32"
     }
     repositories {
         google()
@@ -19,7 +19,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.0.0-alpha14'
+        classpath 'com.android.tools.build:gradle:7.0.0-alpha15'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8

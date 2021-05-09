@@ -9,10 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.testTag
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.accompanist.coil.CoilImage
-import com.google.accompanist.imageloading.ImageLoadState
+import com.google.accompanist.coil.rememberCoilPainter
 
 @Composable
 fun NetworkImage(
@@ -22,24 +20,15 @@ fun NetworkImage(
     contentDescription: String?,
 ) {
     Box(modifier = modifier.background(Color.Gray))
-    CoilImage(
-        data = url,
+    Image(
+        painter = rememberCoilPainter(
+            request = url,
+            shouldRefetchOnSizeChange = { _, _ -> false },
+            previewPlaceholder = R.drawable.droid_placeholder
+        ),
         contentDescription = contentDescription,
         modifier = modifier.testTag("NetworkImage"),
         contentScale = contentScale,
-        onRequestCompleted = { result ->
-            when (result) {
-                is ImageLoadState.Error -> result.throwable.printStackTrace()
-                else -> {
-                }
-            }
-        },
-        loading = {
-            PlaceholderImage()
-        },
-        error = {
-            PlaceholderImage()
-        }
     )
 }
 
@@ -53,14 +42,4 @@ fun PreviewNetworkImage() {
             .Crop,
         contentDescription = ""
     )
-}
-
-@Composable
-private fun PlaceholderImage() {
-    Box(Modifier.fillMaxSize()) {
-        Image(
-            painter = painterResource(R.drawable.droid_placeholder),
-            contentDescription = "Loading…"
-        )
-    }
 }
