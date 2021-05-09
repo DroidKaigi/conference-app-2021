@@ -24,7 +24,6 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.util.fastForEach
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
 import kotlin.random.Random
@@ -59,7 +58,7 @@ fun FavoriteAnimation(
 
     val hearts = remember { List(HEART_COUNT) { Heart() } }
     if (targetChanged) {
-        hearts.fastForEach { heart ->
+        hearts.forEach { heart ->
             heart.reset()
         }
     }
@@ -75,7 +74,7 @@ private fun FavoriteAnimationInternal(
     val moveProgress = moveInterpolator.transform(fraction)
     val alphaProgress = alphaInterpolator.transform(fraction)
     val scaleProgress = scaleInterpolator.transform(fraction)
-    hearts.fastForEach { heart ->
+    hearts.forEach { heart ->
         heart.transX = lerp(0.5f, heart.targetTransX, moveProgress)
         heart.transY = lerp(1f, heart.targetTransY, moveProgress)
         heart.alpha = lerp(1f, 0f, alphaProgress)
@@ -89,7 +88,7 @@ private fun FavoriteAnimationInternal(
     Canvas(modifier = modifier.fillMaxSize()) {
         val width = size.width
         val height = size.height
-        hearts.fastForEach { heart ->
+        hearts.forEach { heart ->
             val transX = lerp(drawableHalfWidth, width - drawableHalfWidth, heart.transX)
             val transY = lerp(drawableHalfHeight, height - drawableHalfHeight, heart.transY)
             translate(transX, transY) {
