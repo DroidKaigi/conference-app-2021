@@ -62,6 +62,7 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.2.0'
     implementation Dep.Accompanist.coil
     implementation Dep.Accompanist.insets
+    implementation Dep.Accompanist.systemuicontroller
 
     implementation (Dep.Coroutines.core) {
         version {
