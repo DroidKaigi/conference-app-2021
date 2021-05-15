@@ -145,6 +145,7 @@ dependencies {
     implementation Dep.firebaseAuth
     implementation Dep.firebaseMessaging
     implementation Dep.Jetpack.startup
+    implementation Dep.Jetpack.browser
 
     // For Layout inspector
     debugImplementation Dep.Compose.tooling
