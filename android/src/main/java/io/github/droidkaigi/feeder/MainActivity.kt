@@ -39,7 +39,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun handleIntent() {
-        val link = intent?.data?.toString()  // used when app foreground
+        val link = intent?.data?.toString() // used when app foreground
             ?: intent?.getStringExtra("link") // used when app background
         if (link != null) {
             // Currently deeplinks are not supported
