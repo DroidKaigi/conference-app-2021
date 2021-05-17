@@ -26,7 +26,9 @@ Now this app has the Feed feature. We will deliver Feed and events related to Dr
 
 ## Design
 
-https://www.figma.com/file/IFlrbfmBSdYvUz7VmSzfLV/DroidKaigi_2021_official_app
+[Android](https://www.figma.com/file/IFlrbfmBSdYvUz7VmSzfLV/DroidKaigi_2021_official_app)
+
+[iOS](https://www.figma.com/file/D2VLqh0xOXbH0zB6cTz053/DroidKaigi_2021_official_App-(iOS)?node-id=0%3A1)
 
 ## Try it out
 
@@ -285,6 +287,7 @@ GitHub : [Contributors](https://github.com/DroidKaigi/conference-app-2021/graphs
 ## Designer
 
 [nontan](https://github.com/nontan)
+[nobo](https://github.com/nobonobopurin)
 
 # Trouble Shooting
 
