@@ -21,7 +21,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
-import androidx.navigation.compose.navigate
 import androidx.navigation.navDeepLink
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.github.droidkaigi.feeder.core.navigation.chromeCustomTabs
@@ -163,7 +162,7 @@ private class AppActions(navController: NavHostController) {
             // on the back stack as users select items.
             // And clean up all of the stacks if users select one of feed tabs.
             // Refer to https://developer.android.com/jetpack/compose/navigation#bottom-nav
-            popUpTo(navController.graph.startDestination) {
+            popUpTo(navController.graph.startDestinationId) {
                 inclusive = when (contents) {
                     DrawerContents.HOME,
                     DrawerContents.BLOG,
