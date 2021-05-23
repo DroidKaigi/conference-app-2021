@@ -1,18 +1,18 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.0-beta06"
+    const val compose = "1.0.0-beta07"
     const val coroutines = "1.4.2-native-mt"
 }
 
 object Dep {
     object Compose {
-        const val activity = "androidx.activity:activity-compose:1.3.0-alpha02"
+        const val activity = "androidx.activity:activity-compose:1.3.0-alpha08"
         const val constraintLayout =
-            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha06"
-        const val navigation = "androidx.navigation:navigation-compose:1.0.0-alpha08"
-        const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
+        const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha01"
         const val livedata = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
+        const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
         const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
         const val layout = "androidx.compose.foundation:foundation-layout:${Versions.compose}"
         const val ui = "androidx.compose.ui:ui:${Versions.compose}"
@@ -92,11 +92,12 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.9.0"
-        const val coil = "com.google.accompanist:accompanist-coil:0.9.0"
-        const val pager = "com.google.accompanist:accompanist-pager:0.9.0"
-        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.9.0"
-        const val systemuicontroller = "com.google.accompanist:accompanist-systemuicontroller:0.9.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.10.0"
+        const val coil = "com.google.accompanist:accompanist-coil:0.10.0"
+        const val pager = "com.google.accompanist:accompanist-pager:0.10.0"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.10.0"
+        const val systemuicontroller =
+            "com.google.accompanist:accompanist-systemuicontroller:0.10.0"
     }
 
     object FirebaseCrashlytics {
