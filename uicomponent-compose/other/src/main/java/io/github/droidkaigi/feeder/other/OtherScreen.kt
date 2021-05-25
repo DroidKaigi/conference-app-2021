@@ -4,6 +4,7 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.BackdropScaffold
@@ -21,6 +22,7 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
@@ -188,6 +190,8 @@ private fun BackdropFrontLayerContent(
 ) {
     HorizontalPager(
         state = pagerState,
+        modifier = Modifier.fillMaxSize(),
+        verticalAlignment = Alignment.Top
     ) { page ->
         when (OtherTab.values()[page]) {
             OtherTab.AboutThisApp -> AboutThisApp(onPrivacyPolicyClick)
