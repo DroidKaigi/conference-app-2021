@@ -276,6 +276,7 @@ private fun AppBar(
                         tabLazyListStates.getValue(tab).animateScrollToItem(index = 0)
                     }
                 },
+                // To overwrite the indicator
                 modifier = Modifier.zIndex(1f)
             )
         }
