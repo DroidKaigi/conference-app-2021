@@ -276,6 +276,7 @@ private fun AppBar(
                         tabLazyListStates.getValue(tab).animateScrollToItem(index = 0)
                     }
                 },
+                // For tabs to draw in front of indicators
                 modifier = Modifier.zIndex(1f)
             )
         }
