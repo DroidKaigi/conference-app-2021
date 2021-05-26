@@ -174,6 +174,7 @@ private fun AppBar(
                         pagerState.animateScrollToPage(index)
                     }
                 },
+                // For tabs to draw in front of indicators
                 modifier = Modifier.zIndex(1f)
             )
         }
