@@ -1,5 +1,6 @@
-DroidKaigi 2021 iOS Application
-Get started
+# DroidKaigi 2021 iOS Application
+
+## Get started
 Run only ``` $ mint bootstrap ``` iOS application build environment.
 
 ## Requirements
