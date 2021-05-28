@@ -1,9 +1,9 @@
 # DroidKaigi 2021 iOS Application
 
 ## Get started
-- Run only ``` $ mint bootstrap ``` iOS application build environment.
+- Run only ``` $ make bootstrap ``` iOS application build environment.
 
-- Run `open DroidKaigi2021.xcworkspace` to open this project.
+- Run `$ make open` to open this project.
 
 ### How to preview SwiftUI View
 
