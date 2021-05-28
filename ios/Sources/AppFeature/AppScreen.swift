@@ -8,11 +8,11 @@ public struct AppScreen: View {
     @State var selection = 0
 
     public init() {}
-    
+
     public var body: some View {
         TabView(
             selection: $selection,
-            content:  {
+            content: {
                 HomeScreen()
                     .tabItem {
                         Text("Home")

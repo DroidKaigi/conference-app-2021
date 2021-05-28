@@ -2,7 +2,7 @@ import SwiftUI
 
 public struct FavoritesScreen: View {
     public init() {}
-    
+
     public var body: some View {
         Text("Favorites")
     }

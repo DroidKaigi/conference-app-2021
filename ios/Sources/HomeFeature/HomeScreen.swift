@@ -2,7 +2,7 @@ import SwiftUI
 
 public struct HomeScreen: View {
     public init() {}
-    
+
     public var body: some View {
         Text("Home")
     }
