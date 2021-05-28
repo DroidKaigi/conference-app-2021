@@ -8,8 +8,8 @@ public struct MediaScreen: View {
     }
 }
 
-public struct AboutScreen_Previews: PreviewProvider {
+public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        AboutScreen()
+        MediaScreen()
     }
 }

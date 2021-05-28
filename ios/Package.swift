@@ -39,7 +39,12 @@ var package = Package(
         ),
         .target(
             name: "AppFeature",
-            dependencies: []
+            dependencies: [
+                .target(name: "AboutFeature"),
+                .target(name: "FavoritesFeature"),
+                .target(name: "HomeFeature"),
+                .target(name: "MediaFeature"),
+            ]
         ),
         .target(
             name: "Component",
