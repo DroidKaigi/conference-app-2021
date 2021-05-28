@@ -157,7 +157,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "cd \"$SRCROOT/../../\"\n./gradlew :ios-framework:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}\n";
+			shellScript = "../scripts/create-kmm-framework.sh\n";
 		};
 		57B979F2FC459E2182C0AB24 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -175,7 +175,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "xcrun --sdk macosx mint run swiftlint autocorrect\nxcrun --sdk macosx mint run swiftlint\n";
+			shellScript = "../scripts/lint.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
