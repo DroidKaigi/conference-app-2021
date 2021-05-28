@@ -7,5 +7,3 @@ open:
 .PHONY: bootstrap
 bootstrap:
 	mint bootstrap
-
-
