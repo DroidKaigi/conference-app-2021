@@ -5,10 +5,6 @@ WORKSPACE=DroidKaigi2021.xcworkspace
 open:
 	@open $(WORKSPACE)
 
-.PHONY: bootstrap
-bootstrap:
-	mint bootstrap
-
 .PHONY: run-swiftlint
 run-swiftlint:
 	$(SWIFT_RUN) swiftlint

@@ -1,8 +1,6 @@
 # DroidKaigi 2021 iOS Application
 
 ## Get started
-- Run only ``` $ make bootstrap ``` iOS application build environment.
-
 - Run `$ make open` to open this project.
 
 ### How to preview SwiftUI View
