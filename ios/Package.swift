@@ -18,6 +18,10 @@ var package = Package(
             targets: ["AppFeature"]
         ),
         .library(
+            name: "Component",
+            targets: ["Component"]
+        ),
+        .library(
             name: "FavoritesFeature",
             targets: ["FavoritesFeature"]
         ),
@@ -48,7 +52,9 @@ var package = Package(
         ),
         .target(
             name: "Component",
-            dependencies: []
+            dependencies: [
+                .target(name: "Styleguide"),
+            ]
         ),
         .target(
             name: "FavoritesFeature",
@@ -66,6 +72,7 @@ var package = Package(
             name: "Repository",
             dependencies: []
         ),
+        .target(name: "Styleguide"),
         .target(
             name: "Utility",
             dependencies: []
