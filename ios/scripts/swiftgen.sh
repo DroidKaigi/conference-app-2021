@@ -8,4 +8,5 @@ shopt -s expand_aliases
 
 alias package-run='xcrun --sdk macosx swift run --package-path Tools'
 
+mkdir -p Sources/Styleguide/Generated
 package-run swiftgen
