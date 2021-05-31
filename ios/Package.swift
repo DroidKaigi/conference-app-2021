@@ -73,7 +73,13 @@ var package = Package(
             name: "Repository",
             dependencies: []
         ),
-        .target(name: "Styleguide"),
+        .target(
+            name: "Styleguide",
+            resources: [
+                .process("Color.xcassets"),
+                .process("Image.xcassets"),
+            ]
+        ),
         .target(
             name: "Utility",
             dependencies: []
