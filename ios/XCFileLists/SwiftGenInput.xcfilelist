@@ -1,0 +1,3 @@
+# xcassets
+$(SRCROOT)/Sources/Styleguide/Color.xcassets
+$(SRCROOT)/Sources/Styleguide/Image.xcassets

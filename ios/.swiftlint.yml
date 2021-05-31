@@ -6,3 +6,4 @@ disabled_rules:
 excluded:
   - .build
   - Tools/.build
+  - Sources/Styleguide/Generated
