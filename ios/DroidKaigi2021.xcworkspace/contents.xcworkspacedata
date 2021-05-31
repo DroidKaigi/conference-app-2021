@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Workspace
+   version = "1.0">
+   <FileRef
+      location = "group:DroidKaigi 2021/Debug.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:DroidKaigi 2021/Release.xcodeproj">
+   </FileRef>
+   <FileRef
+      location = "group:">
+   </FileRef>
+   <FileRef
+      location = "group:Tools">
+   </FileRef>
+</Workspace>

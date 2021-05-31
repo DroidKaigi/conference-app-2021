@@ -1,4 +1,9 @@
 disabled_rules:
   - line_length
   - type_name
+  - trailing_comma
 
+excluded:
+  - .build
+  - Tools/.build
+  - Sources/Styleguide/Generated

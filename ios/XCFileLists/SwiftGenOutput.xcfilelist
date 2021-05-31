@@ -1,0 +1,3 @@
+# xcassets
+$(SRCROOT)/Sources/Styleguide/Generated/Color.swift
+$(SRCROOT)/Sources/Styleguide/Generated/Image.swift

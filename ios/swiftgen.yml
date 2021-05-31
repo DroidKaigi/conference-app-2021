@@ -1,0 +1,20 @@
+xcassets:
+  - inputs: Sources/Styleguide/Image.xcassets
+    outputs:
+      templatePath: templates/xcassets/swift5.stencil
+      output: Sources/Styleguide/Generated/Image.swift
+      params:
+        enumName: AssetImage
+        publicAccess: true
+        forceProvidesNamespaces: true
+        bundle: Bundle.myModule
+  - inputs:
+       - Sources/Styleguide/Color.xcassets
+    outputs:
+      templatePath: templates/xcassets/swift5.stencil
+      output: Sources/Styleguide/Generated/Color.swift
+      params:
+        enumName: AssetColor
+        publicAccess: true
+        forceProvidesNamespaces: true
+        bundle: Bundle.myModule
