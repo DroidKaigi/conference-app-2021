@@ -4,7 +4,7 @@ xcassets:
       templatePath: templates/xcassets/swift5.stencil
       output: Sources/Styleguide/Generated/Image.swift
       params:
-        enumName: Image
+        enumName: AssetImage
         publicAccess: true
         forceProvidesNamespaces: true
   - inputs:

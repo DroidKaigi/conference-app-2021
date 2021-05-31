@@ -48,6 +48,7 @@ var package = Package(
                 .target(name: "FavoritesFeature"),
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
+                .target(name: "Styleguide"),
             ]
         ),
         .target(

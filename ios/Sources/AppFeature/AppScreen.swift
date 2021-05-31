@@ -2,6 +2,7 @@ import AboutFeature
 import FavoritesFeature
 import HomeFeature
 import MediaFeature
+import Styleguide
 import SwiftUI
 
 enum AppTab: CaseIterable {
@@ -35,6 +36,19 @@ enum AppTab: CaseIterable {
             return AnyView(AboutScreen())
         }
     }
+
+    var image: UIImage {
+        switch self {
+        case .home:
+            return AssetImage.iconHome.image
+        case .media:
+            return AssetImage.iconBlog.image
+        case .favorites:
+            return AssetImage.iconStar.image
+        case .about:
+            return AssetImage.iconAbout.image
+        }
+    }
 }
 
 public struct AppScreen: View {
@@ -50,6 +64,7 @@ public struct AppScreen: View {
                 ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
                     tab.view
                         .tabItem {
+                            Image(uiImage: tab.image)
                             Text(tab.title)
                         }
                         .tag(offset)
