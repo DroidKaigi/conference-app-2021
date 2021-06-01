@@ -1,7 +1,7 @@
 import Styleguide
 import SwiftUI
 
-public struct QuestionareView: View {
+public struct QuestionnaireView: View {
     public let onTapAnswer: () -> Void
 
     public init(onTapAnswer: @escaping () -> Void) {
@@ -35,9 +35,9 @@ public struct QuestionareView: View {
     }
 }
 
-public struct QuestionareView_Previews: PreviewProvider {
+public struct QuestionnaireView_Previews: PreviewProvider {
     public static var previews: some View {
-        QuestionareView(onTapAnswer: {})
+        QuestionnaireView(onTapAnswer: {})
             .previewLayout(.sizeThatFits)
     }
 }

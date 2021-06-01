@@ -30,8 +30,8 @@ public struct HomeScreen: View {
                                     .frame(width: nil, height: 300)
                                 Divider()
                                     .foregroundColor(Color(AssetColor.Separate.contents.color))
-                                QuestionareView(onTapAnswer: {
-                                    viewStore.send(.answerQuestionare)
+                                QuestionnaireView(onTapAnswer: {
+                                    viewStore.send(.answerQuestionnaire)
                                 })
                                 Divider()
                                     .foregroundColor(Color(AssetColor.Separate.contents.color))

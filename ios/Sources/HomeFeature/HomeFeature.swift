@@ -10,7 +10,7 @@ public struct HomeState: Equatable {
 }
 
 public enum HomeAction {
-    case answerQuestionare
+    case answerQuestionnaire
 }
 
 public struct HomeEnvironment {
@@ -19,7 +19,7 @@ public struct HomeEnvironment {
 
 public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { state, action, environment in
     switch action {
-    case .answerQuestionare:
+    case .answerQuestionnaire:
         return .none
     }
 }
