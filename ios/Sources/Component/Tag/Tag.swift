@@ -24,8 +24,8 @@ public struct Tag: View {
     }
 }
 
-public struct Tag_Previews: PreviewProvider {
-    public static var previews: some View {
+struct Tag_Previews: PreviewProvider {
+    static var previews: some View {
         Group {
             ForEach(TagType.allCases, id: \.self) { type in
                 Tag(type: type, tapAction: {})

@@ -21,8 +21,8 @@ public struct MessageBar: View {
     }
 }
 
-public struct MessageBar_Previews: PreviewProvider {
-    public static var previews: some View {
+struct MessageBar_Previews: PreviewProvider {
+    static var previews: some View {
         Group {
             MessageBar(title: "DroidKaigi 2021 is coming soon 🎉")
                 .frame(width: 280, height: 36)

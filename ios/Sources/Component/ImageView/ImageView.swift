@@ -27,8 +27,8 @@ public struct ImageView: View {
     }
 }
 
-public struct ImageView_Previews: PreviewProvider {
-    public static var previews: some View {
+struct ImageView_Previews: PreviewProvider {
+    static var previews: some View {
         Group {
             ImageView(imageURL: URL(string: ""), width: 343, height: 190)
             ImageView(imageURL: URL(string: ""), width: 225, height: 114)
