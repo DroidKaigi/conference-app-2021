@@ -17,49 +17,38 @@ public struct HomeScreen: View {
                     ZStack(alignment: .top) {
                         Color(AssetColor.primary.color)
                             .frame(width: nil, height: 200)
-                        VStack(alignment: .trailing, spacing: 0) {
-                            Text("DroidKaigi 2021 (7/31) D-7")
-                                .foregroundColor(Color(AssetColor.Base.white.color))
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, 8)
-                                .background(Color(AssetColor.primaryDark.color))
-                                .padding(.vertical)
-                            Rectangle()
-                                .frame(width: nil, height: 300)
-                            Divider()
-                                .foregroundColor(Color(AssetColor.Separate.contents.color))
-                            VStack(alignment: .trailing, spacing: 12) {
-                                HStack {
-                                    Image(uiImage: AssetImage.logo.image)
-                                    Text("アンケートにご協力をお願いします")
+                        WithViewStore(store) { viewStore in
+                            VStack(alignment: .trailing, spacing: 0) {
+                                Text("DroidKaigi 2021 (7/31) D-7")
+                                    .foregroundColor(Color(AssetColor.Base.white.color))
+                                    .padding(.vertical, 12)
+                                    .padding(.horizontal, 8)
+                                    .background(Color(AssetColor.primaryDark.color))
+                                    .padding(.vertical)
+                                // TODO: Replace with card(large)
+                                Rectangle()
+                                    .frame(width: nil, height: 300)
+                                Divider()
+                                    .foregroundColor(Color(AssetColor.Separate.contents.color))
+                                QuestionareView(onTapAnswer: {
+                                    viewStore.send(.answerQuestionare)
+                                })
+                                Divider()
+                                    .foregroundColor(Color(AssetColor.Separate.contents.color))
+                                ForEach(viewStore.contents, id: \.self) { content in
+                                    Text(content)
                                         .foregroundColor(Color(AssetColor.Base.primary.color))
-                                        .font(.headline)
-                                    Spacer()
                                 }
-                                Button(
-                                    action: {},
-                                    label: {
-                                        Text("回答")
-                                            .foregroundColor(Color(AssetColor.primary.color))
-                                            .padding(.vertical, 8)
-                                            .padding(.horizontal, 32)
-                                            .overlay(
-                                                Rectangle()
-                                                    .stroke(Color(AssetColor.primary.color))
-                                            )
-                                    }
-                                )
                             }
-                            .padding(.vertical, 16)
-                            Divider()
-                                .foregroundColor(Color(AssetColor.Separate.contents.color))
+                            .padding(.horizontal)
                         }
-                        .padding(.horizontal)
                     }
                 }
                 .navigationBarTitle("", displayMode: .inline)
                 .navigationBarItems(
                     trailing: Image(uiImage: AssetImage.iconSetting.image)
+                        .renderingMode(.template)
+                        .foregroundColor(Color(AssetColor.Base.primary.color))
                 )
             }
             Image(uiImage: AssetImage.logoTitle.image)
@@ -72,7 +61,9 @@ public struct HomeScreen_Previews: PreviewProvider {
     public static var previews: some View {
         HomeScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: ["aaa", "bbb"]
+                ),
                 reducer: homeReducer,
                 environment: .init()
             )

@@ -5,7 +5,13 @@ import SwiftUI
 struct DroidKaigiApp: App {
     var body: some Scene {
         WindowGroup {
-            AppScreen()
+            AppScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: appReducer,
+                    environment: .init()
+                )
+            )
         }
     }
 }
