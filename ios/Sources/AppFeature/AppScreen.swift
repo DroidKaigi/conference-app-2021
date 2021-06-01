@@ -55,6 +55,8 @@ public struct AppScreen: View {
     @State var selection = 0
 
     public init() {
+        UITabBar.appearance().barTintColor = AssetColor.Background.contents.color
+        UITabBar.appearance().unselectedItemTintColor = AssetColor.Base.disable.color
     }
 
     public var body: some View {
@@ -71,6 +73,7 @@ public struct AppScreen: View {
                 }
             }
         )
+        .accentColor(Color(AssetColor.primary.color.cgColor))
     }
 }
 
