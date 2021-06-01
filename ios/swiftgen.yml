@@ -1,3 +1,14 @@
+strings:
+  - inputs:
+       - Sources/Styleguide/Resources/ja.lproj/Localizable.strings
+    outputs:
+      templatePath: templates/strings/structured-swift5.stencil
+      output: Sources/Styleguide/Generated/String.swift
+      params:
+        publicAccess: true
+        forceProvidesNamespaces: true
+        bundle: Bundle.myModule
+
 xcassets:
   - inputs: Sources/Styleguide/Image.xcassets
     outputs:

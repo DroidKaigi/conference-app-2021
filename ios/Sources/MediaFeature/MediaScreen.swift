@@ -1,10 +1,11 @@
 import SwiftUI
+import Styleguide
 
 public struct MediaScreen: View {
     public init() {}
 
     public var body: some View {
-        Text("Media")
+        Text(L10n.MediaScreen.title)
     }
 }
 

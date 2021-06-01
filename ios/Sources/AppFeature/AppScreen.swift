@@ -14,13 +14,13 @@ enum AppTab: CaseIterable {
     var title: String {
         switch self {
         case .home:
-            return "Home"
+            return L10n.HomeScreen.title
         case .media:
-            return "Media"
+            return L10n.MediaScreen.title
         case .favorites:
-            return "Favorites"
+            return L10n.FavoriteScreen.title
         case .about:
-            return "About"
+            return L10n.AboutScreen.title
         }
     }
 

@@ -1,10 +1,11 @@
 import SwiftUI
+import Styleguide
 
 public struct FavoritesScreen: View {
     public init() {}
 
     public var body: some View {
-        Text("Favorites")
+        Text(L10n.FavoriteScreen.title)
     }
 }
 
