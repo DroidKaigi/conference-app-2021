@@ -9,3 +9,8 @@
 
 // MARK: About
 "AboutScreen.Title" = "About";
+
+// MARK: Component
+"Component.Tag.DroidKaigiFm" = "DroidKaigi.fm";
+"Component.Tag.Medium" = "Medium";
+"Component.Tag.Youtube" = "Youtube";
