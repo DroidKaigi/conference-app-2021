@@ -33,9 +33,7 @@ public struct MediumCard: View {
         Button(action: tapAction, label: {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 13) {
-                    Image("")
-                        .frame(width: 225, height: 114)
-                        .background(Color.gray)
+                    ImageView(imageURL: imageURL, width: 225, height: 114)
 
                     VStack(alignment: .leading, spacing: 12) {
                         VStack(alignment: .leading, spacing: 4) {
