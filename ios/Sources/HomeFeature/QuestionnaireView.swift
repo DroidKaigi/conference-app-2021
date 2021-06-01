@@ -12,7 +12,7 @@ public struct QuestionnaireView: View {
         VStack(alignment: .trailing, spacing: 12) {
             HStack {
                 Image(uiImage: AssetImage.logo.image)
-                Text("アンケートにご協力をお願いします")
+                Text(L10n.HomeScreen.Questionnaire.title)
                     .foregroundColor(Color(AssetColor.Base.primary.color))
                     .font(.headline)
                 Spacer()
@@ -20,7 +20,7 @@ public struct QuestionnaireView: View {
             Button(
                 action: onTapAnswer,
                 label: {
-                    Text("回答")
+                    Text(L10n.HomeScreen.Questionnaire.answer)
                         .foregroundColor(Color(AssetColor.primary.color))
                         .padding(.vertical, 8)
                         .padding(.horizontal, 32)
