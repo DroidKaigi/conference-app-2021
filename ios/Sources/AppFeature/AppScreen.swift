@@ -72,7 +72,8 @@ public struct AppScreen: View {
                         .tag(offset)
                 }
             }
-        ).accentColor(Color(AssetColor.primary.color.cgColor))
+        )
+        .accentColor(Color(AssetColor.primary.color.cgColor))
     }
 }
 
