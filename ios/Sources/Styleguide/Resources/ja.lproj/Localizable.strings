@@ -1,0 +1,11 @@
+// MARK: Home
+"HomeScreen.Title" = "Home";
+
+// MARK: Media
+"MediaScreen.Title" = "Media";
+
+// MARK: Favorite
+"FavoriteScreen.Title" = "Favorite";
+
+// MARK: About
+"AboutScreen.Title" = "About";

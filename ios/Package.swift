@@ -5,6 +5,7 @@ import PackageDescription
 // MARK: - Main Package
 var package = Package(
     name: "DroidKaigi2021Package",
+    defaultLocalization: "ja",
     platforms: [
         .iOS(.v14)
     ],
@@ -78,6 +79,7 @@ var package = Package(
             resources: [
                 .process("Color.xcassets"),
                 .process("Image.xcassets"),
+                .process("Resources"),
             ]
         ),
         .target(

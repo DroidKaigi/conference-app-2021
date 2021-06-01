@@ -1,10 +1,11 @@
 import SwiftUI
+import Styleguide
 
 public struct HomeScreen: View {
     public init() {}
 
     public var body: some View {
-        Text("Home")
+        Text(L10n.HomeScreen.title)
     }
 }
 

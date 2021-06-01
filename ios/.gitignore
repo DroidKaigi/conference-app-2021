@@ -3,6 +3,7 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
+.swiftpm
 
 # SwiftGen generated
 Generated/
