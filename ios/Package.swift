@@ -36,6 +36,7 @@ var package = Package(
         ),
     ],
     dependencies: [
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.18.0")),
     ],
     targets: [
         .target(
@@ -50,6 +51,7 @@ var package = Package(
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
                 .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
         .target(
@@ -64,7 +66,10 @@ var package = Package(
         ),
         .target(
             name: "HomeFeature",
-            dependencies: []
+            dependencies: [
+                .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]
         ),
         .target(
             name: "MediaFeature",
