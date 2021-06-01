@@ -36,6 +36,7 @@ public struct HomeScreen: View {
                                 Divider()
                                     .foregroundColor(Color(AssetColor.Separate.contents.color))
                                 ForEach(viewStore.contents, id: \.self) { content in
+                                    // TODO: Replace with List Item
                                     Text(content)
                                         .foregroundColor(Color(AssetColor.Base.primary.color))
                                 }
