@@ -44,6 +44,7 @@ public struct HomeScreen: View {
                         }
                     }
                 }
+                .background(Color(AssetColor.Background.primary.color))
                 .navigationBarTitle("", displayMode: .inline)
                 .navigationBarItems(
                     trailing: Image(uiImage: AssetImage.iconSetting.image)
@@ -59,14 +60,29 @@ public struct HomeScreen: View {
 
 public struct HomeScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        HomeScreen(
-            store: .init(
-                initialState: .init(
-                    contents: ["aaa", "bbb"]
-                ),
-                reducer: homeReducer,
-                environment: .init()
+        Group {
+            HomeScreen(
+                store: .init(
+                    initialState: .init(
+                        contents: ["aaa", "bbb"]
+                    ),
+                    reducer: homeReducer,
+                    environment: .init()
+                )
             )
-        ).previewDevice(.init(rawValue: "iPhone 12"))
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .dark)
+            HomeScreen(
+                store: .init(
+                    initialState: .init(
+                        contents: ["aaa", "bbb"]
+                    ),
+                    reducer: homeReducer,
+                    environment: .init()
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .light)
+        }
     }
 }

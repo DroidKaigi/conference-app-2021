@@ -84,17 +84,29 @@ public struct AppScreen: View {
             }
         )
         .accentColor(Color(AssetColor.primary.color.cgColor))
+        .background(Color(AssetColor.Background.primary.color))
     }
 }
 
 public struct AppScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        AppScreen(
-            store: .init(
-                initialState: .init(),
-                reducer: appReducer,
-                environment: .init()
+        Group {
+            AppScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: appReducer,
+                    environment: .init()
+                )
             )
-        )
+            .environment(\.colorScheme, .dark)
+            AppScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: appReducer,
+                    environment: .init()
+                )
+            )
+            .environment(\.colorScheme, .light)
+        }
     }
 }
