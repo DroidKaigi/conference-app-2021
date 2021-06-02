@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
-import Styleguide
 
 public struct HomeScreen: View {
     private let store: Store<HomeState, HomeAction>
