@@ -33,6 +33,7 @@ public struct LargeCard: View {
         Button(action: tapAction, label: {
             VStack(alignment: .leading, spacing: 16) {
                 VStack(alignment: .leading, spacing: 13) {
+                    // TODO: fix as aspect from screen width
                     ImageView(imageURL: imageURL, width: 343, height: 190)
 
                     Text(title)

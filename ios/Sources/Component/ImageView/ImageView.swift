@@ -17,6 +17,7 @@ public struct ImageView: View {
     }
 
     public var body: some View {
+        // TODO: add placeholder image
         Image("")
             .background(Color(AssetColor.Base.secondary.color))
             .frame(width: width, height: height, alignment: .center)
