@@ -60,6 +60,7 @@ public struct LargeCard: View {
                 }
             }
             .padding(16)
+            .background(Color(AssetColor.Background.primary.color))
         })
     }
 }
@@ -77,6 +78,7 @@ struct LargeCard_Previews: PreviewProvider {
                 tapFavoriteAction: {}
             )
             .frame(width: 375, height: 319)
+            .environment(\.colorScheme, .light)
 
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
@@ -88,6 +90,7 @@ struct LargeCard_Previews: PreviewProvider {
                 tapFavoriteAction: {}
             )
             .frame(width: 375, height: 319)
+            .environment(\.colorScheme, .light)
 
             LargeCard(
                 title: "タイトル",
@@ -99,6 +102,43 @@ struct LargeCard_Previews: PreviewProvider {
                 tapFavoriteAction: {}
             )
             .frame(width: 375, height: 319)
+            .environment(\.colorScheme, .light)
+
+            LargeCard(
+                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
+                imageURL: URL(string: ""),
+                tag: .droidKaigiFm,
+                date: Date(),
+                isFavorited: false,
+                tapAction: {},
+                tapFavoriteAction: {}
+            )
+            .frame(width: 375, height: 319)
+            .environment(\.colorScheme, .dark)
+
+            LargeCard(
+                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
+                imageURL: URL(string: ""),
+                tag: .medium,
+                date: Date(),
+                isFavorited: true,
+                tapAction: {},
+                tapFavoriteAction: {}
+            )
+            .frame(width: 375, height: 319)
+            .environment(\.colorScheme, .dark)
+
+            LargeCard(
+                title: "タイトル",
+                imageURL: URL(string: ""),
+                tag: .youtube,
+                date: Date(),
+                isFavorited: true,
+                tapAction: {},
+                tapFavoriteAction: {}
+            )
+            .frame(width: 375, height: 319)
+            .environment(\.colorScheme, .dark)
         }
         .previewLayout(.sizeThatFits)
     }

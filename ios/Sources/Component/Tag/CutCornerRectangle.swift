@@ -12,7 +12,7 @@ public struct CutCornerRectangle: Shape {
         self.radius = radius
     }
 
-    func path(in rect: CGRect) -> Path {
+    public func path(in rect: CGRect) -> Path {
         var path = Path()
         let topLeft = CGPoint(x: rect.minX, y: rect.minY)
         let topRight = CGPoint(x: rect.maxX, y: rect.minY)
