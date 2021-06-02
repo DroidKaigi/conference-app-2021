@@ -2,10 +2,10 @@ import Styleguide
 import SwiftUI
 
 public struct QuestionnaireView: View {
-    public let onTapAnswer: () -> Void
+    private let tapAnswerAction: () -> Void
 
-    public init(onTapAnswer: @escaping () -> Void) {
-        self.onTapAnswer = onTapAnswer
+    public init(tapAnswerAction: @escaping () -> Void) {
+        self.tapAnswerAction = tapAnswerAction
     }
 
     public var body: some View {
@@ -18,7 +18,7 @@ public struct QuestionnaireView: View {
                 Spacer()
             }
             Button(
-                action: onTapAnswer,
+                action: tapAnswerAction,
                 label: {
                     Text(L10n.HomeScreen.Questionnaire.answer)
                         .foregroundColor(Color(AssetColor.primary.color))
@@ -35,9 +35,9 @@ public struct QuestionnaireView: View {
     }
 }
 
-public struct QuestionnaireView_Previews: PreviewProvider {
-    public static var previews: some View {
-        QuestionnaireView(onTapAnswer: {})
+struct QuestionnaireView_Previews: PreviewProvider {
+    static var previews: some View {
+        QuestionnaireView(tapAnswerAction: {})
             .previewLayout(.sizeThatFits)
     }
 }

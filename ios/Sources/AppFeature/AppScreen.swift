@@ -60,7 +60,7 @@ enum AppTab: CaseIterable {
 public struct AppScreen: View {
     @State var selection = 0
 
-    let store: Store<AppState, AppAction>
+    private let store: Store<AppState, AppAction>
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
@@ -88,8 +88,8 @@ public struct AppScreen: View {
     }
 }
 
-public struct AppScreen_Previews: PreviewProvider {
-    public static var previews: some View {
+struct AppScreen_Previews: PreviewProvider {
+    static var previews: some View {
         Group {
             AppScreen(
                 store: .init(

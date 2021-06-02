@@ -4,7 +4,7 @@ import SwiftUI
 import Styleguide
 
 public struct HomeScreen: View {
-    let store: Store<HomeState, HomeAction>
+    private let store: Store<HomeState, HomeAction>
 
     public init(store: Store<HomeState, HomeAction>) {
         self.store = store
@@ -30,7 +30,7 @@ public struct HomeScreen: View {
                                     .frame(width: nil, height: 300)
                                 Divider()
                                     .foregroundColor(Color(AssetColor.Separate.contents.color))
-                                QuestionnaireView(onTapAnswer: {
+                                QuestionnaireView(tapAnswerAction: {
                                     viewStore.send(.answerQuestionnaire)
                                 })
                                 Divider()
@@ -59,8 +59,8 @@ public struct HomeScreen: View {
     }
 }
 
-public struct HomeScreen_Previews: PreviewProvider {
-    public static var previews: some View {
+struct HomeScreen_Previews: PreviewProvider {
+    static var previews: some View {
         Group {
             HomeScreen(
                 store: .init(
