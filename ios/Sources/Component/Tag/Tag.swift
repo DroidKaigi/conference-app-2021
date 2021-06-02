@@ -35,6 +35,13 @@ struct Tag_Previews: PreviewProvider {
             ForEach(TagType.allCases, id: \.self) { type in
                 Tag(type: type, tapAction: {})
                     .frame(width: 103, height: 24)
+                    .environment(\.colorScheme, .light)
+            }
+
+            ForEach(TagType.allCases, id: \.self) { type in
+                Tag(type: type, tapAction: {})
+                    .frame(width: 103, height: 24)
+                    .environment(\.colorScheme, .dark)
             }
         }
         .previewLayout(.sizeThatFits)
