@@ -1,31 +1,30 @@
 import SwiftUI
 import Styleguide
 
-struct SettingToggleItem: Identifiable {
+struct SettingToggleModel: Hashable {
     let title: String
     var isOn: Bool
-    
-    var id: String {
-        title
-    }
 }
 
 public struct SettingScreen: View {
-    
-    @State private var toggleItems: [SettingToggleItem] = [
-        SettingToggleItem(title: "ダークモード", isOn: false),
-        SettingToggleItem(title: "言語設定", isOn: true)
+
+    @State private var items: [SettingToggleModel] = [
+        SettingToggleModel(title: "ダークモード", isOn: false),
+        SettingToggleModel(title: "言語設定", isOn: true)
     ]
-    
+
     @Environment(\.presentationMode) var presentationMode
-    
+
     public init() { }
-    
+
     public var body: some View {
         NavigationView {
             List {
-                ForEach(toggleItems.indices) { index in
-                    SettingToggleCell(settingToggleItem: $toggleItems[index])
+                ForEach(items.indices) { index in
+                    SettingToggleItem(
+                        title: items[index].title,
+                        isOn: $items[index].isOn
+                    )
                 }
             }
             .listStyle(PlainListStyle())
@@ -35,6 +34,8 @@ public struct SettingScreen: View {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
                     Image(uiImage: AssetImage.iconClose.image)
+                        .renderingMode(.template)
+                        .foregroundColor(AssetColor.Base.primary.color.color)
                 })
             )
         }
