@@ -34,6 +34,10 @@ var package = Package(
             name: "MediaFeature",
             targets: ["MediaFeature"]
         ),
+        .library(
+            name: "SettingFeature",
+            targets: ["SettingFeature"]
+        )
     ],
     dependencies: [
     ],
@@ -49,6 +53,7 @@ var package = Package(
                 .target(name: "FavoritesFeature"),
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
+                .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
             ]
         ),
@@ -72,6 +77,10 @@ var package = Package(
         ),
         .target(
             name: "Repository",
+            dependencies: []
+        ),
+        .target(
+            name: "SettingFeature",
             dependencies: []
         ),
         .target(
