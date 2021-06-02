@@ -31,35 +31,33 @@ public struct LargeCard: View {
 
     public var body: some View {
         Button(action: tapAction, label: {
-            VStack(alignment: .leading, spacing: 16) {
-                VStack(alignment: .leading, spacing: 13) {
-                    // TODO: fix as aspect from screen width
-                    ImageView(imageURL: imageURL, width: 343, height: 190)
+            VStack(alignment: .leading, spacing: 13) {
+                // TODO: fix as aspect from screen width
+                ImageView(imageURL: imageURL, width: 343, height: 190)
 
-                    Text(title)
-                        .font(.headline)
-                        .foregroundColor(Color(AssetColor.Base.primary.color))
-                        .lineLimit(2)
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(Color(AssetColor.Base.primary.color))
+                    .lineLimit(2)
 
-                    HStack(spacing: 8) {
-                        Tag(type: tag) {
-                            // do something if needed
-                        }
-
-                        Text(date.formatted)
-                            .font(.caption)
-                            .foregroundColor(Color(AssetColor.Base.tertiary.color))
-
-                        Spacer()
-
-                        Button(action: tapFavoriteAction, label: {
-                            if isFavorited {
-                                Image(uiImage: AssetImage.iconFavorite.image.withRenderingMode(.alwaysTemplate).withTintColor(AssetColor.primary.color))
-                            } else {
-                                Image(uiImage: AssetImage.iconFavoriteOff.image.withRenderingMode(.alwaysTemplate).withTintColor(AssetColor.primary.color))
-                            }
-                        })
+                HStack(spacing: 8) {
+                    Tag(type: tag) {
+                        // do something if needed
                     }
+
+                    Text(date.formatted)
+                        .font(.caption)
+                        .foregroundColor(Color(AssetColor.Base.tertiary.color))
+
+                    Spacer()
+
+                    Button(action: tapFavoriteAction, label: {
+                        if isFavorited {
+                            Image(uiImage: AssetImage.iconFavorite.image.withRenderingMode(.alwaysTemplate).withTintColor(AssetColor.primary.color))
+                        } else {
+                            Image(uiImage: AssetImage.iconFavoriteOff.image.withRenderingMode(.alwaysTemplate).withTintColor(AssetColor.primary.color))
+                        }
+                    })
                 }
             }
             .padding(16)

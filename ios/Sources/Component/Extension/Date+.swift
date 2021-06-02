@@ -1,7 +1,7 @@
 import Foundation
 
 extension Date {
-    public var formatted: String {
+    var formatted: String {
         let formatter = DateFormatter.shared
         formatter.dateStyle = .medium
         formatter.timeStyle = .none

@@ -59,7 +59,6 @@ var package = Package(
             name: "Component",
             dependencies: [
                 .target(name: "Styleguide"),
-                .target(name: "Utility"),
             ]
         ),
         .target(
