@@ -1,9 +1,13 @@
 import SwiftUI
 import Styleguide
 
-struct SettingToggleItem {
+struct SettingToggleItem: Identifiable {
     let title: String
     var isOn: Bool
+    
+    var id: String {
+        title
+    }
 }
 
 public struct SettingScreen: View {
@@ -19,14 +23,10 @@ public struct SettingScreen: View {
     
     public var body: some View {
         NavigationView {
-            List(toggleItems.indices, id: \.self) { index in
-                let title = toggleItems[index].title
-                let toggleStatus = $toggleItems[index].isOn
-                Toggle(isOn: toggleStatus, label: {
-                    Text(title)
-                })
-                .toggleStyle(SwitchToggleStyle(tint: AssetColor.primary.color.color))
-                .background(AssetColor.Background.contents.color.color)
+            List {
+                ForEach(toggleItems.indices) { index in
+                    SettingToggleCell(settingToggleItem: $toggleItems[index])
+                }
             }
             .listStyle(PlainListStyle())
             .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
@@ -41,8 +41,8 @@ public struct SettingScreen: View {
     }
 }
 
-// TODO: Move to other folder and remove `fileprivate` acces s modifier.
-fileprivate extension UIColor {
+// TODO: Move to other folder
+extension UIColor {
     var color: Color {
         Color(self)
     }
