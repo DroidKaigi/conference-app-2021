@@ -9,8 +9,14 @@ struct SettingToggleModel: Hashable {
 public struct SettingScreen: View {
 
     @State private var items: [SettingToggleModel] = [
-        SettingToggleModel(title: "ダークモード", isOn: false),
-        SettingToggleModel(title: "言語設定", isOn: true)
+        SettingToggleModel(
+            title: L10n.SettingScreen.ListItem.darkMode,
+            isOn: false
+        ),
+        SettingToggleModel(
+            title: L10n.SettingScreen.ListItem.language,
+            isOn: true
+        )
     ]
 
     @Environment(\.presentationMode) var presentationMode
