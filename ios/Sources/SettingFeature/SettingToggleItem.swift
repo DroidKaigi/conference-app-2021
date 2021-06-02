@@ -2,10 +2,10 @@ import SwiftUI
 import Styleguide
 
 struct SettingToggleItem: View {
-    
+
     let title: String
     @Binding var isOn: Bool
-    
+
     var body: some View {
         Toggle(isOn: $isOn, label: {
             Text(title)
@@ -15,7 +15,7 @@ struct SettingToggleItem: View {
     }
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
+struct SettingToggleItem_Previews: PreviewProvider {
     static var previews: some View {
         SettingToggleItem(title: "ダークモード", isOn: .constant(true))
     }
