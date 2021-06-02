@@ -1,6 +1,5 @@
 import SwiftUI
 import Styleguide
-import Utility
 
 public struct MediumCard: View {
     private let title: String

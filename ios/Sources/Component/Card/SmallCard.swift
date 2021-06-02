@@ -1,6 +1,5 @@
 import SwiftUI
 import Styleguide
-import Utility
 
 public struct SmallCard: View {
     private let title: String

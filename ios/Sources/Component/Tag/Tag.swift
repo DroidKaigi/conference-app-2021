@@ -20,7 +20,12 @@ public struct Tag: View {
             .padding(.vertical, 4)
             .padding(.horizontal, 12)
             .background(type.backgroundColor)
-            .clipShape(CutCornerRectangle(radius: 8))
+            .clipShape(
+                CutCornerRectangle(
+                    targetCorners: [.topLeft, .bottomRight],
+                    radius: 8
+                )
+            )
     }
 }
 
