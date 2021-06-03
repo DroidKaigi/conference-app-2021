@@ -1,3 +1,6 @@
+# strings
+$(SRCROOT)/Sources/Styleguide/Resources/ja.lproj/Localizable.strings
+
 # xcassets
 $(SRCROOT)/Sources/Styleguide/Color.xcassets
 $(SRCROOT)/Sources/Styleguide/Image.xcassets
