@@ -1,3 +1,6 @@
+# strings
+$(SRCROOT)/Sources/Styleguide/Generated/String.swift
+
 # xcassets
 $(SRCROOT)/Sources/Styleguide/Generated/Color.swift
 $(SRCROOT)/Sources/Styleguide/Generated/Image.swift
