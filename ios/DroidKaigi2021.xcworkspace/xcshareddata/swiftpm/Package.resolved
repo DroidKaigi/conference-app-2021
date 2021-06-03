@@ -2,6 +2,15 @@
   "object": {
     "pins": [
       {
+        "package": "combine-schedulers",
+        "repositoryURL": "https://github.com/pointfreeco/combine-schedulers",
+        "state": {
+          "branch": null,
+          "revision": "c37e5ae8012fb654af776cc556ff8ae64398c841",
+          "version": "0.5.0"
+        }
+      },
+      {
         "package": "Commander",
         "repositoryURL": "https://github.com/kylef/Commander.git",
         "state": {
@@ -74,6 +83,24 @@
         }
       },
       {
+        "package": "swift-case-paths",
+        "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
+        "state": {
+          "branch": null,
+          "revision": "a313f0cc10e07bb5ce7e2ff5da600cce7efa8e8a",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "swift-composable-architecture",
+        "repositoryURL": "https://github.com/pointfreeco/swift-composable-architecture.git",
+        "state": {
+          "branch": null,
+          "revision": "0f026d395d414efab5cfdf8d697ec0ae766dd021",
+          "version": "0.18.0"
+        }
+      },
+      {
         "package": "SwiftGen",
         "repositoryURL": "https://github.com/SwiftGen/SwiftGen.git",
         "state": {
@@ -107,6 +134,15 @@
           "branch": null,
           "revision": "9183170d20857753d4f331b0ca63f73c60764bf3",
           "version": "5.0.2"
+        }
+      },
+      {
+        "package": "xctest-dynamic-overlay",
+        "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
+        "state": {
+          "branch": null,
+          "revision": "603974e3909ad4b48ba04aad7e0ceee4f077a518",
+          "version": "0.1.0"
         }
       },
       {

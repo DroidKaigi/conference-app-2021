@@ -1,5 +1,7 @@
 // MARK: Home
 "HomeScreen.Title" = "Home";
+"HomeScreen.Questionnaire.Title" = "アンケートにご協力をお願いします";
+"HomeScreen.Questionnaire.Answer" = "回答";
 
 // MARK: Media
 "MediaScreen.Title" = "Media";
