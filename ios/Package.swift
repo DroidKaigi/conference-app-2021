@@ -41,12 +41,15 @@ var package = Package(
     targets: [
         .target(
             name: "AboutFeature",
-            dependencies: []
+            dependencies: [
+                .target(name: "Styleguide"),
+            ]
         ),
         .target(
             name: "AppFeature",
             dependencies: [
                 .target(name: "AboutFeature"),
+                .target(name: "Component"),
                 .target(name: "FavoritesFeature"),
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
@@ -62,7 +65,9 @@ var package = Package(
         ),
         .target(
             name: "FavoritesFeature",
-            dependencies: []
+            dependencies: [
+                .target(name: "Styleguide"),
+            ]
         ),
         .target(
             name: "HomeFeature",
@@ -73,7 +78,9 @@ var package = Package(
         ),
         .target(
             name: "MediaFeature",
-            dependencies: []
+            dependencies: [
+                .target(name: "Styleguide"),
+            ]
         ),
         .target(
             name: "Repository",
