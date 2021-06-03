@@ -16,15 +16,15 @@
 {% if resourceCount.aresourcegroup > 0 %}
   import ARKit
 {% endif %}
-  import UIKit
+  import SwiftUI
 #elseif os(tvOS) || os(watchOS)
   import UIKit
 #endif
 
 // Deprecated typealiases
 {% if resourceCount.color > 0 %}
-@available(*, deprecated, renamed: "{{colorType}}.Color", message: "This typealias will be removed in SwiftGen 7.0")
-{{accessModifier}} typealias {{param.colorAliasName|default:"AssetColorTypeAlias"}} = {{colorType}}.Color
+@available(*, deprecated, renamed: "{{colorType}}.ColorClass", message: "This typealias will be removed in SwiftGen 7.0")
+{{accessModifier}} typealias {{param.colorAliasName|default:"AssetColorTypeAlias"}} = {{colorType}}.ColorClass
 {% endif %}
 {% if resourceCount.image > 0 %}
 @available(*, deprecated, renamed: "{{imageType}}.Image", message: "This typealias will be removed in SwiftGen 7.0")
@@ -151,14 +151,14 @@
   {{accessModifier}} fileprivate(set) var name: String
 
   #if os(macOS)
-  {{accessModifier}} typealias Color = NSColor
+  {{accessModifier}} typealias ColorClass = NSColor
   #elseif os(iOS) || os(tvOS) || os(watchOS)
-  {{accessModifier}} typealias Color = UIColor
+  {{accessModifier}} typealias ColorClass = Color
   #endif
 
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  {{accessModifier}} private(set) lazy var color: Color = {
-    guard let color = Color(asset: self) else {
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  {{accessModifier}} private(set) lazy var color: ColorClass = {
+    guard let color = ColorClass(asset: self) else {
       fatalError("Unable to load color asset named \(name).")
     }
     return color
@@ -169,12 +169,12 @@
   }
 }
 
-{{accessModifier}} extension {{colorType}}.Color {
-  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
-  convenience init?(asset: {{colorType}}) {
+{{accessModifier}} extension {{colorType}}.ColorClass {
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  init?(asset: {{colorType}}) {
     let bundle = {{param.bundle|default:"BundleToken.bundle"}}
     #if os(iOS) || os(tvOS)
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
+    self.init(asset.name, bundle: bundle)
     #elseif os(macOS)
     self.init(named: NSColor.Name(asset.name), bundle: bundle)
     #elseif os(watchOS)
