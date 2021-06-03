@@ -24,7 +24,12 @@ public struct SettingScreen: View {
         )
         _items = State(initialValue: [darkModeModel, languageModel])
         
-        UINavigationBar.appearance().barTintColor = AssetColor.Background.primary.color
+        let appearance = UINavigationBarAppearance()
+        appearance.configureWithTransparentBackground()
+        appearance.titleTextAttributes = [.foregroundColor: AssetColor.Base.primary.color]
+        appearance.backgroundColor = AssetColor.Background.primary.color
+        UINavigationBar.appearance().standardAppearance = appearance
+        UINavigationBar.appearance().scrollEdgeAppearance = appearance
     }
 
     public var body: some View {
