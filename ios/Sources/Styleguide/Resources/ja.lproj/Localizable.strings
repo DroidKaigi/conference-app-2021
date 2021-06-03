@@ -12,6 +12,5 @@
 
 // MARK: Setting
 "SettingScreen.Title" = "Setting";
-
 "SettingScreen.ListItem.DarkMode" = "ダークモード";
 "SettingScreen.ListItem.Language" = "言語設定";
