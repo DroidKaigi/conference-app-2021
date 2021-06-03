@@ -81,7 +81,9 @@ var package = Package(
         ),
         .target(
             name: "SettingFeature",
-            dependencies: []
+            dependencies: [
+                .target(name: "Styleguide"),
+            ]
         ),
         .target(
             name: "Styleguide",

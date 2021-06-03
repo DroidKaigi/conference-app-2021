@@ -1,5 +1,5 @@
-import SwiftUI
 import Styleguide
+import SwiftUI
 
 struct SettingToggleModel: Hashable {
     let title: String
@@ -41,17 +41,10 @@ public struct SettingScreen: View {
                 }, label: {
                     Image(uiImage: AssetImage.iconClose.image)
                         .renderingMode(.template)
-                        .foregroundColor(AssetColor.Base.primary.color.color)
+                        .foregroundColor(Color(AssetColor.Base.primary.color))
                 })
             )
         }
-    }
-}
-
-// TODO: Move to other folder
-extension UIColor {
-    var color: Color {
-        Color(self)
     }
 }
 

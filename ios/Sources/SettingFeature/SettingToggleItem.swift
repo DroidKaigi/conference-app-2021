@@ -1,5 +1,6 @@
-import SwiftUI
 import Styleguide
+import SwiftUI
+
 
 struct SettingToggleItem: View {
 
@@ -10,8 +11,8 @@ struct SettingToggleItem: View {
         Toggle(isOn: $isOn, label: {
             Text(title)
         })
-        .toggleStyle(SwitchToggleStyle(tint: AssetColor.primary.color.color))
-        .listRowBackground(AssetColor.Background.contents.color.color)
+        .toggleStyle(SwitchToggleStyle(tint: Color(AssetColor.primary.color)))
+        .listRowBackground(Color(AssetColor.Background.contents.color))
     }
 }
 
