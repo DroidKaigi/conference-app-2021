@@ -13,8 +13,8 @@ fileprivate struct NavigationBarConfigurator: ViewModifier {
     let newBackgroundColor: Color
     let newTitleColor: Color
     
-    var previousBackgroundColor: UIColor
-    var previousTitleColor: UIColor
+    let previousBackgroundColor: UIColor
+    let previousTitleColor: UIColor
     
     init(backgroundColor: Color, titleColor: Color) {
         
