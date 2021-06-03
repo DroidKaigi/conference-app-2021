@@ -54,11 +54,10 @@ public struct SmallCard: View {
                         Spacer()
 
                         Button(action: tapFavoriteAction, label: {
-                            if isFavorited {
-                                Image(uiImage: AssetImage.iconFavorite.image.withRenderingMode(.alwaysTemplate).withTintColor(AssetColor.primary.color))
-                            } else {
-                                Image(uiImage: AssetImage.iconFavoriteOff.image.withRenderingMode(.alwaysTemplate).withTintColor(AssetColor.primary.color))
-                            }
+                            let uiImage = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                            Image(uiImage: uiImage)
+                                .renderingMode(.template)
+                                .foregroundColor(Color(AssetColor.primary.color))
                         })
                     }
                 }
