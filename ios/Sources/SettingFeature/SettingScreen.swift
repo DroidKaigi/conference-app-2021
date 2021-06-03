@@ -8,20 +8,21 @@ struct SettingToggleModel: Hashable {
 
 public struct SettingScreen: View {
 
-    @State private var items: [SettingToggleModel] = [
-        SettingToggleModel(
-            title: L10n.SettingScreen.ListItem.darkMode,
-            isOn: false
-        ),
-        SettingToggleModel(
-            title: L10n.SettingScreen.ListItem.language,
-            isOn: true
-        )
-    ]
+    @State private var items: [SettingToggleModel] = []
 
     @Environment(\.presentationMode) var presentationMode
 
-    public init() { }
+    public init(isDarkModeOn: Bool, isLaunguageOn: Bool) {
+        let darkModeModel = SettingToggleModel(
+            title: L10n.SettingScreen.ListItem.darkMode,
+            isOn: isDarkModeOn
+        )
+        let languageModel = SettingToggleModel(
+            title: L10n.SettingScreen.ListItem.language,
+            isOn: isLaunguageOn
+        )
+        items = [darkModeModel, languageModel]
+    }
 
     public var body: some View {
         NavigationView {
@@ -50,6 +51,6 @@ public struct SettingScreen: View {
 
 struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingScreen()
+        SettingScreen(isDarkModeOn: false, isLaunguageOn: false)
     }
 }
