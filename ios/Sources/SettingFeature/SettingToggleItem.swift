@@ -23,6 +23,14 @@ public struct SettingToggleItem: View {
 
 struct SettingToggleItem_Previews: PreviewProvider {
     static var previews: some View {
-        SettingToggleItem(title: "ダークモード", isOn: .constant(true))
+        SettingToggleItem(
+            title: "ダークモード",
+            isOn: .constant(true)
+        )
+        SettingToggleItem(
+            title: "ダークモード",
+            isOn: .constant(true)
+        )
+        .colorScheme(.dark)
     }
 }

@@ -1,5 +1,6 @@
 import Styleguide
 import SwiftUI
+import UIKit
 
 public struct SettingToggleModel: Hashable {
     let title: String
@@ -22,6 +23,8 @@ public struct SettingScreen: View {
             isOn: isLaunguageOn
         )
         _items = State(initialValue: [darkModeModel, languageModel])
+        
+        UINavigationBar.appearance().barTintColor = AssetColor.Background.primary.color
     }
 
     public var body: some View {
@@ -51,6 +54,14 @@ public struct SettingScreen: View {
 
 struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
-        SettingScreen(isDarkModeOn: false, isLaunguageOn: false)
+        SettingScreen(
+            isDarkModeOn: true,
+            isLaunguageOn: false
+        )
+        SettingScreen(
+            isDarkModeOn: true,
+            isLaunguageOn: false
+        )
+        .colorScheme(.dark)
     }
 }
