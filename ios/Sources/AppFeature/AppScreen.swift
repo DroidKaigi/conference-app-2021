@@ -2,6 +2,7 @@ import AboutFeature
 import FavoritesFeature
 import HomeFeature
 import MediaFeature
+import SettingFeature
 import Styleguide
 import SwiftUI
 
@@ -27,7 +28,7 @@ enum AppTab: CaseIterable {
     var view: some View {
         switch self {
         case .home:
-            return AnyView(HomeScreen())
+            return AnyView(SettingScreen(isDarkModeOn: true, isLaunguageOn: false))
         case .media:
             return AnyView(MediaScreen())
         case .favorites:

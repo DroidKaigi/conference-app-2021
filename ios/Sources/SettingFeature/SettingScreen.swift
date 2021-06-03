@@ -8,7 +8,7 @@ public struct SettingToggleModel: Hashable {
 
 public struct SettingScreen: View {
 
-    @State private var items: [SettingToggleModel] = []
+    @State private var items: [SettingToggleModel]
 
     @Environment(\.presentationMode) var presentationMode
 
@@ -21,7 +21,7 @@ public struct SettingScreen: View {
             title: L10n.SettingScreen.ListItem.language,
             isOn: isLaunguageOn
         )
-        items = [darkModeModel, languageModel]
+        _items = State(initialValue: [darkModeModel, languageModel])
     }
 
     public var body: some View {
