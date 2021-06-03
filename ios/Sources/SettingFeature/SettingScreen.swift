@@ -1,7 +1,7 @@
 import Styleguide
 import SwiftUI
 
-struct SettingToggleModel: Hashable {
+public struct SettingToggleModel: Hashable {
     let title: String
     var isOn: Bool
 }

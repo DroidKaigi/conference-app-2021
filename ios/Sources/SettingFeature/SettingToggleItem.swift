@@ -2,12 +2,17 @@ import Styleguide
 import SwiftUI
 
 
-struct SettingToggleItem: View {
-
-    let title: String
-    @Binding var isOn: Bool
-
-    var body: some View {
+public struct SettingToggleItem: View {
+    
+    private let title: String
+    @Binding private var isOn: Bool
+    
+    public init(title: String, isOn: Binding<Bool>) {
+        self.title = title
+        self._isOn = isOn
+    }
+    
+    public var body: some View {
         Toggle(isOn: $isOn, label: {
             Text(title)
         })
