@@ -54,6 +54,7 @@ var package = Package(
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
                 .target(name: "Styleguide"),
+                .target(name: "WhatIsDroidFeature"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -97,6 +98,9 @@ var package = Package(
         .target(
             name: "Utility",
             dependencies: []
+        ),
+        .target(
+            name: "WhatIsDroidFeature",
         ),
     ]
 )
