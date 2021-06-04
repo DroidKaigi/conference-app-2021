@@ -10,13 +10,14 @@
 {% set imageType %}{{param.imageTypeName|default:"ImageAsset"}}{% endset %}
 {% set forceNamespaces %}{{param.forceProvidesNamespaces|default:"false"}}{% endset %}
 {% set accessModifier %}{% if param.publicAccess %}public{% else %}internal{% endif %}{% endset %}
+import SwiftUI
 #if os(macOS)
   import AppKit
 #elseif os(iOS)
 {% if resourceCount.aresourcegroup > 0 %}
   import ARKit
 {% endif %}
-  import SwiftUI
+  import UIKit
 #elseif os(tvOS) || os(watchOS)
   import UIKit
 #endif
@@ -153,11 +154,14 @@
   #if os(macOS)
   {{accessModifier}} typealias ColorClass = NSColor
   #elseif os(iOS) || os(tvOS) || os(watchOS)
-  {{accessModifier}} typealias ColorClass = Color
+  {{accessModifier}} typealias ColorClass = UIColor
   #endif
 
   @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-  {{accessModifier}} private(set) lazy var color: ColorClass = {
+  {{accessModifier}} private(set) lazy var color = Color(name, bundle: {{param.bundle|default:"BundleToken.bundle"}})
+
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
+  {{accessModifier}} private(set) lazy var colorObject: ColorClass = {
     guard let color = ColorClass(asset: self) else {
       fatalError("Unable to load color asset named \(name).")
     }
@@ -170,11 +174,11 @@
 }
 
 {{accessModifier}} extension {{colorType}}.ColorClass {
-  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
-  init?(asset: {{colorType}}) {
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, macOS 10.13, *)
+  convenience init?(asset: {{colorType}}) {
     let bundle = {{param.bundle|default:"BundleToken.bundle"}}
     #if os(iOS) || os(tvOS)
-    self.init(asset.name, bundle: bundle)
+    self.init(named: asset.name, in: bundle, compatibleWith: nil)
     #elseif os(macOS)
     self.init(named: NSColor.Name(asset.name), bundle: bundle)
     #elseif os(watchOS)
