@@ -1,4 +1,5 @@
 import AboutFeature
+import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
 import MediaFeature
@@ -24,19 +25,6 @@ enum AppTab: CaseIterable {
         }
     }
 
-    var view: some View {
-        switch self {
-        case .home:
-            return AnyView(HomeScreen())
-        case .media:
-            return AnyView(MediaScreen())
-        case .favorites:
-            return AnyView(FavoritesScreen())
-        case .about:
-            return AnyView(AboutScreen())
-        }
-    }
-
     var image: UIImage {
         switch self {
         case .home:
@@ -49,14 +37,36 @@ enum AppTab: CaseIterable {
             return AssetImage.iconAbout.image
         }
     }
+
+    func view(_ store: Store<AppState, AppAction>) -> some View {
+        switch self {
+        case .home:
+            return AnyView(HomeScreen(
+                store: store.scope(
+                    state: \.homeState,
+                    action: AppAction.home
+                )
+            ))
+        case .media:
+            return AnyView(MediaScreen())
+        case .favorites:
+            return AnyView(FavoritesScreen())
+        case .about:
+            return AnyView(AboutScreen())
+        }
+    }
 }
 
 public struct AppScreen: View {
     @State var selection = 0
 
-    public init() {
+    private let store: Store<AppState, AppAction>
+
+    public init(store: Store<AppState, AppAction>) {
+        self.store = store
         UITabBar.appearance().barTintColor = AssetColor.Background.contents.color
         UITabBar.appearance().unselectedItemTintColor = AssetColor.Base.disable.color
+        UINavigationBar.appearance().barTintColor = AssetColor.Background.primary.color
     }
 
     public var body: some View {
@@ -64,7 +74,7 @@ public struct AppScreen: View {
             selection: $selection,
             content: {
                 ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
-                    tab.view
+                    tab.view(store)
                         .tabItem {
                             Image(uiImage: tab.image)
                             Text(tab.title)
@@ -74,11 +84,29 @@ public struct AppScreen: View {
             }
         )
         .accentColor(Color(AssetColor.primary.color.cgColor))
+        .background(Color(AssetColor.Background.primary.color))
     }
 }
 
-public struct AppScreen_Previews: PreviewProvider {
-    public static var previews: some View {
-        AppScreen()
+struct AppScreen_Previews: PreviewProvider {
+    static var previews: some View {
+        Group {
+            AppScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: appReducer,
+                    environment: .init()
+                )
+            )
+            .environment(\.colorScheme, .dark)
+            AppScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: appReducer,
+                    environment: .init()
+                )
+            )
+            .environment(\.colorScheme, .light)
+        }
     }
 }
