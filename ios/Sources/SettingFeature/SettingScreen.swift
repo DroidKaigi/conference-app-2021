@@ -24,7 +24,7 @@ public struct SettingScreen: View {
         )
         _items = State(initialValue: [darkModeModel, languageModel])
         
-        UITableView.appearance().backgroundColor = AssetColor.Background.primary.color
+        UITableView.appearance().backgroundColor = UIColor(AssetColor.Background.primary.color)
     }
 
     public var body: some View {
@@ -45,12 +45,12 @@ public struct SettingScreen: View {
                 }, label: {
                     Image(uiImage: AssetImage.iconClose.image)
                         .renderingMode(.template)
-                        .foregroundColor(Color(AssetColor.Base.primary.color))
+                        .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
             .navigationBarColor(
-                backgroundColor: Color(AssetColor.Background.primary.color),
-                titleColor: Color(AssetColor.Base.primary.color)
+                backgroundColor: AssetColor.Background.primary.color,
+                titleColor: AssetColor.Base.primary.color
             )
         }
     }

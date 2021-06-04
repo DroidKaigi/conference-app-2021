@@ -13,24 +13,24 @@ fileprivate struct NavigationBarConfigurator: ViewModifier {
     let newBackgroundColor: Color
     let newTitleColor: Color
     
-    let previousBackgroundColor: UIColor
-    let previousTitleColor: UIColor
+    let previousBackgroundColor: Color
+    let previousTitleColor: Color
     
     init(backgroundColor: Color, titleColor: Color) {
         
         self.newBackgroundColor = backgroundColor
         self.newTitleColor = titleColor
         
-        if let previousTitleColor = UINavigationBar.appearance().titleTextAttributes?[.foregroundColor] as? UIColor {
-            self.previousTitleColor = previousTitleColor
+        if let previousTitleColor = UINavigationBar.appearance().standardAppearance.titleTextAttributes[.foregroundColor] as? UIColor {
+            self.previousTitleColor = Color(previousTitleColor)
         } else {
-            self.previousTitleColor = AssetColor.Base.primary.color
+            self.previousTitleColor = newTitleColor
         }
         
-        if let previousBackgroundColor = UINavigationBar.appearance().backgroundColor {
-            self.previousBackgroundColor = previousBackgroundColor
+        if let previousBackgroundColor = UINavigationBar.appearance().standardAppearance.backgroundColor {
+            self.previousBackgroundColor = Color(previousBackgroundColor)
         } else {
-            self.previousBackgroundColor = AssetColor.Background.primary.color
+            self.previousBackgroundColor = newBackgroundColor
         }
         
         
@@ -45,7 +45,7 @@ fileprivate struct NavigationBarConfigurator: ViewModifier {
     func body(content: Content) -> some View {
         content
             .onDisappear(perform: {
-                UINavigationBar.appearance().backgroundColor = previousBackgroundColor
+                UINavigationBar.appearance().backgroundColor = UIColor(previousBackgroundColor)
                 UINavigationBar.appearance().titleTextAttributes?[.foregroundColor] = previousTitleColor
             })
     }

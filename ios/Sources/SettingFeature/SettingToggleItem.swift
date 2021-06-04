@@ -16,8 +16,8 @@ public struct SettingToggleItem: View {
         Toggle(isOn: $isOn, label: {
             Text(title)
         })
-        .toggleStyle(SwitchToggleStyle(tint: Color(AssetColor.primary.color)))
-        .listRowBackground(Color(AssetColor.Background.contents.color))
+        .toggleStyle(SwitchToggleStyle(tint: AssetColor.primary.color))
+        .listRowBackground(AssetColor.Background.contents.color)
     }
 }
 
