@@ -34,6 +34,10 @@ var package = Package(
             name: "MediaFeature",
             targets: ["MediaFeature"]
         ),
+        .library(
+            name: "Repository",
+            targets: ["Repository"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.18.0")),
@@ -84,7 +88,9 @@ var package = Package(
         ),
         .target(
             name: "Repository",
-            dependencies: []
+            dependencies: [
+                .target(name: "DroidKaigiMPP"),
+            ]
         ),
         .target(
             name: "Styleguide",
@@ -124,3 +130,13 @@ package.targets.append(contentsOf: [
         dependencies: ["MediaFeature"]
     ),
 ])
+
+// MARK: - Library Targets
+package.targets.append(contentsOf: [
+    .binaryTarget(
+        name: "DroidKaigiMPP",
+        path: "build/xcframeworks/DroidKaigiMPP.xcframework"
+    )
+])
+
+
