@@ -5,6 +5,7 @@ import io.github.droidkaigi.feeder.Versions
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
+    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
 apply(rootProject.file("gradle/android.gradle"))
@@ -75,3 +76,11 @@ tasks.getByName("build").dependsOn(packForXcode)
 
 // Workaround for issues where types defined in iOS native code cannot be referenced in Android Studio
 tasks.getByName("preBuild").dependsOn(tasks.getByName("compileKotlinIos"))
+
+multiplatformSwiftPackage {
+    swiftToolsVersion("5.3")
+    targetPlatforms {
+        iOS { v("14") }
+    }
+    outputDirectory(File(buildDir, "xcframeworks"))
+}
