@@ -36,7 +36,7 @@ public struct LargeCard: View {
 
                 Text(title)
                     .font(.headline)
-                    .foregroundColor(AssetColor.Base.primary.color)
+                    .foregroundColor(AssetColor.Base.primary())
                     .lineLimit(2)
 
                 HStack(spacing: 8) {
@@ -46,7 +46,7 @@ public struct LargeCard: View {
 
                     Text(date.formatted)
                         .font(.caption)
-                        .foregroundColor(AssetColor.Base.tertiary.color)
+                        .foregroundColor(AssetColor.Base.tertiary())
 
                     Spacer()
 
@@ -54,12 +54,12 @@ public struct LargeCard: View {
                         let uiImage = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
                         Image(uiImage: uiImage)
                             .renderingMode(.template)
-                            .foregroundColor(AssetColor.primary.color)
+                            .foregroundColor(AssetColor.primary())
                     })
                 }
             }
             .padding(16)
-            .background(AssetColor.Background.primary.color)
+            .background(AssetColor.Background.primary())
         })
     }
 }

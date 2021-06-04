@@ -19,11 +19,11 @@ public struct ImageView: View {
     public var body: some View {
         // TODO: add placeholder image
         Image("")
-            .background(AssetColor.Base.secondary.color)
+            .background(AssetColor.Base.secondary())
             .frame(width: width, height: height, alignment: .center)
             .overlay(
                 RoundedRectangle(cornerRadius: 2)
-                    .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+                    .stroke(AssetColor.Separate.image(), lineWidth: 1)
             )
     }
 }

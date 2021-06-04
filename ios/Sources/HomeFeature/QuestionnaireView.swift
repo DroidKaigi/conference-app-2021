@@ -13,7 +13,7 @@ public struct QuestionnaireView: View {
             HStack {
                 Image(uiImage: AssetImage.logo.image)
                 Text(L10n.HomeScreen.Questionnaire.title)
-                    .foregroundColor(AssetColor.Base.primary.color)
+                    .foregroundColor(AssetColor.Base.primary())
                     .font(.headline)
                 Spacer()
             }
@@ -21,12 +21,12 @@ public struct QuestionnaireView: View {
                 action: tapAnswerAction,
                 label: {
                     Text(L10n.HomeScreen.Questionnaire.answer)
-                        .foregroundColor(AssetColor.primary.color)
+                        .foregroundColor(AssetColor.primary())
                         .padding(.vertical, 8)
                         .padding(.horizontal, 32)
                         .overlay(
                             Rectangle()
-                                .stroke(AssetColor.primary.color)
+                                .stroke(AssetColor.primary())
                         )
                 }
             )

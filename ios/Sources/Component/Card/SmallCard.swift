@@ -38,12 +38,12 @@ public struct SmallCard: View {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(title)
                             .font(.subheadline)
-                            .foregroundColor(AssetColor.Base.primary.color)
+                            .foregroundColor(AssetColor.Base.primary())
                             .lineLimit(2)
 
                         Text(date.formatted)
                             .font(.caption)
-                            .foregroundColor(AssetColor.Base.tertiary.color)
+                            .foregroundColor(AssetColor.Base.tertiary())
                     }
 
                     HStack(spacing: 8) {
@@ -57,13 +57,13 @@ public struct SmallCard: View {
                             let uiImage = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
                             Image(uiImage: uiImage)
                                 .renderingMode(.template)
-                                .foregroundColor(AssetColor.primary.color)
+                                .foregroundColor(AssetColor.primary())
                         })
                     }
                 }
             }
             .padding(8)
-            .background(AssetColor.Background.primary.color)
+            .background(AssetColor.Background.primary())
         })
     }
 }

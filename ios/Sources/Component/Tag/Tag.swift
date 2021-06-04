@@ -16,7 +16,7 @@ public struct Tag: View {
     public var body: some View {
         Text(type.title)
             .font(.caption)
-            .foregroundColor(AssetColor.Base.white.color)
+            .foregroundColor(AssetColor.Base.white())
             .padding(.vertical, 4)
             .padding(.horizontal, 12)
             .background(type.backgroundColor)
@@ -63,11 +63,11 @@ private extension TagType {
     var backgroundColor: Color {
         switch self {
         case .droidKaigiFm:
-            return AssetColor.secondary.color
+            return AssetColor.secondary()
         case .medium:
-            return AssetColor.Tag.medium.color
+            return AssetColor.Tag.medium()
         case .youtube:
-            return AssetColor.Tag.video.color
+            return AssetColor.Tag.video()
         }
     }
 }

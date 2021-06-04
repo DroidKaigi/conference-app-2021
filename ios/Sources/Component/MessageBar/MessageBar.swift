@@ -13,10 +13,10 @@ public struct MessageBar: View {
     public var body: some View {
         Text(title)
             .font(.subheadline)
-            .foregroundColor(AssetColor.Base.white.color)
+            .foregroundColor(AssetColor.Base.white())
             .padding(.vertical, 8)
             .padding(.horizontal, 12)
-            .background(AssetColor.primaryDark.color)
+            .background(AssetColor.primaryDark())
             .cornerRadius(4)
     }
 }
