@@ -82,5 +82,5 @@ multiplatformSwiftPackage {
     targetPlatforms {
         iOS { v("14") }
     }
-    outputDirectory(File(buildDir, "xcframeworks"))
+    outputDirectory(File(projectDir, "../ios/build/xcframeworks"))
 }
