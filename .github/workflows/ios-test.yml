@@ -5,6 +5,8 @@ on:
     paths:
       - "ios/**"
       - ".github/workflows/**"
+  pull_request:
+    types: [opened, synchronize, reopened]
 
 jobs:
   build-modules:
