@@ -13,14 +13,12 @@ apply(rootProject.file("gradle/android.gradle"))
 kotlin {
     android()
 
-    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
-        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
-            ::iosArm64
-        else
-            ::iosX64
-
-    iosTarget("ios") {
-        binaries {
+    val iosTargets = listOf(
+        iosArm64("ios"),
+        iosX64()
+    )
+    iosTargets.forEach {
+        it.binaries {
             framework {
                 baseName = "DroidKaigiMPP"
                 export(project(":model"))
@@ -52,10 +50,12 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
+        val iosX64Main by getting
         val iosMain by getting {
             dependencies {
                 implementation(Dep.Koin.core)
             }
+            iosX64Main.dependsOn(this)
         }
         val iosTest by getting
     }
