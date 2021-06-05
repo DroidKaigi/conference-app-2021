@@ -26,9 +26,6 @@ jobs:
       - name: Generate Strings & Colors & Assets
         working-directory: ./ios
         run: make run-swiftgen
-      - name: Create KMM XCFramework
-        working-directory: ./ios 
-        run: make create-kmm-framework
       - name: Build Test Modules
         working-directory: ./ios
         run: make build-modules
@@ -57,9 +54,6 @@ jobs:
       - name: Generate Strings & Colors & Assets
         working-directory: ./ios
         run: make run-swiftgen
-      - name: Create KMM XCFramework
-        working-directory: ./ios 
-        run: make create-kmm-framework
       - name: Build Test for Debug App
         working-directory: ./ios
         run: make build-app-debug
@@ -88,9 +82,6 @@ jobs:
       - name: Generate Strings & Colors & Assets
         working-directory: ./ios
         run: make run-swiftgen
-      - name: Create KMM XCFramework
-        working-directory: ./ios 
-        run: make create-kmm-framework
       - name: Build Test for Debug App
         working-directory: ./ios
         run: make build-app-release
