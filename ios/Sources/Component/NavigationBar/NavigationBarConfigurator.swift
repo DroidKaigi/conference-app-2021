@@ -26,8 +26,6 @@ fileprivate struct NavigationBarConfigurator: ViewModifier {
         
         if let previousBackgroundColor = UINavigationBar.appearance().standardAppearance.backgroundColor {
             self.previousBackgroundColor = Color(previousBackgroundColor)
-        } else {
-            self.previousBackgroundColor = nil
         }
         
         
