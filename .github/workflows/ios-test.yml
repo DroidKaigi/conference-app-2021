@@ -1,0 +1,51 @@
+name: test-ios
+
+on:
+  push:
+    paths:
+      - "ios/**"
+
+jobs:
+  build-modules:
+    name: "iOS Buid Test for Modules"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Select Xcode Version
+        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+      - name: Show Xcode Version
+        run: xcodebuild -version
+      - name: Change Directory
+        run: cd ios
+      - name: Generate Strings & Colors & Assets
+        run: make run-swiftgen
+      - name: Build Test Modules
+        run: make build-modules
+
+  build-app-debug:
+    name: "iOS Buid Test on Debug Configuration"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Select Xcode Version
+        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+      - name: Show Xcode Version
+        run: xcodebuild -version
+      - name: Change Directory
+        run: cd ios
+      - name: Build Test for Debug App
+        run: make build-app-debug
+
+  build-app-release:
+    name: "iOS Buid Test on Release Configuration"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Select Xcode Version
+        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+      - name: Show Xcode Version
+        run: xcodebuild -version
+      - name: Change Directory
+        run: cd ios
+      - name: Build Test for Debug App
+        run: make build-app-release
