@@ -14,6 +14,15 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
       - name: Show Xcode Version
         run: xcodebuild -version
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: "ios-framework:createXCFramework"
+          dependencies-cache-key: |
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/src/**/*.kt
+            **/gradle.properties
+            gradle/**
       - name: Generate Strings & Colors & Assets
         working-directory: ./ios
         run: make run-swiftgen
@@ -38,7 +47,7 @@ jobs:
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: iosTest
+          arguments: "ios-framework:createXCFramework" 
           dependencies-cache-key: |
             **/*.gradle
             **/*.gradle.kts
@@ -69,7 +78,7 @@ jobs:
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: iosTest
+          arguments: "ios-framework:createXCFramework"
           dependencies-cache-key: |
             **/*.gradle
             **/*.gradle.kts
