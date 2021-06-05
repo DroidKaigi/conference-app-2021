@@ -12,6 +12,11 @@
 // MARK: About
 "AboutScreen.Title" = "About";
 
+// MARK: Setting
+"SettingScreen.Title" = "Setting";
+"SettingScreen.ListItem.DarkMode" = "ダークモード";
+"SettingScreen.ListItem.Language" = "言語設定";
+
 // MARK: Component
 "Component.Tag.DroidKaigiFm" = "DroidKaigi.fm";
 "Component.Tag.Medium" = "Medium";
