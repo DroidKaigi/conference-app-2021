@@ -22,14 +22,10 @@ fileprivate struct NavigationBarConfigurator: ViewModifier {
         
         if let previousTitleColor = UINavigationBar.appearance().standardAppearance.titleTextAttributes[.foregroundColor] as? UIColor {
             self.previousTitleColor = Color(previousTitleColor)
-        } else {
-            self.previousTitleColor = nil
         }
         
         if let previousBackgroundColor = UINavigationBar.appearance().standardAppearance.backgroundColor {
             self.previousBackgroundColor = Color(previousBackgroundColor)
-        } else {
-            self.previousBackgroundColor = nil
         }
         
         

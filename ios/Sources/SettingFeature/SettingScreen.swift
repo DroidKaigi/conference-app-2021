@@ -3,44 +3,61 @@ import Component
 import SwiftUI
 
 public enum SettingModel: Hashable {
-    case toggle(title: String, isOn: Bool)
+    case darkMode(isOn: Bool)
+    case language(isOn: Bool)
+    
+    var title: String {
+        switch self {
+        case .darkMode:
+            return L10n.SettingScreen.ListItem.darkMode
+        case .language:
+            return L10n.SettingScreen.ListItem.language
+        }
+    }
+    
+    var isOn: Bool {
+        switch self {
+        case let .darkMode(isOn), let .language(isOn):
+            return isOn
+        }
+    }
+    
+    mutating func update(isOn: Bool) {
+        switch self {
+        case .darkMode:
+            self = .darkMode(isOn: isOn)
+        case .language:
+            self = .language(isOn: isOn)
+        }
+    }
 }
 
 public struct SettingScreen: View {
-
+    
     @State private var items: [SettingModel]
-
+    
     @Environment(\.presentationMode) var presentationMode
-
+    
     public init(isDarkModeOn: Bool, isLaunguageOn: Bool) {
-        let darkModeModel = SettingModel.toggle(
-            title: L10n.SettingScreen.ListItem.darkMode,
-            isOn: isDarkModeOn
-        )
-        let languageModel = SettingModel.toggle(
-            title: L10n.SettingScreen.ListItem.language,
-            isOn: isLaunguageOn
-        )
+        let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
+        let languageModel = SettingModel.language(isOn: isLaunguageOn)
         _items = State(initialValue: [darkModeModel, languageModel])
         
         UITableView.appearance().backgroundColor = UIColor(AssetColor.Background.primary.color)
     }
-
+    
     public var body: some View {
         NavigationView {
             List {
                 ForEach(items.indices) { index in
-                    
-                    if case SettingModel.toggle(let title, let isOn) = items[index] {
-                        
-                        let isOnBinding = Binding {
-                            isOn
-                        } set: { isOn in
-                            items[index] = SettingModel.toggle(title: title, isOn: isOn)
-                        }
-
-                        SettingToggleItem(title: title, isOn: isOnBinding)
-                    }
+                    SettingToggleItem(
+                        title: items[index].title,
+                        isOn: Binding(get: {
+                            items[index].isOn
+                        }, set: { isOn in
+                            items[index].update(isOn: isOn)
+                        })
+                    )
                 }
             }
             .listStyle(PlainListStyle())
