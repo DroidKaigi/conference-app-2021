@@ -1,7 +1,8 @@
 #! /bin/bash
 
-SHELL_PATH=`pwd -P`
-cd "$SHELL_PATH/../"
+FILE_PATH=`dirname $0`
+
+cd "$FILE_PATH/../"
 
 shopt -s expand_aliases
 
