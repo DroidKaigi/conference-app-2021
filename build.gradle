@@ -1,10 +1,6 @@
 import io.github.droidkaigi.feeder.Dep
 
 buildscript {
-    ext {
-        nav_compose_version = "1.0.0-alpha08"
-        kotlin_version = "1.4.32"
-    }
     repositories {
         google()
         mavenCentral()

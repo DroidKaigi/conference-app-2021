@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.0-beta07"
+    const val compose = "1.0.0-beta08"
     const val coroutines = "1.4.2-native-mt"
 }
 
@@ -40,13 +40,13 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.4.32"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.10"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.4.32"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.4.32"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.4.32"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
@@ -85,10 +85,10 @@ object Dep {
     const val ktlint = "com.pinterest:ktlint:0.40.0"
 
     object Dagger {
-        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.31.2-alpha"
-        const val hiltAndroid = "com.google.dagger:hilt-android:2.31.2-alpha"
-        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.31.2-alpha"
-        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.31.2-alpha"
+        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.35"
+        const val hiltAndroid = "com.google.dagger:hilt-android:2.35"
+        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.35"
+        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.35"
     }
 
     object Accompanist {
