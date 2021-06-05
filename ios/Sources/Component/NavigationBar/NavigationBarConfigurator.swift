@@ -9,16 +9,10 @@ public extension View {
 
 fileprivate struct NavigationBarConfigurator: ViewModifier {
     
-    private let newBackgroundColor: Color
-    private let newTitleColor: Color
-    
     private let previousBackgroundColor: Color?
     private let previousTitleColor: Color?
     
     init(backgroundColor: Color, titleColor: Color) {
-        
-        self.newBackgroundColor = backgroundColor
-        self.newTitleColor = titleColor
         
         if let previousTitleColor = UINavigationBar.appearance().standardAppearance.titleTextAttributes[.foregroundColor] as? UIColor {
             self.previousTitleColor = Color(previousTitleColor)
