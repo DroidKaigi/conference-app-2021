@@ -9,23 +9,13 @@ public extension View {
 
 fileprivate struct NavigationBarConfigurator: ViewModifier {
     
-    private let previousBackgroundColor: Color?
-    private let previousTitleColor: Color?
+    private let previousBackgroundColor: UIColor?
+    private let previousTitleColor: UIColor?
     
     init(backgroundColor: Color, titleColor: Color) {
         
-        if let previousTitleColor = UINavigationBar.appearance().standardAppearance.titleTextAttributes[.foregroundColor] as? UIColor {
-            self.previousTitleColor = Color(previousTitleColor)
-        } else {
-            self.previousTitleColor = nil
-        }
-        
-        if let previousBackgroundColor = UINavigationBar.appearance().standardAppearance.backgroundColor {
-            self.previousBackgroundColor = Color(previousBackgroundColor)
-        } else {
-            self.previousBackgroundColor = nil
-        }
-        
+        previousTitleColor = UINavigationBar.appearance().standardAppearance.titleTextAttributes[.foregroundColor] as? UIColor
+        previousBackgroundColor = UINavigationBar.appearance().standardAppearance.backgroundColor
         
         let appearance = UINavigationBarAppearance()
         appearance.configureWithTransparentBackground()
@@ -40,7 +30,7 @@ fileprivate struct NavigationBarConfigurator: ViewModifier {
             .onDisappear(perform: {
                 
                 if let previousBackgroundColor = previousBackgroundColor {
-                    UINavigationBar.appearance().backgroundColor = UIColor(previousBackgroundColor)
+                    UINavigationBar.appearance().backgroundColor = previousBackgroundColor
                 }
                 
                 if let previousTitleColor = previousTitleColor {
