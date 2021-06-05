@@ -1,10 +1,6 @@
 name: ios-test
 
 on:
-  push:
-    paths:
-      - "ios/**"
-      - ".github/workflows/**"
   pull_request:
     types: [opened, synchronize, reopened]
 
