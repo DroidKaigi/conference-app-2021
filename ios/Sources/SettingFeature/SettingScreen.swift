@@ -5,7 +5,7 @@ import SwiftUI
 public enum SettingModel: Hashable {
     case darkMode(isOn: Bool)
     case language(isOn: Bool)
-    
+
     var title: String {
         switch self {
         case .darkMode:
@@ -14,14 +14,14 @@ public enum SettingModel: Hashable {
             return L10n.SettingScreen.ListItem.language
         }
     }
-    
+
     var isOn: Bool {
         switch self {
         case let .darkMode(isOn), let .language(isOn):
             return isOn
         }
     }
-    
+
     mutating func update(isOn: Bool) {
         switch self {
         case .darkMode:
@@ -33,19 +33,19 @@ public enum SettingModel: Hashable {
 }
 
 public struct SettingScreen: View {
-    
+
     @State private var items: [SettingModel]
-    
+
     @Environment(\.presentationMode) var presentationMode
-    
+
     public init(isDarkModeOn: Bool, isLanguageOn: Bool) {
         let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
         let languageModel = SettingModel.language(isOn: isLanguageOn)
         _items = State(initialValue: [darkModeModel, languageModel])
-        
+
         UITableView.appearance().backgroundColor = UIColor(AssetColor.Background.primary.color)
     }
-    
+
     public var body: some View {
         NavigationView {
             List {
