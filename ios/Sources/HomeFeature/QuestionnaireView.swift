@@ -11,7 +11,7 @@ public struct QuestionnaireView: View {
     public var body: some View {
         VStack(alignment: .trailing, spacing: 12) {
             HStack {
-                Image(uiImage: AssetImage.logo.image)
+                AssetImage.logo.image
                 Text(L10n.HomeScreen.Questionnaire.title)
                     .foregroundColor(AssetColor.Base.primary.color)
                     .font(.headline)

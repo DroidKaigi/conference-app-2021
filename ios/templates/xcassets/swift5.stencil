@@ -23,12 +23,6 @@ import SwiftUI
   import UIKit
 #endif
 
-// Deprecated typealiases
-{% if resourceCount.image > 0 %}
-@available(*, deprecated, renamed: "{{imageType}}.Image", message: "This typealias will be removed in SwiftGen 7.0")
-{{accessModifier}} typealias {{param.imageAliasName|default:"AssetImageTypeAlias"}} = {{imageType}}.Image
-{% endif %}
-
 // swiftlint:disable superfluous_disable_command file_length implicit_return
 
 // MARK: - Asset Catalogs
@@ -203,42 +197,23 @@ import SwiftUI
 {{accessModifier}} struct {{imageType}} {
   {{accessModifier}} fileprivate(set) var name: String
 
+  @available(iOS 13.0, tvOS 13.0, watchOS 6.0, macOS 10.15, *)
+  {{accessModifier}} var image: Image { Image(name, bundle: {{bundle}}) }
+
   #if os(macOS)
-  {{accessModifier}} typealias Image = NSImage
+  @available(macOS 10.13, *)
+  {{accessModifier}} private(set) lazy var nsImage = ({{bundle}} == .main) ? NSImage(named: name) : {{bundle}}.image(forResource: name)
   #elseif os(iOS) || os(tvOS) || os(watchOS)
-  {{accessModifier}} typealias Image = UIImage
+  @available(iOS 11.0, tvOS 11.0, watchOS 4.0, *)
+  {{accessModifier}} var uiImage: UIImage {
+    #if os(watchOS)
+    let uiImage = UIImage(named: name)
+    #else
+    let uiImage = UIImage(named: name, in: {{bundle}}, compatibleWith: nil)
+    #endif
+    return uiImage ?? { fatalError("Unable to load image asset named \(name).") }()
+  }
   #endif
-
-  {{accessModifier}} var image: Image {
-    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
-    #if os(iOS) || os(tvOS)
-    let image = Image(named: name, in: bundle, compatibleWith: nil)
-    #elseif os(macOS)
-    let name = NSImage.Name(self.name)
-    let image = (bundle == .main) ? NSImage(named: name) : bundle.image(forResource: name)
-    #elseif os(watchOS)
-    let image = Image(named: name)
-    #endif
-    guard let result = image else {
-      fatalError("Unable to load image asset named \(name).")
-    }
-    return result
-  }
-}
-
-{{accessModifier}} extension {{imageType}}.Image {
-  @available(macOS, deprecated,
-    message: "This initializer is unsafe on macOS, please use the {{imageType}}.image property")
-  convenience init?(asset: {{imageType}}) {
-    #if os(iOS) || os(tvOS)
-    let bundle = {{param.bundle|default:"BundleToken.bundle"}}
-    self.init(named: asset.name, in: bundle, compatibleWith: nil)
-    #elseif os(macOS)
-    self.init(named: NSImage.Name(asset.name))
-    #elseif os(watchOS)
-    self.init(named: asset.name)
-    #endif
-  }
 }
 {% endif %}
 {% if not param.bundle %}

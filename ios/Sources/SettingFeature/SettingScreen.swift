@@ -66,7 +66,7 @@ public struct SettingScreen: View {
                 trailing: Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    Image(uiImage: AssetImage.iconClose.image)
+                    AssetImage.iconClose.image
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
                 })

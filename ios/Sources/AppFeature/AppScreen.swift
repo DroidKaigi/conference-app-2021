@@ -25,7 +25,7 @@ enum AppTab: CaseIterable {
         }
     }
 
-    var image: UIImage {
+    var image: Image {
         switch self {
         case .home:
             return AssetImage.iconHome.image
@@ -76,7 +76,7 @@ public struct AppScreen: View {
                 ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
                     tab.view(store)
                         .tabItem {
-                            Image(uiImage: tab.image)
+                            tab.image
                             Text(tab.title)
                         }
                         .tag(offset)
