@@ -1,4 +1,4 @@
-name: test-ios
+name: ios-test
 
 on:
   push:
