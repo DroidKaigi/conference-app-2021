@@ -1,7 +1,6 @@
 import Styleguide
 import SwiftUI
 
-
 public struct SettingToggleItem: View {
     
     private let title: String

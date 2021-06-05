@@ -1,24 +1,23 @@
 import Styleguide
+import Component
 import SwiftUI
-import UIKit
 
-public struct SettingToggleModel: Hashable {
-    let title: String
-    var isOn: Bool
+public enum SettingModel: Hashable {
+    case toggle(title: String, isOn: Bool)
 }
 
 public struct SettingScreen: View {
 
-    @State private var items: [SettingToggleModel]
+    @State private var items: [SettingModel]
 
     @Environment(\.presentationMode) var presentationMode
 
     public init(isDarkModeOn: Bool, isLaunguageOn: Bool) {
-        let darkModeModel = SettingToggleModel(
+        let darkModeModel = SettingModel.toggle(
             title: L10n.SettingScreen.ListItem.darkMode,
             isOn: isDarkModeOn
         )
-        let languageModel = SettingToggleModel(
+        let languageModel = SettingModel.toggle(
             title: L10n.SettingScreen.ListItem.language,
             isOn: isLaunguageOn
         )
@@ -31,10 +30,17 @@ public struct SettingScreen: View {
         NavigationView {
             List {
                 ForEach(items.indices) { index in
-                    SettingToggleItem(
-                        title: items[index].title,
-                        isOn: $items[index].isOn
-                    )
+                    
+                    if case SettingModel.toggle(let title, let isOn) = items[index] {
+                        
+                        let isOnBinding = Binding {
+                            isOn
+                        } set: { isOn in
+                            items[index] = SettingModel.toggle(title: title, isOn: isOn)
+                        }
+
+                        SettingToggleItem(title: title, isOn: isOnBinding)
+                    }
                 }
             }
             .listStyle(PlainListStyle())

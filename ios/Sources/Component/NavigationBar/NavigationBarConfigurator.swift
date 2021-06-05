@@ -9,11 +9,11 @@ public extension View {
 
 fileprivate struct NavigationBarConfigurator: ViewModifier {
     
-    let newBackgroundColor: Color
-    let newTitleColor: Color
+    private let newBackgroundColor: Color
+    private let newTitleColor: Color
     
-    let previousBackgroundColor: Color?
-    let previousTitleColor: Color?
+    private let previousBackgroundColor: Color?
+    private let previousTitleColor: Color?
     
     init(backgroundColor: Color, titleColor: Color) {
         
