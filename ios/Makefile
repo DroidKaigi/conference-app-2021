@@ -1,6 +1,6 @@
 SWIFT_RUN=swift run -c release --package-path Tools
 WORKSPACE=DroidKaigi2021.xcworkspace
-PLATFORM_IOS =iOS Simulator,name=iPhone 12 Pro,OS=14.5
+PLATFORM_IOS =iOS Simulator,name=iPhone 12 Pro,OS=14.4
 
 .PHONY: open
 open:
