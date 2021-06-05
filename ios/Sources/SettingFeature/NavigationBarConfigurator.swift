@@ -1,6 +1,5 @@
 import Styleguide
 import SwiftUI
-import UIKit
 
 public extension View {
     func navigationBarColor(backgroundColor: Color, titleColor: Color) -> some View {
