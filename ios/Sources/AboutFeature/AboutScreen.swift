@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import SwiftUI
 import Styleguide
-
 public struct AboutScreen: View {
 
     private let store: Store<AboutState, AboutAction>
