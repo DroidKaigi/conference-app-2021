@@ -64,9 +64,9 @@ public struct AppScreen: View {
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
-        UITabBar.appearance().barTintColor = UIColor(AssetColor.Background.contents.color)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(AssetColor.Base.disable.color)
-        UINavigationBar.appearance().barTintColor = UIColor(AssetColor.Background.primary.color)
+        UITabBar.appearance().barTintColor = AssetColor.Background.contents.uiColor
+        UITabBar.appearance().unselectedItemTintColor = AssetColor.Base.disable.uiColor
+        UINavigationBar.appearance().barTintColor = AssetColor.Background.primary.uiColor
     }
 
     public var body: some View {
