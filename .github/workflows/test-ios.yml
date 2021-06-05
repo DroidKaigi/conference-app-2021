@@ -1,4 +1,4 @@
-name: ios-test
+name: test-ios
 on:
   pull_request:
     types: [opened, synchronize, reopened]

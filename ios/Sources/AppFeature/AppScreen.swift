@@ -64,9 +64,9 @@ public struct AppScreen: View {
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
-        UITabBar.appearance().barTintColor = AssetColor.Background.contents.color
-        UITabBar.appearance().unselectedItemTintColor = AssetColor.Base.disable.color
-        UINavigationBar.appearance().barTintColor = AssetColor.Background.primary.color
+        UITabBar.appearance().barTintColor = UIColor(AssetColor.Background.contents.color)
+        UITabBar.appearance().unselectedItemTintColor = UIColor(AssetColor.Base.disable.color)
+        UINavigationBar.appearance().barTintColor = UIColor(AssetColor.Background.primary.color)
     }
 
     public var body: some View {
@@ -83,8 +83,8 @@ public struct AppScreen: View {
                 }
             }
         )
-        .accentColor(Color(AssetColor.primary.color.cgColor))
-        .background(Color(AssetColor.Background.primary.color))
+        .accentColor(AssetColor.primary.color)
+        .background(AssetColor.Background.primary.color)
     }
 }
 
