@@ -38,9 +38,9 @@ public struct SettingScreen: View {
     
     @Environment(\.presentationMode) var presentationMode
     
-    public init(isDarkModeOn: Bool, isLaunguageOn: Bool) {
+    public init(isDarkModeOn: Bool, isLanguageOn: Bool) {
         let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
-        let languageModel = SettingModel.language(isOn: isLaunguageOn)
+        let languageModel = SettingModel.language(isOn: isLanguageOn)
         _items = State(initialValue: [darkModeModel, languageModel])
         
         UITableView.appearance().backgroundColor = UIColor(AssetColor.Background.primary.color)
@@ -83,11 +83,11 @@ struct SettingScreen_Previews: PreviewProvider {
     static var previews: some View {
         SettingScreen(
             isDarkModeOn: true,
-            isLaunguageOn: false
+            isLanguageOn: false
         )
         SettingScreen(
             isDarkModeOn: true,
-            isLaunguageOn: false
+            isLanguageOn: false
         )
         .colorScheme(.dark)
     }
