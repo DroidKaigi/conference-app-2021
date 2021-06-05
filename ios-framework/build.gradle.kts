@@ -61,19 +61,6 @@ kotlin {
     }
 }
 
-val packForXcode by tasks.creating(Sync::class) {
-    group = "build"
-    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
-    val framework =
-        kotlin.targets.getByName<KotlinNativeTarget>("ios").binaries.getFramework(mode)
-    inputs.property("mode", mode)
-    dependsOn(framework.linkTask)
-    val targetDir = File(buildDir, "xcode-frameworks")
-    from({ framework.outputDirectory })
-    into(targetDir)
-}
-tasks.getByName("build").dependsOn(packForXcode)
-
 // Workaround for issues where types defined in iOS native code cannot be referenced in Android Studio
 tasks.getByName("preBuild").dependsOn(tasks.getByName("compileKotlinIos"))
 
@@ -83,4 +70,11 @@ multiplatformSwiftPackage {
         iOS { v("14") }
     }
     outputDirectory(File(projectDir, "../ios/build/xcframeworks"))
+    buildConfiguration {
+        if (System.getenv("CONFIGURATION") != "Release") {
+            debug()
+        } else {
+            release()
+        }
+    }
 }
