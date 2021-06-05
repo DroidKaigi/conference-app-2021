@@ -35,6 +35,10 @@ var package = Package(
             targets: ["MediaFeature"]
         ),
         .library(
+            name: "SettingFeature",
+            targets: ["SettingFeature"]
+        ),
+        .library(
             name: "Repository",
             targets: ["Repository"]
         ),
@@ -65,6 +69,7 @@ var package = Package(
                 .target(name: "FavoritesFeature"),
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
+                .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
@@ -97,6 +102,13 @@ var package = Package(
         .target(
             name: "Repository",
             dependencies: []
+        ),
+        .target(
+            name: "SettingFeature",
+            dependencies: [
+                .target(name: "Component"),
+                .target(name: "Styleguide")
+            ]
         ),
         .target(
             name: "Styleguide",
