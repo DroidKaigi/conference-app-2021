@@ -15,11 +15,11 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
       - name: Show Xcode Version
         run: xcodebuild -version
-      - name: Change Directory
-        run: cd ios
       - name: Generate Strings & Colors & Assets
+        working-directory: ./ios
         run: make run-swiftgen
       - name: Build Test Modules
+        working-directory: ./ios
         run: make build-modules
 
   build-app-debug:
@@ -31,9 +31,8 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
       - name: Show Xcode Version
         run: xcodebuild -version
-      - name: Change Directory
-        run: cd ios
       - name: Build Test for Debug App
+        working-directory: ./ios
         run: make build-app-debug
 
   build-app-release:
@@ -45,7 +44,6 @@ jobs:
         run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
       - name: Show Xcode Version
         run: xcodebuild -version
-      - name: Change Directory
-        run: cd ios
       - name: Build Test for Debug App
+        working-directory: ./ios
         run: make build-app-release
