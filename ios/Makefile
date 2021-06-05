@@ -1,5 +1,6 @@
 SWIFT_RUN=swift run -c release --package-path Tools
 WORKSPACE=DroidKaigi2021.xcworkspace
+PLATFORM_IOS =iOS Simulator,name=iPhone 12 Pro,OS=14.5
 
 .PHONY: open
 open:
@@ -18,3 +19,87 @@ run-swiftgen:
 .PHONY: run-swiftgen-generate-xcfilelists
 run-swiftgen-generate-xcfilelists:
 	./scripts/generate-swiftgen-xcfilelists.sh
+
+# Test App Debug
+.PHONY: test-app-debug
+test-app-debug:
+	xcodebuild test \
+		-workspace $(WORKSPACE) \
+		-scheme DroidKaigi\ 2021 \
+		-configuration Debug \
+		-destination platform="$(PLATFORM_IOS)"
+
+# Test App Release
+.PHONY: test-app-release
+test-app-release:
+	xcodebuild test \
+		-workspace $(WORKSPACE) \
+		-scheme DroidKaigi\ 2021 \
+		-configuration Release \
+		-destination platform="$(PLATFORM_IOS)"
+
+# Build App Debug
+.PHONY: build-app-debug
+build-app-debug:
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme DroidKaigi\ 2021 \
+		-configuration Debug \
+		-destination platform="$(PLATFORM_IOS)"
+
+# Build App Release
+.PHONY: build-app-release
+build-app-release:
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme DroidKaigi\ 2021 \
+		-configuration Release \
+		-destination platform="$(PLATFORM_IOS)"
+
+# Build Modules
+.PHONY: build-modules
+build-modules:
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme AboutFeature \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme AppFeature \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme Component \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme FavoritesFeature \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme HomeFeature \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme MediaFeature \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme Repository \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme Styleguide \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme Utility \
+		-destination platform="$(PLATFORM_IOS)"

@@ -34,6 +34,18 @@ var package = Package(
             name: "MediaFeature",
             targets: ["MediaFeature"]
         ),
+        .library(
+            name: "Repository",
+            targets: ["Repository"]
+        ),
+        .library(
+            name: "Styleguide",
+            targets: ["Styleguide"]
+        ),
+        .library(
+            name: "Utility",
+            targets: ["Utility"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.18.0")),
