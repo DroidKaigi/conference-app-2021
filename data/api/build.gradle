@@ -90,17 +90,11 @@ kotlin {
                 srcDir 'src/androidTest'
             }
         }
-        iosMain {
-            it.dependencies {
-                implementation Dep.Ktor.ios
-                implementation Dep.Koin.core
-            }
-            iosX64Main.dependsOn(it)
+        iosMain.dependencies {
+            implementation Dep.Ktor.ios
+            implementation Dep.Koin.core
         }
-//            // For instrumentation tests
-//            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
-//            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
-//        }
+        iosX64Main.dependsOn(iosMain)
     }
 }
 

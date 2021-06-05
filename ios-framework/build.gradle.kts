@@ -50,12 +50,13 @@ kotlin {
                 implementation(kotlin("test-annotations-common"))
             }
         }
-        val iosX64Main by getting
         val iosMain by getting {
             dependencies {
                 implementation(Dep.Koin.core)
             }
-            iosX64Main.dependsOn(this)
+        }
+        val iosX64Main by getting {
+            dependsOn(iosMain)
         }
         val iosTest by getting
     }

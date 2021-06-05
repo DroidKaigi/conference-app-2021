@@ -74,12 +74,10 @@ kotlin {
                 srcDir 'src/androidTest'
             }
         }
-        iosMain {
-            it.dependencies {
-                implementation Dep.Koin.core
-            }
-            iosX64Main.dependsOn(it)
+        iosMain.dependencies {
+            implementation Dep.Koin.core
         }
+        iosX64Main.dependsOn(iosMain)
     }
 }
 

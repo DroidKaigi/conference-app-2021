@@ -88,13 +88,11 @@ kotlin {
 //            androidTestImplementation  "com.google.dagger:hilt-android-testing:2.31.2-alpha"
 //            kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
 //        }
-        iosMain {
-            it.dependencies {
-                implementation Dep.Koin.core
-                implementation "com.squareup.sqldelight:native-driver:1.4.4"
-            }
-            iosX64Main.dependsOn(it)
+        iosMain.dependencies {
+            implementation Dep.Koin.core
+            implementation "com.squareup.sqldelight:native-driver:1.4.4"
         }
+        iosX64Main.dependsOn(iosMain)
     }
 }
 
