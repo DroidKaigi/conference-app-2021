@@ -1,6 +1,6 @@
 import Foundation
 
-// Todo: Remove this file when calls the API through KMM module is implemented
+// TODO: Remove this file when calls the API through KMM module is implemented
 var dummyStaffs: [Staff] {
     var staffs = [Staff]()
     for _ in 0...10 {
