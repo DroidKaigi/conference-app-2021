@@ -20,6 +20,11 @@ run-swiftgen:
 run-swiftgen-generate-xcfilelists:
 	./scripts/generate-swiftgen-xcfilelists.sh
 
+# KMM Module
+.PHONY: create-kmm-framework
+create-kmm-framework:
+	./scripts/create-kmm-framework.sh
+
 # Test App Debug
 .PHONY: test-app-debug
 test-app-debug:
