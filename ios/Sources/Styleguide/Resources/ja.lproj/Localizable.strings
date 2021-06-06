@@ -5,6 +5,10 @@
 
 // MARK: Media
 "MediaScreen.Title" = "Media";
+"MediaScreen.Session.Blog.Title" = "BLOG";
+"MediaScreen.Session.Video.Title" = "VIDEO";
+"MediaScreen.Session.Podcast.Title" = "PODCAST";
+"MediaScreen.Session.More" = "More";
 
 // MARK: Favorite
 "FavoriteScreen.Title" = "Favorites";
