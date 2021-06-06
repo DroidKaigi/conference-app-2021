@@ -30,16 +30,16 @@ public struct SmallCard: View {
 
     public var body: some View {
         Button(action: tapAction, label: {
-            VStack(alignment: .leading, spacing: 13) {
-                // TODO: fix as aspect from screen width
-                ImageView(imageURL: imageURL, width: 163, height: 114)
+            VStack(alignment: .leading, spacing: 16) {
+                ImageView(imageURL: imageURL)
+                    .aspectRatio(163/114, contentMode: .fit)
 
                 VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 4) {
                         Text(title)
                             .font(.subheadline)
                             .foregroundColor(AssetColor.Base.primary.color)
-                            .lineLimit(2)
+                            .lineLimit(3)
 
                         Text(date.formatted)
                             .font(.caption)

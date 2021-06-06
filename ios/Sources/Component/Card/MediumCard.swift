@@ -31,7 +31,7 @@ public struct MediumCard: View {
     public var body: some View {
         Button(action: tapAction, label: {
             VStack(alignment: .leading, spacing: 13) {
-                ImageView(imageURL: imageURL, width: 225, height: 114)
+                ImageView(imageURL: imageURL)
 
                 VStack(alignment: .leading, spacing: 12) {
                     VStack(alignment: .leading, spacing: 4) {
