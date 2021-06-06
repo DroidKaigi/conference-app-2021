@@ -35,7 +35,16 @@ jobs:
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: iosTest
+          arguments: iosX64Test
+          dependencies-cache-key: |
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/src/**/*.kt
+            **/gradle.properties
+            gradle/**
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: iosArm64Test
           dependencies-cache-key: |
             **/*.gradle
             **/*.gradle.kts
