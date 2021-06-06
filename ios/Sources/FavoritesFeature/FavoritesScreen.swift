@@ -35,6 +35,9 @@ public struct FavoritesScreen: View {
                             )
                         }
                     }
+                    .onAppear {
+                        viewStore.send(.refresh)
+                    }
                 }
                 .padding(.horizontal, 8)
             }
@@ -64,6 +67,7 @@ extension FavoritesScreen {
             tapAction: tapAction,
             tapFavoriteAction: tapFavoritesAction
         )
+        .buttonStyle(PlainButtonStyle())
     }
 }
 
@@ -71,14 +75,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
         FavoritesScreen(
             store: .init(
-                initialState: .init(items: [
-                    .init(isFavorited: true),
-                    .init(isFavorited: false),
-                    .init(isFavorited: true),
-                    .init(isFavorited: false),
-                    .init(isFavorited: true),
-                    .init(isFavorited: false),
-                ]),
+                initialState: .init(),
                 reducer: favoritesReducer,
                 environment: .init()
             )
@@ -88,14 +85,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
 
         FavoritesScreen(
             store: .init(
-                initialState: .init(items: [
-                    .init(isFavorited: true),
-                    .init(isFavorited: false),
-                    .init(isFavorited: true),
-                    .init(isFavorited: false),
-                    .init(isFavorited: true),
-                    .init(isFavorited: false),
-                ]),
+                initialState: .init(),
                 reducer: favoritesReducer,
                 environment: .init()
             )

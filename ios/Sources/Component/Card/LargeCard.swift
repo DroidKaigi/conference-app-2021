@@ -29,38 +29,37 @@ public struct LargeCard: View {
     }
 
     public var body: some View {
-        Button(action: tapAction, label: {
-            VStack(alignment: .leading, spacing: 13) {
-                // TODO: fix as aspect from screen width
-                ImageView(imageURL: imageURL)
+        VStack(alignment: .leading, spacing: 13) {
+            ImageView(imageURL: imageURL)
+                .aspectRatio(343/190, contentMode: .fit)
 
-                Text(title)
-                    .font(.headline)
-                    .foregroundColor(AssetColor.Base.primary.color)
-                    .lineLimit(2)
+            Text(title)
+                .font(.headline)
+                .foregroundColor(AssetColor.Base.primary.color)
+                .lineLimit(2)
 
-                HStack(spacing: 8) {
-                    Tag(type: tag) {
-                        // do something if needed
-                    }
-
-                    Text(date.formatted)
-                        .font(.caption)
-                        .foregroundColor(AssetColor.Base.tertiary.color)
-
-                    Spacer()
-
-                    Button(action: tapFavoriteAction, label: {
-                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                        image
-                            .renderingMode(.template)
-                            .foregroundColor(AssetColor.primary.color)
-                    })
+            HStack(spacing: 8) {
+                Tag(type: tag) {
+                    // do something if needed
                 }
+
+                Text(date.formatted)
+                    .font(.caption)
+                    .foregroundColor(AssetColor.Base.tertiary.color)
+
+                Spacer()
+
+                Button(action: tapFavoriteAction, label: {
+                    let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                    image
+                        .renderingMode(.template)
+                        .foregroundColor(AssetColor.primary.color)
+                })
             }
-            .padding(16)
-            .background(AssetColor.Background.primary.color)
-        })
+        }
+        .padding(16)
+        .background(AssetColor.Background.primary.color)
+        .onTapGesture(perform: tapAction)
     }
 }
 

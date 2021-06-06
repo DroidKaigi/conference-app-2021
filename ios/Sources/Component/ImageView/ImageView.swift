@@ -24,11 +24,7 @@ public struct ImageView: View {
 
 struct ImageView_Previews: PreviewProvider {
     static var previews: some View {
-        Group {
-            ImageView(imageURL: URL(string: ""))
-            ImageView(imageURL: URL(string: ""))
-            ImageView(imageURL: URL(string: ""))
-        }
-        .previewLayout(.sizeThatFits)
+        ImageView(imageURL: URL(string: ""))
+            .previewLayout(.sizeThatFits)
     }
 }

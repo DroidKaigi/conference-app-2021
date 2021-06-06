@@ -1,6 +1,6 @@
 import ComposableArchitecture
-import HomeFeature
 import FavoritesFeature
+import HomeFeature
 
 public struct AppState: Equatable {
     public var homeState: HomeState
@@ -8,16 +8,7 @@ public struct AppState: Equatable {
 
     public init(
         homeState: HomeState = .init(),
-        favoritesState: FavoritesState = .init(
-            items: [
-                .init(isFavorited: true),
-                .init(isFavorited: false),
-                .init(isFavorited: true),
-                .init(isFavorited: false),
-                .init(isFavorited: true),
-                .init(isFavorited: false),
-            ]
-        )
+        favoritesState: FavoritesState = .init()
     ) {
         self.homeState = homeState
         self.favoritesState = favoritesState
