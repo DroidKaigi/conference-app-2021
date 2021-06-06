@@ -67,7 +67,6 @@ extension FavoritesScreen {
             tapAction: tapAction,
             tapFavoriteAction: tapFavoritesAction
         )
-        .buttonStyle(PlainButtonStyle())
     }
 }
 
