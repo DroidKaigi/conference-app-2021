@@ -1,7 +1,7 @@
 #! /bin/bash
 
-SHELL_PATH=`pwd -P`
+FILE_PATH=`dirname $0`
 
-cd "$SHELL_PATH/../../"
+cd "$FILE_PATH/../../"
 
-./gradlew :ios-framework:packForXCode -PXCODE_CONFIGURATION=${CONFIGURATION}
+./gradlew ios-framework:createXCFramework
