@@ -35,10 +35,6 @@ var package = Package(
             targets: ["MediaFeature"]
         ),
         .library(
-            name: "Repository",
-            targets: ["Repository"]
-        ),
-        .library(
             name: "SettingFeature",
             targets: ["SettingFeature"]
         ),
@@ -105,9 +101,7 @@ var package = Package(
         ),
         .target(
             name: "Repository",
-            dependencies: [
-                .target(name: "DroidKaigiMPP"),
-            ]
+            dependencies: []
         ),
         .target(
             name: "SettingFeature",
@@ -154,13 +148,3 @@ package.targets.append(contentsOf: [
         dependencies: ["MediaFeature"]
     ),
 ])
-
-// MARK: - Library Targets
-package.targets.append(contentsOf: [
-    .binaryTarget(
-        name: "DroidKaigiMPP",
-        path: "build/xcframeworks/DroidKaigiMPP.xcframework"
-    )
-])
-
-
