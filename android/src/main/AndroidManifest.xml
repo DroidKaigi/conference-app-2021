@@ -76,6 +76,8 @@
                 <action android:name="android.intent.action.LOCALE_CHANGED" />
             </intent-filter>
         </receiver>
+        <!-- for benchmark -->
+        <!--suppress AndroidElementNotAllowed -->
+        <profileable android:shell="true" />
     </application>
-
 </manifest>
