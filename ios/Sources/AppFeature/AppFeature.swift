@@ -10,12 +10,12 @@ public struct AppState: Equatable {
         homeState: HomeState = .init(),
         favoritesState: FavoritesState = .init(
             items: [
-                .init(isFavorite: true),
-                .init(isFavorite: false),
-                .init(isFavorite: true),
-                .init(isFavorite: false),
-                .init(isFavorite: true),
-                .init(isFavorite: false),
+                .init(isFavorited: true),
+                .init(isFavorited: false),
+                .init(isFavorited: true),
+                .init(isFavorited: false),
+                .init(isFavorited: true),
+                .init(isFavorited: false),
             ]
         )
     ) {

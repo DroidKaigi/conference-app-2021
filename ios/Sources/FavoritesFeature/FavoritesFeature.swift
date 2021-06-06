@@ -5,13 +5,13 @@ import Component
 public struct FavoriteItem: Equatable, Identifiable {
     public let id: UUID = UUID()
     let title: String = "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-    let isFavorite: Bool
+    let isFavorited: Bool
     let imageURL: URL? = nil
     let tag: TagType = .medium
     let date: Date = Date()
 
-    public init(isFavorite: Bool) {
-        self.isFavorite = isFavorite
+    public init(isFavorited: Bool) {
+        self.isFavorited = isFavorited
     }
 }
 

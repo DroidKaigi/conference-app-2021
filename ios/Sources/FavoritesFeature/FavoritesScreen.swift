@@ -56,7 +56,7 @@ extension FavoritesScreen {
             imageURL: item.imageURL,
             tag: item.tag,
             date: item.date,
-            isFavorited: item.isFavorite,
+            isFavorited: item.isFavorited,
             tapAction: tapAction,
             tapFavoriteAction: tapFavoritesAction
         )
@@ -68,12 +68,12 @@ public struct FavoritesScreen_Previews: PreviewProvider {
         FavoritesScreen(
             store: .init(
                 initialState: .init(items: [
-                    .init(isFavorite: true),
-                    .init(isFavorite: false),
-                    .init(isFavorite: true),
-                    .init(isFavorite: false),
-                    .init(isFavorite: true),
-                    .init(isFavorite: false),
+                    .init(isFavorited: true),
+                    .init(isFavorited: false),
+                    .init(isFavorited: true),
+                    .init(isFavorited: false),
+                    .init(isFavorited: true),
+                    .init(isFavorited: false),
                 ]),
                 reducer: favoritesReducer,
                 environment: .init()
@@ -85,12 +85,12 @@ public struct FavoritesScreen_Previews: PreviewProvider {
         FavoritesScreen(
             store: .init(
                 initialState: .init(items: [
-                    .init(isFavorite: true),
-                    .init(isFavorite: false),
-                    .init(isFavorite: true),
-                    .init(isFavorite: false),
-                    .init(isFavorite: true),
-                    .init(isFavorite: false),
+                    .init(isFavorited: true),
+                    .init(isFavorited: false),
+                    .init(isFavorited: true),
+                    .init(isFavorited: false),
+                    .init(isFavorited: true),
+                    .init(isFavorited: false),
                 ]),
                 reducer: favoritesReducer,
                 environment: .init()
