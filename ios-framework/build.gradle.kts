@@ -5,7 +5,6 @@ import io.github.droidkaigi.feeder.Versions
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
 apply(rootProject.file("gradle/android.gradle"))
@@ -13,12 +12,14 @@ apply(rootProject.file("gradle/android.gradle"))
 kotlin {
     android()
 
-    val iosTargets = listOf(
-        iosArm64("ios"),
-        iosX64()
-    )
-    iosTargets.forEach {
-        it.binaries {
+    val iosTarget: (String, KotlinNativeTarget.() -> Unit) -> KotlinNativeTarget =
+        if (System.getenv("SDK_NAME")?.startsWith("iphoneos") == true)
+            ::iosArm64
+        else
+            ::iosX64
+
+    iosTarget("ios") {
+        binaries {
             framework {
                 baseName = "DroidKaigiMPP"
                 export(project(":model"))
@@ -55,27 +56,22 @@ kotlin {
                 implementation(Dep.Koin.core)
             }
         }
-        val iosX64Main by getting {
-            dependsOn(iosMain)
-        }
         val iosTest by getting
     }
 }
 
+val packForXcode by tasks.creating(Sync::class) {
+    group = "build"
+    val mode = System.getenv("CONFIGURATION") ?: "DEBUG"
+    val framework =
+        kotlin.targets.getByName<KotlinNativeTarget>("ios").binaries.getFramework(mode)
+    inputs.property("mode", mode)
+    dependsOn(framework.linkTask)
+    val targetDir = File(buildDir, "xcode-frameworks")
+    from({ framework.outputDirectory })
+    into(targetDir)
+}
+tasks.getByName("build").dependsOn(packForXcode)
+
 // Workaround for issues where types defined in iOS native code cannot be referenced in Android Studio
 tasks.getByName("preBuild").dependsOn(tasks.getByName("compileKotlinIos"))
-
-multiplatformSwiftPackage {
-    swiftToolsVersion("5.3")
-    targetPlatforms {
-        iOS { v("14") }
-    }
-    outputDirectory(File(projectDir, "../ios/build/xcframeworks"))
-    buildConfiguration {
-        if (System.getenv("CONFIGURATION") != "Release") {
-            debug()
-        } else {
-            release()
-        }
-    }
-}
