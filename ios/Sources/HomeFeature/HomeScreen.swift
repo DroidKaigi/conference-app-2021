@@ -10,7 +10,6 @@ public struct HomeScreen: View {
     }
 
     public var body: some View {
-        ZStack(alignment: .top) {
             NavigationView {
                 ScrollView {
                     ZStack(alignment: .top) {
@@ -45,16 +44,18 @@ public struct HomeScreen: View {
                     }
                 }
                 .background(AssetColor.Background.primary.color)
-                .navigationBarTitle("", displayMode: .inline)
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        AssetImage.logoTitle.image
+                    }
+                }
                 .navigationBarItems(
                     trailing: AssetImage.iconSetting.image
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
                 )
             }
-            AssetImage.logoTitle.image
-                .frame(width: nil, height: 44, alignment: .center)
-        }
     }
 }
 
