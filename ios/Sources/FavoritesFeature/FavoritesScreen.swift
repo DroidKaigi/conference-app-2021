@@ -45,6 +45,10 @@ public struct FavoritesScreen: View {
                     .renderingMode(.template)
                     .foregroundColor(AssetColor.Base.primary.color)
             )
+            .navigationBarColor(
+                backgroundColor: AssetColor.Background.primary.color,
+                titleColor: AssetColor.Base.primary.color
+            )
         }
     }
 }
