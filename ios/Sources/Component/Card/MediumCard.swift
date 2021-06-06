@@ -53,8 +53,8 @@ public struct MediumCard: View {
                         Spacer()
 
                         Button(action: tapFavoriteAction, label: {
-                            let uiImage = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                            Image(uiImage: uiImage)
+                            let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                            image
                                 .renderingMode(.template)
                                 .foregroundColor(AssetColor.primary.color)
                         })

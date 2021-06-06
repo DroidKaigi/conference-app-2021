@@ -25,7 +25,7 @@ enum AppTab: CaseIterable {
         }
     }
 
-    var image: UIImage {
+    var image: Image {
         switch self {
         case .home:
             return AssetImage.iconHome.image
@@ -73,9 +73,9 @@ public struct AppScreen: View {
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
-        UITabBar.appearance().barTintColor = UIColor(AssetColor.Background.contents.color)
-        UITabBar.appearance().unselectedItemTintColor = UIColor(AssetColor.Base.disable.color)
-        UINavigationBar.appearance().barTintColor = UIColor(AssetColor.Background.primary.color)
+        UITabBar.appearance().barTintColor = AssetColor.Background.contents.uiColor
+        UITabBar.appearance().unselectedItemTintColor = AssetColor.Base.disable.uiColor
+        UINavigationBar.appearance().barTintColor = AssetColor.Background.primary.uiColor
     }
 
     public var body: some View {
@@ -85,7 +85,7 @@ public struct AppScreen: View {
                 ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
                     tab.view(store)
                         .tabItem {
-                            Image(uiImage: tab.image)
+                            tab.image
                             Text(tab.title)
                         }
                         .tag(offset)

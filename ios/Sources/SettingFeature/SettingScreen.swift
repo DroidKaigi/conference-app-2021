@@ -43,7 +43,7 @@ public struct SettingScreen: View {
         let languageModel = SettingModel.language(isOn: isLanguageOn)
         _items = State(initialValue: [darkModeModel, languageModel])
 
-        UITableView.appearance().backgroundColor = UIColor(AssetColor.Background.primary.color)
+        UITableView.appearance().backgroundColor = AssetColor.Background.primary.uiColor
     }
 
     public var body: some View {
@@ -66,14 +66,14 @@ public struct SettingScreen: View {
                 trailing: Button(action: {
                     presentationMode.wrappedValue.dismiss()
                 }, label: {
-                    Image(uiImage: AssetImage.iconClose.image)
+                    AssetImage.iconClose.image
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
             .navigationBarColor(
-                backgroundColor: AssetColor.Background.primary.color,
-                titleColor: AssetColor.Base.primary.color
+                backgroundColor: AssetColor.Background.primary.uiColor,
+                titleColor: AssetColor.Base.primary.uiColor
             )
         }
     }

@@ -47,12 +47,12 @@ public struct HomeScreen: View {
                 .background(AssetColor.Background.primary.color)
                 .navigationBarTitle("", displayMode: .inline)
                 .navigationBarItems(
-                    trailing: Image(uiImage: AssetImage.iconSetting.image)
+                    trailing: AssetImage.iconSetting.image
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
                 )
             }
-            Image(uiImage: AssetImage.logoTitle.image)
+            AssetImage.logoTitle.image
                 .frame(width: nil, height: 44, alignment: .center)
         }
     }
