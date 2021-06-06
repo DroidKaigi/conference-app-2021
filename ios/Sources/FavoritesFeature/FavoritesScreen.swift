@@ -41,13 +41,13 @@ public struct FavoritesScreen: View {
             .background(AssetColor.Background.primary.color)
             .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
             .navigationBarItems(
-                trailing: Image(uiImage: AssetImage.iconSetting.image)
+                trailing: AssetImage.iconSetting.image
                     .renderingMode(.template)
                     .foregroundColor(AssetColor.Base.primary.color)
             )
             .navigationBarColor(
-                backgroundColor: AssetColor.Background.primary.color,
-                titleColor: AssetColor.Base.primary.color
+                backgroundColor: AssetColor.Background.primary.uiColor,
+                titleColor: AssetColor.Base.primary.uiColor
             )
         }
     }
