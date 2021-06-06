@@ -41,16 +41,25 @@ enum AppTab: CaseIterable {
     func view(_ store: Store<AppState, AppAction>) -> some View {
         switch self {
         case .home:
-            return AnyView(HomeScreen(
-                store: store.scope(
-                    state: \.homeState,
-                    action: AppAction.home
+            return AnyView(
+                HomeScreen(
+                    store: store.scope(
+                        state: \.homeState,
+                        action: AppAction.home
+                    )
                 )
-            ))
+            )
         case .media:
             return AnyView(MediaScreen())
         case .favorites:
-            return AnyView(FavoritesScreen())
+            return AnyView(
+                FavoritesScreen(
+                    store: store.scope(
+                        state: \.favoritesState,
+                        action: AppAction.favorites
+                    )
+                )
+            )
         case .about:
             return AnyView(AboutScreen())
         }

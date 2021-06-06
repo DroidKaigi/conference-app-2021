@@ -29,41 +29,41 @@ public struct MediumCard: View {
     }
 
     public var body: some View {
-        Button(action: tapAction, label: {
-            VStack(alignment: .leading, spacing: 13) {
-                ImageView(imageURL: imageURL, width: 225, height: 114)
+        VStack(alignment: .leading, spacing: 13) {
+            ImageView(imageURL: imageURL)
+                .aspectRatio(225/114, contentMode: .fit)
 
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(title)
-                            .font(.subheadline)
-                            .foregroundColor(AssetColor.Base.primary.color)
-                            .lineLimit(2)
+            VStack(alignment: .leading, spacing: 12) {
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(title)
+                        .font(.subheadline)
+                        .foregroundColor(AssetColor.Base.primary.color)
+                        .lineLimit(2)
 
-                        Text(date.formatted)
-                            .font(.caption)
-                            .foregroundColor(AssetColor.Base.tertiary.color)
+                    Text(date.formatted)
+                        .font(.caption)
+                        .foregroundColor(AssetColor.Base.tertiary.color)
+                }
+
+                HStack(spacing: 8) {
+                    Tag(type: tag) {
+                        // do something if needed
                     }
 
-                    HStack(spacing: 8) {
-                        Tag(type: tag) {
-                            // do something if needed
-                        }
+                    Spacer()
 
-                        Spacer()
-
-                        Button(action: tapFavoriteAction, label: {
-                            let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                            image
-                                .renderingMode(.template)
-                                .foregroundColor(AssetColor.primary.color)
-                        })
-                    }
+                    Button(action: tapFavoriteAction, label: {
+                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                        image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.primary.color)
+                    })
                 }
             }
-            .padding(16)
-            .background(AssetColor.Background.primary.color)
-        })
+        }
+        .padding(16)
+        .background(AssetColor.Background.primary.color)
+        .onTapGesture(perform: tapAction)
     }
 }
 
