@@ -14,8 +14,8 @@ kotlin {
     android()
 
     val iosTargets = listOf(
-        iosArm64("ios"),
-        iosX64()
+        iosArm64(),
+        iosX64("ios")
     )
     iosTargets.forEach {
         it.binaries {
@@ -55,7 +55,7 @@ kotlin {
                 implementation(Dep.Koin.core)
             }
         }
-        val iosX64Main by getting {
+        val iosArm64Main by getting {
             dependsOn(iosMain)
         }
         val iosTest by getting

@@ -24,8 +24,8 @@ kotlin {
     // The multiplatform libraries do not support hierarchical structures, which breaks the IDE's completion.
     // https://kotlinlang.org/docs/mpp-share-on-platforms.html#share-code-on-similar-platforms
     def iosTargets = [
-            iosArm64("ios"),
-            iosX64()
+            iosArm64(),
+            iosX64("ios")
     ]
     iosTargets.forEach {
         it.binaries.forEach {
@@ -77,7 +77,7 @@ kotlin {
         iosMain.dependencies {
             implementation Dep.Koin.core
         }
-        iosX64Main.dependsOn(iosMain)
+        iosArm64Main.dependsOn(iosMain)
     }
 }
 
