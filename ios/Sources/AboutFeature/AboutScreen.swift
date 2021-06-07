@@ -82,19 +82,8 @@ public struct AboutScreen_Previews: PreviewProvider {
             AboutScreen(
                 store: .init(
                     initialState: .init(
-                        staffs: [
-                            Staff(
-                                name: "dummy name",
-                                detail: "dummy detail",
-                                iconUrl: URL(string: "https://example.com")!
-                            )
-                        ],
-                        contributors: [
-                            Contributor(
-                                name: "dummy name",
-                                iconUrl: URL(string: "https://example.com")!
-                            )
-                        ]
+                        staffs: dummyStaffs,
+                        contributors: dummyContributors
                     ),
                     reducer: aboutReducer,
                     environment: .init()
@@ -105,19 +94,8 @@ public struct AboutScreen_Previews: PreviewProvider {
             AboutScreen(
                 store: .init(
                     initialState: .init(
-                        staffs: [
-                            Staff(
-                                name: "dummy name",
-                                detail: "dummy detail",
-                                iconUrl: URL(string: "https://example.com")!
-                            )
-                        ],
-                        contributors: [
-                            Contributor(
-                                name: "dummy name",
-                                iconUrl: URL(string: "https://example.com")!
-                            )
-                        ]
+                        staffs: dummyStaffs,
+                        contributors: dummyContributors
                     ),
                     reducer: aboutReducer,
                     environment: .init()

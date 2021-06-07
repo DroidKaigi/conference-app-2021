@@ -6,10 +6,8 @@ public struct AboutState: Equatable {
     public var selectedType = SelectedType.staff
     
     public init(staffs: [Staff] = [], contributors: [Contributor] = []) {
-        // TODO: Replace with real data.
-        self.staffs = dummyStaffs
-        // TODO: Replace with real data.
-        self.contributors = dummyContributors
+        self.staffs = staffs
+        self.contributors = contributors
     }
 }
 
