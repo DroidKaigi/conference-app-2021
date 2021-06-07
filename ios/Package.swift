@@ -94,6 +94,7 @@ var package = Package(
             name: "HomeFeature",
             dependencies: [
                 .target(name: "Styleguide"),
+                .target(name: "Component"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
