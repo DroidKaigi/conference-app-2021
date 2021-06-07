@@ -10,7 +10,8 @@ public struct ContributorCell: View {
     
     public var body: some View {
         VStack {
-            Image(uiImage: AssetImage.logo.image)
+            // TODO: Change to real Image to get from URL
+            AssetImage.logo.image
                 .resizable()
                 .scaledToFill()
                 .frame(width: 60, height: 60)
