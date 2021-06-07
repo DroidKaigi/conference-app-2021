@@ -3,11 +3,12 @@ import ComposableArchitecture
 public struct AboutState: Equatable {
     public var staffs: [Staff]
     public var contributors: [Contributor]
-    public var selectedType = SelectedType.staff
+    public var selectedType: SelectedType
     
-    public init(staffs: [Staff] = [], contributors: [Contributor] = []) {
+    public init(staffs: [Staff] = [], contributors: [Contributor] = [], selectedType: SelectedType = .staff) {
         self.staffs = staffs
         self.contributors = contributors
+        self.selectedType = selectedType
     }
 }
 
