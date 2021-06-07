@@ -48,7 +48,7 @@ public struct AboutScreen: View {
                     switch viewStore.selectedType {
                     case .staff:
                         ScrollView(.vertical) {
-                            LazyVStack(alignment: .leading, spacing: 40) {
+                            LazyVStack(alignment: .leading, spacing: 24) {
                                 ForEach(viewStore.staffs) { staff in
                                     StaffCell(staff: staff)
                                 }
@@ -58,7 +58,7 @@ public struct AboutScreen: View {
                         ScrollView(.vertical) {
                             LazyVGrid(
                                 columns: Array(repeating: .init(), count: 3),
-                                spacing: 40
+                                spacing: 56
                             ) {
                                 ForEach(viewStore.contributors) { contributor in
                                     ContributorCell(contributor: contributor)
