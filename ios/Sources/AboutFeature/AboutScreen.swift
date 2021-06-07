@@ -55,15 +55,17 @@ public struct AboutScreen: View {
                             }
                         }
                     case .contributor:
-                        LazyVGrid(
-                            columns: Array(repeating: .init(), count: 3),
-                            spacing: 40
-                        ) {
-                            ForEach(viewStore.contributors) { contributor in
-                                ContributorCell(contributor: contributor)
+                        ScrollView(.vertical) {
+                            LazyVGrid(
+                                columns: Array(repeating: .init(), count: 3),
+                                spacing: 40
+                            ) {
+                                ForEach(viewStore.contributors) { contributor in
+                                    ContributorCell(contributor: contributor)
+                                }
                             }
+                            .listStyle(PlainListStyle())
                         }
-                        .listStyle(PlainListStyle())
                     }
                 }
                 Spacer()
