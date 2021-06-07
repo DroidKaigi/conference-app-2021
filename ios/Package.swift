@@ -43,10 +43,6 @@ var package = Package(
             targets: ["SettingFeature"]
         ),
         .library(
-            name: "Repository",
-            targets: ["Repository"]
-        ),
-        .library(
             name: "Styleguide",
             targets: ["Styleguide"]
         ),
