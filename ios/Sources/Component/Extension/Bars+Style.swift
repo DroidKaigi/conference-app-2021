@@ -1,6 +1,22 @@
 import Styleguide
 import UIKit
 
+extension UITabBar {
+
+    public func configureWithDefaultStyle() {
+        let standardAppearance = UITabBarAppearance()
+        standardAppearance.configureWithDefaultBackground()
+        let normalColor = AssetColor.Base.disable.uiColor
+        [standardAppearance.stackedLayoutAppearance, standardAppearance.inlineLayoutAppearance, standardAppearance.compactInlineLayoutAppearance]
+            .map(\.normal)
+            .forEach {
+                $0.iconColor = normalColor
+                $0.titleTextAttributes = [.foregroundColor: normalColor]
+            }
+        self.standardAppearance = standardAppearance
+    }
+}
+
 extension UINavigationBar {
 
     public func configureWithDefaultStyle() {

@@ -5,6 +5,7 @@ import HomeFeature
 import MediaFeature
 import Styleguide
 import SwiftUI
+import UIKit
 
 enum AppTab: CaseIterable {
     case home
@@ -73,8 +74,7 @@ public struct AppScreen: View {
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
-        UITabBar.appearance().barTintColor = AssetColor.Background.contents.uiColor
-        UITabBar.appearance().unselectedItemTintColor = AssetColor.Base.disable.uiColor
+        UITabBar.appearance().configureWithDefaultStyle()
         UINavigationBar.appearance().configureWithDefaultStyle()
     }
 
@@ -85,7 +85,7 @@ public struct AppScreen: View {
                 ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
                     tab.view(store)
                         .tabItem {
-                            tab.image
+                            tab.image.renderingMode(.template)
                             Text(tab.title)
                         }
                         .tag(offset)
