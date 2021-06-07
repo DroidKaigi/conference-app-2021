@@ -5,7 +5,7 @@ import Styleguide
 public struct AboutScreen: View {
 
     private let store: Store<AboutState, AboutAction>
-    
+
     public init(store: Store<AboutState, AboutAction>) {
         self.store = store
         let fontDescriptor = UIFont.preferredFont(forTextStyle: .subheadline).fontDescriptor.withSymbolicTraits(.traitBold)!
@@ -59,7 +59,7 @@ public struct AboutScreen: View {
                         ScrollView(.vertical) {
                             LazyVGrid(
                                 columns: Array(repeating: .init(), count: 3),
-                                spacing: 56
+                                spacing: 40
                             ) {
                                 ForEach(viewStore.contributors) { contributor in
                                     ContributorCell(contributor: contributor)
