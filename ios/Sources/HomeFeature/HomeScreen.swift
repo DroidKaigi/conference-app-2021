@@ -16,17 +16,20 @@ public struct HomeScreen: View {
                 ZStack(alignment: .top) {
                     AssetColor.primary.color
                         .frame(width: nil, height: 200)
+                        .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
                     WithViewStore(store) { viewStore in
-                        VStack(alignment: .trailing, spacing: 0) {
-                            Text("DroidKaigi 2021 (7/31) D-7")
-                                .foregroundColor(AssetColor.Base.white.color)
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, 8)
-                                .background(AssetColor.primaryDark.color)
-                                .padding(.vertical)
-                            // TODO: Replace with card(large)
-                            Rectangle()
-                                .frame(width: nil, height: 300)
+                        VStack(alignment: .trailing, spacing: 16) {
+                            MessageBar(title: "DroidKaigi 2021 (7/31) D-7")
+                                .padding(.top, 16)
+                            LargeCard(
+                                title: "DroidKaigi 2021とその他活動予定についてのお知らせ",
+                                imageURL: nil,
+                                tag: .droidKaigiFm,
+                                date: Date(),
+                                isFavorited: false,
+                                tapAction: {},
+                                tapFavoriteAction: {}
+                            )
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
                             QuestionnaireView(tapAnswerAction: {

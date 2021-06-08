@@ -1,3 +1,4 @@
+import Component
 import Styleguide
 import SwiftUI
 
@@ -25,13 +26,15 @@ public struct QuestionnaireView: View {
                         .padding(.vertical, 8)
                         .padding(.horizontal, 32)
                         .overlay(
-                            Rectangle()
-                                .stroke(AssetColor.primary.color)
+                            CutCornerRectangle(
+                                targetCorners: [.topLeft, .bottomRight],
+                                radius: 8
+                            )
+                            .stroke(AssetColor.primary.color, lineWidth: 2)
                         )
                 }
             )
         }
-        .padding(.vertical, 16)
     }
 }
 

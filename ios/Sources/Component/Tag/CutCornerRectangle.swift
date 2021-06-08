@@ -59,6 +59,13 @@ public struct CutCornerRectangle: Shape {
             } else {
                 path.addLine(to: bottomLeft)
             }
+
+            if targetCorners.contains(.topLeft) {
+                path.addLine(to: CGPoint(x: topLeft.x, y: topLeft.y + radius))
+                path.addLine(to: CGPoint(x: topLeft.x + radius, y: topLeft.y))
+            } else {
+                path.addLine(to: topLeft)
+            }
         }
 
         return path
