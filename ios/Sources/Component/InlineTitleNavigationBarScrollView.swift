@@ -7,7 +7,11 @@ private struct ContentOffsetPreferenceKey: PreferenceKey {
     static func reduce(value: inout CGFloat, nextValue: () -> CGFloat) {}
 }
 
-/// A vertical scroll view applies scrollEdgeAppearance when its content reaches the matching edge of the navigation bar
+/**
+ A vertical scroll view applies scrollEdgeAppearance when its content reaches the matching edge of the navigation bar.
+
+ This behavior is similar to the default behavior from iOS 15 SDK, so can be removed after migrating to Xcode 13.
+ */
 public struct InlineTitleNavigationBarScrollView<Content: View>: View {
 
     public var content: Content
