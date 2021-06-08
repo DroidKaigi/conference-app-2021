@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "no_image_podcast.pdf",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
