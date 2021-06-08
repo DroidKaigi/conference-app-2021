@@ -38,9 +38,16 @@ public struct HomeScreen: View {
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
                             ForEach(viewStore.contents, id: \.self) { content in
-                                // TODO: Replace with List Item
-                                Text(content)
-                                    .foregroundColor(AssetColor.Base.primary.color)
+                                ListItem(
+                                    title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル",
+                                    imageURL: nil,
+                                    users: [],
+                                    date: Date(),
+                                    isFavorited: true,
+                                    tapFavoriteAction: {},
+                                    tapAction: {}
+                                )
+                                .padding(.bottom, 16)
                             }
                         }
                         .padding(.horizontal)
