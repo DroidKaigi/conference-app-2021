@@ -25,54 +25,55 @@ public struct AboutScreen: View {
     }
 
     public var body: some View {
-        NavigationView {
-            VStack {
+        GeometryReader { geometry in
+            NavigationView {
                 WithViewStore(store) { viewStore in
-                    Picker(
-                        "",
-                        selection:
-                            viewStore.binding(
-                                get: { $0.selectedType },
-                                send: { .selectedPicker($0) }
-                            )
-                    ) {
-                        ForEach(SelectedType.allCases, id: \.self) { (type) in
-                            Text(type.title).tag(type)
-                        }
-                    }
-                    .pickerStyle(SegmentedPickerStyle())
-                    .padding(.top, 20)
-                    .padding(.horizontal)
-                    .padding(.bottom, 10)
-                    Divider()
-                        .foregroundColor(AssetColor.Separate.contents.color)
-                    switch viewStore.selectedType {
-                    case .staff:
+                    VStack {
                         ScrollView(.vertical) {
-                            LazyVStack(alignment: .leading, spacing: 24) {
-                                ForEach(viewStore.staffs) { staff in
-                                    StaffCell(staff: staff)
+                            switch viewStore.selectedType {
+                            case .staff:
+                                LazyVStack(alignment: .leading, spacing: 24) {
+                                    ForEach(viewStore.staffs) { staff in
+                                        StaffCell(staff: staff)
+                                    }
                                 }
+                                .padding(.top, 20)
+                            case .contributor:
+                                LazyVGrid(
+                                    columns: Array(repeating: .init(), count: 3),
+                                    spacing: 40
+                                ) {
+                                    ForEach(viewStore.contributors) { contributor in
+                                        ContributorCell(contributor: contributor)
+                                    }
+                                }
+                                .listStyle(PlainListStyle())
+                                .padding(.top, 20)
                             }
                         }
-                    case .contributor:
-                        ScrollView(.vertical) {
-                            LazyVGrid(
-                                columns: Array(repeating: .init(), count: 3),
-                                spacing: 40
-                            ) {
-                                ForEach(viewStore.contributors) { contributor in
-                                    ContributorCell(contributor: contributor)
+                        .toolbar {
+                            ToolbarItem(placement: .principal) {
+                                Picker(
+                                    "",
+                                    selection:
+                                        viewStore.binding(
+                                            get: { $0.selectedType },
+                                            send: { .selectedPicker($0) }
+                                        )
+                                ) {
+                                    ForEach(SelectedType.allCases, id: \.self) { (type) in
+                                        Text(type.title).tag(type)
+                                    }
                                 }
+                                .frame(width: geometry.size.width - 32, height: nil, alignment: .center)
+                                .pickerStyle(SegmentedPickerStyle())
                             }
-                            .listStyle(PlainListStyle())
                         }
+                        .background(AssetColor.Background.primary.color)
+                        .navigationBarTitleDisplayMode(.inline)
                     }
                 }
-                Spacer()
             }
-            .navigationBarTitle("")
-            .navigationBarHidden(true)
         }
     }
 }
