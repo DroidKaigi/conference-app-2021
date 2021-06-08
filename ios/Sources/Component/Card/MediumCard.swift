@@ -30,8 +30,12 @@ public struct MediumCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 13) {
-            ImageView(imageURL: imageURL)
-                .aspectRatio(225/114, contentMode: .fit)
+            ImageView(
+                imageURL: imageURL,
+                placeholder: .noImage,
+                placeholderSize: .medium
+            )
+            .aspectRatio(225/114, contentMode: .fit)
 
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
