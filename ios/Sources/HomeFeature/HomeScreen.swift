@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
@@ -11,7 +12,7 @@ public struct HomeScreen: View {
 
     public var body: some View {
         NavigationView {
-            ScrollView {
+            InlineTitleNavigationBarScrollView {
                 ZStack(alignment: .top) {
                     AssetColor.primary.color
                         .frame(width: nil, height: 200)
@@ -43,7 +44,7 @@ public struct HomeScreen: View {
                     }
                 }
             }
-            .background(AssetColor.Background.primary.color)
+            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {

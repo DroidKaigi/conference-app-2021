@@ -16,7 +16,6 @@ public struct SettingToggleItem: View {
             Text(title)
         })
         .toggleStyle(SwitchToggleStyle(tint: AssetColor.primary.color))
-        .listRowBackground(AssetColor.Background.contents.color)
     }
 }
 

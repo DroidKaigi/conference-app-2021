@@ -42,25 +42,32 @@ public struct SettingScreen: View {
         let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
         let languageModel = SettingModel.language(isOn: isLanguageOn)
         _items = State(initialValue: [darkModeModel, languageModel])
-
-        UITableView.appearance().backgroundColor = AssetColor.Background.primary.uiColor
     }
 
     public var body: some View {
         NavigationView {
-            List {
-                ForEach(items.indices) { index in
-                    SettingToggleItem(
-                        title: items[index].title,
-                        isOn: Binding(get: {
-                            items[index].isOn
-                        }, set: { isOn in
-                            items[index].update(isOn: isOn)
-                        })
-                    )
+            InlineTitleNavigationBarScrollView {
+                LazyVStack(spacing: 0) {
+                    ForEach(items.indices) { index in
+                        ZStack(alignment: .bottom) {
+                            SettingToggleItem(
+                                title: items[index].title,
+                                isOn: Binding(get: {
+                                    items[index].isOn
+                                }, set: { isOn in
+                                    items[index].update(isOn: isOn)
+                                })
+                            )
+                            .frame(minHeight: 44)
+                            Divider()
+                        }
+                        .padding(.horizontal, 16)
+                        .background(AssetColor.Background.contents.color)
+                    }
                 }
+                .padding(.top, 24)
             }
-            .listStyle(PlainListStyle())
+            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
             .navigationBarItems(
                 trailing: Button(action: {
@@ -70,10 +77,6 @@ public struct SettingScreen: View {
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
-            )
-            .navigationBarColor(
-                backgroundColor: AssetColor.Background.primary.uiColor,
-                titleColor: AssetColor.Base.primary.uiColor
             )
         }
     }

@@ -53,6 +53,7 @@ var package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.18.0")),
+        .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", .upToNextMajor(from: "0.1.3")),
     ],
     targets: [
         .target(
@@ -78,6 +79,7 @@ var package = Package(
             name: "Component",
             dependencies: [
                 .target(name: "Styleguide"),
+                .product(name: "Introspect", package: "Introspect"),
             ]
         ),
         .target(
@@ -92,6 +94,7 @@ var package = Package(
             name: "HomeFeature",
             dependencies: [
                 .target(name: "Styleguide"),
+                .target(name: "Component"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -160,5 +163,3 @@ package.targets.append(contentsOf: [
         path: "build/xcframeworks/DroidKaigiMPP.xcframework"
     )
 ])
-
-
