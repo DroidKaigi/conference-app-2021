@@ -19,13 +19,13 @@ public struct HomeScreen: View {
                         .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
                     WithViewStore(store) { viewStore in
                         VStack(alignment: .trailing, spacing: 16) {
-                            MessageBar(title: "DroidKaigi 2021 (7/31) D-7")
+                            MessageBar(title: viewStore.message)
                                 .padding(.top, 16)
                             LargeCard(
-                                title: "DroidKaigi 2021とその他活動予定についてのお知らせ",
-                                imageURL: nil,
-                                tag: .droidKaigiFm,
-                                date: Date(),
+                                title: viewStore.topic.title,
+                                imageURL: URL(string: viewStore.topic.imageURLString),
+                                tag: viewStore.topic.media,
+                                date: viewStore.topic.publishedAt,
                                 isFavorited: false,
                                 tapAction: {},
                                 tapFavoriteAction: {}
@@ -37,12 +37,13 @@ public struct HomeScreen: View {
                             })
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
-                            ForEach(viewStore.contents, id: \.self) { content in
+                            ForEach(viewStore.contents) { content in
                                 ListItem(
-                                    title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル",
-                                    imageURL: nil,
+                                    title: content.title,
+                                    tag: content.media,
+                                    imageURL: URL(string: content.imageURLString),
                                     users: [],
-                                    date: Date(),
+                                    date: content.publishedAt,
                                     isFavorited: true,
                                     tapFavoriteAction: {},
                                     tapAction: {}
@@ -76,7 +77,9 @@ struct HomeScreen_Previews: PreviewProvider {
             HomeScreen(
                 store: .init(
                     initialState: .init(
-                        contents: ["aaa", "bbb"]
+                        topic: .mock(),
+                        contents: [.mock(), .mock()],
+                        message: "DroidKaigi 2021 (7/31) D-7"
                     ),
                     reducer: homeReducer,
                     environment: .init()
@@ -87,7 +90,9 @@ struct HomeScreen_Previews: PreviewProvider {
             HomeScreen(
                 store: .init(
                     initialState: .init(
-                        contents: ["aaa", "bbb"]
+                        topic: .mock(),
+                        contents: [.mock(), .mock()],
+                        message: "DroidKaigi 2021 (7/31) D-7"
                     ),
                     reducer: homeReducer,
                     environment: .init()
@@ -98,3 +103,19 @@ struct HomeScreen_Previews: PreviewProvider {
         }
     }
 }
+
+#if DEBUG
+extension FeedItem {
+    static func mock(
+        id: String = UUID().uuidString,
+        imageURLString: String = "",
+        link: String = "",
+        media: TagType = .medium,
+        publishedAt: Date = Date(),
+        summary: String = "",
+        title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"
+    ) -> FeedItem {
+        .init(id: id, imageURLString: imageURLString, link: link, media: media, publishedAt: publishedAt, summary: summary, title: title)
+    }
+}
+#endif
