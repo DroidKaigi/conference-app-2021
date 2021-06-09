@@ -30,8 +30,12 @@ public struct SmallCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            ImageView(imageURL: imageURL)
-                .aspectRatio(163/114, contentMode: .fit)
+            ImageView(
+                imageURL: imageURL,
+                placeholder: .noImage,
+                placeholderSize: .small
+            )
+            .aspectRatio(163/114, contentMode: .fit)
 
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {

@@ -30,8 +30,12 @@ public struct LargeCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 13) {
-            ImageView(imageURL: imageURL)
-                .aspectRatio(343/190, contentMode: .fit)
+            ImageView(
+                imageURL: imageURL,
+                placeholder: .noImage,
+                placeholderSize: .large
+            )
+            .aspectRatio(343/190, contentMode: .fit)
 
             Text(title)
                 .font(.headline)
