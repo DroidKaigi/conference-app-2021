@@ -40,8 +40,11 @@ public struct ListItem: View {
             }
             HStack(alignment: .top) {
                 VStack(spacing: 8) {
-                    ImageView(imageURL: imageURL)
-                        .frame(width: 100, height: 100)
+                    ImageView(
+                        imageURL: imageURL,
+                        placeholderSize: .small
+                    )
+                    .frame(width: 100, height: 100)
                 }
                 VStack(alignment: .leading) {
                     Text(title)
