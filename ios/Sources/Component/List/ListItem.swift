@@ -56,18 +56,24 @@ public struct ListItem: View {
                         .lineLimit(users.isEmpty ? 3 : 2)
                     if !users.isEmpty {
                         HStack(spacing: -4) {
-                            ForEach(users, id: \.self) { _ in
-                                Rectangle()
-                                    .frame(width: 24, height: 24)
-                                    .clipShape(Circle())
+                            ForEach(Array(users.enumerated()), id: \.0) { (index, user) in
+                                AvatarView(avatarImageURL: nil, size: .small)
+                                    .zIndex(Double(Const.maximumShowingUser - index))
                             }
                             if users.count > Const.maximumShowingUser {
                                 Text("+\(users.count - Const.maximumShowingUser)")
                                     .font(.caption)
                                     .padding(4)
+                                    .background(AssetColor.Background.contents.color)
                                     .clipShape(Circle())
+                                    .overlay(
+                                        Circle()
+                                            .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+                                    )
+                                    .zIndex(Double(-Const.maximumShowingUser))
                             }
                         }
+                        .frame(width: nil, height: 24)
                     }
                     HStack {
                         Text(date.formatted)
