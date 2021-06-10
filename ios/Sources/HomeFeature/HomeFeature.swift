@@ -32,7 +32,7 @@ public struct HomeState: Equatable {
     }
 
     public var listFeedItems: [FeedItem] {
-        Array(feedItems[1...feedItems.endIndex])
+        Array(feedItems.dropFirst())
     }
 
     public init(
