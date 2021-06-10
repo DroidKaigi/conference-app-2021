@@ -1,5 +1,6 @@
 import SwiftUI
 import Styleguide
+import NukeUI
 
 public enum PlaceHolder {
     case noImage
@@ -48,30 +49,31 @@ public struct ImageView: View {
     }
 
     public var body: some View {
-        // TODO: load image from url
-        if let imageURL = imageURL {
-            Image("")
-                .resizable()
-                .background(AssetColor.Background.secondary.color.colorScheme(.light))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 2)
-                        .stroke(AssetColor.Separate.image.color, lineWidth: 1)
-                )
-        } else {
-            placeholder.image
-                .resizable()
-                .frame(
-                    width: placeholderSize.frame.width,
-                    height: placeholderSize.frame.height,
-                    alignment: .center
-                )
-                .frame(maxWidth: .infinity, maxHeight: .infinity)
-                .background(AssetColor.Background.secondary.color.colorScheme(.light))
-                .overlay(
-                    RoundedRectangle(cornerRadius: 2)
-                        .stroke(AssetColor.Separate.image.color, lineWidth: 1)
-                )
-        }
+        LazyImage(source: imageURL)
+            .placeholder {
+                placeholderView
+            }
+            .failure {
+                placeholderView
+            }
+            .overlay(
+                RoundedRectangle(cornerRadius: 2)
+                    .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+            )
+    }
+}
+
+extension ImageView {
+    private var placeholderView: some View {
+        placeholder.image
+            .resizable()
+            .frame(
+                width: placeholderSize.frame.width,
+                height: placeholderSize.frame.height,
+                alignment: .center
+            )
+            .frame(maxWidth: .infinity, maxHeight: .infinity)
+            .background(AssetColor.Background.secondary.color.colorScheme(.light))
     }
 }
 
@@ -109,7 +111,6 @@ struct ImageView_Previews: PreviewProvider {
             )
             .frame(width: 225, height: 114)
             .previewLayout(.sizeThatFits)
-
 
             ImageView(
                 imageURL: nil,
