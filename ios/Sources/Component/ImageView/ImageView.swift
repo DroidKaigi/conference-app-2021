@@ -1,6 +1,6 @@
+import NukeUI
 import SwiftUI
 import Styleguide
-import NukeUI
 
 public enum PlaceHolder {
     case noImage
