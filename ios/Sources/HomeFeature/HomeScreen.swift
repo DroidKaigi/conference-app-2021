@@ -21,15 +21,17 @@ public struct HomeScreen: View {
                         VStack(alignment: .trailing, spacing: 16) {
                             MessageBar(title: viewStore.message)
                                 .padding(.top, 16)
-                            LargeCard(
-                                title: viewStore.topic.title,
-                                imageURL: URL(string: viewStore.topic.imageURLString),
-                                tag: viewStore.topic.media,
-                                date: viewStore.topic.publishedAt,
-                                isFavorited: false,
-                                tapAction: {},
-                                tapFavoriteAction: {}
-                            )
+                            if let topic = viewStore.topic {
+                                LargeCard(
+                                    title: topic.title,
+                                    imageURL: URL(string: topic.imageURLString),
+                                    tag: topic.media,
+                                    date: topic.publishedAt,
+                                    isFavorited: false,
+                                    tapAction: {},
+                                    tapFavoriteAction: {}
+                                )
+                            }
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
                             QuestionnaireView(tapAnswerAction: {
@@ -37,13 +39,13 @@ public struct HomeScreen: View {
                             })
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
-                            ForEach(viewStore.contents) { content in
+                            ForEach(viewStore.listFeedItems) { feedItem in
                                 ListItem(
-                                    title: content.title,
-                                    tag: content.media,
-                                    imageURL: URL(string: content.imageURLString),
+                                    title: feedItem.title,
+                                    tag: feedItem.media,
+                                    imageURL: URL(string: feedItem.imageURLString),
                                     users: [],
-                                    date: content.publishedAt,
+                                    date: feedItem.publishedAt,
                                     isFavorited: true,
                                     tapFavoriteAction: {},
                                     tapAction: {}
@@ -77,8 +79,7 @@ struct HomeScreen_Previews: PreviewProvider {
             HomeScreen(
                 store: .init(
                     initialState: .init(
-                        topic: .mock(),
-                        contents: [.mock(), .mock()],
+                        feedItems: [.mock(), .mock()],
                         message: "DroidKaigi 2021 (7/31) D-7"
                     ),
                     reducer: homeReducer,
@@ -90,8 +91,7 @@ struct HomeScreen_Previews: PreviewProvider {
             HomeScreen(
                 store: .init(
                     initialState: .init(
-                        topic: .mock(),
-                        contents: [.mock(), .mock()],
+                        feedItems: [.mock(), .mock()],
                         message: "DroidKaigi 2021 (7/31) D-7"
                     ),
                     reducer: homeReducer,

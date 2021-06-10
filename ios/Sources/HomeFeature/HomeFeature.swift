@@ -23,18 +23,23 @@ public struct FeedItem: Equatable, Identifiable {
 }
 
 public struct HomeState: Equatable {
-    public var topic: FeedItem
     // TODO: Replace to real models
-    public var contents: [FeedItem]
+    private var feedItems: [FeedItem]
     public var message: String
 
+    public var topic: FeedItem? {
+        feedItems.first
+    }
+
+    public var listFeedItems: [FeedItem] {
+        Array(feedItems[1...feedItems.endIndex])
+    }
+
     public init(
-        topic: FeedItem,
-        contents: [FeedItem] = [],
+        feedItems: [FeedItem] = [],
         message: String = ""
     ) {
-        self.topic = topic
-        self.contents = contents
+        self.feedItems = feedItems
         self.message = message
     }
 }
@@ -47,7 +52,7 @@ public struct HomeEnvironment {
     public init() {}
 }
 
-public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { state, action, environment in
+public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, action, _ in
     switch action {
     case .answerQuestionnaire:
         return .none
