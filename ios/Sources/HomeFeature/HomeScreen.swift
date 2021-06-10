@@ -104,7 +104,6 @@ struct HomeScreen_Previews: PreviewProvider {
     }
 }
 
-#if DEBUG
 extension FeedItem {
     static func mock(
         id: String = UUID().uuidString,
@@ -118,4 +117,3 @@ extension FeedItem {
         .init(id: id, imageURLString: imageURLString, link: link, media: media, publishedAt: publishedAt, summary: summary, title: title)
     }
 }
-#endif
