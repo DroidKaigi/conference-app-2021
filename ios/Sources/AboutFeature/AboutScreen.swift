@@ -10,17 +10,17 @@ public struct AboutScreen: View {
         self.store = store
         let fontDescriptor = UIFont.preferredFont(forTextStyle: .subheadline).fontDescriptor.withSymbolicTraits(.traitBold)!
         let font = UIFont(descriptor: fontDescriptor, size: 0)
-        UISegmentedControl.appearance().selectedSegmentTintColor = UIColor(AssetColor.secondary.color)
-        UISegmentedControl.appearance().backgroundColor = UIColor(AssetColor.Background.secondary.color)
+        UISegmentedControl.appearance().selectedSegmentTintColor = AssetColor.secondary.uiColor
+        UISegmentedControl.appearance().backgroundColor = AssetColor.Background.secondary.uiColor
 
         UISegmentedControl.appearance().setTitleTextAttributes([
             .font: font,
-            .foregroundColor: UIColor(AssetColor.Base.primary.color)
+            .foregroundColor: AssetColor.Base.primary.uiColor
         ], for: .normal)
 
         UISegmentedControl.appearance().setTitleTextAttributes([
             .font: font,
-            .foregroundColor: UIColor(AssetColor.Base.white.color),
+            .foregroundColor: AssetColor.Base.white.uiColor,
         ], for: .selected)
     }
 
