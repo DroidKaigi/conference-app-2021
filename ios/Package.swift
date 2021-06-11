@@ -114,6 +114,8 @@ var package = Package(
         .target(
             name: "MediaFeature",
             dependencies: [
+                .target(name: "Component"),
+                .target(name: "Model"),
                 .target(name: "Styleguide"),
             ]
         ),

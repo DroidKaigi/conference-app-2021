@@ -36,6 +36,7 @@ public struct MediumCard: View {
                 placeholderSize: .medium
             )
             .aspectRatio(225/114, contentMode: .fit)
+            .layoutPriority(1)
 
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -43,6 +44,8 @@ public struct MediumCard: View {
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(2)
+
+                    Spacer(minLength: 4)
 
                     Text(date.formatted)
                         .font(.caption)

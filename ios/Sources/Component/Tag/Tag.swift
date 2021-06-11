@@ -26,6 +26,7 @@ public struct Tag: View {
                     radius: 8
                 )
             )
+            .minimumScaleFactor(0.1)
     }
 }
 
