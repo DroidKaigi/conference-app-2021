@@ -1,8 +1,8 @@
 import Styleguide
 
 public enum SelectedType: Int, CaseIterable {
-    case staff = 0
-    case contributor = 1
+    case staff
+    case contributor
 
     var title: String {
         switch self {
