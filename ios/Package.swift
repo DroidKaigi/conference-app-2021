@@ -60,6 +60,7 @@ var package = Package(
         .target(
             name: "AboutFeature",
             dependencies: [
+                .target(name: "Component"),
                 .target(name: "Styleguide"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]

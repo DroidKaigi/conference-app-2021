@@ -1,3 +1,4 @@
+import Component
 import Styleguide
 import SwiftUI
 
@@ -10,9 +11,7 @@ public struct StaffCell: View {
 
     public var body: some View {
         HStack {
-            // TODO: Change to real Image to get from URL
-            AssetImage.logo.image
-                .resizable()
+            ImageView(imageURL: contributor.iconUrl)
                 .scaledToFill()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
