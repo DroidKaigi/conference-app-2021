@@ -1,5 +1,5 @@
-import ComposableArchitecture
 import AboutFeature
+import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
 
