@@ -11,7 +11,7 @@ public struct StaffCell: View {
 
     public var body: some View {
         HStack {
-            ImageView(imageURL: contributor.iconUrl)
+            ImageView(imageURL: staff.iconUrl)
                 .scaledToFill()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
