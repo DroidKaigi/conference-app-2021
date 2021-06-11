@@ -69,8 +69,7 @@ extension ImageView {
             .resizable()
             .frame(
                 width: placeholderSize.frame.width,
-                height: placeholderSize.frame.height,
-                alignment: .center
+                height: placeholderSize.frame.height
             )
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(AssetColor.Background.secondary.color.colorScheme(.light))
