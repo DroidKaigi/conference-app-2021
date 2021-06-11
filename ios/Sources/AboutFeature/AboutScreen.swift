@@ -78,6 +78,17 @@ public struct AboutScreen: View {
     }
 }
 
+private extension SelectedType {
+    var title: String {
+        switch self {
+        case .staff:
+            return L10n.AboutScreen.Picker.staff
+        case .contributor:
+            return L10n.AboutScreen.Picker.contributor
+        }
+    }
+}
+
 public struct AboutScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
