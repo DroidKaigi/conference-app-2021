@@ -11,7 +11,7 @@ public struct ContributorCell: View {
 
     public var body: some View {
         VStack {
-            ImageView(imageURL: contributor.iconUrl)
+            ImageView(imageURL: contributor.iconUrl, placeholderSize: .large)
                 .scaledToFill()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
