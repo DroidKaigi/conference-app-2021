@@ -1,11 +1,21 @@
+import NukeUI
 import Styleguide
 import SwiftUI
 
 public struct AvatarView: View {
-    public enum Size: CGFloat {
+    public enum Style {
+        case large
+        case small
+
         // Avatar size - border width * 2
-        case large = 58
-        case small = 22
+        public var size: CGFloat {
+            switch self {
+            case .large:
+                return 58
+            case .small:
+                return 22
+            }
+        }
 
         public var placeholderImageSize: CGFloat {
             switch self {
@@ -18,53 +28,55 @@ public struct AvatarView: View {
     }
 
     private let avatarImageURL: URL?
-    private let size: Size
+    private let style: Style
 
     public init(
         avatarImageURL: URL?,
-        size: Size = .large
+        style: Style = .large
     ) {
         self.avatarImageURL = avatarImageURL
-        self.size = size
+        self.style = style
     }
 
     public var body: some View {
-        // TODO: Replace with lazy loaded image component
-        if let avatarImageURL = avatarImageURL {
-            Image("")
-                .resizable()
-                .frame(width: size.rawValue, height: size.rawValue)
-                .background(AssetColor.Background.secondary.color.colorScheme(.light))
-                .overlay(
-                    Circle()
-                        .stroke(AssetColor.Separate.image.color, lineWidth: 1)
-                )
-                .clipShape(Circle())
-                .background(Color.clear)
-        } else {
-            AssetImage.noImage.image
-                .resizable()
-                .frame(width: size.placeholderImageSize, height: size.placeholderImageSize)
-                .frame(width: size.rawValue, height: size.rawValue)
-                .background(AssetColor.Background.secondary.color.colorScheme(.light))
-                .clipShape(Circle())
-                .overlay(
-                    Circle()
-                        .stroke(AssetColor.Separate.image.color, lineWidth: 1)
-                )
-                .background(Color.clear)
-        }
+        LazyImage(source: avatarImageURL)
+            .placeholder {
+                placeholderView
+            }
+            .failure {
+                placeholderView
+            }
+            .frame(width: style.size, height: style.size)
+            .background(AssetColor.Background.secondary.color.colorScheme(.light))
+            .overlay(
+                Circle()
+                    .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+            )
+            .clipShape(Circle())
+            .background(Color.clear)
     }
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
+extension AvatarView {
+    private var placeholderView: some View {
+        AssetImage.noImage.image
+            .resizable()
+            .frame(width: style.placeholderImageSize, height: style.placeholderImageSize)
+    }
+}
+
+struct AvatarView_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            AvatarView(avatarImageURL: URL(string: ""), size: .large)
-            AvatarView(avatarImageURL: URL(string: ""), size: .small)
-                .frame(width: 24, height: 24, alignment: /*@START_MENU_TOKEN@*/.center/*@END_MENU_TOKEN@*/)
-            AvatarView(avatarImageURL: URL(string: "https://example.com"), size: .large)
-            AvatarView(avatarImageURL: URL(string: "https://example.com"), size: .small)
+            // Failed
+            AvatarView(avatarImageURL: nil, style: .large)
+            AvatarView(avatarImageURL: nil, style: .small)
+            // Placeholder
+            AvatarView(avatarImageURL: URL(string: "https://example.com"), style: .large)
+            AvatarView(avatarImageURL: URL(string: "https://example.com"), style: .small)
+            // Success
+            AvatarView(avatarImageURL: URL(string: "https://github.com/DroidKaigi.png"), style: .large)
+            AvatarView(avatarImageURL: URL(string: "https://github.com/DroidKaigi.png"), style: .small)
         }
         .previewLayout(.sizeThatFits)
     }
