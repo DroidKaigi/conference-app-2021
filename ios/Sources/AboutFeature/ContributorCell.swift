@@ -11,13 +11,13 @@ public struct ContributorCell: View {
 
     public var body: some View {
         VStack {
-            ImageView(imageURL: contributor.iconUrl, placeholderSize: .large)
+            ImageView(imageURL: contributor.iconUrl, placeholderSize: .medium)
                 .scaledToFill()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
-                        .stroke(AssetColor.Background.secondary.color, lineWidth: 2)
+                        .stroke(AssetColor.Separate.image.color, lineWidth: 2)
                 )
             Text(contributor.name)
                 .foregroundColor(AssetColor.Base.primary.color)

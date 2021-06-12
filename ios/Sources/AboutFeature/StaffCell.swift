@@ -11,13 +11,13 @@ public struct StaffCell: View {
 
     public var body: some View {
         HStack {
-            ImageView(imageURL: staff.iconUrl, placeholderSize: .large)
+            ImageView(imageURL: staff.iconUrl, placeholderSize: .medium)
                 .scaledToFill()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
                 .overlay(
                     RoundedRectangle(cornerRadius: 30)
-                        .stroke(AssetColor.Background.secondary.color, lineWidth: 2)
+                        .stroke(AssetColor.Separate.image.color, lineWidth: 2)
                 )
             VStack(alignment: .leading, spacing: 3) {
                 Text(staff.name)
