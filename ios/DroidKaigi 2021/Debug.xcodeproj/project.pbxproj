@@ -14,7 +14,6 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1ACA166CBF9A421538E309E4 /* DroidKaigiMPP.xcframework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcframework; name = DroidKaigiMPP.xcframework; path = ../build/xcframeworks/DroidKaigiMPP.xcframework; sourceTree = "<group>"; };
 		2B29CA0397EABB180818B44B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
 		50BC33E72674C9DF00EB7285 /* GoogleService-Info-Stating-Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Stating-Debug.plist"; sourceTree = "<group>"; };
 		7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroidKaigi_2021App.swift; sourceTree = "<group>"; };
@@ -59,7 +58,6 @@
 			isa = PBXGroup;
 			children = (
 				223355B1A777710E029FCDFC /* DroidKaigi 2021 */,
-				D0232C34C7C6F49FA504B877 /* Frameworks */,
 				CEB270794E5A6832F17B5312 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -70,14 +68,6 @@
 				DD4A5CEA61EB3D46200CC240 /* DroidKaigi 2021.app */,
 			);
 			name = Products;
-			sourceTree = "<group>";
-		};
-		D0232C34C7C6F49FA504B877 /* Frameworks */ = {
-			isa = PBXGroup;
-			children = (
-				1ACA166CBF9A421538E309E4 /* DroidKaigiMPP.xcframework */,
-			);
-			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
