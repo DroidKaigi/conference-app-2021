@@ -62,7 +62,12 @@ enum AppTab: CaseIterable {
                 )
             )
         case .about:
-            return AnyView(AboutScreen())
+            return AnyView(AboutScreen(
+                store: store.scope(
+                    state: \.aboutState,
+                    action: AppAction.about
+                )
+            ))
         }
     }
 }
