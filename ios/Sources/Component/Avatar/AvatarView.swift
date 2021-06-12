@@ -8,7 +8,7 @@ public struct AvatarView: View {
         case small
 
         // Avatar size - border width * 2
-        public var size: CGFloat {
+        var size: CGFloat {
             switch self {
             case .large:
                 return 58
@@ -17,7 +17,7 @@ public struct AvatarView: View {
             }
         }
 
-        public var placeholderImageSize: CGFloat {
+        var placeholderImageSize: CGFloat {
             switch self {
             case .large:
                 return 44
