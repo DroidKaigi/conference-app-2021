@@ -6,7 +6,7 @@ public struct MultiLangText: Equatable {
 
     public init(
         enTitle: String,
-        jaTitle: String,
+        jaTitle: String
     ) {
         self.enTitle = enTitle
         self.jaTitle = jaTitle
