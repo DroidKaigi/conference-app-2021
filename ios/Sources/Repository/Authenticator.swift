@@ -2,9 +2,9 @@ import DroidKaigiMPP
 import FirebaseAuth
 import Foundation
 
-class AuthenticatorImpl: Authenticator {
+public class AuthenticatorImpl: Authenticator {
 
-    func currentUser(completionHandler: @escaping (DroidKaigiMPP.User?, Error?) -> Void) {
+    public func currentUser(completionHandler: @escaping (DroidKaigiMPP.User?, Error?) -> Void) {
         guard let firebaseUser = Auth.auth().currentUser else {
             completionHandler(nil, nil)
             return
@@ -19,7 +19,7 @@ class AuthenticatorImpl: Authenticator {
         }
     }
 
-    func signInAnonymously(completionHandler: @escaping (DroidKaigiMPP.User?, Error?) -> Void) {
+    public func signInAnonymously(completionHandler: @escaping (DroidKaigiMPP.User?, Error?) -> Void) {
         Auth.auth().signInAnonymously { (result, error) in
             if let error = error {
                 completionHandler(nil, error)
