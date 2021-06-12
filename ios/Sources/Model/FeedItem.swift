@@ -4,6 +4,19 @@ public enum FeedItemType: Equatable {
     case blog(Blog)
     case podcast(Podcast)
     case video(Video)
+
+    public static func from(_ model: DroidKaigiMPP.FeedItem) -> FeedItemType? {
+        switch model {
+        case let blog as DroidKaigiMPP.FeedItem.Blog:
+            return .blog(Blog(from: blog))
+        case let podcast as DroidKaigiMPP.FeedItem.Podcast:
+            return .podcast(Podcast(from: podcast))
+        case let video as DroidKaigiMPP.FeedItem.Video:
+            return .video(Video(from: video))
+        default:
+            return nil
+        }
+    }
 }
 
 public struct FeedItem: Equatable, Identifiable {
