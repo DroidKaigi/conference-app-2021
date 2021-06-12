@@ -23,11 +23,7 @@ public struct HomeScreen: View {
                                 .padding(.top, 16)
                             if let topic = viewStore.topic {
                                 LargeCard(
-                                    title: topic.title,
-                                    imageURL: URL(string: topic.imageURLString),
-                                    tag: topic.media,
-                                    date: topic.publishedAt,
-                                    isFavorited: false,
+                                    item: topic,
                                     tapAction: {},
                                     tapFavoriteAction: {}
                                 )
@@ -41,14 +37,9 @@ public struct HomeScreen: View {
                                 .foregroundColor(AssetColor.Separate.contents.color)
                             ForEach(viewStore.listFeedItems) { feedItem in
                                 ListItem(
-                                    title: feedItem.title,
-                                    tag: feedItem.media,
-                                    imageURL: URL(string: feedItem.imageURLString),
-                                    users: [],
-                                    date: feedItem.publishedAt,
-                                    isFavorited: true,
-                                    tapFavoriteAction: {},
-                                    tapAction: {}
+                                    item: feedItem,
+                                    tapAction: {},
+                                    tapFavoriteAction: {}
                                 )
                             }
                         }
@@ -113,5 +104,42 @@ extension FeedItem {
         title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"
     ) -> FeedItem {
         .init(id: id, imageURLString: imageURLString, link: link, media: media, publishedAt: publishedAt, summary: summary, title: title)
+    }
+}
+
+private extension LargeCard {
+    init(
+        item: FeedItem,
+        tapAction: @escaping () -> Void,
+        tapFavoriteAction: @escaping () -> Void
+    ) {
+        self.init(
+            title: item.title,
+            imageURL: URL(string: item.imageURLString),
+            tag: item.media,
+            date: item.publishedAt,
+            isFavorited: false,
+            tapAction: tapAction,
+            tapFavoriteAction: tapFavoriteAction
+        )
+    }
+}
+
+private extension ListItem {
+    init(
+        item: FeedItem,
+        tapAction: @escaping () -> Void,
+        tapFavoriteAction: @escaping () -> Void
+    ) {
+        self.init(
+            title: item.title,
+            tag: item.media,
+            imageURL: URL(string: item.imageURLString),
+            users: [],
+            date: item.publishedAt,
+            isFavorited: false,
+            tapFavoriteAction: tapFavoriteAction,
+            tapAction: tapAction
+        )
     }
 }
