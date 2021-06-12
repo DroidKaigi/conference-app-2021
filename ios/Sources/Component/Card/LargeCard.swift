@@ -61,6 +61,7 @@ public struct LargeCard: View {
                 })
             }
         }
+        .padding(16)
         .background(Color.clear)
         .onTapGesture(perform: tapAction)
     }

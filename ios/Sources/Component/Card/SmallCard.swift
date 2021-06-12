@@ -65,6 +65,7 @@ public struct SmallCard: View {
                 }
             }
         }
+        .padding(8)
         .background(Color.clear)
         .onTapGesture(perform: tapAction)
     }

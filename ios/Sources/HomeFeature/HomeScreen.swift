@@ -18,7 +18,7 @@ public struct HomeScreen: View {
                         .frame(width: nil, height: 200)
                         .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
                     WithViewStore(store) { viewStore in
-                        VStack(alignment: .trailing, spacing: 16) {
+                        VStack(alignment: .trailing, spacing: 0) {
                             MessageBar(title: viewStore.message)
                                 .padding(.top, 16)
                             if let topic = viewStore.topic {
@@ -50,10 +50,8 @@ public struct HomeScreen: View {
                                     tapFavoriteAction: {},
                                     tapAction: {}
                                 )
-                                .padding(.bottom, 16)
                             }
                         }
-                        .padding(.horizontal)
                     }
                 }
             }

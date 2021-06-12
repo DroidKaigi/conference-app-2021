@@ -35,6 +35,7 @@ public struct QuestionnaireView: View {
                 }
             )
         }
+        .padding(16)
     }
 }
 

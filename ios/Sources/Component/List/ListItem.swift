@@ -90,6 +90,7 @@ public struct ListItem: View {
                 }
             }
         }
+        .padding(16)
         .onTapGesture(perform: tapAction)
     }
 }
