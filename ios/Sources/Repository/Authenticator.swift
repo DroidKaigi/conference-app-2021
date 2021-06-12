@@ -1,13 +1,6 @@
-//
-//  Authenticator.swift
-//  
-//
-//  Created by watanavex on 2021/06/12.
-//
-
-import Foundation
 import DroidKaigiMPP
 import FirebaseAuth
+import Foundation
 
 class AuthenticatorImpl: Authenticator {
 
