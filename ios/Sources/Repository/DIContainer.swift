@@ -16,6 +16,7 @@ internal struct DIContainer {
     }
 }
 
+// TODO: Remove after authenticator created
 internal class AuthenticatorMock: Authenticator {
     func currentUser(completionHandler: @escaping (User?, Error?) -> Void) {
     }
