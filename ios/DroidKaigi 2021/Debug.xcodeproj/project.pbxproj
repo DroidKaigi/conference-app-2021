@@ -16,6 +16,7 @@
 /* Begin PBXFileReference section */
 		1ACA166CBF9A421538E309E4 /* DroidKaigiMPP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DroidKaigiMPP.framework; path = "../ios-framework/build/xcode-frameworks/DroidKaigiMPP.framework"; sourceTree = "<group>"; };
 		2B29CA0397EABB180818B44B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		50BC33E72674C9DF00EB7285 /* GoogleService-Info-Stating-Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Stating-Debug.plist"; sourceTree = "<group>"; };
 		7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroidKaigi_2021App.swift; sourceTree = "<group>"; };
 		938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -48,6 +49,7 @@
 				938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */,
 				7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */,
 				2B29CA0397EABB180818B44B /* Info.plist */,
+				50BC33E72674C9DF00EB7285 /* GoogleService-Info-Stating-Debug.plist */,
 				1632D25082D97FDCF82D3510 /* Preview Content */,
 			);
 			path = "DroidKaigi 2021";
@@ -89,6 +91,7 @@
 				E84C12F32664CE1C00D5410C /* Run SwiftGen */,
 				42B134C0F3C46E32AF4355A0 /* Make kotlin framework */,
 				5D913506A16C6526B14ED775 /* Sources */,
+				50BC33EB2674C9EB00EB7285 /* Copy GoogleService-Info.plist */,
 				DB796961EB331BDC287C80A9 /* Resources */,
 				E2A67F49BC9729C1C5B9D092 /* Frameworks */,
 			);
@@ -159,6 +162,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "../scripts/create-kmm-framework.sh\n";
+		};
+		50BC33EB2674C9EB00EB7285 /* Copy GoogleService-Info.plist */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Copy GoogleService-Info.plist";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "cp \"${PROJECT_DIR}/DroidKaigi 2021/GoogleService-Info-Stating-Debug.plist\" \"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/GoogleService-Info.plist\"\n";
 		};
 		57B979F2FC459E2182C0AB24 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
