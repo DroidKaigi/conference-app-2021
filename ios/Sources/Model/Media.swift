@@ -1,24 +1,24 @@
 import DroidKaigiMPP
 
 public enum Media: Equatable {
-    case droidkaigifm(String)
-    case medium(String)
-    case youtube(String)
-    case other(String)
+    case droidkaigifm
+    case medium
+    case youtube
+    case other
 
     static func from(_ model: DroidKaigiMPP.Media) -> Media {
         switch model {
-        case let fm as DroidKaigiMPP.Media.DroidKaigiFM:
-            return .droidkaigifm(fm.text)
-        case let medium as DroidKaigiMPP.Media.Medium:
-            return .medium(medium.text)
-        case let youtube as DroidKaigiMPP.Media.YouTube:
-            return .youtube(youtube.text)
-        case let other as DroidKaigiMPP.Media.Other:
-            return .other(other.text)
+        case is DroidKaigiMPP.Media.DroidKaigiFM:
+            return .droidkaigifm
+        case is DroidKaigiMPP.Media.Medium:
+            return .medium
+        case is DroidKaigiMPP.Media.YouTube:
+            return .youtube
+        case is DroidKaigiMPP.Media.Other:
+            return .other
         default:
             assertionFailure()
-            return .other("")
+            return .other
         }
     }
 }
