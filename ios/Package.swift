@@ -77,6 +77,7 @@ var package = Package(
                 .target(name: "FavoritesFeature"),
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
+                .target(name: "Repository"),
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
