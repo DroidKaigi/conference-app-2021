@@ -117,6 +117,7 @@ var package = Package(
                 .target(name: "Component"),
                 .target(name: "Model"),
                 .target(name: "Styleguide"),
+                .product(name: "Introspect", package: "Introspect"),
             ]
         ),
         .target(

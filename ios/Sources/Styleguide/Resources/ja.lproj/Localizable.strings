@@ -5,6 +5,7 @@
 
 // MARK: Media
 "MediaScreen.Title" = "Media";
+"MediaScreen.SearchBar.Placeholder" = "タイトルを検索";
 "MediaScreen.Session.Blog.Title" = "BLOG";
 "MediaScreen.Session.Video.Title" = "VIDEO";
 "MediaScreen.Session.Podcast.Title" = "PODCAST";

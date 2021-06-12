@@ -1,3 +1,4 @@
+import Introspect
 import Model
 import SwiftUI
 import Styleguide
@@ -7,6 +8,19 @@ public struct MediaScreen: View {
     var blogs: [FeedItem]
     var videos: [FeedItem]
     var podcasts: [FeedItem]
+
+    @SearchController(
+        searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
+        willBecomeActive: {
+            // Send a action
+        },
+        willResignActive: {
+            // Send a action
+        },
+        searchTextDidChange: { text in
+            // Send a action
+        }
+    ) private var searchController
 
     public init(blogs: [FeedItem], videos: [FeedItem], podcasts: [FeedItem]) {
         self.blogs = blogs
@@ -23,6 +37,13 @@ public struct MediaScreen: View {
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
                 )
+                .introspectViewController { viewController in
+                    guard viewController.navigationItem.searchController == nil else { return }
+                    viewController.navigationItem.searchController = searchController
+                    viewController.navigationItem.hidesSearchBarWhenScrolling = false
+                    // To keep the navigation bar expanded
+                    viewController.navigationController?.navigationBar.sizeToFit()
+                }
         }
     }
 
