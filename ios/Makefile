@@ -96,6 +96,11 @@ build-modules:
 
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
+		-scheme Model \
+		-destination platform="$(PLATFORM_IOS)"
+
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
 		-scheme Repository \
 		-destination platform="$(PLATFORM_IOS)"
 

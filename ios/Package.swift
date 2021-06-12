@@ -35,6 +35,10 @@ var package = Package(
             targets: ["MediaFeature"]
         ),
         .library(
+            name: "Model",
+            targets: ["Model"]
+        ),
+        .library(
             name: "Repository",
             targets: ["Repository"]
         ),
@@ -109,9 +113,16 @@ var package = Package(
             ]
         ),
         .target(
+            name: "Model",
+            dependencies: [
+                .target(name: "DroidKaigiMPP"),
+            ]
+        ),
+        .target(
             name: "Repository",
             dependencies: [
                 .target(name: "DroidKaigiMPP"),
+                .target(name: "Model"),
             ]
         ),
         .target(
