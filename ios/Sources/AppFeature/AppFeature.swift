@@ -2,19 +2,23 @@ import AboutFeature
 import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
+import MediaFeature
 import Repository
 
 public struct AppState: Equatable {
     public var homeState: HomeState
+    public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
 
     public init(
         homeState: HomeState = .init(),
+        mediaState: MediaState = .mock,
         favoritesState: FavoritesState = .init(),
         aboutState: AboutState = .init()
     ) {
         self.homeState = homeState
+        self.mediaState = mediaState
         self.favoritesState = favoritesState
         self.aboutState = aboutState
     }
@@ -22,6 +26,7 @@ public struct AppState: Equatable {
 
 public enum AppAction {
     case home(HomeAction)
+    case media(MediaAction)
     case favorites(FavoritesAction)
     case about(AboutAction)
 }

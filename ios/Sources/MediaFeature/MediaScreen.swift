@@ -1,3 +1,4 @@
+import ComposableArchitecture
 import Introspect
 import Model
 import SwiftUI
@@ -5,9 +6,8 @@ import Styleguide
 
 public struct MediaScreen: View {
 
-    var blogs: [FeedItem]
-    var videos: [FeedItem]
-    var podcasts: [FeedItem]
+    private let store: Store<MediaState, MediaAction>
+    @ObservedObject var viewStore: ViewStore<ViewState, MediaAction>
 
     @SearchController(
         searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
@@ -17,15 +17,26 @@ public struct MediaScreen: View {
         willResignActive: {
             // Send a action
         },
-        searchTextDidChange: { text in
+        searchTextDidChange: { _ in
             // Send a action
         }
     ) private var searchController
 
-    public init(blogs: [FeedItem], videos: [FeedItem], podcasts: [FeedItem]) {
-        self.blogs = blogs
-        self.videos = videos
-        self.podcasts = podcasts
+    public init(store: Store<MediaState, MediaAction>) {
+        self.store = store
+        self.viewStore = ViewStore(store.scope(state: ViewState.init(state:)))
+    }
+
+    struct ViewState: Equatable {
+        var hasBlogs: Bool
+        var hasVideos: Bool
+        var hasPodcasts: Bool
+
+        init(state: MediaState) {
+            hasBlogs = !state.blogs.isEmpty
+            hasVideos = !state.videos.isEmpty
+            hasPodcasts = !state.podcasts.isEmpty
+        }
     }
 
     public var body: some View {
@@ -50,27 +61,27 @@ public struct MediaScreen: View {
     private var list: some View {
         ScrollView {
             VStack(spacing: 0) {
-                if !blogs.isEmpty {
+                if viewStore.hasBlogs {
                     MediaSection(
                         icon: AssetImage.iconBlog.image.renderingMode(.template),
                         title: L10n.MediaScreen.Session.Blog.title,
-                        items: blogs
+                        store: store.scope { $0.blogs }
                     )
                     divider
                 }
-                if !videos.isEmpty {
+                if viewStore.hasVideos {
                     MediaSection(
                         icon: AssetImage.iconVideo.image.renderingMode(.template),
                         title: L10n.MediaScreen.Session.Video.title,
-                        items: videos
+                        store: store.scope { $0.videos }
                     )
                     divider
                 }
-                if !podcasts.isEmpty {
+                if viewStore.hasPodcasts {
                     MediaSection(
                         icon: AssetImage.iconPodcast.image.renderingMode(.template),
                         title: L10n.MediaScreen.Session.Podcast.title,
-                        items: podcasts
+                        store: store.scope { $0.podcasts }
                     )
                 }
             }
@@ -88,68 +99,13 @@ public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaScreen(
-                blogs: [
-                    .init(
-                        id: "0",
-                        image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                        link: "",
-                        media: .medium,
-                        publishedAt: .init(),
-                        summary: .init(enTitle: "", jaTitle: ""),
-                        title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて")
-                    ),
-                    .init(
-                        id: "1",
-                        image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                        link: "",
-                        media: .medium,
-                        publishedAt: .init(),
-                        summary: .init(enTitle: "", jaTitle: ""),
-                        title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs")
-                    ),
-                ],
-                videos: [
-                    .init(
-                        id: "0",
-                        image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                        link: "",
-                        media: .youtube,
-                        publishedAt: .init(),
-                        summary: .init(enTitle: "", jaTitle: ""),
-                        title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
-                    ),
-                    .init(
-                        id: "1",
-                        image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                        link: "",
-                        media: .youtube,
-                        publishedAt: .init(),
-                        summary: .init(enTitle: "", jaTitle: ""),
-                        title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - Day 2 Night Session")
-                    ),
-                ],
-                podcasts: [
-                    .init(
-                        id: "0",
-                        image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                        link: "",
-                        media: .droidkaigifm,
-                        publishedAt: .init(),
-                        summary: .init(enTitle: "", jaTitle: ""),
-                        title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
-                    ),
-                    .init(
-                        id: "1",
-                        image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                        link: "",
-                        media: .droidkaigifm,
-                        publishedAt: .init(),
-                        summary: .init(enTitle: "", jaTitle: ""),
-                        title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")
-                    ),
-                ]
+                store: .init(
+                    initialState: .mock,
+                    reducer: .empty,
+                    environment: {}
+                )
             )
-            .environment(\.colorScheme, colorScheme)
+                .environment(\.colorScheme, colorScheme)
         }
         .accentColor(AssetColor.primary.color)
     }

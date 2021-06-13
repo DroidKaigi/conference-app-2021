@@ -39,35 +39,37 @@ enum AppTab: CaseIterable {
         }
     }
 
+    @ViewBuilder
     func view(_ store: Store<AppState, AppAction>) -> some View {
         switch self {
         case .home:
-            return AnyView(
-                HomeScreen(
-                    store: store.scope(
-                        state: \.homeState,
-                        action: AppAction.home
-                    )
+            HomeScreen(
+                store: store.scope(
+                    state: \.homeState,
+                    action: AppAction.home
                 )
             )
         case .media:
-            return AnyView(MediaScreen())
+            MediaScreen(
+                store: store.scope(
+                    state: \.mediaState,
+                    action: AppAction.media
+                )
+            )
         case .favorites:
-            return AnyView(
-                FavoritesScreen(
-                    store: store.scope(
-                        state: \.favoritesState,
-                        action: AppAction.favorites
-                    )
+            FavoritesScreen(
+                store: store.scope(
+                    state: \.favoritesState,
+                    action: AppAction.favorites
                 )
             )
         case .about:
-            return AnyView(AboutScreen(
+            AboutScreen(
                 store: store.scope(
                     state: \.aboutState,
                     action: AppAction.about
                 )
-            ))
+            )
         }
     }
 }
