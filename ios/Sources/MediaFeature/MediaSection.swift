@@ -47,7 +47,7 @@ extension Media {
         case .youtube:
             return .youtube
         case .other:
-            fatalError() // FIXME: Ask for the purpose
+            return .other
         }
     }
 }

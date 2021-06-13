@@ -58,6 +58,8 @@ private extension TagType {
             return L10n.Component.Tag.medium
         case .youtube:
             return L10n.Component.Tag.youtube
+        case .other:
+            return L10n.Component.Tag.other
         }
     }
 
@@ -69,6 +71,8 @@ private extension TagType {
             return AssetColor.Tag.medium.color
         case .youtube:
             return AssetColor.Tag.video.color
+        case .other:
+            return AssetColor.Tag.other.color
         }
     }
 }
