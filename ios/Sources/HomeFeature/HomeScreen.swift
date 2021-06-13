@@ -46,7 +46,6 @@ public struct HomeScreen: View {
                     }
                 }
             }
-            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -58,6 +57,9 @@ public struct HomeScreen: View {
                     .renderingMode(.template)
                     .foregroundColor(AssetColor.Base.primary.color)
             )
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+            }
         }
     }
 }

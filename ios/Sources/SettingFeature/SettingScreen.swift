@@ -1,5 +1,6 @@
-import Styleguide
 import Component
+import Introspect
+import Styleguide
 import SwiftUI
 
 public enum SettingModel: Hashable {
@@ -67,7 +68,6 @@ public struct SettingScreen: View {
                 }
                 .padding(.top, 24)
             }
-            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
             .navigationBarItems(
                 trailing: Button(action: {
@@ -78,6 +78,9 @@ public struct SettingScreen: View {
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+            }
         }
     }
 }

@@ -52,7 +52,6 @@ struct MediaListView: View {
                 }
             }
         }
-        .background(AssetColor.Background.primary.color.ignoresSafeArea())
     }
 
     private var divider: some View {

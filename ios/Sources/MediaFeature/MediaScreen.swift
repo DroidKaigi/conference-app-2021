@@ -54,6 +54,7 @@ public struct MediaScreen: View {
                     .foregroundColor(AssetColor.Base.primary.color)
             )
             .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
                 guard viewController.navigationItem.searchController == nil else { return }
                 viewController.navigationItem.searchController = searchController
                 viewController.navigationItem.hidesSearchBarWhenScrolling = false
