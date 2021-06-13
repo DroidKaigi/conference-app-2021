@@ -66,7 +66,7 @@ public struct MediumCard: View {
             }
         }
         .padding(16)
-        .background(AssetColor.Background.primary.color)
+        .background(Color.clear)
         .onTapGesture(perform: tapAction)
     }
 }
