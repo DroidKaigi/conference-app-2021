@@ -85,7 +85,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                         environment: {}
                     )
                 )
-                let _ = initialState.mediaList = .mock
+                let _ = initialState.mediaList = .mock // swiftlint:disable:this redundant_discardable_let
                 MediaScreen(
                     store: .init(
                         initialState: initialState,
