@@ -34,9 +34,7 @@ public struct Video: Equatable, Identifiable {
             image: Image(from: model.image),
             link: model.link,
             media: Media.from(model.media),
-            publishedAt: Date(
-                timeIntervalSince1970: Double(model.publishedAt.toEpochMilliseconds())
-            ),
+            publishedAt: model.publishedAt.toNSDate(),
             summary: MultiLangText(from: model.summary),
             title: MultiLangText(from: model.title)
         )
