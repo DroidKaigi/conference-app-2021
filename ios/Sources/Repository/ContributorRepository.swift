@@ -2,19 +2,19 @@ import Combine
 import DroidKaigiMPP
 import Model
 
-public protocol ContributorRepositoryProtocol: KMMRepositoryProtocol {
-    associatedtype RepositoryType = IosContributorRepository
-
+public protocol ContributorRepositoryProtocol {
     func contributorContents() -> AnyPublisher<[Model.Contributor], KotlinError>
 }
 
-public struct ContributorRepository: ContributorRepositoryProtocol {
+public struct ContributorRepository: ContributorRepositoryProtocol, KMMRepositoryProtocol {
+    public typealias RepositoryType = IosContributorRepository
+
     let scopeProvider: ScopeProvider
     let repository: RepositoryType
 
-    public init() {
-        self.scopeProvider = DIContainer.shared.get(type: ScopeProvider.self)
-        self.repository = DIContainer.shared.get(type: RepositoryType.self)
+    public init(container: DIContainer) {
+        self.scopeProvider = container.get(type: ScopeProvider.self)
+        self.repository = container.get(type: RepositoryType.self)
     }
 
     public func contributorContents() -> AnyPublisher<[Model.Contributor], KotlinError> {

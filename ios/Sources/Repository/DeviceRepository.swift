@@ -2,19 +2,19 @@ import Combine
 import DroidKaigiMPP
 import Model
 
-public protocol DeviceRepositoryProtocol: KMMRepositoryProtocol {
-    associatedtype RepositoryType = IosDeviceRepository
-
+public protocol DeviceRepositoryProtocol {
     func updateDeviceToken(deviceToken: String?) -> AnyPublisher<Void, KotlinError>
 }
 
-public struct DeviceRepository: DeviceRepositoryProtocol {
+public struct DeviceRepository: DeviceRepositoryProtocol, KMMRepositoryProtocol {
+    public typealias RepositoryType = IosDeviceRepository
+
     let scopeProvider: ScopeProvider
     let repository: RepositoryType
 
-    public init() {
-        self.scopeProvider = DIContainer.shared.get(type: ScopeProvider.self)
-        self.repository = DIContainer.shared.get(type: RepositoryType.self)
+    public init(container: DIContainer) {
+        self.scopeProvider = container.get(type: ScopeProvider.self)
+        self.repository = container.get(type: RepositoryType.self)
     }
 
     public func updateDeviceToken(deviceToken: String?) -> AnyPublisher<Void, KotlinError> {

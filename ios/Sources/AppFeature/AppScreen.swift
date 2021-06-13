@@ -109,7 +109,7 @@ struct AppScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .init(),
                     reducer: appReducer,
-                    environment: .init()
+                    environment: .shared
                 )
             )
             .environment(\.colorScheme, .dark)
@@ -117,7 +117,7 @@ struct AppScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .init(),
                     reducer: appReducer,
-                    environment: .init()
+                    environment: .shared
                 )
             )
             .environment(\.colorScheme, .light)

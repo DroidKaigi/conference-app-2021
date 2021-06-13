@@ -2,20 +2,20 @@ import Combine
 import DroidKaigiMPP
 import Model
 
-public protocol ThemeRepositoryProtocol: KMMRepositoryProtocol {
-    associatedtype RepositoryType = IosThemeRepository
-
+public protocol ThemeRepositoryProtocol {
     func changeTheme(theme: Model.Theme) -> AnyPublisher<Void, KotlinError>
     func currentTheme() -> AnyPublisher<Model.Theme?, KotlinError>
 }
 
-public struct ThemeRepository: ThemeRepositoryProtocol {
+public struct ThemeRepository: ThemeRepositoryProtocol, KMMRepositoryProtocol {
+    public typealias RepositoryType = IosThemeRepository
+
     let scopeProvider: ScopeProvider
     let repository: RepositoryType
 
-    public init() {
-        self.scopeProvider = DIContainer.shared.get(type: ScopeProvider.self)
-        self.repository = DIContainer.shared.get(type: RepositoryType.self)
+    public init(container: DIContainer) {
+        self.scopeProvider = container.get(type: ScopeProvider.self)
+        self.repository = container.get(type: RepositoryType.self)
     }
 
     public func changeTheme(theme: Model.Theme) -> AnyPublisher<Void, KotlinError> {
@@ -43,4 +43,3 @@ public struct ThemeRepository: ThemeRepositoryProtocol {
         .eraseToAnyPublisher()
     }
 }
-

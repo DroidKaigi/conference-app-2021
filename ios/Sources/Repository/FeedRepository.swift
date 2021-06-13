@@ -2,21 +2,21 @@ import Combine
 import DroidKaigiMPP
 import Model
 
-public protocol FeedRepositoryProtocol: KMMRepositoryProtocol {
-    associatedtype RepositoryType = IosFeedRepository
-
+public protocol FeedRepositoryProtocol {
     func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError>
     func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, Never>
     func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, Never>
 }
 
-public struct FeedRepository: FeedRepositoryProtocol {
+public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
+    public typealias RepositoryType = IosFeedRepository
+
     let scopeProvider: ScopeProvider
     let repository: RepositoryType
 
-    public init() {
-        self.scopeProvider = DIContainer.shared.get(type: ScopeProvider.self)
-        self.repository = DIContainer.shared.get(type: RepositoryType.self)
+    public init(container: DIContainer) {
+        self.scopeProvider = container.get(type: ScopeProvider.self)
+        self.repository = container.get(type: RepositoryType.self)
     }
 
     public func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError> {
