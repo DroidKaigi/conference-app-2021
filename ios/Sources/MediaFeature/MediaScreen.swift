@@ -7,7 +7,7 @@ import Styleguide
 public struct MediaScreen: View {
 
     private let store: Store<MediaState, MediaAction>
-    @ObservedObject var viewStore: ViewStore<ViewState, MediaAction>
+    @ObservedObject var viewStore: ViewStore<ViewState, ViewAction>
 
     @SearchController(
         searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
@@ -24,65 +24,84 @@ public struct MediaScreen: View {
 
     public init(store: Store<MediaState, MediaAction>) {
         self.store = store
-        self.viewStore = ViewStore(store.scope(state: ViewState.init(state:)))
+        self.viewStore = .init(store.scope(state: ViewState.init(state:), action: MediaAction.init(action:)))
     }
 
     struct ViewState: Equatable {
+        var isInitialLoadingIndicatorVisible: Bool
+
+        init(state: MediaState) {
+            isInitialLoadingIndicatorVisible = state.mediaList == nil
+        }
+    }
+
+    enum ViewAction {
+        case progressViewAppeared
+    }
+
+    public var body: some View {
+        searchController.searchBar.isUserInteractionEnabled = !viewStore.isInitialLoadingIndicatorVisible
+        return NavigationView {
+            IfLetStore(
+                store.scope(state: \.mediaList),
+                then: list(store:),
+                else: { ProgressView().onAppear { viewStore.send(.progressViewAppeared) } }
+            )
+            .navigationTitle(L10n.MediaScreen.title)
+            .navigationBarItems(
+                trailing: AssetImage.iconSetting.image
+                    .renderingMode(.template)
+                    .foregroundColor(AssetColor.Base.primary.color)
+            )
+            .introspectViewController { viewController in
+                guard viewController.navigationItem.searchController == nil else { return }
+                viewController.navigationItem.searchController = searchController
+                viewController.navigationItem.hidesSearchBarWhenScrolling = false
+                // To keep the navigation bar expanded
+                viewController.navigationController?.navigationBar.sizeToFit()
+            }
+        }
+    }
+
+    struct ListViewState: Equatable {
         var hasBlogs: Bool
         var hasVideos: Bool
         var hasPodcasts: Bool
 
-        init(state: MediaState) {
+        init(state: MediaList) {
             hasBlogs = !state.blogs.isEmpty
             hasVideos = !state.videos.isEmpty
             hasPodcasts = !state.podcasts.isEmpty
         }
     }
 
-    public var body: some View {
-        NavigationView {
-            list
-                .navigationTitle(L10n.MediaScreen.title)
-                .navigationBarItems(
-                    trailing: AssetImage.iconSetting.image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                )
-                .introspectViewController { viewController in
-                    guard viewController.navigationItem.searchController == nil else { return }
-                    viewController.navigationItem.searchController = searchController
-                    viewController.navigationItem.hidesSearchBarWhenScrolling = false
-                    // To keep the navigation bar expanded
-                    viewController.navigationController?.navigationBar.sizeToFit()
-                }
-        }
-    }
-
-    private var list: some View {
+    private func list(store: Store<MediaList, MediaAction>) -> some View {
         ScrollView {
-            VStack(spacing: 0) {
-                if viewStore.hasBlogs {
-                    MediaSection(
-                        icon: AssetImage.iconBlog.image.renderingMode(.template),
-                        title: L10n.MediaScreen.Session.Blog.title,
-                        store: store.scope { $0.blogs }
-                    )
-                    divider
-                }
-                if viewStore.hasVideos {
-                    MediaSection(
-                        icon: AssetImage.iconVideo.image.renderingMode(.template),
-                        title: L10n.MediaScreen.Session.Video.title,
-                        store: store.scope { $0.videos }
-                    )
-                    divider
-                }
-                if viewStore.hasPodcasts {
-                    MediaSection(
-                        icon: AssetImage.iconPodcast.image.renderingMode(.template),
-                        title: L10n.MediaScreen.Session.Podcast.title,
-                        store: store.scope { $0.podcasts }
-                    )
+            WithViewStore(store.scope(state: ListViewState.init(state:))) { viewStore in
+                VStack(spacing: 0) {
+                    if viewStore.hasBlogs {
+                        MediaSection(
+                            icon: AssetImage.iconBlog.image.renderingMode(.template),
+                            title: L10n.MediaScreen.Session.Blog.title,
+                            store: store.scope { $0.blogs }
+                        )
+                        divider
+                    }
+                    if viewStore.hasVideos {
+                        MediaSection(
+                            icon: AssetImage.iconVideo.image.renderingMode(.template),
+                            title: L10n.MediaScreen.Session.Video.title,
+                            store: store.scope { $0.videos }
+                        )
+                        divider
+                    }
+                    if viewStore.hasPodcasts {
+                        MediaSection(
+                            icon: AssetImage.iconPodcast.image.renderingMode(.template),
+                            title: L10n.MediaScreen.Session.Podcast.title,
+                            store: store.scope { $0.podcasts }
+                        )
+                    }
                 }
             }
         }
@@ -95,12 +114,21 @@ public struct MediaScreen: View {
     }
 }
 
+extension MediaAction {
+    init(action: MediaScreen.ViewAction) {
+        switch action {
+        case .progressViewAppeared:
+            self = .loadItems
+        }
+    }
+}
+
 public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaScreen(
                 store: .init(
-                    initialState: .mock,
+                    initialState: .init(),
                     reducer: .empty,
                     environment: {}
                 )

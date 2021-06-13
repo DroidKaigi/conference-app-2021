@@ -3,24 +3,37 @@ import ComposableArchitecture
 import Model
 
 public struct MediaState: Equatable {
+    var mediaList: MediaList?
 
-    public var blogs: [FeedItem]
-    public var videos: [FeedItem]
-    public var podcasts: [FeedItem]
-
-    public init(blogs: [FeedItem], videos: [FeedItem], podcasts: [FeedItem]) {
-        self.blogs = blogs
-        self.videos = videos
-        self.podcasts = podcasts
-    }
+    public init() {}
 }
 
 public enum MediaAction: Equatable {
-
+    case loadItems
+    case itemsLoads(blogs: [FeedItem], videos: [FeedItem], podcasts: [FeedItem])
 }
 
-public extension MediaState {
-    static let mock: Self = .init(
+public struct MediaList: Equatable {
+    var blogs: [FeedItem]
+    var videos: [FeedItem]
+    var podcasts: [FeedItem]
+}
+
+public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action, _ in
+    switch action {
+    case .loadItems:
+        // TODO: Load items from the repository
+        return Effect(value: .mockItemsLoads)
+            .delay(for: 1, scheduler: DispatchQueue.main)
+            .eraseToEffect()
+    case let .itemsLoads(blogs, videos, podcasts):
+        state.mediaList = .init(blogs: blogs, videos: videos, podcasts: podcasts)
+        return .none
+    }
+}
+
+private extension MediaAction {
+    static let mockItemsLoads: Self = .itemsLoads(
         blogs: [
             .init(
                 id: "0",

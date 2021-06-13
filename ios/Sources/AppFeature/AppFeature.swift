@@ -13,7 +13,7 @@ public struct AppState: Equatable {
 
     public init(
         homeState: HomeState = .init(),
-        mediaState: MediaState = .mock,
+        mediaState: MediaState = .init(),
         favoritesState: FavoritesState = .init(),
         aboutState: AboutState = .init()
     ) {
@@ -39,6 +39,11 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             .init()
         }
     ),
+    mediaReducer.pullback(
+        state: \.mediaState,
+        action: /AppAction.media,
+        environment: { _ in () }
+    ),
     favoritesReducer.pullback(
         state: \.favoritesState,
         action: /AppAction.favorites,
@@ -56,6 +61,8 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     .init { _, action, _ in
         switch action {
         case .home:
+            return .none
+        case .media:
             return .none
         case .favorites:
             return .none
