@@ -33,7 +33,14 @@ public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action
 }
 
 private extension MediaAction {
-    static let mockItemsLoads: Self = .itemsLoads(
+    static let mockItemsLoads: Self = {
+        let mock = MediaList.mock
+        return .itemsLoads(blogs: mock.blogs, videos: mock.videos, podcasts: mock.podcasts)
+    }()
+}
+
+extension MediaList {
+    static let mock: Self = .init(
         blogs: [
             .init(
                 id: "0",

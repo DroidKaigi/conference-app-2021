@@ -44,7 +44,7 @@ public struct MediaScreen: View {
         return NavigationView {
             IfLetStore(
                 store.scope(state: \.mediaList),
-                then: list(store:),
+                then: MediaListView.init(store:),
                 else: { ProgressView().onAppear { viewStore.send(.progressViewAppeared) } }
             )
             .navigationTitle(L10n.MediaScreen.title)
@@ -61,56 +61,6 @@ public struct MediaScreen: View {
                 viewController.navigationController?.navigationBar.sizeToFit()
             }
         }
-    }
-
-    struct ListViewState: Equatable {
-        var hasBlogs: Bool
-        var hasVideos: Bool
-        var hasPodcasts: Bool
-
-        init(state: MediaList) {
-            hasBlogs = !state.blogs.isEmpty
-            hasVideos = !state.videos.isEmpty
-            hasPodcasts = !state.podcasts.isEmpty
-        }
-    }
-
-    private func list(store: Store<MediaList, MediaAction>) -> some View {
-        ScrollView {
-            WithViewStore(store.scope(state: ListViewState.init(state:))) { viewStore in
-                VStack(spacing: 0) {
-                    if viewStore.hasBlogs {
-                        MediaSection(
-                            icon: AssetImage.iconBlog.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Session.Blog.title,
-                            store: store.scope { $0.blogs }
-                        )
-                        divider
-                    }
-                    if viewStore.hasVideos {
-                        MediaSection(
-                            icon: AssetImage.iconVideo.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Session.Video.title,
-                            store: store.scope { $0.videos }
-                        )
-                        divider
-                    }
-                    if viewStore.hasPodcasts {
-                        MediaSection(
-                            icon: AssetImage.iconPodcast.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Session.Podcast.title,
-                            store: store.scope { $0.podcasts }
-                        )
-                    }
-                }
-            }
-        }
-        .background(AssetColor.Background.primary.color.ignoresSafeArea())
-    }
-
-    private var divider: some View {
-        Divider()
-            .padding()
     }
 }
 
