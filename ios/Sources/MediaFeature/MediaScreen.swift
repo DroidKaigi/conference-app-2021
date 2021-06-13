@@ -9,44 +9,45 @@ public struct MediaScreen: View {
     private let store: Store<MediaState, MediaAction>
     @ObservedObject var viewStore: ViewStore<ViewState, ViewAction>
 
-    @SearchController(
-        searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
-        willBecomeActive: {
-            // Send a action
-        },
-        willResignActive: {
-            // Send a action
-        },
-        searchTextDidChange: { _ in
-            // Send a action
-        }
-    ) private var searchController
+    @SearchController private var searchController: UISearchController
 
     public init(store: Store<MediaState, MediaAction>) {
         self.store = store
-        self.viewStore = .init(store.scope(state: ViewState.init(state:), action: MediaAction.init(action:)))
+        let viewStore = ViewStore(store.scope(state: ViewState.init(state:), action: MediaAction.init(action:)))
+        self.viewStore = viewStore
+        self._searchController = .init(searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder) { text in
+            viewStore.send(.searchTextDidChang(to: text))
+        }
     }
 
     struct ViewState: Equatable {
         var isInitialLoadingIndicatorVisible: Bool
+        var isSearchResultVisible: Bool
 
         init(state: MediaState) {
-            isInitialLoadingIndicatorVisible = state.mediaList == nil
+            isInitialLoadingIndicatorVisible = state.listState == nil
+            isSearchResultVisible = !(state.listState?.searchText?.isEmpty ?? true)
         }
     }
 
     enum ViewAction {
         case progressViewAppeared
+        case searchTextDidChang(to: String)
     }
 
     public var body: some View {
         searchController.searchBar.isUserInteractionEnabled = !viewStore.isInitialLoadingIndicatorVisible
         return NavigationView {
             IfLetStore(
-                store.scope(state: \.mediaList),
+                store.scope(state: \.listState?.list),
                 then: MediaListView.init(store:),
                 else: { ProgressView().onAppear { viewStore.send(.progressViewAppeared) } }
             )
+            .if(viewStore.isSearchResultVisible) {
+                $0.overlay(
+                    SearchResultView()
+                )
+            }
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
                 trailing: AssetImage.iconSetting.image
@@ -70,6 +71,8 @@ extension MediaAction {
         switch action {
         case .progressViewAppeared:
             self = .loadItems
+        case let .searchTextDidChang(to: text):
+            self = .searchTextDidChange(to: text)
         }
     }
 }
@@ -86,7 +89,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                         environment: {}
                     )
                 )
-                let _ = initialState.mediaList = .mock // swiftlint:disable:this redundant_discardable_let
+                let _ = initialState.listState = .init(list: .mock) // swiftlint:disable:this redundant_discardable_let
                 MediaScreen(
                     store: .init(
                         initialState: initialState,

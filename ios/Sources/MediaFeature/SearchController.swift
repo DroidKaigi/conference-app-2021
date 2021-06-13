@@ -4,39 +4,17 @@ import UIKit
 class SearchController: NSObject {
 
     let wrappedValue = UISearchController()
+    private let searchTextDidChangeTo: (String) -> Void
 
-    private let willBecomeActive: () -> Void
-    private let willResignActive: () -> Void
-    private let searchTextDidChange: (String) -> Void
-
-    init(
-        searchBarPlaceHolder: String? = nil,
-        willBecomeActive: @escaping () -> Void,
-        willResignActive: @escaping () -> Void,
-        searchTextDidChange: @escaping (String) -> Void
-    ) {
-        self.willBecomeActive = willBecomeActive
-        self.willResignActive = willResignActive
-        self.searchTextDidChange = searchTextDidChange
+    init(searchBarPlaceHolder: String? = nil, searchTextDidChangeTo: @escaping (String) -> Void) {
+        self.searchTextDidChangeTo = searchTextDidChangeTo
         super.init()
-        wrappedValue.delegate = self
-        wrappedValue.searchBar.placeholder = searchBarPlaceHolder
         wrappedValue.searchBar.delegate = self
-    }
-}
-
-extension SearchController: UISearchControllerDelegate {
-    func willPresentSearchController(_ searchController: UISearchController) {
-        willBecomeActive()
-    }
-
-    func willDismissSearchController(_ searchController: UISearchController) {
-        willResignActive()
     }
 }
 
 extension SearchController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        searchTextDidChange(searchText)
+        searchTextDidChangeTo(searchText)
     }
 }

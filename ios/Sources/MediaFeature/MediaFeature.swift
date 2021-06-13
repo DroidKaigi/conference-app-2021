@@ -3,14 +3,20 @@ import ComposableArchitecture
 import Model
 
 public struct MediaState: Equatable {
-    var mediaList: MediaList?
+    var listState: MediaListState?
 
     public init() {}
+}
+
+public struct MediaListState: Equatable {
+    var list: MediaList
+    var searchText: String?
 }
 
 public enum MediaAction: Equatable {
     case loadItems
     case itemsLoads(blogs: [FeedItem], videos: [FeedItem], podcasts: [FeedItem])
+    case searchTextDidChange(to: String?)
 }
 
 public struct MediaList: Equatable {
@@ -27,7 +33,10 @@ public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action
             .delay(for: 1, scheduler: DispatchQueue.main)
             .eraseToEffect()
     case let .itemsLoads(blogs, videos, podcasts):
-        state.mediaList = .init(blogs: blogs, videos: videos, podcasts: podcasts)
+        state.listState = .init(list: .init(blogs: blogs, videos: videos, podcasts: podcasts), searchText: nil)
+        return .none
+    case let .searchTextDidChange(to: searchText):
+        state.listState?.searchText = searchText
         return .none
     }
 }
