@@ -76,14 +76,25 @@ extension MediaAction {
 public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
-            MediaScreen(
-                store: .init(
-                    initialState: .init(),
-                    reducer: .empty,
-                    environment: {}
+            Group {
+                var initialState = MediaState()
+                MediaScreen(
+                    store: .init(
+                        initialState: initialState,
+                        reducer: .empty,
+                        environment: {}
+                    )
                 )
-            )
-                .environment(\.colorScheme, colorScheme)
+                let _ = initialState.mediaList = .mock
+                MediaScreen(
+                    store: .init(
+                        initialState: initialState,
+                        reducer: .empty,
+                        environment: {}
+                    )
+                )
+            }
+            .environment(\.colorScheme, colorScheme)
         }
         .accentColor(AssetColor.primary.color)
     }
