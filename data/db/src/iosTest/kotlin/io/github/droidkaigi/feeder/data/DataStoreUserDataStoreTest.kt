@@ -36,23 +36,6 @@ class DataStoreUserDataStoreTest {
     }
 
     @Test
-    fun testAuthenticatedReadAndWrite() {
-        // give
-        val dataStore = DataStoreUserDataStore(TEST_SUITE_NAME)
-
-        // when
-        runBlocking {
-            dataStore.setAuthenticated(false)
-            dataStore.setAuthenticated(true)
-        }
-
-        // then
-        runBlocking {
-            assertEquals(dataStore.isAuthenticated().first(), true)
-        }
-    }
-
-    @Test
     fun testDeviceIdReadAndWrite() {
         // give
         val dataStore = DataStoreUserDataStore(TEST_SUITE_NAME)
