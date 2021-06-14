@@ -85,10 +85,10 @@ object Dep {
     const val ktlint = "com.pinterest:ktlint:0.40.0"
 
     object Dagger {
-        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.35"
-        const val hiltAndroid = "com.google.dagger:hilt-android:2.35"
-        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.35"
-        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.35"
+        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.37"
+        const val hiltAndroid = "com.google.dagger:hilt-android:2.37"
+        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.37"
+        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.37"
     }
 
     object Accompanist {
