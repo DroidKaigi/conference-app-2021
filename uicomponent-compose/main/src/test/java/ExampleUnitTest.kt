@@ -7,7 +7,7 @@ class ExampleUnitTest {
      * * What went wrong:
      * Execution failed for task ':uicomponent-compose:main:transformDebugUnitTestClassesWithAsm'.
      * > java.nio.file.NoSuchFileException:
-    /home/runner/work/conference-app-2021/conference-app-2021/uicomponent-compose/main/build/tmp/kotlin-classes/debugUnitTest
+     /home/runner/work/conference-app-2021/conference-app-2021/uicomponent-compose/main/build/tmp/kotlin-classes/debugUnitTest
      */
     @Test
     fun addition_isCorrect() {
