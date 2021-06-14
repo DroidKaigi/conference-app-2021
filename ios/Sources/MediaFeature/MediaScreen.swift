@@ -29,7 +29,7 @@ public struct MediaScreen: View {
             let isLoadingInitially = state.listState == nil
             isSearchBarEnabled = !isLoadingInitially
             isInitialLoadingIndicatorVisible = isLoadingInitially
-            isSearchResultVisible = !(state.listState?.searchText?.isEmpty ?? true)
+            isSearchResultVisible = state.listState?.searchText?.isEmpty == false
         }
     }
 
