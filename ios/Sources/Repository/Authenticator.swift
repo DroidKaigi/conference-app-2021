@@ -3,6 +3,8 @@ import FirebaseAuth
 import Foundation
 
 public class AuthenticatorImpl: Authenticator {
+    
+    public init() {}
 
     public func currentUser(completionHandler: @escaping (DroidKaigiMPP.User?, Error?) -> Void) {
         guard let firebaseUser = Auth.auth().currentUser else {
