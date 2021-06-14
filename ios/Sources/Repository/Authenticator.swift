@@ -14,8 +14,12 @@ public class AuthenticatorImpl: Authenticator {
                 completionHandler(nil, error)
                 return
             }
+            guard let token = result?.token else {
+                completionHandler(nil, nil)
+                return
+            }
 
-            completionHandler(DroidKaigiMPP.User(idToken: result?.token), nil)
+            completionHandler(DroidKaigiMPP.User(idToken: token), nil)
         }
     }
 
@@ -27,7 +31,7 @@ public class AuthenticatorImpl: Authenticator {
             }
 
             guard let result = result else {
-                completionHandler(DroidKaigiMPP.User(idToken: nil), nil)
+                completionHandler(nil, nil)
                 return
             }
 
@@ -36,8 +40,12 @@ public class AuthenticatorImpl: Authenticator {
                     completionHandler(nil, error)
                     return
                 }
+                guard let token = result?.token else {
+                    completionHandler(nil, nil)
+                    return
+                }
 
-                completionHandler(DroidKaigiMPP.User(idToken: result?.token), nil)
+                completionHandler(DroidKaigiMPP.User(idToken: token), nil)
             }
         }
     }

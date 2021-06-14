@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 data class User(
-    val idToken: String?
+    val idToken: String
 )
 
 interface Authenticator {
