@@ -35,6 +35,10 @@ var package = Package(
             targets: ["MediaFeature"]
         ),
         .library(
+            name: "Model",
+            targets: ["Model"]
+        ),
+        .library(
             name: "Repository",
             targets: ["Repository"]
         ),
@@ -61,7 +65,9 @@ var package = Package(
         .target(
             name: "AboutFeature",
             dependencies: [
+                .target(name: "Component"),
                 .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
         .target(
@@ -109,9 +115,16 @@ var package = Package(
             ]
         ),
         .target(
+            name: "Model",
+            dependencies: [
+                .target(name: "DroidKaigiMPP"),
+            ]
+        ),
+        .target(
             name: "Repository",
             dependencies: [
                 .target(name: "DroidKaigiMPP"),
+                .target(name: "Model"),
                 .product(name: "FirebaseAuth", package: "Firebase"),
             ]
         ),

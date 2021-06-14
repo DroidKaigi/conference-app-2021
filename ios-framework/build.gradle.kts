@@ -23,6 +23,7 @@ kotlin {
                 baseName = "DroidKaigiMPP"
                 export(project(":model"))
                 export(project(":data:repository"))
+                export(Dep.datetime)
                 linkerOpts.add("-lsqlite3")
             }
         }

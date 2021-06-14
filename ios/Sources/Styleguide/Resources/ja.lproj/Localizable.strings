@@ -11,6 +11,8 @@
 
 // MARK: About
 "AboutScreen.Title" = "About";
+"AboutScreen.Picker.Staff" = "Staff";
+"AboutScreen.Picker.Contributor" = "Contributor";
 
 // MARK: Setting
 "SettingScreen.Title" = "Setting";
