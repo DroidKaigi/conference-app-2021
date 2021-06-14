@@ -21,11 +21,14 @@ public struct MediaScreen: View {
     }
 
     struct ViewState: Equatable {
+        var isSearchBarEnabled: Bool
         var isInitialLoadingIndicatorVisible: Bool
         var isSearchResultVisible: Bool
 
         init(state: MediaState) {
-            isInitialLoadingIndicatorVisible = state.listState == nil
+            let isLoadingInitially = state.listState == nil
+            isSearchBarEnabled = !isLoadingInitially
+            isInitialLoadingIndicatorVisible = isLoadingInitially
             isSearchResultVisible = !(state.listState?.searchText?.isEmpty ?? true)
         }
     }
@@ -36,7 +39,7 @@ public struct MediaScreen: View {
     }
 
     public var body: some View {
-        searchController.searchBar.isUserInteractionEnabled = !viewStore.isInitialLoadingIndicatorVisible
+        searchController.searchBar.isUserInteractionEnabled = viewStore.isSearchBarEnabled
         return NavigationView {
             IfLetStore(
                 store.scope(state: \.listState?.list),
