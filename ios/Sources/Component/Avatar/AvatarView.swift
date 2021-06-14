@@ -39,21 +39,23 @@ public struct AvatarView: View {
     }
 
     public var body: some View {
-        LazyImage(source: avatarImageURL)
-            .placeholder {
+        LazyImage(source: avatarImageURL) { state in
+            if let image = state.image {
+                image
+            } else if state.error != nil {
+                placeholderView
+            } else {
                 placeholderView
             }
-            .failure {
-                placeholderView
-            }
-            .frame(width: style.size, height: style.size)
-            .background(AssetColor.Background.secondary.color.colorScheme(.light))
-            .overlay(
-                Circle()
-                    .stroke(AssetColor.Separate.image.color, lineWidth: 1)
-            )
-            .clipShape(Circle())
-            .background(Color.clear)
+        }
+        .frame(width: style.size, height: style.size)
+        .background(AssetColor.Background.secondary.color.colorScheme(.light))
+        .overlay(
+            Circle()
+                .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+        )
+        .clipShape(Circle())
+        .background(Color.clear)
     }
 }
 
