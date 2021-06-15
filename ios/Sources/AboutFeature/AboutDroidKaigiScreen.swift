@@ -14,10 +14,10 @@ public struct AboutDroidKaigiScreen: View {
         NavigationView {
             VStack {
                 VStack {
-                    Text("What is").font(.system(size: 22))
+                    Text(L10n.AboutDroidKaigiScreen.whatIs).font(.system(size: 22))
                     AssetImage.logoTitle.image
                         .frame(width: 261.81, height: 41.06, alignment: .center)
-                    Text("DroidKaigiはエンジニアが主役のAndroid\nカンファレンスです。Android技術情報\nの共有とコミュニケーションを目的\nに、イベントを開催しています。")
+                    Text(L10n.AboutDroidKaigiScreen.description)
                         .multilineTextAlignment(.center)
                         .font(.system(size: 17))
                         .opacity(0.7)
@@ -27,7 +27,7 @@ public struct AboutDroidKaigiScreen: View {
                 List {
                     Button(action: {}, label: {
                         HStack() {
-                            Text("行動規範")
+                            Text(L10n.AboutDroidKaigiScreen.behaviorCode)
                             Spacer()
                             Image(systemName: "book")
                         }
@@ -37,7 +37,7 @@ public struct AboutDroidKaigiScreen: View {
 
                     Button(action: {}, label: {
                         HStack() {
-                            Text("オープンソースライセース")
+                            Text(L10n.AboutDroidKaigiScreen.opensourceLincense)
                             Spacer()
                             Image(systemName: "star")
                         }
@@ -47,7 +47,7 @@ public struct AboutDroidKaigiScreen: View {
 
                     Button(action: {}, label: {
                         HStack() {
-                            Text("プライバシーポリシー")
+                            Text(L10n.AboutDroidKaigiScreen.privacyPolicy)
                             Spacer()
                             Image(systemName: "magnifyingglass")
                         }
