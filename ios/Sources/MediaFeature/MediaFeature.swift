@@ -15,7 +15,7 @@ public struct MediaListState: Equatable {
 
 public enum MediaAction: Equatable {
     case loadItems
-    case itemsLoads(blogs: [Blog], videos: [Video], podcasts: [Podcast])
+    case itemsLoaded(blogs: [Blog], videos: [Video], podcasts: [Podcast])
     case searchTextDidChange(to: String?)
 }
 
@@ -32,7 +32,7 @@ public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action
         return Effect(value: .mockItemsLoads)
             .delay(for: 1, scheduler: DispatchQueue.main)
             .eraseToEffect()
-    case let .itemsLoads(blogs, videos, podcasts):
+    case let .itemsLoaded(blogs, videos, podcasts):
         state.listState = .init(list: .init(blogs: blogs, videos: videos, podcasts: podcasts), searchText: nil)
         return .none
     case let .searchTextDidChange(to: searchText):
@@ -44,7 +44,7 @@ public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action
 private extension MediaAction {
     static let mockItemsLoads: Self = {
         let mock = MediaList.mock
-        return .itemsLoads(blogs: mock.blogs, videos: mock.videos, podcasts: mock.podcasts)
+        return .itemsLoaded(blogs: mock.blogs, videos: mock.videos, podcasts: mock.podcasts)
     }()
 }
 
