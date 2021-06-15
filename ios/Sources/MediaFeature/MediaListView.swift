@@ -31,7 +31,7 @@ struct MediaListView: View {
                     MediaSection(
                         icon: AssetImage.iconBlog.image.renderingMode(.template),
                         title: L10n.MediaScreen.Session.Blog.title,
-                        store: store.scope { $0.blogs }
+                        store: store.scope { $0.blogs.map(\.feedItem) }
                     )
                     divider
                 }
@@ -39,7 +39,7 @@ struct MediaListView: View {
                     MediaSection(
                         icon: AssetImage.iconVideo.image.renderingMode(.template),
                         title: L10n.MediaScreen.Session.Video.title,
-                        store: store.scope { $0.videos }
+                        store: store.scope { $0.videos.map(\.feedItem) }
                     )
                     divider
                 }
@@ -47,7 +47,7 @@ struct MediaListView: View {
                     MediaSection(
                         icon: AssetImage.iconPodcast.image.renderingMode(.template),
                         title: L10n.MediaScreen.Session.Podcast.title,
-                        store: store.scope { $0.podcasts }
+                        store: store.scope { $0.podcasts.map(\.feedItem) }
                     )
                 }
             }

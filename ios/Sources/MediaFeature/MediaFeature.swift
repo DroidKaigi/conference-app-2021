@@ -15,14 +15,14 @@ public struct MediaListState: Equatable {
 
 public enum MediaAction: Equatable {
     case loadItems
-    case itemsLoads(blogs: [FeedItem], videos: [FeedItem], podcasts: [FeedItem])
+    case itemsLoads(blogs: [Blog], videos: [Video], podcasts: [Podcast])
     case searchTextDidChange(to: String?)
 }
 
 public struct MediaList: Equatable {
-    var blogs: [FeedItem]
-    var videos: [FeedItem]
-    var podcasts: [FeedItem]
+    var blogs: [Blog]
+    var videos: [Video]
+    var podcasts: [Podcast]
 }
 
 public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action, _ in
@@ -58,7 +58,9 @@ extension MediaList {
                 media: .medium,
                 publishedAt: .init(),
                 summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて")
+                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
+                author: .init(link: "", name: ""),
+                language: ""
             ),
             .init(
                 id: "1",
@@ -67,7 +69,9 @@ extension MediaList {
                 media: .medium,
                 publishedAt: .init(),
                 summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs")
+                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs"),
+                author: .init(link: "", name: ""),
+                language: ""
             ),
         ],
         videos: [
@@ -96,7 +100,9 @@ extension MediaList {
                 image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
                 link: "",
                 media: .droidkaigifm,
+                podcastLink: "",
                 publishedAt: .init(),
+                speakers: [],
                 summary: .init(enTitle: "", jaTitle: ""),
                 title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
             ),
@@ -105,7 +111,9 @@ extension MediaList {
                 image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
                 link: "",
                 media: .droidkaigifm,
+                podcastLink: "",
                 publishedAt: .init(),
+                speakers: [],
                 summary: .init(enTitle: "", jaTitle: ""),
                 title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")
             ),
