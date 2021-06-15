@@ -43,6 +43,7 @@ public struct SmallCard: View {
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(3)
+                        .frame(maxHeight: .infinity, alignment: .top)
 
                     Text(date.formatted)
                         .font(.caption)

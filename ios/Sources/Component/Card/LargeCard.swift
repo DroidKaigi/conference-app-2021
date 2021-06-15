@@ -29,18 +29,20 @@ public struct LargeCard: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 13) {
+        VStack(alignment: .leading, spacing: 0) {
             ImageView(
                 imageURL: imageURL,
                 placeholder: .noImage,
                 placeholderSize: .large
             )
             .aspectRatio(343/190, contentMode: .fit)
+            .padding(.bottom, 16)
 
             Text(title)
                 .font(.headline)
                 .foregroundColor(AssetColor.Base.primary.color)
                 .lineLimit(2)
+                .padding(.bottom, 13)
 
             HStack(spacing: 8) {
                 Tag(type: tag) {

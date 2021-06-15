@@ -44,8 +44,7 @@ public struct MediumCard: View {
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(2)
-
-                    Spacer(minLength: 4)
+                        .frame(maxHeight: .infinity, alignment: .top)
 
                     Text(date.formatted)
                         .font(.caption)
