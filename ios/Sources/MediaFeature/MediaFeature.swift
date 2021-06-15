@@ -17,6 +17,12 @@ public struct MediaListState: Equatable {
     var searchText: String?
 }
 
+public struct MediaList: Equatable {
+    var blogs: [Blog]
+    var videos: [Video]
+    var podcasts: [Podcast]
+}
+
 public enum MediaAction: Equatable {
     case loadItems
     case itemsLoaded(blogs: [Blog], videos: [Video], podcasts: [Podcast])
@@ -24,13 +30,11 @@ public enum MediaAction: Equatable {
     case willDismissSearchController
 }
 
-public struct MediaList: Equatable {
-    var blogs: [Blog]
-    var videos: [Video]
-    var podcasts: [Podcast]
+public struct MediaEnvironment {
+    public init() {}
 }
 
-public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action, _ in
+public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { state, action, _ in
     switch action {
     case .loadItems:
         // TODO: Load items from the repository

@@ -42,7 +42,9 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     mediaReducer.pullback(
         state: \.mediaState,
         action: /AppAction.media,
-        environment: { _ in () }
+        environment: { _ in
+            .init()
+        }
     ),
     favoritesReducer.pullback(
         state: \.favoritesState,
