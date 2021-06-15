@@ -5,7 +5,7 @@ import SwiftUI
 struct MediaListView: View {
 
     private let store: Store<MediaList, MediaAction>
-    @ObservedObject var viewStore: ViewStore<ViewState, Never>
+    @ObservedObject private var viewStore: ViewStore<ViewState, Never>
 
     init(store: Store<MediaList, MediaAction>) {
         self.store = store

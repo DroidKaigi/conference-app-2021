@@ -1,13 +1,13 @@
 import UIKit
 
 @propertyWrapper
-class SearchController: NSObject {
+public class SearchController: NSObject {
 
-    let wrappedValue = UISearchController()
+    public let wrappedValue = UISearchController()
     private let searchTextDidChangeTo: (String) -> Void
     private let willDismissSearchController: () -> Void
 
-    init(
+    public init(
         searchBarPlaceHolder: String? = nil,
         searchTextDidChangeTo: @escaping (String) -> Void,
         willDismissSearchController: @escaping () -> Void
@@ -21,13 +21,13 @@ class SearchController: NSObject {
 }
 
 extension SearchController: UISearchBarDelegate {
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
+    public func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         searchTextDidChangeTo(searchText)
     }
 }
 
 extension SearchController: UISearchControllerDelegate {
-    func willDismissSearchController(_ searchController: UISearchController) {
+    public func willDismissSearchController(_ searchController: UISearchController) {
         willDismissSearchController()
     }
 }

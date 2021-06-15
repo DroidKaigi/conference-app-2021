@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import Introspect
 import Model
@@ -7,8 +8,7 @@ import Styleguide
 public struct MediaScreen: View {
 
     private let store: Store<MediaState, MediaAction>
-    @ObservedObject var viewStore: ViewStore<ViewState, ViewAction>
-
+    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
     @SearchController private var searchController: UISearchController
 
     public init(store: Store<MediaState, MediaAction>) {
