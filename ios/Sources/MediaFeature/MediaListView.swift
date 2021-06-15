@@ -70,6 +70,7 @@ public struct MediaListView_Previews: PreviewProvider {
                     environment: {}
                 )
             )
+            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .environment(\.colorScheme, colorScheme)
         }
         .accentColor(AssetColor.primary.color)
