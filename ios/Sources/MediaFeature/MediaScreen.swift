@@ -44,15 +44,18 @@ public struct MediaScreen: View {
     public var body: some View {
         searchController.searchBar.isUserInteractionEnabled = viewStore.isSearchBarEnabled
         return NavigationView {
-            IfLetStore(
-                store.scope(state: \.listState?.list),
-                then: MediaListView.init(store:),
-                else: { ProgressView().onAppear { viewStore.send(.progressViewAppeared) } }
-            )
-            .if(viewStore.isSearchResultVisible) {
-                $0.overlay(
-                    SearchResultView()
+            ZStack {
+                IfLetStore(
+                    store.scope(state: \.listState?.list),
+                    then: MediaListView.init(store:),
+                    else: { ProgressView().onAppear { viewStore.send(.progressViewAppeared) } }
                 )
+                .zIndex(0)
+
+                if viewStore.isSearchResultVisible {
+                    SearchResultView()
+                        .zIndex(1)
+                }
             }
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
