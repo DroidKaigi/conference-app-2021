@@ -92,18 +92,16 @@ public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             Group {
-                var initialState = MediaState()
                 MediaScreen(
                     store: .init(
-                        initialState: initialState,
+                        initialState: MediaState(),
                         reducer: .empty,
                         environment: {}
                     )
                 )
-                let _ = initialState.listState = .init(list: .mock) // swiftlint:disable:this redundant_discardable_let
                 MediaScreen(
                     store: .init(
-                        initialState: initialState,
+                        initialState: MediaState(listState: .init(list: .mock)),
                         reducer: .empty,
                         environment: {}
                     )

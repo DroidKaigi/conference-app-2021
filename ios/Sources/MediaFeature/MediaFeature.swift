@@ -6,6 +6,10 @@ public struct MediaState: Equatable {
     var listState: MediaListState?
 
     public init() {}
+
+    init(listState: MediaListState?) {
+        self.listState = listState
+    }
 }
 
 public struct MediaListState: Equatable {
