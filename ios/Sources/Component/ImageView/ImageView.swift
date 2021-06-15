@@ -6,7 +6,7 @@ public enum PlaceHolder {
     case noImage
     case noImagePodcast
 
-    var image: Image {
+    var image: SwiftUI.Image {
         switch self {
         case .noImage:
             return AssetImage.noImage.image
@@ -49,17 +49,19 @@ public struct ImageView: View {
     }
 
     public var body: some View {
-        LazyImage(source: imageURL)
-            .placeholder {
+        LazyImage(source: imageURL) { state in
+            if let image = state.image {
+                image
+            } else if state.error != nil {
+                placeholderView
+            } else {
                 placeholderView
             }
-            .failure {
-                placeholderView
-            }
-            .overlay(
-                RoundedRectangle(cornerRadius: 2)
-                    .stroke(AssetColor.Separate.image.color, lineWidth: 1)
-            )
+        }
+        .overlay(
+            RoundedRectangle(cornerRadius: 2)
+                .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+        )
     }
 }
 
