@@ -17,6 +17,7 @@ public enum MediaAction: Equatable {
     case loadItems
     case itemsLoaded(blogs: [Blog], videos: [Video], podcasts: [Podcast])
     case searchTextDidChange(to: String?)
+    case willDismissSearchController
 }
 
 public struct MediaList: Equatable {
@@ -37,6 +38,9 @@ public let mediaReducer = Reducer<MediaState, MediaAction, Void> { state, action
         return .none
     case let .searchTextDidChange(to: searchText):
         state.listState?.searchText = searchText
+        return .none
+    case .willDismissSearchController:
+        state.listState?.searchText = nil
         return .none
     }
 }

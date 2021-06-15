@@ -15,9 +15,11 @@ public struct MediaScreen: View {
         self.store = store
         let viewStore = ViewStore(store.scope(state: ViewState.init(state:), action: MediaAction.init(action:)))
         self.viewStore = viewStore
-        self._searchController = .init(searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder) { text in
+        self._searchController = .init(searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder, searchTextDidChangeTo: { text in
             viewStore.send(.searchTextDidChange(to: text))
-        }
+        }, willDismissSearchController: {
+            viewStore.send(.willDismissSearchController)
+        })
     }
 
     struct ViewState: Equatable {
@@ -36,6 +38,7 @@ public struct MediaScreen: View {
     enum ViewAction {
         case progressViewAppeared
         case searchTextDidChange(to: String)
+        case willDismissSearchController
     }
 
     public var body: some View {
@@ -76,6 +79,8 @@ extension MediaAction {
             self = .loadItems
         case let .searchTextDidChange(to: text):
             self = .searchTextDidChange(to: text)
+        case .willDismissSearchController:
+            self = .willDismissSearchController
         }
     }
 }
