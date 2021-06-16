@@ -36,7 +36,7 @@ struct MediaSectionHeader_Previews: PreviewProvider {
         ForEach(sizeCategories, id: \.self) { (sizeCategory: ContentSizeCategory) in
             MediaSectionHeader(
                 icon: AssetImage.iconBlog.image,
-                title: L10n.MediaScreen.Session.Podcast.title,
+                title: L10n.MediaScreen.Section.Podcast.title,
                 moreAction: {}
             )
             .previewLayout(.sizeThatFits)

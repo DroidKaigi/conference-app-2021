@@ -38,7 +38,7 @@ struct MediaListView: View {
                     if viewStore.hasBlogs {
                         MediaSection(
                             icon: AssetImage.iconBlog.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Session.Blog.title,
+                            title: L10n.MediaScreen.Section.Blog.title,
                             store: store.scope(
                                 state: {  $0.list.blogs.map(\.feedItem) },
                                 action: { .init(action: $0, for: .blog) }
@@ -49,7 +49,7 @@ struct MediaListView: View {
                     if viewStore.hasVideos {
                         MediaSection(
                             icon: AssetImage.iconVideo.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Session.Video.title,
+                            title: L10n.MediaScreen.Section.Video.title,
                             store: store.scope(
                                 state: {  $0.list.videos.map(\.feedItem) },
                                 action: { .init(action: $0, for: .video) }
@@ -60,7 +60,7 @@ struct MediaListView: View {
                     if viewStore.hasPodcasts {
                         MediaSection(
                             icon: AssetImage.iconPodcast.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Session.Podcast.title,
+                            title: L10n.MediaScreen.Section.Podcast.title,
                             store: store.scope(
                                 state: {  $0.list.podcasts.map(\.feedItem) },
                                 action: { .init(action: $0, for: .podcast) }

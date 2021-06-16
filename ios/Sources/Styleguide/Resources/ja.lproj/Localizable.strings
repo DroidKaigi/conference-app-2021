@@ -6,10 +6,10 @@
 // MARK: Media
 "MediaScreen.Title" = "Media";
 "MediaScreen.SearchBar.Placeholder" = "タイトルを検索";
-"MediaScreen.Session.Blog.Title" = "BLOG";
-"MediaScreen.Session.Video.Title" = "VIDEO";
-"MediaScreen.Session.Podcast.Title" = "PODCAST";
-"MediaScreen.Session.More" = "More";
+"MediaScreen.Section.Blog.Title" = "BLOG";
+"MediaScreen.Section.Video.Title" = "VIDEO";
+"MediaScreen.Section.Podcast.Title" = "PODCAST";
+"MediaScreen.Section.More" = "More";
 
 // MARK: Favorite
 "FavoriteScreen.Title" = "Favorites";

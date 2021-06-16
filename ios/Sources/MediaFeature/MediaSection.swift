@@ -92,7 +92,7 @@ struct MediaSection_Previews: PreviewProvider {
             ForEach(sizeCategories, id: \.self) { sizeCategory in
                 MediaSection(
                     icon: AssetImage.iconBlog.image.renderingMode(.template),
-                    title: L10n.MediaScreen.Session.Blog.title,
+                    title: L10n.MediaScreen.Section.Blog.title,
                     store: .init(initialState: mockItems, reducer: .empty, environment: {})
                 )
                 .background(AssetColor.Background.primary.color)
