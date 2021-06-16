@@ -14,7 +14,12 @@ public struct MediaState: Equatable {
 
 public struct MediaListState: Equatable {
     var list: MediaList
-    var searchText: String?
+    var next: Next?
+
+    enum Next: Equatable {
+        case searchText(String)
+        case more(for: MediaType)
+    }
 }
 
 public struct MediaList: Equatable {
@@ -23,35 +28,79 @@ public struct MediaList: Equatable {
     var podcasts: [Podcast]
 }
 
+public enum MediaType {
+    case blog
+    case video
+    case podcast
+}
+
 public enum MediaAction: Equatable {
     case loadItems
     case itemsLoaded(blogs: [Blog], videos: [Video], podcasts: [Podcast])
+    case mediaList(MediaListAction)
+}
+
+public enum MediaListAction: Equatable {
     case searchTextDidChange(to: String?)
     case willDismissSearchController
+    case showMore(for: MediaType)
 }
 
 public struct MediaEnvironment {
     public init() {}
 }
 
-public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { state, action, _ in
+let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, action, _ in
     switch action {
-    case .loadItems:
-        // TODO: Load items from the repository
-        return Effect(value: .mockItemsLoads)
-            .delay(for: 1, scheduler: DispatchQueue.main)
-            .eraseToEffect()
-    case let .itemsLoaded(blogs, videos, podcasts):
-        state.listState = .init(list: .init(blogs: blogs, videos: videos, podcasts: podcasts), searchText: nil)
-        return .none
     case let .searchTextDidChange(to: searchText):
-        state.listState?.searchText = searchText
+        switch state.next {
+        case nil,
+             .searchText:
+            state.next = searchText.map { .searchText($0) }
+        default:
+            break
+        }
         return .none
     case .willDismissSearchController:
-        state.listState?.searchText = nil
+        if case .searchText = state.next {
+            state.next = nil
+        }
+        return .none
+    case let .showMore(mediaType):
+        if state.next == nil {
+            state.next = .more(for: mediaType)
+        }
         return .none
     }
 }
+
+public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.combine(
+    mediaListReducer.optional().pullback(
+        state: \.listState,
+        action: /MediaAction.mediaList,
+        environment: { _ in () }
+    ),
+    .init { state, action, _ in
+        switch action {
+        case .loadItems:
+            // TODO: Load items from the repository
+            return Effect(value: .mockItemsLoads)
+                .delay(for: 1, scheduler: DispatchQueue.main)
+                .eraseToEffect()
+        case let .itemsLoaded(blogs, videos, podcasts):
+            let list = MediaList(blogs: blogs, videos: videos, podcasts: podcasts)
+            if var listState = state.listState {
+                listState.list = list
+                state.listState = listState
+            } else {
+                state.listState = .init(list: list, next: nil)
+            }
+            return .none
+        case .mediaList:
+            return .none
+        }
+    }
+)
 
 private extension MediaAction {
     static let mockItemsLoads: Self = {

@@ -8,14 +8,22 @@ struct MediaSection: View {
 
     var icon: SwiftUI.Image
     var title: String
-    let store: Store<[FeedItem], MediaAction>
+    let store: Store<[FeedItem], ViewAction>
+
+    enum ViewAction {
+        case showMore
+    }
 
     var body: some View {
         VStack(spacing: 0) {
-            MediaSectionHeader(icon: icon, title: title)
-            ScrollView(.horizontal, showsIndicators: false) {
-                LazyHStack(spacing: 0) {
-                    WithViewStore(store) { viewStore in
+            WithViewStore(store) { viewStore in
+                MediaSectionHeader(
+                    icon: icon,
+                    title: title,
+                    moreAction: { viewStore.send(.showMore) }
+                )
+                ScrollView(.horizontal, showsIndicators: false) {
+                    LazyHStack(spacing: 0) {
                         ForEach(viewStore.state) { item in
                             MediumCard(
                                 title: item.title.get(by: .ja),
