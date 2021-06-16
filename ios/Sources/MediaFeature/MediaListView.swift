@@ -1,15 +1,16 @@
 import ComposableArchitecture
+import Model
 import Styleguide
 import SwiftUI
 
 struct MediaListView: View {
 
     private let store: Store<MediaListState, MediaListAction>
-    @ObservedObject private var viewStore: ViewStore<ViewState, Never>
+    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     init(store: Store<MediaListState, MediaListAction>) {
         self.store = store
-        self.viewStore = .init(store.scope(state: ViewState.init(state:)).actionless)
+        self.viewStore = .init(store.scope(state: ViewState.init(state:), action: MediaListAction.init(action:)))
     }
 
     struct ViewState: Equatable {
@@ -17,6 +18,7 @@ struct MediaListView: View {
         var hasVideos: Bool
         var hasPodcasts: Bool
         var isSearchResultVisible: Bool
+        var isMoreActive: Bool
 
         init(state: MediaListState) {
             hasBlogs = !state.list.blogs.isEmpty
@@ -28,7 +30,16 @@ struct MediaListView: View {
             } else {
                 isSearchResultVisible = false
             }
+            if case .more = state.next {
+                isMoreActive = true
+            } else {
+                isMoreActive = false
+            }
         }
+    }
+
+    enum ViewAction {
+        case moreDismissed
     }
 
     var body: some View {
@@ -76,11 +87,53 @@ struct MediaListView: View {
                     .zIndex(1)
             }
         }
+        .background(
+            NavigationLink(
+                destination: IfLetStore(
+                    self.store.actionless.scope(state: MediaDetail.ViewState.init(state:)),
+                    then: MediaDetail.init(store:)
+                ),
+                isActive: viewStore.binding(
+                    get: \.isMoreActive,
+                    send: { _ in .moreDismissed }
+                )
+            ) {
+                EmptyView()
+            }
+        )
     }
 
     private var divider: some View {
         Divider()
             .padding()
+    }
+}
+
+private extension MediaListAction {
+    init(action: MediaListView.ViewAction) {
+        switch action {
+        case .moreDismissed:
+            self = .moreDismissed
+        }
+    }
+}
+
+private extension MediaDetail.ViewState {
+    init?(state: MediaListState) {
+        guard case let .more(mediaType) = state.next else {
+            return nil
+        }
+        switch mediaType {
+        case .blog:
+            title = L10n.MediaScreen.Section.Blog.title
+            feedItems = state.list.blogs.map(FeedItemType.blog)
+        case .video:
+            title = L10n.MediaScreen.Section.Video.title
+            feedItems = state.list.videos.map(FeedItemType.video)
+        case .podcast:
+            title = L10n.MediaScreen.Section.Podcast.title
+            feedItems = state.list.podcasts.map(FeedItemType.podcast)
+        }
     }
 }
 

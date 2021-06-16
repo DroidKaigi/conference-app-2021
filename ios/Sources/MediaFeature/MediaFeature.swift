@@ -44,6 +44,7 @@ public enum MediaListAction: Equatable {
     case searchTextDidChange(to: String?)
     case willDismissSearchController
     case showMore(for: MediaType)
+    case moreDismissed
 }
 
 public struct MediaEnvironment {
@@ -69,6 +70,11 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, a
     case let .showMore(mediaType):
         if state.next == nil {
             state.next = .more(for: mediaType)
+        }
+        return .none
+    case .moreDismissed:
+        if case .more = state.next {
+            state.next = nil
         }
         return .none
     }
