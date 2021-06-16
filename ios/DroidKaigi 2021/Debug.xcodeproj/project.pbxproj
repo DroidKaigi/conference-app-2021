@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4369C90E267A3922000631D6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4369C90D267A3922000631D6 /* Settings.bundle */; };
 		80823BBE56026449A5FE87E6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */; };
 		8BAA8C7C006D04516B3DC1A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */; };
 		E821C040265FFEA500C3785D /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E821C03F265FFEA500C3785D /* AppFeature */; };
@@ -16,6 +17,7 @@
 /* Begin PBXFileReference section */
 		1ACA166CBF9A421538E309E4 /* DroidKaigiMPP.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DroidKaigiMPP.framework; path = "../ios-framework/build/xcode-frameworks/DroidKaigiMPP.framework"; sourceTree = "<group>"; };
 		2B29CA0397EABB180818B44B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4369C90D267A3922000631D6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroidKaigi_2021App.swift; sourceTree = "<group>"; };
 		938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -45,6 +47,7 @@
 		223355B1A777710E029FCDFC /* DroidKaigi 2021 */ = {
 			isa = PBXGroup;
 			children = (
+				4369C90D267A3922000631D6 /* Settings.bundle */,
 				938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */,
 				7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */,
 				2B29CA0397EABB180818B44B /* Info.plist */,
@@ -135,6 +138,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BAA8C7C006D04516B3DC1A0 /* Assets.xcassets in Resources */,
+				4369C90E267A3922000631D6 /* Settings.bundle in Resources */,
 				80823BBE56026449A5FE87E6 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

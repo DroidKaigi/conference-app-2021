@@ -7,3 +7,7 @@ xcuserdata/
 
 # SwiftGen generated
 Generated/
+
+# LicensePlist generated
+com.mono0926.LicensePlist/
+com.mono0926.LicensePlist.*
