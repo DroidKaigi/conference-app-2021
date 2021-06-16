@@ -24,12 +24,13 @@ public struct MediaScreen: View {
 
     struct ViewState: Equatable {
         var isSearchBarEnabled: Bool
-        var isInitialLoadingIndicatorVisible: Bool
 
         init(state: MediaState) {
-            let isLoadingInitially = state.listState == nil
-            isSearchBarEnabled = !isLoadingInitially
-            isInitialLoadingIndicatorVisible = isLoadingInitially
+            if case .initialized = state {
+                isSearchBarEnabled = true
+            } else {
+                isSearchBarEnabled = false
+            }
         }
     }
 
@@ -42,11 +43,17 @@ public struct MediaScreen: View {
     public var body: some View {
         searchController.searchBar.isUserInteractionEnabled = viewStore.isSearchBarEnabled
         return NavigationView {
-            IfLetStore(
-                store.scope(state: \.listState, action: MediaAction.init(action:)),
-                then: MediaListView.init(store:),
-                else: { ProgressView().onAppear { viewStore.send(.progressViewAppeared) } }
-            )
+            SwitchStore(store) {
+                CaseLet(
+                    state: /MediaState.initialized,
+                    action: MediaAction.init(action:),
+                    then: MediaListView.init(store:)
+                )
+                Default {
+                    ProgressView()
+                        .onAppear { viewStore.send(.progressViewAppeared) }
+                }
+            }
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
                 trailing: AssetImage.iconSetting.image
@@ -95,7 +102,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                 )
                 MediaScreen(
                     store: .init(
-                        initialState: MediaState(listState: .init(list: .mock)),
+                        initialState: MediaState(listState: .mock),
                         reducer: .empty,
                         environment: {}
                     )

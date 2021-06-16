@@ -2,30 +2,30 @@ import Component
 import ComposableArchitecture
 import Model
 
-public struct MediaState: Equatable {
-    var listState: MediaListState?
+public enum MediaState: Equatable {
 
-    public init() {}
+    case needToInitialize
+    case initialized(MediaListState)
 
-    init(listState: MediaListState?) {
-        self.listState = listState
+    public init() {
+        self = .needToInitialize
+    }
+
+    init(listState: MediaListState) {
+        self = .initialized(listState)
     }
 }
 
 public struct MediaListState: Equatable {
-    var list: MediaList
+    var blogs: [Blog]
+    var videos: [Video]
+    var podcasts: [Podcast]
     var next: Next?
 
     enum Next: Equatable {
         case searchText(String)
         case more(for: MediaType)
     }
-}
-
-public struct MediaList: Equatable {
-    var blogs: [Blog]
-    var videos: [Video]
-    var podcasts: [Podcast]
 }
 
 public enum MediaType {
@@ -81,8 +81,8 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, a
 }
 
 public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.combine(
-    mediaListReducer.optional().pullback(
-        state: \.listState,
+    mediaListReducer.pullback(
+        state: /MediaState.initialized,
         action: /MediaAction.mediaList,
         environment: { _ in () }
     ),
@@ -94,12 +94,13 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
                 .delay(for: 1, scheduler: DispatchQueue.main)
                 .eraseToEffect()
         case let .itemsLoaded(blogs, videos, podcasts):
-            let list = MediaList(blogs: blogs, videos: videos, podcasts: podcasts)
-            if var listState = state.listState {
-                listState.list = list
-                state.listState = listState
+            if var listState = (/MediaState.initialized).extract(from: state) {
+                listState.blogs = blogs
+                listState.videos = videos
+                listState.podcasts = podcasts
+                state = .initialized(listState)
             } else {
-                state.listState = .init(list: list, next: nil)
+                state = .initialized(.init(blogs: blogs, videos: videos, podcasts: podcasts, next: nil))
             }
             return .none
         case .mediaList:
@@ -110,12 +111,12 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
 
 private extension MediaAction {
     static let mockItemsLoads: Self = {
-        let mock = MediaList.mock
+        let mock = MediaListState.mock
         return .itemsLoaded(blogs: mock.blogs, videos: mock.videos, podcasts: mock.podcasts)
     }()
 }
 
-extension MediaList {
+extension MediaListState {
     static let mock: Self = .init(
         blogs: [
             .init(
