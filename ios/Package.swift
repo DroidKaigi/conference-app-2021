@@ -54,6 +54,10 @@ var package = Package(
             name: "Utility",
             targets: ["Utility"]
         ),
+        .library(
+            name: "DroidKaigiMPP",
+            targets: ["DroidKaigiMPP"]
+        ),
     ],
     dependencies: [
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.19.0")),
