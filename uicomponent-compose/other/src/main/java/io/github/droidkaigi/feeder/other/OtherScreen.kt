@@ -40,12 +40,12 @@ import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.Staff
 import io.github.droidkaigi.feeder.about.AboutThisApp
 import io.github.droidkaigi.feeder.contributor.ContributorList
+import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
 import kotlinx.coroutines.launch
-import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class OtherTab(val name: String, val routePath: String) {
     object AboutThisApp : OtherTab("About", "about")

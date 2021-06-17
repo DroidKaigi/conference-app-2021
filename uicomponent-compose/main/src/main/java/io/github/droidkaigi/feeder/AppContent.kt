@@ -23,6 +23,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navArgument
 import androidx.navigation.navDeepLink
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.navigation.chromeCustomTabs
 import io.github.droidkaigi.feeder.core.navigation.navigateChromeCustomTabs
 import io.github.droidkaigi.feeder.core.navigation.rememberCustomNavController
@@ -31,7 +32,6 @@ import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTab
 import kotlinx.coroutines.launch
-import io.github.droidkaigi.feeder.core.R as CoreR
 
 private const val FEED_PATH = "feed/"
 private const val OTHER_PATH = "other/"
