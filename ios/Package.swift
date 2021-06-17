@@ -71,6 +71,7 @@ var package = Package(
                 .target(name: "MediaFeature"),
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
+                .target(name: "DroidKaigiMPP"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
