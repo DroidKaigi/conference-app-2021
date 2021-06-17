@@ -25,9 +25,18 @@ run-swiftgen-generate-xcfilelists:
 create-kmm-framework:
 	./scripts/create-kmm-framework.sh
 
+.PHONE: build-kmm-module
+build-kmm-module:
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme DroidKaigiMPP \
+		-destination platform="$(PLATFORM_IOS)"
+
 # Test App Debug
 .PHONY: test-app-debug
 test-app-debug:
+	make build-kmm-module
+
 	xcodebuild test \
 		-workspace $(WORKSPACE) \
 		-scheme DroidKaigi\ 2021 \
@@ -37,6 +46,8 @@ test-app-debug:
 # Test App Release
 .PHONY: test-app-release
 test-app-release:
+	make build-kmm-module
+
 	xcodebuild test \
 		-workspace $(WORKSPACE) \
 		-scheme DroidKaigi\ 2021 \
@@ -46,6 +57,8 @@ test-app-release:
 # Build App Debug
 .PHONY: build-app-debug
 build-app-debug:
+	make build-kmm-module
+
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
 		-scheme DroidKaigi\ 2021 \
@@ -55,6 +68,8 @@ build-app-debug:
 # Build App Release
 .PHONY: build-app-release
 build-app-release:
+	make build-kmm-module
+
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
 		-scheme DroidKaigi\ 2021 \
@@ -64,6 +79,8 @@ build-app-release:
 # Build Modules
 .PHONY: build-modules
 build-modules:
+	make build-kmm-module
+
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
 		-scheme AboutFeature \
