@@ -1,3 +1,4 @@
+import Model
 import Styleguide
 import SwiftUI
 
@@ -7,7 +8,7 @@ public struct ListItem: View {
     }
 
     private let title: String
-    private let tag: TagType
+    private let tag: Media
     private let imageURL: URL?
     // TODO: Replace with real value
     private let users: [URL]
@@ -18,7 +19,7 @@ public struct ListItem: View {
 
     public init(
         title: String,
-        tag: TagType,
+        tag: Media,
         imageURL: URL?,
         users: [URL],
         date: Date,
@@ -56,7 +57,7 @@ public struct ListItem: View {
                         .lineLimit(users.isEmpty ? 3 : 2)
                     if !users.isEmpty {
                         HStack(spacing: -4) {
-                            ForEach(Array(users.enumerated()), id: \.0) { (index, user) in
+                            ForEach(Array(users.enumerated()), id: \.0) { (index, _) in
                                 AvatarView(avatarImageURL: nil, style: .small)
                                     .zIndex(Double(Const.maximumShowingUser - index))
                             }

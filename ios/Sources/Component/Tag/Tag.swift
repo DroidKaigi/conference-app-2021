@@ -1,12 +1,13 @@
+import Model
 import SwiftUI
 import Styleguide
 
 public struct Tag: View {
-    private let type: TagType
+    private let type: Media
     private let tapAction: () -> Void
 
     public init(
-        type: TagType,
+        type: Media,
         tapAction: @escaping () -> Void
     ) {
         self.type = type
@@ -33,13 +34,13 @@ public struct Tag: View {
 struct Tag_Previews: PreviewProvider {
     static var previews: some View {
         Group {
-            ForEach(TagType.allCases, id: \.self) { type in
+            ForEach(Media.allCases, id: \.self) { type in
                 Tag(type: type, tapAction: {})
                     .frame(width: 103, height: 24)
                     .environment(\.colorScheme, .light)
             }
 
-            ForEach(TagType.allCases, id: \.self) { type in
+            ForEach(Media.allCases, id: \.self) { type in
                 Tag(type: type, tapAction: {})
                     .frame(width: 103, height: 24)
                     .environment(\.colorScheme, .dark)
@@ -49,7 +50,7 @@ struct Tag_Previews: PreviewProvider {
     }
 }
 
-private extension TagType {
+private extension Media {
     var title: String {
         switch self {
         case .droidKaigiFm:

@@ -1,7 +1,7 @@
 import DroidKaigiMPP
 
-public enum Media: Equatable {
-    case droidkaigifm
+public enum Media: Equatable, CaseIterable {
+    case droidKaigiFm
     case medium
     case youtube
     case other
@@ -9,7 +9,7 @@ public enum Media: Equatable {
     static func from(_ model: DroidKaigiMPP.Media) -> Media {
         switch model {
         case is DroidKaigiMPP.Media.DroidKaigiFM:
-            return .droidkaigifm
+            return .droidKaigiFm
         case is DroidKaigiMPP.Media.Medium:
             return .medium
         case is DroidKaigiMPP.Media.YouTube:
@@ -26,7 +26,7 @@ public enum Media: Equatable {
 public extension Media {
     var kmmModel: DroidKaigiMPP.Media {
         switch self {
-        case .droidkaigifm:
+        case .droidKaigiFm:
             return .DroidKaigiFM()
         case .medium:
             return .Medium()

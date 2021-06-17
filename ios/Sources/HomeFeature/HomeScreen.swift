@@ -1,5 +1,6 @@
 import Component
 import ComposableArchitecture
+import Model
 import Styleguide
 import SwiftUI
 
@@ -100,7 +101,7 @@ extension FeedItem {
         id: String = UUID().uuidString,
         imageURLString: String = "",
         link: String = "",
-        media: TagType = .medium,
+        media: Media = .medium,
         publishedAt: Date = Date(),
         summary: String = "",
         title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"

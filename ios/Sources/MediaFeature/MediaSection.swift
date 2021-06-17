@@ -28,7 +28,7 @@ struct MediaSection: View {
                             MediumCard(
                                 title: item.title.get(by: .ja),
                                 imageURL: URL(string: item.image.standardURLString),
-                                tag: item.media.tag,
+                                tag: item.media,
                                 date: item.publishedAt,
                                 isFavorited: false,
                                 tapAction: {},
@@ -42,21 +42,6 @@ struct MediaSection: View {
             }
         }
         .aspectRatio(375.0 / 301, contentMode: .fit)
-    }
-}
-
-extension Media {
-    var tag: TagType {
-        switch self {
-        case .droidkaigifm:
-            return .droidKaigiFm
-        case .medium:
-            return .medium
-        case .youtube:
-            return .youtube
-        case .other:
-            return .other
-        }
     }
 }
 
