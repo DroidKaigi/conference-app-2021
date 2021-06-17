@@ -25,17 +25,26 @@ run-swiftgen-generate-xcfilelists:
 create-kmm-framework:
 	./scripts/create-kmm-framework.sh
 
-.PHONE: build-kmm-module
-build-kmm-module:
+.PHONE: build-kmm-module-debug
+build-kmm-module-debug:
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
 		-scheme DroidKaigiMPP \
+		-configuration Debug \
+		-destination platform="$(PLATFORM_IOS)"
+
+.PHONE: build-kmm-module-release
+build-kmm-module-release:
+	xcodebuild build \
+		-workspace $(WORKSPACE) \
+		-scheme DroidKaigiMPP \
+		-configuration Release \
 		-destination platform="$(PLATFORM_IOS)"
 
 # Test App Debug
 .PHONY: test-app-debug
 test-app-debug:
-	make build-kmm-module
+	make build-kmm-module-debug
 
 	xcodebuild test \
 		-workspace $(WORKSPACE) \
@@ -46,7 +55,7 @@ test-app-debug:
 # Test App Release
 .PHONY: test-app-release
 test-app-release:
-	make build-kmm-module
+	make build-kmm-module-release
 
 	xcodebuild test \
 		-workspace $(WORKSPACE) \
@@ -57,7 +66,7 @@ test-app-release:
 # Build App Debug
 .PHONY: build-app-debug
 build-app-debug:
-	make build-kmm-module
+	make build-kmm-module-debug
 
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
@@ -68,7 +77,7 @@ build-app-debug:
 # Build App Release
 .PHONY: build-app-release
 build-app-release:
-	make build-kmm-module
+	make build-kmm-module-release
 
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
@@ -79,7 +88,7 @@ build-app-release:
 # Build Modules
 .PHONY: build-modules
 build-modules:
-	make build-kmm-module
+	make build-kmm-module-debug
 
 	xcodebuild build \
 		-workspace $(WORKSPACE) \
