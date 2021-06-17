@@ -242,11 +242,11 @@ private fun AppBar(
     val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
+        title = { Image(painterResource(io.github.droidkaigi.feeder.core.R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(painterResource(R.drawable.ic_baseline_menu_24), "menu")
+                Icon(painterResource(io.github.droidkaigi.feeder.core.R.drawable.ic_baseline_menu_24), "menu")
             }
         }
     )
@@ -349,7 +349,7 @@ private fun FeedList(
                     )
                     RobotItem(
                         robotText = "Finished!",
-                        robotIcon = painterResource(id = R.drawable.ic_android_green_24dp),
+                        robotIcon = painterResource(id = io.github.droidkaigi.feeder.core.R.drawable.ic_android_green_24dp),
                         robotIconColor = greenDroid,
                         targetValue = robotAnimValue.dp
 

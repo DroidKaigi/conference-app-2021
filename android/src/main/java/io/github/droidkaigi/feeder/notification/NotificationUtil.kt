@@ -53,7 +53,7 @@ object NotificationUtil {
         val channel = AppNotificationChannel.fromId(remoteNotification.channelId ?: "")
         val manager = NotificationManagerCompat.from(context)
         val notification = NotificationCompat.Builder(context, channel.id)
-            .setSmallIcon(R.drawable.ic_logo)
+            .setSmallIcon(io.github.droidkaigi.feeder.main.R.drawable.ic_logo)
             .setContentTitle(remoteNotification.title)
             .setContentText(remoteNotification.body)
             .setAutoCancel(true)
