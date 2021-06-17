@@ -1,64 +1,77 @@
+import Introspect
 import SwiftUI
 import Styleguide
+
+public enum AboutDroidKaigiModel: CaseIterable {
+    case behaviorCode
+    case opensourceLicense
+    case privacyPolicy
+
+    var title: String {
+        switch self {
+        case .behaviorCode:
+            return L10n.AboutDroidKaigiScreen.behaviorCode
+        case .opensourceLicense:
+            return L10n.AboutDroidKaigiScreen.opensourceLincense
+        case .privacyPolicy:
+            return L10n.AboutDroidKaigiScreen.privacyPolicy
+        }
+    }
+
+    var image: Image {
+        switch self {
+        case .behaviorCode:
+            return Image(systemName: "book")
+        case .opensourceLicense:
+            return Image(systemName: "star")
+        case .privacyPolicy:
+            return Image(systemName: "magnifyingglass")
+        }
+    }
+}
 
 public struct AboutDroidKaigiScreen: View {
     @Environment(\.presentationMode) var presentationMode
 
-    public init() {
-        UITableView.appearance().backgroundColor = .clear
-        UINavigationBar.appearance().backgroundColor = .clear
-        UINavigationBar.appearance().barTintColor = .clear
-    }
+    public init() {}
 
     public var body: some View {
         NavigationView {
             VStack {
-                VStack {
-                    Text(L10n.AboutDroidKaigiScreen.whatIs).font(.system(size: 22))
+                VStack(spacing: 8) {
+                    Text(L10n.AboutDroidKaigiScreen.whatIs)
+                        .font(.title2)
                     AssetImage.logoTitle.image
-                        .frame(width: 261.81, height: 41.06, alignment: .center)
+                        .frame(width: 262, height: 44)
                     Text(L10n.AboutDroidKaigiScreen.description)
+                        .padding(.top, 16)
                         .multilineTextAlignment(.center)
-                        .font(.system(size: 17))
+                        .font(.body)
                         .opacity(0.7)
                 }
                 .padding(.horizontal, 32)
 
                 List {
-                    Button(action: {}, label: {
-                        HStack() {
-                            Text(L10n.AboutDroidKaigiScreen.behaviorCode)
-                            Spacer()
-                            Image(systemName: "book")
-                        }
-                    })
-                    .listRowBackground(AssetColor.Background.contents.color)
-                    .foregroundColor(AssetColor.Base.secondary.color)
-
-                    Button(action: {}, label: {
-                        HStack() {
-                            Text(L10n.AboutDroidKaigiScreen.opensourceLincense)
-                            Spacer()
-                            Image(systemName: "star")
-                        }
-                    })
-                    .listRowBackground(AssetColor.Background.contents.color)
-                    .foregroundColor(AssetColor.Base.secondary.color)
-
-                    Button(action: {}, label: {
-                        HStack() {
-                            Text(L10n.AboutDroidKaigiScreen.privacyPolicy)
-                            Spacer()
-                            Image(systemName: "magnifyingglass")
-                        }
-                    })
-                    .listRowBackground(AssetColor.Background.contents.color)
-                    .foregroundColor(AssetColor.Base.secondary.color)
+                    ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
+                        Button(action: {}, label: {
+                            HStack {
+                                Text(model.title)
+                                    .font(.subheadline)
+                                Spacer()
+                                model.image
+                            }
+                        })
+                        .listRowBackground(AssetColor.Background.contents.color)
+                        .foregroundColor(AssetColor.Base.secondary.color)
+                    }
+                }
+                .introspectTableView { tableView in
+                    tableView.isScrollEnabled = false
+                    tableView.backgroundColor = .clear
                 }
                 .listStyle(InsetGroupedListStyle())
-
             }
-            .background(AssetColor.Background.secondary.color.ignoresSafeArea())
+            .navigationBarTitleDisplayMode(.inline)
             .navigationBarItems(
                 trailing: Button(action: {
                     presentationMode.wrappedValue.dismiss()
@@ -68,6 +81,12 @@ public struct AboutDroidKaigiScreen: View {
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.secondary.uiColor
+            }
+            .introspectNavigationController { navigationController in
+                navigationController.navigationBar.backgroundColor = .clear
+            }
         }
     }
 }
