@@ -45,39 +45,37 @@ struct MediaListView: View {
     var body: some View {
         ZStack {
             ScrollView {
-                VStack(spacing: 0) {
-                    if viewStore.hasBlogs {
-                        MediaSection(
-                            icon: AssetImage.iconBlog.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Section.Blog.title,
-                            store: store.scope(
-                                state: {  $0.list.blogs.map(\.feedItem) },
-                                action: { .init(action: $0, for: .blog) }
-                            )
+                if viewStore.hasBlogs {
+                    MediaSection(
+                        icon: AssetImage.iconBlog.image.renderingMode(.template),
+                        title: L10n.MediaScreen.Section.Blog.title,
+                        store: store.scope(
+                            state: {  $0.list.blogs.map(\.feedItem) },
+                            action: { .init(action: $0, for: .blog) }
                         )
-                        divider
-                    }
-                    if viewStore.hasVideos {
-                        MediaSection(
-                            icon: AssetImage.iconVideo.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Section.Video.title,
-                            store: store.scope(
-                                state: {  $0.list.videos.map(\.feedItem) },
-                                action: { .init(action: $0, for: .video) }
-                            )
+                    )
+                    divider
+                }
+                if viewStore.hasVideos {
+                    MediaSection(
+                        icon: AssetImage.iconVideo.image.renderingMode(.template),
+                        title: L10n.MediaScreen.Section.Video.title,
+                        store: store.scope(
+                            state: {  $0.list.videos.map(\.feedItem) },
+                            action: { .init(action: $0, for: .video) }
                         )
-                        divider
-                    }
-                    if viewStore.hasPodcasts {
-                        MediaSection(
-                            icon: AssetImage.iconPodcast.image.renderingMode(.template),
-                            title: L10n.MediaScreen.Section.Podcast.title,
-                            store: store.scope(
-                                state: {  $0.list.podcasts.map(\.feedItem) },
-                                action: { .init(action: $0, for: .podcast) }
-                            )
+                    )
+                    divider
+                }
+                if viewStore.hasPodcasts {
+                    MediaSection(
+                        icon: AssetImage.iconPodcast.image.renderingMode(.template),
+                        title: L10n.MediaScreen.Section.Podcast.title,
+                        store: store.scope(
+                            state: {  $0.list.podcasts.map(\.feedItem) },
+                            action: { .init(action: $0, for: .podcast) }
                         )
-                    }
+                    )
                 }
             }
             .zIndex(0)
