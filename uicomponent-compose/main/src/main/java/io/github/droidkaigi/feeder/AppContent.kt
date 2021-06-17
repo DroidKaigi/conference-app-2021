@@ -28,10 +28,10 @@ import io.github.droidkaigi.feeder.core.navigation.navigateChromeCustomTabs
 import io.github.droidkaigi.feeder.core.navigation.rememberCustomNavController
 import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTab
-import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTab
 import kotlinx.coroutines.launch
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 private const val FEED_PATH = "feed/"
 private const val OTHER_PATH = "other/"
@@ -61,8 +61,8 @@ fun AppContent(
         }
     }
     val deepLinkUri =
-        "https://" + LocalContext.current.getString(io.github.droidkaigi.feeder.core.R.string.deep_link_host) +
-            LocalContext.current.getString(io.github.droidkaigi.feeder.core.R.string.deep_link_path)
+        "https://" + LocalContext.current.getString(CoreR.string.deep_link_host) +
+            LocalContext.current.getString(CoreR.string.deep_link_path)
     val actions = remember(navController) {
         AppActions(navController)
     }

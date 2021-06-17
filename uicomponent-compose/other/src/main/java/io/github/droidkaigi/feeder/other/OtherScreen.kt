@@ -45,6 +45,7 @@ import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.setting.Settings
 import io.github.droidkaigi.feeder.staff.StaffList
 import kotlinx.coroutines.launch
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class OtherTab(val name: String, val routePath: String) {
     object AboutThisApp : OtherTab("About", "about")
@@ -141,11 +142,11 @@ private fun AppBar(
     val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Image(painterResource(io.github.droidkaigi.feeder.core.R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
+        title = { Image(painterResource(CoreR.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(painterResource(io.github.droidkaigi.feeder.core.R.drawable.ic_baseline_menu_24), "menu")
+                Icon(painterResource(CoreR.drawable.ic_baseline_menu_24), "menu")
             }
         }
     )

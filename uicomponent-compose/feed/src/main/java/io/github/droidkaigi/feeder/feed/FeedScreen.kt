@@ -66,8 +66,9 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -242,11 +243,11 @@ private fun AppBar(
     val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Image(painterResource(io.github.droidkaigi.feeder.core.R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
+        title = { Image(painterResource(CoreR.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(painterResource(io.github.droidkaigi.feeder.core.R.drawable.ic_baseline_menu_24), "menu")
+                Icon(painterResource(CoreR.drawable.ic_baseline_menu_24), "menu")
             }
         }
     )
@@ -349,7 +350,7 @@ private fun FeedList(
                     )
                     RobotItem(
                         robotText = "Finished!",
-                        robotIcon = painterResource(id = io.github.droidkaigi.feeder.core.R.drawable.ic_android_green_24dp),
+                        robotIcon = painterResource(id = CoreR.drawable.ic_android_green_24dp),
                         robotIconColor = greenDroid,
                         targetValue = robotAnimValue.dp
 
