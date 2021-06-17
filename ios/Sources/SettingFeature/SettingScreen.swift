@@ -60,7 +60,7 @@ public struct SettingScreen: View {
                                 })
                             )
                             .frame(minHeight: 44)
-                            Divider()
+                            Separator()
                         }
                         .padding(.horizontal, 16)
                         .background(AssetColor.Background.contents.color)

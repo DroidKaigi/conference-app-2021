@@ -29,13 +29,11 @@ public struct HomeScreen: View {
                                     tapFavoriteAction: {}
                                 )
                             }
-                            Divider()
-                                .foregroundColor(AssetColor.Separate.contents.color)
+                            Separator()
                             QuestionnaireView(tapAnswerAction: {
                                 viewStore.send(.answerQuestionnaire)
                             })
-                            Divider()
-                                .foregroundColor(AssetColor.Separate.contents.color)
+                            Separator()
                             ForEach(viewStore.listFeedItems) { feedItem in
                                 ListItem(
                                     item: feedItem,
@@ -44,6 +42,7 @@ public struct HomeScreen: View {
                                 )
                             }
                         }
+                        .separatorStyle(ThickSeparatorStyle())
                     }
                 }
             }

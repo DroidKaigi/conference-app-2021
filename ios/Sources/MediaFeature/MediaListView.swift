@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import Model
 import Styleguide
@@ -54,7 +55,7 @@ struct MediaListView: View {
                             action: { .init(action: $0, for: .blog) }
                         )
                     )
-                    divider
+                    separator
                 }
                 if viewStore.hasVideos {
                     MediaSection(
@@ -65,7 +66,7 @@ struct MediaListView: View {
                             action: { .init(action: $0, for: .video) }
                         )
                     )
-                    divider
+                    separator
                 }
                 if viewStore.hasPodcasts {
                     MediaSection(
@@ -78,6 +79,7 @@ struct MediaListView: View {
                     )
                 }
             }
+            .separatorStyle(ThickSeparatorStyle())
             .zIndex(0)
 
             if viewStore.isSearchResultVisible {
@@ -101,8 +103,8 @@ struct MediaListView: View {
         )
     }
 
-    private var divider: some View {
-        Divider()
+    private var separator: some View {
+        Separator()
             .padding()
     }
 }
