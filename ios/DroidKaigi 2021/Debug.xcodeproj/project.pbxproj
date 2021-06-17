@@ -89,8 +89,6 @@
 			buildConfigurationList = 18B9A2E0D7808713228AF94B /* Build configuration list for PBXNativeTarget "DroidKaigi 2021" */;
 			buildPhases = (
 				57B979F2FC459E2182C0AB24 /* Run SwiftLint */,
-				E84C12F32664CE1C00D5410C /* Run SwiftGen */,
-				42B134C0F3C46E32AF4355A0 /* Make kotlin framework */,
 				5D913506A16C6526B14ED775 /* Sources */,
 				DB796961EB331BDC287C80A9 /* Resources */,
 				E2A67F49BC9729C1C5B9D092 /* Frameworks */,
@@ -146,24 +144,6 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		42B134C0F3C46E32AF4355A0 /* Make kotlin framework */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Make kotlin framework";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "../scripts/create-kmm-framework.sh\n";
-		};
 		57B979F2FC459E2182C0AB24 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -181,26 +161,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "../scripts/lint.sh\n";
-		};
-		E84C12F32664CE1C00D5410C /* Run SwiftGen */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"$(SRCROOT)/../XCFileLists/SwiftGenInput.xcfilelist",
-			);
-			inputPaths = (
-			);
-			name = "Run SwiftGen";
-			outputFileListPaths = (
-				"$(SRCROOT)/../XCFileLists/SwiftGenOutput.xcfilelist",
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "../scripts/swiftgen.sh\n";
 		};
 /* End PBXShellScriptBuildPhase section */
 
