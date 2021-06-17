@@ -29,38 +29,38 @@ public struct LargeCard: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 0) {
+        VStack(alignment: .leading, spacing: 16) {
             ImageView(
                 imageURL: imageURL,
                 placeholder: .noImage,
                 placeholderSize: .large
             )
             .aspectRatio(343/190, contentMode: .fit)
-            .padding(.bottom, 16)
 
-            Text(title)
-                .font(.headline)
-                .foregroundColor(AssetColor.Base.primary.color)
-                .lineLimit(2)
-                .padding(.bottom, 13)
+            VStack(alignment: .leading, spacing: 13) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(AssetColor.Base.primary.color)
+                    .lineLimit(2)
 
-            HStack(spacing: 8) {
-                Tag(type: tag) {
-                    // do something if needed
+                HStack(spacing: 8) {
+                    Tag(type: tag) {
+                        // do something if needed
+                    }
+
+                    Text(date.formatted)
+                        .font(.caption)
+                        .foregroundColor(AssetColor.Base.tertiary.color)
+
+                    Spacer()
+
+                    Button(action: tapFavoriteAction, label: {
+                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                        image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.primary.color)
+                    })
                 }
-
-                Text(date.formatted)
-                    .font(.caption)
-                    .foregroundColor(AssetColor.Base.tertiary.color)
-
-                Spacer()
-
-                Button(action: tapFavoriteAction, label: {
-                    let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                    image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.primary.color)
-                })
             }
         }
         .padding(16)
