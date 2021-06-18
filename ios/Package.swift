@@ -54,11 +54,15 @@ var package = Package(
             name: "Utility",
             targets: ["Utility"]
         ),
+        .library(
+            name: "DroidKaigiMPP",
+            targets: ["DroidKaigiMPP"]
+        ),
     ],
     dependencies: [
-        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.18.0")),
+        .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.19.0")),
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", .upToNextMajor(from: "0.1.3")),
-        .package(url: "https://github.com/kean/NukeUI.git", .exact("0.4.0")),
+        .package(url: "https://github.com/kean/NukeUI.git", .exact("0.6.1")),
     ],
     targets: [
         .target(

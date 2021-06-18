@@ -33,6 +33,7 @@ public struct FavoritesScreen: View {
                                     viewStore.send(.favorite(item))
                                 }
                             )
+                            .padding(8)
                         }
                     }
                     .onAppear {

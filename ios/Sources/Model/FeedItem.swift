@@ -53,9 +53,7 @@ public struct FeedItem: Equatable, Identifiable {
         self.image = Image(from: model.image)
         self.link = model.link
         self.media = Media.from(model.media)
-        self.publishedAt = Date(
-            timeIntervalSince1970: Double(model.publishedAt.toEpochMilliseconds())
-        )
+        self.publishedAt = model.publishedAt.toNSDate()
         self.summary = MultiLangText(from: model.summary)
         self.title = MultiLangText(from: model.title)
         self.publishedDateString = model.publishedDateString()

@@ -16,17 +16,18 @@ public struct HomeScreen: View {
                 ZStack(alignment: .top) {
                     AssetColor.primary.color
                         .frame(width: nil, height: 200)
+                        .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
                     WithViewStore(store) { viewStore in
                         VStack(alignment: .trailing, spacing: 0) {
-                            Text("DroidKaigi 2021 (7/31) D-7")
-                                .foregroundColor(AssetColor.Base.white.color)
-                                .padding(.vertical, 12)
-                                .padding(.horizontal, 8)
-                                .background(AssetColor.primaryDark.color)
-                                .padding(.vertical)
-                            // TODO: Replace with card(large)
-                            Rectangle()
-                                .frame(width: nil, height: 300)
+                            MessageBar(title: viewStore.message)
+                                .padding(.top, 16)
+                            if let topic = viewStore.topic {
+                                LargeCard(
+                                    item: topic,
+                                    tapAction: {},
+                                    tapFavoriteAction: {}
+                                )
+                            }
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
                             QuestionnaireView(tapAnswerAction: {
@@ -34,13 +35,14 @@ public struct HomeScreen: View {
                             })
                             Divider()
                                 .foregroundColor(AssetColor.Separate.contents.color)
-                            ForEach(viewStore.contents, id: \.self) { content in
-                                // TODO: Replace with List Item
-                                Text(content)
-                                    .foregroundColor(AssetColor.Base.primary.color)
+                            ForEach(viewStore.listFeedItems) { feedItem in
+                                ListItem(
+                                    item: feedItem,
+                                    tapAction: {},
+                                    tapFavoriteAction: {}
+                                )
                             }
                         }
-                        .padding(.horizontal)
                     }
                 }
             }
@@ -66,7 +68,8 @@ struct HomeScreen_Previews: PreviewProvider {
             HomeScreen(
                 store: .init(
                     initialState: .init(
-                        contents: ["aaa", "bbb"]
+                        feedItems: [.mock(), .mock()],
+                        message: "DroidKaigi 2021 (7/31) D-7"
                     ),
                     reducer: homeReducer,
                     environment: .init()
@@ -77,7 +80,8 @@ struct HomeScreen_Previews: PreviewProvider {
             HomeScreen(
                 store: .init(
                     initialState: .init(
-                        contents: ["aaa", "bbb"]
+                        feedItems: [.mock(), .mock()],
+                        message: "DroidKaigi 2021 (7/31) D-7"
                     ),
                     reducer: homeReducer,
                     environment: .init()
@@ -86,5 +90,56 @@ struct HomeScreen_Previews: PreviewProvider {
             .previewDevice(.init(rawValue: "iPhone 12"))
             .environment(\.colorScheme, .light)
         }
+    }
+}
+
+extension FeedItem {
+    static func mock(
+        id: String = UUID().uuidString,
+        imageURLString: String = "",
+        link: String = "",
+        media: TagType = .medium,
+        publishedAt: Date = Date(),
+        summary: String = "",
+        title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"
+    ) -> FeedItem {
+        .init(id: id, imageURLString: imageURLString, link: link, media: media, publishedAt: publishedAt, summary: summary, title: title)
+    }
+}
+
+private extension LargeCard {
+    init(
+        item: FeedItem,
+        tapAction: @escaping () -> Void,
+        tapFavoriteAction: @escaping () -> Void
+    ) {
+        self.init(
+            title: item.title,
+            imageURL: URL(string: item.imageURLString),
+            tag: item.media,
+            date: item.publishedAt,
+            isFavorited: false,
+            tapAction: tapAction,
+            tapFavoriteAction: tapFavoriteAction
+        )
+    }
+}
+
+private extension ListItem {
+    init(
+        item: FeedItem,
+        tapAction: @escaping () -> Void,
+        tapFavoriteAction: @escaping () -> Void
+    ) {
+        self.init(
+            title: item.title,
+            tag: item.media,
+            imageURL: URL(string: item.imageURLString),
+            users: [],
+            date: item.publishedAt,
+            isFavorited: false,
+            tapFavoriteAction: tapFavoriteAction,
+            tapAction: tapAction
+        )
     }
 }
