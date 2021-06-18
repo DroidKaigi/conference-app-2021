@@ -45,3 +45,16 @@ public struct Video: Equatable, Identifiable {
     }
 }
 
+public extension Video {
+    var kmmModel: DroidKaigiMPP.FeedItem.Video {
+        .init(
+            id: id,
+            publishedAt: ConvertersKt.toKotlinInstant(feedItem.publishedAt),
+            image: feedItem.image.kmmModel,
+            media: feedItem.media.kmmModel,
+            title: feedItem.title.kmmModel,
+            summary: feedItem.summary.kmmModel,
+            link: feedItem.link
+        )
+    }
+}

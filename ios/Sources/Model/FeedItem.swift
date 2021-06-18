@@ -5,6 +5,17 @@ public enum FeedItemType: Equatable {
     case podcast(Podcast)
     case video(Video)
 
+    public var item: DroidKaigiMPP.FeedItem {
+        switch self {
+        case let .blog(blog):
+            return blog.kmmModel
+        case let .podcast(podcast):
+            return podcast.kmmModel
+        case let .video(video):
+            return video.kmmModel
+        }
+    }
+
     public static func from(_ model: DroidKaigiMPP.FeedItem) -> FeedItemType? {
         switch model {
         case let blog as DroidKaigiMPP.FeedItem.Blog:
@@ -59,4 +70,3 @@ public struct FeedItem: Equatable, Identifiable {
         self.publishedDateString = model.publishedDateString()
     }
 }
-

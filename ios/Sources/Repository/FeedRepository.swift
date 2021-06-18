@@ -4,8 +4,8 @@ import Model
 
 public protocol FeedRepositoryProtocol {
     func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError>
-    func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, Never>
-    func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, Never>
+    func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError>
+    func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError>
 }
 
 public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
@@ -33,15 +33,27 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
         .eraseToAnyPublisher()
     }
 
-    public func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, Never> {
-        // TODO: Implement after Date converter merged.
-        Just(())
-            .eraseToAnyPublisher()
+    public func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError> {
+        Future<Void, KotlinError> { promise in
+            repository.addFavorite(feedItem: feedItem.item)
+                .subscribe(scope: scopeProvider.scope) { _ in
+                    promise(.success(()))
+                } onFailure: {
+                    promise(.failure(KotlinError.fetchFailed($0.description())))
+                }
+
+        }.eraseToAnyPublisher()
     }
 
-    public func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, Never> {
-        // TODO: Implement after Date converter merged.
-        Just(())
-            .eraseToAnyPublisher()
+    public func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError> {
+        Future<Void, KotlinError> { promise in
+            repository.removeFavorite(feedItem: feedItem.item)
+                .subscribe(scope: scopeProvider.scope) { _ in
+                    promise(.success(()))
+                } onFailure: {
+                    promise(.failure(KotlinError.fetchFailed($0.description())))
+                }
+
+        }.eraseToAnyPublisher()
     }
 }
