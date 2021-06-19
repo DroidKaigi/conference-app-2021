@@ -37,8 +37,8 @@ struct MediaSection: View {
                             .aspectRatio(257.0 / 258, contentMode: .fit)
                         }
                     }
+                    .padding(.horizontal, 8)
                 }
-                .padding(.horizontal, 8)
             }
         }
         .aspectRatio(375.0 / 301, contentMode: .fit)
