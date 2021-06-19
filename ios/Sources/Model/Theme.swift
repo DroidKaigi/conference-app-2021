@@ -18,4 +18,15 @@ public enum Theme: Equatable {
             return .system
         }
     }
+
+    public var kmmTheme: DroidKaigiMPP.Theme {
+        switch self {
+        case .system:
+            return .system
+        case .dark:
+            return .dark
+        case .light:
+            return .light
+        }
+    }
 }

@@ -2,12 +2,13 @@ import AboutFeature
 import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
+import Repository
 
 public struct AppState: Equatable {
     public var homeState: HomeState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
-    
+
     public init(
         homeState: HomeState = .init(),
         favoritesState: FavoritesState = .init(),
@@ -23,10 +24,6 @@ public enum AppAction {
     case home(HomeAction)
     case favorites(FavoritesAction)
     case about(AboutAction)
-}
-
-public struct AppEnvironment {
-    public init() {}
 }
 
 public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(

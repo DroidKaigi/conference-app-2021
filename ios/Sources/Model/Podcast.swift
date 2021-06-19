@@ -52,3 +52,19 @@ public struct Podcast: Equatable, Identifiable {
         self.feedItem[keyPath: keyPath]
     }
 }
+
+public extension Podcast {
+    var kmmModel: DroidKaigiMPP.FeedItem.Podcast {
+        .init(
+            id: id,
+            publishedAt: ConvertersKt.toKotlinInstant(feedItem.publishedAt),
+            image: feedItem.image.kmmModel,
+            media: feedItem.media.kmmModel,
+            title: feedItem.title.kmmModel,
+            summary: feedItem.summary.kmmModel,
+            link: feedItem.link,
+            speakers: speakers.map(\.kmmModel),
+            podcastLink: podcastLink
+        )
+    }
+}

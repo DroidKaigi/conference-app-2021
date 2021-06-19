@@ -22,3 +22,18 @@ public enum Media: Equatable {
         }
     }
 }
+
+public extension Media {
+    var kmmModel: DroidKaigiMPP.Media {
+        switch self {
+        case .droidkaigifm:
+            return .DroidKaigiFM()
+        case .medium:
+            return .Medium()
+        case .youtube:
+            return .YouTube()
+        case .other:
+            return .Other()
+        }
+    }
+}
