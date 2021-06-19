@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		4369C908267A10F1000631D6 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 4369C907267A10F1000631D6 /* Settings.bundle */; };
 		80823BBE56026449A5FE87E6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */; };
 		8BAA8C7C006D04516B3DC1A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */; };
 		E821C045265FFF8B00C3785D /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E821C044265FFF8B00C3785D /* AppFeature */; };
@@ -15,6 +16,7 @@
 
 /* Begin PBXFileReference section */
 		2B29CA0397EABB180818B44B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
+		4369C907267A10F1000631D6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 		7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroidKaigi_2021App.swift; sourceTree = "<group>"; };
 		938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
@@ -48,6 +50,7 @@
 				7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */,
 				2B29CA0397EABB180818B44B /* Info.plist */,
 				1632D25082D97FDCF82D3510 /* Preview Content */,
+				4369C907267A10F1000631D6 /* Settings.bundle */,
 			);
 			path = "DroidKaigi 2021";
 			sourceTree = "<group>";
@@ -78,6 +81,7 @@
 				57B979F2FC459E2182C0AB24 /* Run SwiftLint */,
 				E84C12F72664CEE100D5410C /* Run SwiftGen */,
 				42B134C0F3C46E32AF4355A0 /* Make kotlin framework */,
+				4369C90A267A1207000631D6 /* Generate license list */,
 				5D913506A16C6526B14ED775 /* Sources */,
 				DB796961EB331BDC287C80A9 /* Resources */,
 				E2A67F49BC9729C1C5B9D092 /* Frameworks */,
@@ -125,6 +129,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BAA8C7C006D04516B3DC1A0 /* Assets.xcassets in Resources */,
+				4369C908267A10F1000631D6 /* Settings.bundle in Resources */,
 				80823BBE56026449A5FE87E6 /* Preview Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -149,6 +154,24 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "../scripts/create-kmm-framework.sh\n";
+		};
+		4369C90A267A1207000631D6 /* Generate license list */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Generate license list";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "../scripts/generate-license-list.sh\n";
 		};
 		57B979F2FC459E2182C0AB24 /* Run SwiftLint */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -207,6 +230,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "DroidKaigi 2021/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
@@ -224,6 +248,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = arm64;
 				FRAMEWORK_SEARCH_PATHS = "$(inherited)";
 				INFOPLIST_FILE = "DroidKaigi 2021/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 14.0;

@@ -52,3 +52,19 @@ public struct Blog: Equatable, Identifiable {
         self.feedItem[keyPath: keyPath]
     }
 }
+
+public extension Blog {
+    var kmmModel: DroidKaigiMPP.FeedItem.Blog {
+        .init(
+            id: id,
+            publishedAt: ConvertersKt.toKotlinInstant(feedItem.publishedAt),
+            image: feedItem.image.kmmModel,
+            media: feedItem.media.kmmModel,
+            title: feedItem.title.kmmModel,
+            summary: feedItem.summary.kmmModel,
+            link: feedItem.link,
+            language: language,
+            author: author.kmmModel
+        )
+    }
+}

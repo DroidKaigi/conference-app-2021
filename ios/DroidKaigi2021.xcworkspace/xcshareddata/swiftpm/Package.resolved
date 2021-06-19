@@ -20,6 +20,15 @@
         }
       },
       {
+        "package": "APIKit",
+        "repositoryURL": "https://github.com/ishkawa/APIKit.git",
+        "state": {
+          "branch": null,
+          "revision": "c8f5320d84c4c34c0fd965da3c7957819a1ccdd4",
+          "version": "5.2.0"
+        }
+      },
+      {
         "package": "combine-schedulers",
         "repositoryURL": "https://github.com/pointfreeco/combine-schedulers",
         "state": {
@@ -101,6 +110,15 @@
         }
       },
       {
+        "package": "HeliumLogger",
+        "repositoryURL": "https://github.com/Kitura/HeliumLogger.git",
+        "state": {
+          "branch": null,
+          "revision": "55fd2f0b70793017acee853c53cfcf8da0bd8d8d",
+          "version": "1.9.200"
+        }
+      },
+      {
         "package": "Kanna",
         "repositoryURL": "https://github.com/tid-kijyun/Kanna.git",
         "state": {
@@ -128,12 +146,30 @@
         }
       },
       {
+        "package": "LicensePlist",
+        "repositoryURL": "https://github.com/mono0926/LicensePlist.git",
+        "state": {
+          "branch": null,
+          "revision": "38db6f435cc77513a528780d14b1b29daf042439",
+          "version": "3.13.0"
+        }
+      },
+      {
+        "package": "LoggerAPI",
+        "repositoryURL": "https://github.com/Kitura/LoggerAPI.git",
+        "state": {
+          "branch": null,
+          "revision": "e82d34eab3f0b05391082b11ea07d3b70d2f65bb",
+          "version": "1.9.200"
+        }
+      },
+      {
         "package": "Nuke",
         "repositoryURL": "https://github.com/kean/Nuke.git",
         "state": {
           "branch": null,
-          "revision": "35cd3fa3bcea8becf826d9610c1f5bba8f57b728",
-          "version": "10.2.0"
+          "revision": "69ae6d5b8c4b898450432f94bd35f863d3830cfc",
+          "version": "10.3.0"
         }
       },
       {
@@ -141,8 +177,8 @@
         "repositoryURL": "https://github.com/kean/NukeUI.git",
         "state": {
           "branch": null,
-          "revision": "2e3fd56a135dad891747c83607e98c896162f974",
-          "version": "0.4.0"
+          "revision": "62b55e26eddc2ed59e63377ab877efac4f9e049c",
+          "version": "0.6.1"
         }
       },
       {
@@ -222,8 +258,26 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-composable-architecture.git",
         "state": {
           "branch": null,
-          "revision": "0f026d395d414efab5cfdf8d697ec0ae766dd021",
-          "version": "0.18.0"
+          "revision": "e1c0a52897eb361d09f761b2bdb25f212926fb1c",
+          "version": "0.19.0"
+        }
+      },
+      {
+        "package": "HTMLEntities",
+        "repositoryURL": "https://github.com/Kitura/swift-html-entities.git",
+        "state": {
+          "branch": null,
+          "revision": "2b14531d0c36dbb7c1c45a4d38db9c2e7898a307",
+          "version": "3.0.200"
+        }
+      },
+      {
+        "package": "swift-log",
+        "repositoryURL": "https://github.com/apple/swift-log.git",
+        "state": {
+          "branch": null,
+          "revision": "5d66f7ba25daf4f94100e7022febf3c75e37a6c7",
+          "version": "1.4.2"
         }
       },
       {
@@ -287,6 +341,15 @@
           "branch": null,
           "revision": "603974e3909ad4b48ba04aad7e0ceee4f077a518",
           "version": "0.1.0"
+        }
+      },
+      {
+        "package": "Yaml",
+        "repositoryURL": "https://github.com/behrang/YamlSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "287f5cab7da0d92eb947b5fd8151b203ae04a9a3",
+          "version": "3.4.4"
         }
       },
       {
