@@ -24,7 +24,7 @@ public struct AppEnvironment {
 
 public extension AppEnvironment {
     static var shared: Self {
-        let authenticator = AuthenticatorMock()
+        let authenticator = Authenticator()
         let container = DIContainer(authenticator: authenticator)
 
         return .init(

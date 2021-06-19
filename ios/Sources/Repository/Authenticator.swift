@@ -2,8 +2,8 @@ import DroidKaigiMPP
 import FirebaseAuth
 import Foundation
 
-public class AuthenticatorImpl: Authenticator {
-    
+public class Authenticator: DroidKaigiMPP.Authenticator {
+
     public init() {}
 
     public func currentUser(completionHandler: @escaping (DroidKaigiMPP.User?, Error?) -> Void) {

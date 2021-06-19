@@ -13,13 +13,3 @@ public struct DIContainer {
         return object
     }
 }
-
-// TODO: Remove after authenticator created
-public class AuthenticatorMock: Authenticator {
-    public init() {}
-    public func currentUser(completionHandler: @escaping (User?, Error?) -> Void) {
-    }
-
-    public func signInAnonymously(completionHandler: @escaping (User?, Error?) -> Void) {
-    }
-}
