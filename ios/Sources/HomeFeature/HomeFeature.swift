@@ -1,17 +1,18 @@
 import Component
 import ComposableArchitecture
+import Model
 
 // dummy feed model
 public struct FeedItem: Equatable, Identifiable {
     public var id: String
     public var imageURLString: String
     public var link: String
-    public var media: TagType
+    public var media: Media
     public var publishedAt: Date
     public var summary: String
     public var title: String
 
-    public init(id: String, imageURLString: String, link: String, media: TagType, publishedAt: Date, summary: String, title: String) {
+    public init(id: String, imageURLString: String, link: String, media: Media, publishedAt: Date, summary: String, title: String) {
         self.id = id
         self.imageURLString = imageURLString
         self.link = link

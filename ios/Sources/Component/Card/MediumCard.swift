@@ -1,10 +1,11 @@
+import Model
 import SwiftUI
 import Styleguide
 
 public struct MediumCard: View {
     private let title: String
     private let imageURL: URL?
-    private let tag: TagType
+    private let tag: Media
     private let date: Date
     private let isFavorited: Bool
     private let tapAction: () -> Void
@@ -13,7 +14,7 @@ public struct MediumCard: View {
     public init(
         title: String,
         imageURL: URL?,
-        tag: TagType,
+        tag: Media,
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
@@ -36,6 +37,7 @@ public struct MediumCard: View {
                 placeholderSize: .medium
             )
             .aspectRatio(225/114, contentMode: .fit)
+            .layoutPriority(1)
 
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
@@ -43,6 +45,7 @@ public struct MediumCard: View {
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(2)
+                        .frame(maxHeight: .infinity, alignment: .top)
 
                     Text(date.formatted)
                         .font(.caption)

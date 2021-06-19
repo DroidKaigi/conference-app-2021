@@ -90,6 +90,7 @@ var package = Package(
         .target(
             name: "Component",
             dependencies: [
+                .target(name: "Model"),
                 .target(name: "Styleguide"),
                 .product(name: "Introspect", package: "Introspect"),
                 .product(name: "NukeUI", package: "NukeUI"),
@@ -99,6 +100,7 @@ var package = Package(
             name: "FavoritesFeature",
             dependencies: [
                 .target(name: "Component"),
+                .target(name: "Model"),
                 .target(name: "Styleguide"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
@@ -114,7 +116,11 @@ var package = Package(
         .target(
             name: "MediaFeature",
             dependencies: [
+                .target(name: "Component"),
+                .target(name: "Model"),
                 .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+                .product(name: "Introspect", package: "Introspect"),
             ]
         ),
         .target(

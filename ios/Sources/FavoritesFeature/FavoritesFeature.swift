@@ -1,3 +1,4 @@
+import Model
 import Component
 import ComposableArchitecture
 
@@ -7,7 +8,7 @@ public struct FavoriteItem: Equatable, Identifiable {
     let title: String = "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
     let isFavorited: Bool
     let imageURL: URL? = nil
-    let tag: TagType = .medium
+    let tag: Media = .medium
     let date: Date = Date()
 
     public init(isFavorited: Bool) {
@@ -34,7 +35,7 @@ public struct FavoritesEnvironment {
     public init() {}
 }
 
-public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> { state, action, environment in
+public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> { state, action, _ in
     switch action {
     case .refresh:
         state.items = [

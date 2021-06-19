@@ -1,10 +1,11 @@
+import Model
 import SwiftUI
 import Styleguide
 
 public struct LargeCard: View {
     private let title: String
     private let imageURL: URL?
-    private let tag: TagType
+    private let tag: Media
     private let date: Date
     private let isFavorited: Bool
     private let tapAction: () -> Void
@@ -13,7 +14,7 @@ public struct LargeCard: View {
     public init(
         title: String,
         imageURL: URL?,
-        tag: TagType,
+        tag: Media,
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
@@ -29,7 +30,7 @@ public struct LargeCard: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 13) {
+        VStack(alignment: .leading, spacing: 16) {
             ImageView(
                 imageURL: imageURL,
                 placeholder: .noImage,
@@ -37,28 +38,30 @@ public struct LargeCard: View {
             )
             .aspectRatio(343/190, contentMode: .fit)
 
-            Text(title)
-                .font(.headline)
-                .foregroundColor(AssetColor.Base.primary.color)
-                .lineLimit(2)
+            VStack(alignment: .leading, spacing: 13) {
+                Text(title)
+                    .font(.headline)
+                    .foregroundColor(AssetColor.Base.primary.color)
+                    .lineLimit(2)
 
-            HStack(spacing: 8) {
-                Tag(type: tag) {
-                    // do something if needed
+                HStack(spacing: 8) {
+                    Tag(type: tag) {
+                        // do something if needed
+                    }
+
+                    Text(date.formatted)
+                        .font(.caption)
+                        .foregroundColor(AssetColor.Base.tertiary.color)
+
+                    Spacer()
+
+                    Button(action: tapFavoriteAction, label: {
+                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                        image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.primary.color)
+                    })
                 }
-
-                Text(date.formatted)
-                    .font(.caption)
-                    .foregroundColor(AssetColor.Base.tertiary.color)
-
-                Spacer()
-
-                Button(action: tapFavoriteAction, label: {
-                    let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                    image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.primary.color)
-                })
             }
         }
         .padding(16)

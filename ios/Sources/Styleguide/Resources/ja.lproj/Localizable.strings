@@ -5,6 +5,11 @@
 
 // MARK: Media
 "MediaScreen.Title" = "Media";
+"MediaScreen.SearchBar.Placeholder" = "タイトルを検索";
+"MediaScreen.Section.Blog.Title" = "BLOG";
+"MediaScreen.Section.Video.Title" = "VIDEO";
+"MediaScreen.Section.Podcast.Title" = "PODCAST";
+"MediaScreen.Section.More" = "More";
 
 // MARK: Favorite
 "FavoriteScreen.Title" = "Favorites";
@@ -23,3 +28,4 @@
 "Component.Tag.DroidKaigiFm" = "DroidKaigi.fm";
 "Component.Tag.Medium" = "Medium";
 "Component.Tag.Youtube" = "Youtube";
+"Component.Tag.Other" = "Other";
