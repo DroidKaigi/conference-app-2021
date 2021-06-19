@@ -9,6 +9,7 @@ import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
+import kotlinx.coroutines.flow.first
 
 class AuthApi(
     private val httpClient: HttpClient,
@@ -16,15 +17,22 @@ class AuthApi(
     private val authenticator: Authenticator
 ) {
     suspend fun authIfNeeded() {
-        var currentUser = authenticator.currentUser()
+        var idToken = authenticator.currentUser()?.idToken
 
-        if (currentUser == null) {
+        if (idToken == null) {
             // not authenticated
-            currentUser = authenticator.signInAnonymously() ?: return
-            registerToServer(currentUser.idToken)
+            idToken = authenticator.signInAnonymously()?.idToken.orEmpty()
         }
+        userDataStore.setIdToken(idToken)
 
-        userDataStore.setIdToken(currentUser.idToken)
+        if (userDataStore.isAuthenticated().first() == true) {
+            return // Already registered on server
+        }
+        if (idToken.isBlank()) {
+            return // Invalid id token
+        }
+        registerToServer(idToken)
+        userDataStore.setAuthenticated(true)
     }
 
     private suspend fun registerToServer(createdIdToken: String) {
