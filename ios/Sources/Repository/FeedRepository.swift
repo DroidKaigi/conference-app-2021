@@ -3,7 +3,7 @@ import DroidKaigiMPP
 import Model
 
 public protocol FeedRepositoryProtocol {
-    func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError>
+    func feedContents() -> AnyPublisher<[FeedContent], KotlinError>
     func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError>
     func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError>
 }
@@ -19,8 +19,8 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
         self.repository = container.get(type: RepositoryType.self)
     }
 
-    public func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError> {
-        Future<DroidKaigiMPP.FeedContents, KotlinError> { promise in
+    public func feedContents() -> AnyPublisher<[FeedContent], KotlinError> {
+        Future<FeedContents, KotlinError> { promise in
             repository.feedContents()
                 .subscribe(scope: scopeProvider.scope) {
                     promise(.success($0))
@@ -29,7 +29,7 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
                     promise(.failure(KotlinError.fetchFailed($0.description())))
                 }
         }
-        .map(Model.FeedContents.init(from:))
+        .map([FeedContent].init(from:))
         .eraseToAnyPublisher()
     }
 
