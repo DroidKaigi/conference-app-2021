@@ -32,6 +32,17 @@ abstract class UserDataStore {
         )
     }
 
+    fun isAuthenticated(): Flow<Boolean?> {
+        return flowSettings.getBooleanOrNullFlow(KEY_AUTHENTICATED)
+    }
+
+    suspend fun setAuthenticated(authenticated: Boolean) {
+        flowSettings.putBoolean(
+            KEY_AUTHENTICATED,
+            authenticated,
+        )
+    }
+
     fun deviceId(): Flow<String?> {
         return flowSettings.getStringOrNullFlow(KEY_DEVICE_ID)
     }
