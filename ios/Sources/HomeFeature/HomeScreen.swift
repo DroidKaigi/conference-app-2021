@@ -1,5 +1,6 @@
 import Component
 import ComposableArchitecture
+import Model
 import Styleguide
 import SwiftUI
 
@@ -28,13 +29,11 @@ public struct HomeScreen: View {
                                     tapFavoriteAction: {}
                                 )
                             }
-                            Divider()
-                                .foregroundColor(AssetColor.Separate.contents.color)
+                            Separator()
                             QuestionnaireView(tapAnswerAction: {
                                 viewStore.send(.answerQuestionnaire)
                             })
-                            Divider()
-                                .foregroundColor(AssetColor.Separate.contents.color)
+                            Separator()
                             ForEach(viewStore.listFeedItems) { feedItem in
                                 ListItem(
                                     item: feedItem,
@@ -43,10 +42,10 @@ public struct HomeScreen: View {
                                 )
                             }
                         }
+                        .separatorStyle(ThickSeparatorStyle())
                     }
                 }
             }
-            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .toolbar {
                 ToolbarItem(placement: .principal) {
@@ -58,6 +57,9 @@ public struct HomeScreen: View {
                     .renderingMode(.template)
                     .foregroundColor(AssetColor.Base.primary.color)
             )
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+            }
         }
     }
 }
@@ -98,7 +100,7 @@ extension FeedItem {
         id: String = UUID().uuidString,
         imageURLString: String = "",
         link: String = "",
-        media: TagType = .medium,
+        media: Media = .medium,
         publishedAt: Date = Date(),
         summary: String = "",
         title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"

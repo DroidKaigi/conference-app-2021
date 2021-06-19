@@ -27,9 +27,9 @@ public struct InlineTitleNavigationBarScrollView<Content: View>: View {
     }
 
     public var body: some View {
-        let _ = shouldApplyScrollEdgeAppearance
+        _ = shouldApplyScrollEdgeAppearance
         // Reference: https://medium.com/@maxnatchanon/swiftui-how-to-get-content-offset-from-scrollview-5ce1f84603ec
-        GeometryReader { outsideProxy in
+        return GeometryReader { outsideProxy in
             ScrollView(showsIndicators: showsIndicators) {
                 ZStack {
                     GeometryReader { insideProxy in

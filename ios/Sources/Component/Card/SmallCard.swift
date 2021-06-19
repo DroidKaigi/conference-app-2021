@@ -1,10 +1,11 @@
+import Model
 import SwiftUI
 import Styleguide
 
 public struct SmallCard: View {
     private let title: String
     private let imageURL: URL?
-    private let tag: TagType
+    private let tag: Media
     private let date: Date
     private let isFavorited: Bool
     private let tapAction: () -> Void
@@ -13,7 +14,7 @@ public struct SmallCard: View {
     public init(
         title: String,
         imageURL: URL?,
-        tag: TagType,
+        tag: Media,
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
@@ -43,6 +44,7 @@ public struct SmallCard: View {
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(3)
+                        .frame(maxHeight: .infinity, alignment: .top)
 
                     Text(date.formatted)
                         .font(.caption)

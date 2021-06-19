@@ -1,7 +1,8 @@
 # DroidKaigi 2021 iOS Application
 
 ## Get started
-- Run `$ make open` to open this project.
+1. Run `$ make run-swiftgen` and `$ make create-kmm-framework`
+2. Run `$ make open` to open this project.
 
 ### How to preview SwiftUI View
 
