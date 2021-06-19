@@ -23,7 +23,7 @@ public struct AppEnvironment {
 }
 
 public extension AppEnvironment {
-    static var shared: Self {
+    static let shared: Self = {
         let authenticator = Authenticator()
         let container = DIContainer(authenticator: authenticator)
 
@@ -34,5 +34,5 @@ public extension AppEnvironment {
             staffRepository: StaffRepository(container: container),
             themeRepository: ThemeRepository(container: container)
         )
-    }
+    }()
 }
