@@ -1,9 +1,11 @@
+import Firebase
 import DroidKaigiMPP
 
 public struct DIContainer {
     let koin: Koin_coreKoin
 
     public init(authenticator: Authenticator) {
+        FirebaseApp.configure()
         let koinApplication = IosModuleKt.doInitKoin(authenticator: authenticator)
         self.koin = koinApplication.koin
     }
