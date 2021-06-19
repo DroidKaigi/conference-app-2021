@@ -102,7 +102,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                 )
                 MediaScreen(
                     store: .init(
-                        initialState: MediaState(listState: .mock),
+                        initialState: MediaState.initialized(.mock),
                         reducer: .empty,
                         environment: {}
                     )

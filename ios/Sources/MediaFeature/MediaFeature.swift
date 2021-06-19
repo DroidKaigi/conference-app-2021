@@ -10,22 +10,19 @@ public enum MediaState: Equatable {
     public init() {
         self = .needToInitialize
     }
-
-    init(listState: MediaListState) {
-        self = .initialized(listState)
-    }
 }
 
 public struct MediaListState: Equatable {
-    var blogs: [Blog]
-    var videos: [Video]
-    var podcasts: [Podcast]
-    var next: Next?
 
     enum Next: Equatable {
         case searchText(String)
         case more(for: MediaType)
     }
+
+    var blogs: [FeedContent]
+    var videos: [FeedContent]
+    var podcasts: [FeedContent]
+    var next: Next?
 }
 
 public enum MediaType {
@@ -36,7 +33,7 @@ public enum MediaType {
 
 public enum MediaAction: Equatable {
     case loadItems
-    case itemsLoaded(blogs: [Blog], videos: [Video], podcasts: [Podcast])
+    case itemsLoaded([FeedContent])
     case mediaList(MediaListAction)
 }
 
@@ -93,7 +90,20 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
             return Effect(value: .mockItemsLoads)
                 .delay(for: 1, scheduler: DispatchQueue.main)
                 .eraseToEffect()
-        case let .itemsLoaded(blogs, videos, podcasts):
+        case let .itemsLoaded(contents):
+            var blogs: [FeedContent] = .init()
+            var videos: [FeedContent] = .init()
+            var podcasts: [FeedContent] = .init()
+            for content in contents {
+                switch content.item {
+                case .blog:
+                    blogs.append(content)
+                case .podcast:
+                    videos.append(content)
+                case .video:
+                    podcasts.append(content)
+                }
+            }
             if var listState = (/MediaState.initialized).extract(from: state) {
                 listState.blogs = blogs
                 listState.videos = videos
@@ -110,81 +120,85 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
 )
 
 private extension MediaAction {
-    static let mockItemsLoads: Self = {
-        let mock = MediaListState.mock
-        return .itemsLoaded(blogs: mock.blogs, videos: mock.videos, podcasts: mock.podcasts)
-    }()
+    static let mockItemsLoads: Self = .itemsLoaded(.mockBlogs + .mockVideos + .mockPodcasts)
 }
 
 extension MediaListState {
-    static let mock: Self = .init(
-        blogs: [
-            .init(
-                id: "0",
-                image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                link: "",
-                media: .medium,
-                publishedAt: .init(),
-                summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
-                author: .init(link: "", name: ""),
-                language: ""
-            ),
-            .init(
-                id: "1",
-                image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                link: "",
-                media: .medium,
-                publishedAt: .init(),
-                summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs"),
-                author: .init(link: "", name: ""),
-                language: ""
-            ),
-        ],
-        videos: [
-            .init(
-                id: "0",
-                image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                link: "",
-                media: .youtube,
-                publishedAt: .init(),
-                summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
-            ),
-            .init(
-                id: "1",
-                image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                link: "",
-                media: .youtube,
-                publishedAt: .init(),
-                summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - Day 2 Night Session")
-            ),
-        ],
-        podcasts: [
-            .init(
-                id: "0",
-                image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                link: "",
-                media: .droidKaigiFm,
-                podcastLink: "",
-                publishedAt: .init(),
-                speakers: [],
-                summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
-            ),
-            .init(
-                id: "1",
-                image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                link: "",
-                media: .droidKaigiFm,
-                podcastLink: "",
-                publishedAt: .init(),
-                speakers: [],
-                summary: .init(enTitle: "", jaTitle: ""),
-                title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")
-            ),
-        ]
-    )
+    static let mock: Self = .init(blogs: .mockBlogs, videos: .mockVideos, podcasts: .mockPodcasts, next: nil)
+}
+
+extension Array where Element == FeedContent {
+    static let mockBlogs: Self = [
+        .blog(.init(
+            id: "0",
+            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+            link: "",
+            media: .medium,
+            publishedAt: .init(),
+            summary: .init(enTitle: "", jaTitle: ""),
+            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
+            author: .init(link: "", name: ""),
+            language: ""
+        )),
+        .blog(.init(
+            id: "1",
+            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+            link: "",
+            media: .medium,
+            publishedAt: .init(),
+            summary: .init(enTitle: "", jaTitle: ""),
+            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs"),
+            author: .init(link: "", name: ""),
+            language: ""
+        )),
+    ]
+    .map { .init(item: $0, isFavorited: false) }
+
+    static let mockVideos: Self = [
+        .video(.init(
+            id: "0",
+            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+            link: "",
+            media: .youtube,
+            publishedAt: .init(),
+            summary: .init(enTitle: "", jaTitle: ""),
+            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
+        )),
+        .video(.init(
+            id: "1",
+            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+            link: "",
+            media: .youtube,
+            publishedAt: .init(),
+            summary: .init(enTitle: "", jaTitle: ""),
+            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - Day 2 Night Session")
+        )),
+    ]
+    .map { .init(item: $0, isFavorited: false) }
+
+    static let mockPodcasts: Self = [
+        .podcast(.init(
+            id: "0",
+            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+            link: "",
+            media: .droidKaigiFm,
+            podcastLink: "",
+            publishedAt: .init(),
+            speakers: [],
+            summary: .init(enTitle: "", jaTitle: ""),
+            title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
+        )),
+        .podcast(.init(
+            id: "1",
+            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+            link: "",
+            media: .droidKaigiFm,
+            podcastLink: "",
+            publishedAt: .init(),
+            speakers: [],
+            summary: .init(enTitle: "", jaTitle: ""),
+            title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")
+        )),
+    ]
+    .map { .init(item: $0, isFavorited: false) }
 }

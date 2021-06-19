@@ -51,7 +51,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconBlog.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Blog.title,
                         store: store.scope(
-                            state: {  $0.blogs.map(\.feedItem) },
+                            state: {  $0.blogs },
                             action: { .init(action: $0, for: .blog) }
                         )
                     )
@@ -62,7 +62,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconVideo.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Video.title,
                         store: store.scope(
-                            state: {  $0.videos.map(\.feedItem) },
+                            state: {  $0.videos },
                             action: { .init(action: $0, for: .video) }
                         )
                     )
@@ -73,7 +73,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconPodcast.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Podcast.title,
                         store: store.scope(
-                            state: {  $0.podcasts.map(\.feedItem) },
+                            state: {  $0.podcasts },
                             action: { .init(action: $0, for: .podcast) }
                         )
                     )
@@ -126,13 +126,13 @@ private extension MediaDetail.ViewState {
         switch mediaType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
-            feedItems = state.blogs.map(FeedItemType.blog)
+            feedItems = state.blogs
         case .video:
             title = L10n.MediaScreen.Section.Video.title
-            feedItems = state.videos.map(FeedItemType.video)
+            feedItems = state.videos
         case .podcast:
             title = L10n.MediaScreen.Section.Podcast.title
-            feedItems = state.podcasts.map(FeedItemType.podcast)
+            feedItems = state.podcasts
         }
     }
 }
