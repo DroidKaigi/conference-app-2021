@@ -126,13 +126,13 @@ private extension MediaDetail.ViewState {
         switch mediaType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
-            feedItems = state.blogs
+            feedContents = state.blogs
         case .video:
             title = L10n.MediaScreen.Section.Video.title
-            feedItems = state.videos
+            feedContents = state.videos
         case .podcast:
             title = L10n.MediaScreen.Section.Podcast.title
-            feedItems = state.podcasts
+            feedContents = state.podcasts
         }
     }
 }
