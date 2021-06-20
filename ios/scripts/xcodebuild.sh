@@ -4,6 +4,7 @@ TYPE=${1}
 SCHEME=${2}
 CONFIGURATION=${3}
 
+SWIFT_RUN="swift run -c release --package-path Tools"
 WORKSPACE=DroidKaigi2021.xcworkspace
 PLATFORM_IOS="iOS Simulator,name=iPhone 12 Pro,OS=14.4"
 
@@ -12,4 +13,4 @@ set -o pipefail && xcodebuild $TYPE \
 -workspace $WORKSPACE \
 -scheme "$SCHEME" \
 -configuration $CONFIGURATION \
--destination platform="$PLATFORM_IOS" | ./scripts/swift.sh xcbeautify --quiet
+-destination platform="$PLATFORM_IOS" | $SWIFT_RUN xcbeautify --quiet
