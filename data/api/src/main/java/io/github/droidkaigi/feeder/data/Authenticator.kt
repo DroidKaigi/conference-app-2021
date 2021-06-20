@@ -10,7 +10,7 @@ import javax.inject.Inject
 class AuthenticatorImpl @Inject constructor() : Authenticator {
     override suspend fun currentUser(): User? {
         val firebaseUser = Firebase.auth.currentUser ?: return null
-        val idToken = firebaseUser.getIdToken(false)
+        val idToken = firebaseUser.getIdToken(false) ?: return null
 
         return User(idToken)
     }
@@ -20,7 +20,7 @@ class AuthenticatorImpl @Inject constructor() : Authenticator {
         Logger.d("signin:${result.user}")
 
         val firebaseUser = result.user ?: return null
-        val idToken = firebaseUser.getIdToken(false)
+        val idToken = firebaseUser.getIdToken(false) ?: return null
 
         return User(idToken)
     }

@@ -17,22 +17,22 @@ class AuthApi(
     private val authenticator: Authenticator
 ) {
     suspend fun authIfNeeded() {
-        val currentUser = authenticator.currentUser()
-        val isAuthenticated = userDataStore.isAuthenticated().first()
-        val firebaseIdToken = currentUser?.idToken.orEmpty()
-        if (isAuthenticated == true && firebaseIdToken.isNotBlank()) {
-            // already authenticated
-            userDataStore.setIdToken(firebaseIdToken)
-            return
+        var idToken = authenticator.currentUser()?.idToken
+
+        if (idToken == null) {
+            // not authenticated
+            idToken = authenticator.signInAnonymously()?.idToken.orEmpty()
         }
-        // not authenticated
-        val user = authenticator.signInAnonymously()
-        val createdIdToken = user?.idToken.orEmpty()
-        userDataStore.setIdToken(createdIdToken)
-        if (createdIdToken.isNotBlank()) {
-            registerToServer(createdIdToken)
-            userDataStore.setAuthenticated(true)
+        userDataStore.setIdToken(idToken)
+
+        if (userDataStore.isAuthenticated().first() == true) {
+            return // Already registered on server
         }
+        if (idToken.isBlank()) {
+            return // Invalid id token
+        }
+        registerToServer(idToken)
+        userDataStore.setAuthenticated(true)
     }
 
     private suspend fun registerToServer(createdIdToken: String) {

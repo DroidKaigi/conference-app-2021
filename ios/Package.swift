@@ -63,6 +63,7 @@ var package = Package(
         .package(url: "https://github.com/pointfreeco/swift-composable-architecture.git", .exact("0.19.0")),
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", .upToNextMajor(from: "0.1.3")),
         .package(url: "https://github.com/kean/NukeUI.git", .exact("0.6.1")),
+        .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", .exact("8.1.1")),
     ],
     targets: [
         .target(
@@ -134,6 +135,7 @@ var package = Package(
             dependencies: [
                 .target(name: "DroidKaigiMPP"),
                 .target(name: "Model"),
+                .product(name: "FirebaseAuth", package: "Firebase"),
             ]
         ),
         .target(
