@@ -64,6 +64,8 @@ var package = Package(
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", .upToNextMajor(from: "0.1.3")),
         .package(url: "https://github.com/kean/NukeUI.git", .exact("0.6.1")),
         .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", .exact("8.1.1")),
+        .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", from: "1.8.1"),
+        .package(url: "https://github.com/apple/swift-algorithms.git", .exact("0.2.1")),
     ],
     targets: [
         .target(
@@ -169,6 +171,16 @@ package.targets.append(contentsOf: [
     .testTarget(
         name: "AppFeatureTests",
         dependencies: ["AppFeature"]
+    ),
+    .testTarget(
+        name: "ComponentTests",
+        dependencies: [
+            "Component",
+            "Model",
+            .product(name: "Algorithms", package: "swift-algorithms"),
+            .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "FavoritesFeatureTests",
