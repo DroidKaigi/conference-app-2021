@@ -51,7 +51,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconBlog.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Blog.title,
                         store: store.scope(
-                            state: {  $0.blogs },
+                            state: \.blogs,
                             action: { .init(action: $0, for: .blog) }
                         )
                     )
@@ -62,7 +62,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconVideo.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Video.title,
                         store: store.scope(
-                            state: {  $0.videos },
+                            state: \.videos,
                             action: { .init(action: $0, for: .video) }
                         )
                     )
@@ -73,7 +73,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconPodcast.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Podcast.title,
                         store: store.scope(
-                            state: {  $0.podcasts },
+                            state: \.podcasts,
                             action: { .init(action: $0, for: .podcast) }
                         )
                     )
