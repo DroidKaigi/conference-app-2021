@@ -42,7 +42,7 @@ test-app-debug:
 .PHONY: test-app-release
 test-app-release:
 	make build-kmm-module-release
-		./scripts/xcodebuild.sh test "DroidKaigi 2021" Release
+	./scripts/xcodebuild.sh test "DroidKaigi 2021" Release
 
 # Build App Debug
 .PHONY: build-app-debug
