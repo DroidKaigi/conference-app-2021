@@ -27,115 +27,47 @@ create-kmm-framework:
 
 .PHONE: build-kmm-module-debug
 build-kmm-module-debug:
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme DroidKaigiMPP \
-		-configuration Debug \
-		-destination platform="$(PLATFORM_IOS)"
+	./scripts/xcodebuild.sh build DroidKaigiMPP Debug
 
 .PHONE: build-kmm-module-release
 build-kmm-module-release:
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme DroidKaigiMPP \
-		-configuration Release \
-		-destination platform="$(PLATFORM_IOS)"
+	./scripts/xcodebuild.sh build DroidKaigiMPP Release
 
 # Test App Debug
 .PHONY: test-app-debug
 test-app-debug:
 	make build-kmm-module-debug
-
-	xcodebuild test \
-		-workspace $(WORKSPACE) \
-		-scheme DroidKaigi\ 2021 \
-		-configuration Debug \
-		-destination platform="$(PLATFORM_IOS)"
+	./scripts/xcodebuild.sh test DroidKaigi\ 2021 Debug
 
 # Test App Release
 .PHONY: test-app-release
 test-app-release:
 	make build-kmm-module-release
-
-	xcodebuild test \
-		-workspace $(WORKSPACE) \
-		-scheme DroidKaigi\ 2021 \
-		-configuration Release \
-		-destination platform="$(PLATFORM_IOS)"
+		./scripts/xcodebuild.sh test DroidKaigi\ 2021 Release
 
 # Build App Debug
 .PHONY: build-app-debug
 build-app-debug:
 	make build-kmm-module-debug
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme DroidKaigi\ 2021 \
-		-configuration Debug \
-		-destination platform="$(PLATFORM_IOS)"
+	./scripts/xcodebuild.sh build DroidKaigi\ 2021 Debug
 
 # Build App Release
 .PHONY: build-app-release
 build-app-release:
 	make build-kmm-module-release
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme DroidKaigi\ 2021 \
-		-configuration Release \
-		-destination platform="$(PLATFORM_IOS)"
+	./scripts/xcodebuild.sh build DroidKaigi\ 2021 Release
 
 # Build Modules
 .PHONY: build-modules
 build-modules:
 	make build-kmm-module-debug
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme AboutFeature \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme AppFeature \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme Component \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme FavoritesFeature \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme HomeFeature \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme MediaFeature \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme Model \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme Repository \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme Styleguide \
-		-destination platform="$(PLATFORM_IOS)"
-
-	xcodebuild build \
-		-workspace $(WORKSPACE) \
-		-scheme Utility \
-		-destination platform="$(PLATFORM_IOS)"
+	./scripts/xcodebuild.sh build AboutFeature Debug
+	./scripts/xcodebuild.sh build AppFeature Debug
+	./scripts/xcodebuild.sh build Component Debug
+	./scripts/xcodebuild.sh build FavoritesFeature Debug
+	./scripts/xcodebuild.sh build HomeFeature Debug
+	./scripts/xcodebuild.sh build MediaFeature Debug
+	./scripts/xcodebuild.sh build Model Debug
+	./scripts/xcodebuild.sh build Repository Debug
+	./scripts/xcodebuild.sh build Styleguide Debug
+	./scripts/xcodebuild.sh build Utility Debug
