@@ -5,10 +5,6 @@ PARAMETERS=${@:2}
 PACKAGE_DIR=$(swift build -c release --show-bin-path --package-path Tools)
 PACKAGE=$PACKAGE_DIR/$PACKAGE_NAME
 
-function showUsage {
-  echo "USAGE: swift_run.sh #{package name} #{parameter}"
-}
-
 if [ ! -e $PACKAGE ]; then
   echo "$PACKAGE_NAME has not been installed"
   swift build -c release --product $PACKAGE_NAME

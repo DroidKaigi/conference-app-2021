@@ -1,6 +1,5 @@
 SWIFT_RUN=swift run -c release --package-path Tools
 WORKSPACE=DroidKaigi2021.xcworkspace
-PLATFORM_IOS =iOS Simulator,name=iPhone 12 Pro,OS=14.4
 
 .PHONY: open
 open:
@@ -37,25 +36,25 @@ build-kmm-module-release:
 .PHONY: test-app-debug
 test-app-debug:
 	make build-kmm-module-debug
-	./scripts/xcodebuild.sh test DroidKaigi\ 2021 Debug
+	./scripts/xcodebuild.sh test "DroidKaigi 2021" Debug
 
 # Test App Release
 .PHONY: test-app-release
 test-app-release:
 	make build-kmm-module-release
-		./scripts/xcodebuild.sh test DroidKaigi\ 2021 Release
+		./scripts/xcodebuild.sh test "DroidKaigi 2021" Release
 
 # Build App Debug
 .PHONY: build-app-debug
 build-app-debug:
 	make build-kmm-module-debug
-	./scripts/xcodebuild.sh build DroidKaigi\ 2021 Debug
+	./scripts/xcodebuild.sh build "DroidKaigi 2021" Debug
 
 # Build App Release
 .PHONY: build-app-release
 build-app-release:
 	make build-kmm-module-release
-	./scripts/xcodebuild.sh build DroidKaigi\ 2021 Release
+	./scripts/xcodebuild.sh build "DroidKaigi 2021" Release
 
 # Build Modules
 .PHONY: build-modules
