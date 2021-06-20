@@ -49,7 +49,9 @@ public struct MediaScreen: View {
                     action: MediaAction.init(action:),
                     then: MediaListView.init(store:)
                 )
-                Default {
+                CaseLet(
+                    state: /MediaState.needToInitialize,
+                    action: MediaAction.init(action:)) { _ in
                     ProgressView()
                         .onAppear { viewStore.send(.progressViewAppeared) }
                 }
