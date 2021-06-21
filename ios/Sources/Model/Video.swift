@@ -39,8 +39,8 @@ public struct Video: FeedItem, Equatable {
 }
 
 public extension Video {
-    var kmmModel: DroidKaigiMPP.FeedItem {
-        DroidKaigiMPP.FeedItem.Video(
+    var kmmModel: DroidKaigiMPP.FeedItem.Video {
+        .init(
             id: id,
             publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
             image: image.kmmModel,
@@ -50,4 +50,6 @@ public extension Video {
             link: link
         )
     }
+
+    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
 }

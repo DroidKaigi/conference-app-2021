@@ -47,8 +47,8 @@ public struct Podcast: FeedItem, Equatable {
 }
 
 public extension Podcast {
-    var kmmModel: DroidKaigiMPP.FeedItem {
-        DroidKaigiMPP.FeedItem.Podcast(
+    var kmmModel: DroidKaigiMPP.FeedItem.Podcast {
+        .init(
             id: id,
             publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
             image: image.kmmModel,
@@ -60,4 +60,6 @@ public extension Podcast {
             podcastLink: podcastLink
         )
     }
+
+    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
 }

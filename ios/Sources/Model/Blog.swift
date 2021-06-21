@@ -47,8 +47,8 @@ public struct Blog: FeedItem, Equatable {
 }
 
 public extension Blog {
-    var kmmModel: DroidKaigiMPP.FeedItem {
-        DroidKaigiMPP.FeedItem.Blog(
+    var kmmModel: DroidKaigiMPP.FeedItem.Blog {
+        .init(
             id: id,
             publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
             image: image.kmmModel,
@@ -60,4 +60,6 @@ public extension Blog {
             author: author.kmmModel
         )
     }
+
+    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
 }
