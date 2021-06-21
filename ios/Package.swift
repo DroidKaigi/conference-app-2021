@@ -177,6 +177,7 @@ package.targets.append(contentsOf: [
         dependencies: [
             "Component",
             "Model",
+            "TestUtils",
             .product(name: "Algorithms", package: "swift-algorithms"),
             .product(name: "SnapshotTesting", package: "SnapshotTesting"),
         ],
@@ -193,6 +194,13 @@ package.targets.append(contentsOf: [
     .testTarget(
         name: "MediaFeatureTests",
         dependencies: ["MediaFeature"]
+    ),
+    .target(
+        name: "TestUtils",
+        dependencies: [
+            .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        ],
+        path: "Tests/TestUtils"
     ),
 ])
 

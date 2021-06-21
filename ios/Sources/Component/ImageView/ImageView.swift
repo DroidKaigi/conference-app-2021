@@ -78,8 +78,8 @@ extension ImageView {
     }
 }
 
-struct ImageView_Previews: PreviewProvider {
-    static var previews: some View {
+public struct ImageView_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             ImageView(
                 imageURL: nil,

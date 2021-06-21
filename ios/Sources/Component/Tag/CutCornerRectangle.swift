@@ -72,8 +72,8 @@ public struct CutCornerRectangle: Shape {
     }
 }
 
-struct CutCornersRectangle_Previews: PreviewProvider {
-    static var previews: some View {
+public struct CutCornersRectangle_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             Rectangle()
                 .frame(width: 200, height: 100)

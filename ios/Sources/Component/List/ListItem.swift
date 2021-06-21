@@ -101,8 +101,8 @@ public struct ListItem: View {
     }
 }
 
-struct ListItem_Previews: PreviewProvider {
-    static var previews: some View {
+public struct ListItem_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",

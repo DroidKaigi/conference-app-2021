@@ -70,8 +70,8 @@ public struct LargeCard: View {
     }
 }
 
-struct LargeCard_Previews: PreviewProvider {
-    static var previews: some View {
+public struct LargeCard_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
