@@ -35,7 +35,7 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
 
     public func addFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
         Future<Void, KotlinError> { promise in
-            repository.addFavorite(feedItem: feedItem.wrappedValue.kmmModel)
+            repository.addFavorite(feedItem: feedItem.kmmModel)
                 .subscribe(scope: scopeProvider.scope) { _ in
                     promise(.success(()))
                 } onFailure: {
@@ -47,7 +47,7 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
 
     public func removeFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
         Future<Void, KotlinError> { promise in
-            repository.removeFavorite(feedItem: feedItem.wrappedValue.kmmModel)
+            repository.removeFavorite(feedItem: feedItem.kmmModel)
                 .subscribe(scope: scopeProvider.scope) { _ in
                     promise(.success(()))
                 } onFailure: {
