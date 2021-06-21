@@ -70,3 +70,9 @@ build-modules:
 	./scripts/xcodebuild.sh build Repository Debug
 	./scripts/xcodebuild.sh build Styleguide Debug
 	./scripts/xcodebuild.sh build Utility Debug
+
+# Test for Modules
+.PHONY: test-modules
+test-modules:
+	make build-kmm-module-debug
+	./scripts/xcodebuild.sh test Component Debug
