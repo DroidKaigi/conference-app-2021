@@ -22,9 +22,9 @@ struct MediaListView: View {
         var isMoreActive: Bool
 
         init(state: MediaListState) {
-            hasBlogs = !state.list.blogs.isEmpty
-            hasVideos = !state.list.videos.isEmpty
-            hasPodcasts = !state.list.podcasts.isEmpty
+            hasBlogs = !state.blogs.isEmpty
+            hasVideos = !state.videos.isEmpty
+            hasPodcasts = !state.podcasts.isEmpty
             if case let .searchText(text) = state.next,
                !text.isEmpty {
                 isSearchResultVisible = true
@@ -51,7 +51,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconBlog.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Blog.title,
                         store: store.scope(
-                            state: {  $0.list.blogs.map(\.feedItem) },
+                            state: \.blogs,
                             action: { .init(action: $0, for: .blog) }
                         )
                     )
@@ -62,7 +62,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconVideo.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Video.title,
                         store: store.scope(
-                            state: {  $0.list.videos.map(\.feedItem) },
+                            state: \.videos,
                             action: { .init(action: $0, for: .video) }
                         )
                     )
@@ -73,7 +73,7 @@ struct MediaListView: View {
                         icon: AssetImage.iconPodcast.image.renderingMode(.template),
                         title: L10n.MediaScreen.Section.Podcast.title,
                         store: store.scope(
-                            state: {  $0.list.podcasts.map(\.feedItem) },
+                            state: \.podcasts,
                             action: { .init(action: $0, for: .podcast) }
                         )
                     )
@@ -126,13 +126,13 @@ private extension MediaDetail.ViewState {
         switch mediaType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
-            feedItems = state.list.blogs.map(FeedItemType.blog)
+            feedItems = state.blogs
         case .video:
             title = L10n.MediaScreen.Section.Video.title
-            feedItems = state.list.videos.map(FeedItemType.video)
+            feedItems = state.videos
         case .podcast:
             title = L10n.MediaScreen.Section.Podcast.title
-            feedItems = state.list.podcasts.map(FeedItemType.podcast)
+            feedItems = state.podcasts
         }
     }
 }
@@ -151,7 +151,7 @@ public struct MediaListView_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaListView(
                 store: .init(
-                    initialState: .init(list: .mock, next: nil),
+                    initialState: .mock,
                     reducer: .empty,
                     environment: {}
                 )

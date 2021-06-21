@@ -9,7 +9,7 @@ struct MediaDetail: View {
 
     struct ViewState: Equatable {
         var title: String
-        var feedItems: [FeedItemType]
+        var feedItems: [FeedContent]
     }
 
     var body: some View {
