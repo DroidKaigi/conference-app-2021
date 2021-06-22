@@ -57,15 +57,17 @@ public struct AboutDroidKaigiScreen: View {
                 .foregroundColor(AssetColor.Base.secondary.color)
                 .padding(.horizontal, 32)
 
-                List(AboutDroidKaigiModel.allCases, id: \.self) { model in
-                    Button(action: {}, label: {
-                        HStack {
-                            Text(model.title)
-                                .font(.subheadline)
-                            Spacer()
-                            model.image
-                        }
-                    })
+                List {
+                    ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
+                        Button(action: {}, label: {
+                            HStack {
+                                Text(model.title)
+                                    .font(.subheadline)
+                                Spacer()
+                                model.image
+                            }
+                        })
+                    }
                     .listRowBackground(AssetColor.Background.contents.color)
                     .foregroundColor(AssetColor.Base.secondary.color)
                 }
