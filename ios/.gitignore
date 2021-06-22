@@ -3,7 +3,8 @@
 /Packages
 /*.xcodeproj
 xcuserdata/
-.swiftpm
+/.swiftpm/xcode/package.xcworkspace/*
+/.swiftpm/xcode/xcuserdata/*
 
 # SwiftGen generated
 Generated/
