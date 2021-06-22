@@ -2,7 +2,7 @@ import Introspect
 import SwiftUI
 import Styleguide
 
-public enum AboutDroidKaigiModel: CaseIterable {
+enum AboutDroidKaigiModel: CaseIterable {
     case behaviorCode
     case opensourceLicense
     case privacyPolicy
@@ -38,32 +38,36 @@ public struct AboutDroidKaigiScreen: View {
     public var body: some View {
         NavigationView {
             VStack {
-                VStack(spacing: 8) {
-                    Text(L10n.AboutDroidKaigiScreen.whatIs)
-                        .font(.title2)
-                    AssetImage.logoTitle.image
-                        .frame(width: 262, height: 44)
+                VStack(spacing: 24) {
+                    VStack(spacing: 8) {
+                        Text(L10n.AboutDroidKaigiScreen.whatIs)
+                            .font(.title2)
+
+                        AssetImage.logoTitle.image
+                            .resizable()
+                            .aspectRatio(contentMode: .fit)
+                            .frame(width: 262, height: 44)
+                    }
+
                     Text(L10n.AboutDroidKaigiScreen.description)
-                        .padding(.top, 16)
                         .multilineTextAlignment(.center)
                         .font(.body)
                         .opacity(0.7)
                 }
+                .foregroundColor(AssetColor.Base.secondary.color)
                 .padding(.horizontal, 32)
 
-                List {
-                    ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
-                        Button(action: {}, label: {
-                            HStack {
-                                Text(model.title)
-                                    .font(.subheadline)
-                                Spacer()
-                                model.image
-                            }
-                        })
-                        .listRowBackground(AssetColor.Background.contents.color)
-                        .foregroundColor(AssetColor.Base.secondary.color)
-                    }
+                List(AboutDroidKaigiModel.allCases, id: \.self) { model in
+                    Button(action: {}, label: {
+                        HStack {
+                            Text(model.title)
+                                .font(.subheadline)
+                            Spacer()
+                            model.image
+                        }
+                    })
+                    .listRowBackground(AssetColor.Background.contents.color)
+                    .foregroundColor(AssetColor.Base.secondary.color)
                 }
                 .introspectTableView { tableView in
                     tableView.isScrollEnabled = false
@@ -71,7 +75,10 @@ public struct AboutDroidKaigiScreen: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
-            .navigationBarTitleDisplayMode(.inline)
+            .offset(y: -50)
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.secondary.uiColor
+            }
             .navigationBarItems(
                 trailing: Button(action: {
                     presentationMode.wrappedValue.dismiss()
@@ -81,12 +88,6 @@ public struct AboutDroidKaigiScreen: View {
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.secondary.uiColor
-            }
-            .introspectNavigationController { navigationController in
-                navigationController.navigationBar.backgroundColor = .clear
-            }
         }
     }
 }
