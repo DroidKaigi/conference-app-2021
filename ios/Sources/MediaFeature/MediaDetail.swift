@@ -9,7 +9,7 @@ struct MediaDetail: View {
 
     struct ViewState: Equatable {
         var title: String
-        var feedItems: [FeedContent]
+        var feedContents: [FeedContent]
     }
 
     var body: some View {
@@ -23,7 +23,7 @@ struct MediaDetail: View {
 struct MediaDetail_Previews: PreviewProvider {
     static var previews: some View {
         MediaDetail(store: .init(
-            initialState: .init(title: "Blog", feedItems: []),
+            initialState: .init(title: "Blog", feedContents: []),
             reducer: .empty,
             environment: {}
         ))

@@ -24,14 +24,14 @@ struct MediaSection: View {
                 )
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 0) {
-                        ForEach(viewStore.state) { item in
-                            let feedItem = item.feedItem
+                        ForEach(viewStore.state) { content in
+                            let item = content.item
                             MediumCard(
-                                title: feedItem.title.get(by: .ja),
-                                imageURL: URL(string: feedItem.image.standardURLString),
-                                tag: feedItem.media,
-                                date: feedItem.publishedAt,
-                                isFavorited: item.isFavorited,
+                                title: item.title.get(by: .ja),
+                                imageURL: URL(string: item.image.standardURLString),
+                                tag: item.media,
+                                date: item.publishedAt,
+                                isFavorited: content.isFavorited,
                                 tapAction: {},
                                 tapFavoriteAction: {}
                             )

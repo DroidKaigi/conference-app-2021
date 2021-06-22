@@ -1,12 +1,13 @@
 import DroidKaigiMPP
 
-@dynamicMemberLookup
-public struct Podcast: Equatable, Identifiable {
-    public var feedItem: FeedItem
-
-    public var id: String {
-        feedItem.id
-    }
+public struct Podcast: FeedItem, Equatable {
+    public var id: String
+    public var image: Image
+    public var link: String
+    public var media: Media
+    public var publishedAt: Date
+    public var summary: MultiLangText
+    public var title: MultiLangText
     public var podcastLink: String
     public var speakers: [Speaker]
 
@@ -21,35 +22,27 @@ public struct Podcast: Equatable, Identifiable {
         summary: MultiLangText,
         title: MultiLangText
     ) {
-        self.feedItem = .init(
-            id: id,
-            image: image,
-            link: link,
-            media: media,
-            publishedAt: publishedAt,
-            summary: summary,
-            title: title
-        )
+        self.id = id
+        self.image = image
+        self.link = link
+        self.media = media
+        self.publishedAt = publishedAt
+        self.summary = summary
+        self.title = title
         self.podcastLink = podcastLink
         self.speakers = speakers
     }
 
     public init(from model: DroidKaigiMPP.FeedItem.Podcast) {
-        self.feedItem = .init(
-            id: model.id,
-            image: Image(from: model.image),
-            link: model.link,
-            media: Media.from(model.media),
-            publishedAt: model.publishedAt.toNSDate(),
-            summary: MultiLangText(from: model.summary),
-            title: MultiLangText(from: model.title)
-        )
+        self.id = model.id
+        self.image = Image(from: model.image)
+        self.link = model.link
+        self.media = Media.from(model.media)
+        self.publishedAt = model.publishedAt.toNSDate()
+        self.summary = MultiLangText(from: model.summary)
+        self.title = MultiLangText(from: model.title)
         self.podcastLink = model.podcastLink
         self.speakers = model.speakers.map(Speaker.init(from:))
-    }
-
-    public subscript<T>(dynamicMember keyPath: KeyPath<FeedItem, T>) -> T {
-        self.feedItem[keyPath: keyPath]
     }
 }
 
@@ -57,14 +50,16 @@ public extension Podcast {
     var kmmModel: DroidKaigiMPP.FeedItem.Podcast {
         .init(
             id: id,
-            publishedAt: ConvertersKt.toKotlinInstant(feedItem.publishedAt),
-            image: feedItem.image.kmmModel,
-            media: feedItem.media.kmmModel,
-            title: feedItem.title.kmmModel,
-            summary: feedItem.summary.kmmModel,
-            link: feedItem.link,
+            publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
+            image: image.kmmModel,
+            media: media.kmmModel,
+            title: title.kmmModel,
+            summary: summary.kmmModel,
+            link: link,
             speakers: speakers.map(\.kmmModel),
             podcastLink: podcastLink
         )
     }
+
+    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
 }

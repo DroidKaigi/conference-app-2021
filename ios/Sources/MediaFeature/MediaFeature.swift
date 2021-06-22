@@ -95,13 +95,16 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
             var videos: [FeedContent] = .init()
             var podcasts: [FeedContent] = .init()
             for content in contents {
-                switch content.item {
-                case .blog:
+                switch content.item.wrappedValue {
+                case is Blog:
                     blogs.append(content)
-                case .podcast:
+                case is Video:
                     videos.append(content)
-                case .video:
+                case is Podcast:
                     podcasts.append(content)
+                default:
+                    assertionFailure("Unexpected FeedItem: (\(content.item.wrappedValue)")
+                    break
                 }
             }
             if var listState = (/MediaState.initialized).extract(from: state) {
@@ -129,7 +132,7 @@ extension MediaListState {
 
 extension Array where Element == FeedContent {
     static let mockBlogs: Self = [
-        .blog(.init(
+        Blog(
             id: "0",
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
@@ -139,8 +142,8 @@ extension Array where Element == FeedContent {
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
             author: .init(link: "", name: ""),
             language: ""
-        )),
-        .blog(.init(
+        ),
+        Blog(
             id: "1",
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
@@ -150,12 +153,13 @@ extension Array where Element == FeedContent {
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs"),
             author: .init(link: "", name: ""),
             language: ""
-        )),
+        ),
     ]
+    .map(AnyFeedItem.init)
     .map { .init(item: $0, isFavorited: false) }
 
     static let mockVideos: Self = [
-        .video(.init(
+        Video(
             id: "0",
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
@@ -163,8 +167,8 @@ extension Array where Element == FeedContent {
             publishedAt: .init(),
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
-        )),
-        .video(.init(
+        ),
+        Video(
             id: "1",
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
@@ -172,12 +176,13 @@ extension Array where Element == FeedContent {
             publishedAt: .init(),
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - Day 2 Night Session")
-        )),
+        ),
     ]
+    .map(AnyFeedItem.init)
     .map { .init(item: $0, isFavorited: false) }
 
     static let mockPodcasts: Self = [
-        .podcast(.init(
+        Podcast(
             id: "0",
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
@@ -187,8 +192,8 @@ extension Array where Element == FeedContent {
             speakers: [],
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
-        )),
-        .podcast(.init(
+        ),
+        Podcast(
             id: "1",
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
@@ -198,7 +203,8 @@ extension Array where Element == FeedContent {
             speakers: [],
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")
-        )),
+        ),
     ]
+    .map(AnyFeedItem.init)
     .map { .init(item: $0, isFavorited: false) }
 }
