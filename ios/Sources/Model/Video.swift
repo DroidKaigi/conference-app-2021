@@ -37,19 +37,3 @@ public struct Video: FeedItem, Equatable {
         self.title = MultiLangText(from: model.title)
     }
 }
-
-public extension Video {
-    var kmmModel: DroidKaigiMPP.FeedItem.Video {
-        .init(
-            id: id,
-            publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
-            image: image.kmmModel,
-            media: media.kmmModel,
-            title: title.kmmModel,
-            summary: summary.kmmModel,
-            link: link
-        )
-    }
-
-    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
-}
