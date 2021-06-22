@@ -80,7 +80,7 @@ public struct SmallCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .droidKaigiFm,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -92,7 +92,7 @@ public struct SmallCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .medium,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -104,7 +104,7 @@ public struct SmallCard_Previews: PreviewProvider {
                 title: "タイトル",
                 imageURL: URL(string: ""),
                 tag: .youtube,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -116,7 +116,7 @@ public struct SmallCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .droidKaigiFm,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -128,7 +128,7 @@ public struct SmallCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .medium,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -140,7 +140,7 @@ public struct SmallCard_Previews: PreviewProvider {
                 title: "タイトル",
                 imageURL: URL(string: ""),
                 tag: .youtube,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
