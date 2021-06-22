@@ -1,15 +1,14 @@
 package io.github.droidkaigi.feeder.repository
 
 import io.github.droidkaigi.feeder.FeedContents
-import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.NonNullFlowWrapper
 import io.github.droidkaigi.feeder.NonNullSuspendWrapper
 
 interface IosFeedRepository {
     fun feedContents(): NonNullFlowWrapper<FeedContents>
     fun refresh(): NonNullSuspendWrapper<Unit>
-    fun addFavorite(feedItem: FeedItem): NonNullSuspendWrapper<Unit>
-    fun removeFavorite(feedItem: FeedItem): NonNullSuspendWrapper<Unit>
+    fun addFavorite(id: String): NonNullSuspendWrapper<Unit>
+    fun removeFavorite(id: String): NonNullSuspendWrapper<Unit>
 }
 
 class IosFeedRepositoryImpl(
@@ -27,15 +26,15 @@ class IosFeedRepositoryImpl(
         }
     }
 
-    override fun addFavorite(feedItem: FeedItem): NonNullSuspendWrapper<Unit> {
+    override fun addFavorite(id: String): NonNullSuspendWrapper<Unit> {
         return NonNullSuspendWrapper {
-            feedRepository.addFavorite(feedItem)
+            feedRepository.addFavorite(id)
         }
     }
 
-    override fun removeFavorite(feedItem: FeedItem): NonNullSuspendWrapper<Unit> {
+    override fun removeFavorite(id: String): NonNullSuspendWrapper<Unit> {
         return NonNullSuspendWrapper {
-            feedRepository.removeFavorite(feedItem)
+            feedRepository.removeFavorite(id)
         }
     }
 }
