@@ -35,7 +35,7 @@ public struct AnyFeedItem: Equatable {
     }
 
     public static func == (lhs: Self, rhs: Self) -> Bool {
-        switch (lhs, rhs) {
+        switch (lhs.wrappedValue, rhs.wrappedValue) {
         case let (lhs, rhs) as (Blog, Blog):
             return lhs == rhs
         case let (lhs, rhs) as  (Video, Video):
