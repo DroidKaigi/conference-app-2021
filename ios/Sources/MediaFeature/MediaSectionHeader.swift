@@ -1,13 +1,13 @@
 import SwiftUI
 import Styleguide
 
-struct MediaSectionHeader: View {
+public struct MediaSectionHeader: View {
 
     let icon: Image
     let title: String
     let moreAction: () -> Void
 
-    var body: some View {
+    public var body: some View {
         HStack(spacing: 0) {
             Label { Text(title) } icon: { icon }
                 .font(.headline)
@@ -27,8 +27,8 @@ struct MediaSectionHeader: View {
     }
 }
 
-struct MediaSectionHeader_Previews: PreviewProvider {
-    static var previews: some View {
+public struct MediaSectionHeader_Previews: PreviewProvider {
+    public static var previews: some View {
         let sizeCategories: [ContentSizeCategory] = [
             .large, // Default
             .accessibilityExtraExtraExtraLarge // Biggest: to verify the height
@@ -42,6 +42,7 @@ struct MediaSectionHeader_Previews: PreviewProvider {
             .previewLayout(.sizeThatFits)
             .environment(\.sizeCategory, sizeCategory)
         }
+        .frame(width: 375, height: 43)
         .accentColor(AssetColor.primary.color)
     }
 }

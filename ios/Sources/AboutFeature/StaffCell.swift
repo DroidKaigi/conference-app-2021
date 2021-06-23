@@ -32,8 +32,8 @@ public struct StaffCell: View {
     }
 }
 
-struct StaffCell_Previews: PreviewProvider {
-    static var previews: some View {
+public struct StaffCell_Previews: PreviewProvider {
+    public static var previews: some View {
         StaffCell(
             staff: Staff(
                 name: "dummy name",
@@ -41,6 +41,9 @@ struct StaffCell_Previews: PreviewProvider {
                 iconUrl: URL(string: "https://example.com")!
             )
         )
+        .frame(width: 375, height: 84)
+        .environment(\.colorScheme, .light)
+        .previewLayout(.sizeThatFits)
         StaffCell(
             staff: Staff(
                 name: "dummy name",
@@ -48,6 +51,8 @@ struct StaffCell_Previews: PreviewProvider {
                 iconUrl: URL(string: "https://example.com")!
             )
         )
+        .frame(width: 375, height: 84)
         .environment(\.colorScheme, .dark)
+        .previewLayout(.sizeThatFits)
     }
 }

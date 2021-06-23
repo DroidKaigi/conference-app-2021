@@ -165,33 +165,59 @@ var package = Package(
 package.targets.append(contentsOf: [
     .testTarget(
         name: "AboutFeatureTests",
-        dependencies: ["AboutFeature"]
+        dependencies: [
+            "AboutFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "AppFeatureTests",
-        dependencies: ["AppFeature"]
+        dependencies: [
+            "AppFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "ComponentTests",
         dependencies: [
             "Component",
-            "Model",
             "TestUtils",
-            .product(name: "SnapshotTesting", package: "SnapshotTesting"),
         ],
         exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "FavoritesFeatureTests",
-        dependencies: ["FavoritesFeature"]
+        dependencies: [
+            "FavoritesFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "HomeFeatureTests",
-        dependencies: ["HomeFeature"]
+        dependencies: [
+            "HomeFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "MediaFeatureTests",
-        dependencies: ["MediaFeature"]
+        dependencies: [
+            "MediaFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
+    ),
+    .testTarget(
+        name: "SettingFeatureTests",
+        dependencies: [
+            "SettingFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .target(
         name: "TestUtils",

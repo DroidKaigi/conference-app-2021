@@ -1,14 +1,14 @@
 import Styleguide
 import SwiftUI
 
-struct SearchResultView: View {
-    var body: some View {
+public struct SearchResultView: View {
+    public var body: some View {
         AssetColor.Background.primary.color
     }
 }
 
-struct SearchResultView_Previews: PreviewProvider {
-    static var previews: some View {
+public struct SearchResultView_Previews: PreviewProvider {
+    public static var previews: some View {
         SearchResultView()
     }
 }

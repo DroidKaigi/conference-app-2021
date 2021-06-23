@@ -22,6 +22,7 @@ public struct HomeScreen: View {
                         VStack(alignment: .trailing, spacing: 0) {
                             MessageBar(title: viewStore.message)
                                 .padding(.top, 16)
+                                .padding(.trailing, 16)
                             if let topic = viewStore.topic {
                                 LargeCard(
                                     item: topic,
@@ -64,8 +65,8 @@ public struct HomeScreen: View {
     }
 }
 
-struct HomeScreen_Previews: PreviewProvider {
-    static var previews: some View {
+public struct HomeScreen_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             HomeScreen(
                 store: .init(
@@ -95,16 +96,16 @@ struct HomeScreen_Previews: PreviewProvider {
     }
 }
 
-extension FeedItem {
+extension HomeFeature.FeedItem {
     static func mock(
         id: String = UUID().uuidString,
         imageURLString: String = "",
         link: String = "",
         media: Media = .medium,
-        publishedAt: Date = Date(),
+        publishedAt: Date = Date(timeIntervalSince1970: 0),
         summary: String = "",
         title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"
-    ) -> FeedItem {
+    ) -> HomeFeature.FeedItem {
         .init(id: id, imageURLString: imageURLString, link: link, media: media, publishedAt: publishedAt, summary: summary, title: title)
     }
 }

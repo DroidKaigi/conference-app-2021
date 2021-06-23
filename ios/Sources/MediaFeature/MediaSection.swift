@@ -4,7 +4,7 @@ import Model
 import SwiftUI
 import Styleguide
 
-struct MediaSection: View {
+public struct MediaSection: View {
 
     var icon: SwiftUI.Image
     var title: String
@@ -14,7 +14,7 @@ struct MediaSection: View {
         case showMore
     }
 
-    var body: some View {
+    public var body: some View {
         VStack(spacing: 0) {
             WithViewStore(store) { viewStore in
                 MediaSectionHeader(
@@ -45,7 +45,7 @@ struct MediaSection: View {
     }
 }
 
-struct MediaSection_Previews: PreviewProvider {
+public struct MediaSection_Previews: PreviewProvider {
 
     private static let mockItems: [FeedItem] = [
         .init(
@@ -68,7 +68,7 @@ struct MediaSection_Previews: PreviewProvider {
         ),
     ]
 
-    static var previews: some View {
+    public static var previews: some View {
         let sizeCategories: [ContentSizeCategory] = [
             .large, // Default
             .extraExtraExtraLarge
@@ -85,6 +85,7 @@ struct MediaSection_Previews: PreviewProvider {
                 .environment(\.colorScheme, colorScheme)
             }
         }
+        .frame(width: 375, height: 301)
         .previewLayout(.sizeThatFits)
         .accentColor(AssetColor.primary.color)
     }

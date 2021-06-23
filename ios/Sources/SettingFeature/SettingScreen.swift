@@ -85,16 +85,17 @@ public struct SettingScreen: View {
     }
 }
 
-struct SettingScreen_Previews: PreviewProvider {
-    static var previews: some View {
+public struct SettingScreen_Previews: PreviewProvider {
+    public static var previews: some View {
         SettingScreen(
             isDarkModeOn: true,
             isLanguageOn: false
         )
+        .environment(\.colorScheme, .light)
         SettingScreen(
             isDarkModeOn: true,
             isLanguageOn: false
         )
-        .colorScheme(.dark)
+        .environment(\.colorScheme, .dark)
     }
 }

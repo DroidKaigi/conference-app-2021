@@ -28,3 +28,24 @@ public func assertPreviewSnapshot<T: PreviewProvider>(
         )
     }
 }
+
+public func assertPreviewSnapshot<T: PreviewProvider>(
+    _ target: T.Type,
+    with device: SnapshotTesting.ViewImageConfig,
+    record recording: Bool = false,
+    file: StaticString = #file,
+    testName: String = #function,
+    line: UInt = #line
+) {
+    for preview in T._allPreviews {
+        let vc = UIHostingController(rootView: preview.content)
+        assertSnapshot(
+            matching: vc,
+            as: .image(on: device),
+            record: recording,
+            file: file,
+            testName: testName,
+            line: line
+        )
+    }
+}

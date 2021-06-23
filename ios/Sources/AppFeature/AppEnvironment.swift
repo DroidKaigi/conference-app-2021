@@ -35,4 +35,14 @@ public extension AppEnvironment {
             themeRepository: ThemeRepository(container: container)
         )
     }()
+
+    static let noop: Self = {
+        .init(
+            contributorRepository: ContributorRepositoryMock(),
+            deviceRepository: DeviceRepositoryMock(),
+            feedRepository: FeedRepositoryMock(),
+            staffRepository: StaffRepositoryMock(),
+            themeRepository: ThemeRepositoryMock()
+        )
+    }()
 }

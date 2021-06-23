@@ -19,16 +19,19 @@ public struct SettingToggleItem: View {
     }
 }
 
-struct SettingToggleItem_Previews: PreviewProvider {
-    static var previews: some View {
+public struct SettingToggleItem_Previews: PreviewProvider {
+    public static var previews: some View {
         SettingToggleItem(
             title: "ダークモード",
             isOn: .constant(true)
         )
+        .frame(width: 375, height: 44)
+        .environment(\.colorScheme, .light)
         SettingToggleItem(
             title: "ダークモード",
             isOn: .constant(true)
         )
-        .colorScheme(.dark)
+        .frame(width: 375, height: 44)
+        .environment(\.colorScheme, .dark)
     }
 }

@@ -104,22 +104,22 @@ public struct AppScreen: View {
     }
 }
 
-struct AppScreen_Previews: PreviewProvider {
-    static var previews: some View {
+public struct AppScreen_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             AppScreen(
                 store: .init(
                     initialState: .init(),
-                    reducer: appReducer,
-                    environment: .shared
+                    reducer: .empty,
+                    environment: AppEnvironment.noop
                 )
             )
             .environment(\.colorScheme, .dark)
             AppScreen(
                 store: .init(
                     initialState: .init(),
-                    reducer: appReducer,
-                    environment: .shared
+                    reducer: .empty,
+                    environment: AppEnvironment.noop
                 )
             )
             .environment(\.colorScheme, .light)
