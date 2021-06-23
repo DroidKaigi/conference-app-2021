@@ -75,10 +75,4 @@ build-modules:
 .PHONY: test-modules
 test-modules:
 	make build-kmm-module-debug
-	./scripts/xcodebuild.sh test Component Debug
-	./scripts/xcodebuild.sh test AboutFeature Debug
-	./scripts/xcodebuild.sh test AppFeature Debug
-	./scripts/xcodebuild.sh test FavoritesFeature Debug
-	./scripts/xcodebuild.sh test HomeFeature Debug
-	./scripts/xcodebuild.sh test MediaFeature Debug
-	./scripts/xcodebuild.sh test SettingFeature Debug
+	./scripts/xcodebuild.sh test ModuleTest Debug
