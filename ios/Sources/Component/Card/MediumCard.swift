@@ -36,7 +36,8 @@ public struct MediumCard: View {
                 placeholder: .noImage,
                 placeholderSize: .medium
             )
-            .aspectRatio(225/114, contentMode: .fill)
+            .aspectRatio(225/114, contentMode: .fit)
+            .scaledToFill()
             .layoutPriority(1)
 
             VStack(alignment: .leading, spacing: 12) {

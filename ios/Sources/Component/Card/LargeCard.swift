@@ -36,7 +36,8 @@ public struct LargeCard: View {
                 placeholder: .noImage,
                 placeholderSize: .large
             )
-            .aspectRatio(343/190, contentMode: .fill)
+            .aspectRatio(343/190, contentMode: .fit)
+            .scaledToFill()
 
             VStack(alignment: .leading, spacing: 13) {
                 Text(title)

@@ -36,7 +36,8 @@ public struct SmallCard: View {
                 placeholder: .noImage,
                 placeholderSize: .small
             )
-            .aspectRatio(163/114, contentMode: .fill)
+            .aspectRatio(163/114, contentMode: .fit)
+            .scaledToFill()
 
             VStack(alignment: .leading, spacing: 12) {
                 VStack(alignment: .leading, spacing: 4) {
