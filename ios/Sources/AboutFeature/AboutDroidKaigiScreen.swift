@@ -45,8 +45,8 @@ public struct AboutDroidKaigiScreen: View {
 
                         AssetImage.logoTitle.image
                             .resizable()
-                            .aspectRatio(contentMode: .fit)
-                            .frame(width: 262, height: 44)
+                            .aspectRatio(262/44, contentMode: .fit)
+                            .padding(.horizontal, 24)
                     }
 
                     Text(L10n.AboutDroidKaigiScreen.description)
@@ -77,9 +77,14 @@ public struct AboutDroidKaigiScreen: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
-            .offset(y: -50)
+            .navigationBarTitleDisplayMode(.inline)
             .introspectViewController { viewController in
                 viewController.view.backgroundColor = AssetColor.Background.secondary.uiColor
+            }
+            .introspectNavigationController { navigationController in
+                navigationController.navigationBar.barTintColor = AssetColor.Background.secondary.uiColor
+                navigationController.navigationBar.isTranslucent = false
+                navigationController.navigationBar.shadowImage = UIImage()
             }
             .navigationBarItems(
                 trailing: Button(action: {
