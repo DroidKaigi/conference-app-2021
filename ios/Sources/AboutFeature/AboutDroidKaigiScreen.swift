@@ -54,7 +54,7 @@ public struct AboutDroidKaigiScreen: View {
                         .font(.body)
                         .opacity(0.7)
                 }
-                .foregroundColor(AssetColor.Base.secondary.color)
+                .foregroundColor(AssetColor.Base.primary.color)
                 .padding(.horizontal, 32)
 
                 List {
@@ -69,7 +69,7 @@ public struct AboutDroidKaigiScreen: View {
                         })
                     }
                     .listRowBackground(AssetColor.Background.contents.color)
-                    .foregroundColor(AssetColor.Base.secondary.color)
+                    .foregroundColor(AssetColor.Base.primary.color)
                 }
                 .introspectTableView { tableView in
                     tableView.isScrollEnabled = false
