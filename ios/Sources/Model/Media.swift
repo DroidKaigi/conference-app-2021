@@ -22,18 +22,3 @@ public enum Media: Equatable, CaseIterable {
         }
     }
 }
-
-public extension Media {
-    var kmmModel: DroidKaigiMPP.Media {
-        switch self {
-        case .droidKaigiFm:
-            return .DroidKaigiFM()
-        case .medium:
-            return .Medium()
-        case .youtube:
-            return .YouTube()
-        case .other:
-            return .Other()
-        }
-    }
-}

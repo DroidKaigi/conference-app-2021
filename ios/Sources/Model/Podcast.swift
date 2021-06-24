@@ -45,21 +45,3 @@ public struct Podcast: FeedItem, Equatable {
         self.speakers = model.speakers.map(Speaker.init(from:))
     }
 }
-
-public extension Podcast {
-    var kmmModel: DroidKaigiMPP.FeedItem.Podcast {
-        .init(
-            id: id,
-            publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
-            image: image.kmmModel,
-            media: media.kmmModel,
-            title: title.kmmModel,
-            summary: summary.kmmModel,
-            link: link,
-            speakers: speakers.map(\.kmmModel),
-            podcastLink: podcastLink
-        )
-    }
-
-    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
-}

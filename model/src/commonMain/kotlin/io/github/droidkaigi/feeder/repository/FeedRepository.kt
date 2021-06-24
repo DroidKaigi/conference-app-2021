@@ -1,7 +1,6 @@
 package io.github.droidkaigi.feeder.repository
 
 import io.github.droidkaigi.feeder.FeedContents
-import io.github.droidkaigi.feeder.FeedItem
 import kotlinx.coroutines.flow.Flow
 
 interface FeedRepository {
@@ -9,7 +8,7 @@ interface FeedRepository {
 
     suspend fun refresh()
 
-    suspend fun addFavorite(feedItem: FeedItem)
+    suspend fun addFavorite(id: String)
 
-    suspend fun removeFavorite(feedItem: FeedItem)
+    suspend fun removeFavorite(id: String)
 }
