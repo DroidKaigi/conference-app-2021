@@ -45,21 +45,3 @@ public struct Blog: FeedItem, Equatable {
         self.language = model.language
     }
 }
-
-public extension Blog {
-    var kmmModel: DroidKaigiMPP.FeedItem.Blog {
-        .init(
-            id: id,
-            publishedAt: ConvertersKt.toKotlinInstant(publishedAt),
-            image: image.kmmModel,
-            media: media.kmmModel,
-            title: title.kmmModel,
-            summary: summary.kmmModel,
-            link: link,
-            language: language,
-            author: author.kmmModel
-        )
-    }
-
-    var _kmmModel: DroidKaigiMPP.FeedItem { kmmModel }  // swiftlint:disable:this identifier_name
-}

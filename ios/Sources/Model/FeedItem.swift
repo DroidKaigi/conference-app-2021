@@ -8,14 +8,12 @@ public protocol FeedItem {
     var publishedAt: Date { get set }
     var summary: MultiLangText { get set }
     var title: MultiLangText { get set }
-    var _kmmModel: DroidKaigiMPP.FeedItem { get } // swiftlint:disable:this identifier_name
 }
 
 @dynamicMemberLookup
 public struct AnyFeedItem: Equatable {
 
     public var wrappedValue: FeedItem
-    public var kmmModel: DroidKaigiMPP.FeedItem { wrappedValue._kmmModel }
 
     public init(_ feedItem: FeedItem) {
         self.wrappedValue = feedItem

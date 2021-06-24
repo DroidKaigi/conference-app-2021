@@ -17,9 +17,3 @@ public struct Speaker: Equatable {
         self.iconURLString = model.iconUrl
     }
 }
-
-public extension Speaker {
-    var kmmModel: DroidKaigiMPP.Speaker {
-        .init(name: name, iconUrl: iconURLString)
-    }
-}

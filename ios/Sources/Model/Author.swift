@@ -14,9 +14,3 @@ public struct Author: Equatable {
         self.name = model.name
     }
 }
-
-public extension Author {
-    var kmmModel: DroidKaigiMPP.Author {
-        .init(name: name, link: link)
-    }
-}

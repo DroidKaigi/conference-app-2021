@@ -90,9 +90,9 @@ class RealFeedViewModel @Inject constructor(
                         .favorites
                         .contains(event.feedItem.id)
                     if (favorite) {
-                        repository.removeFavorite(event.feedItem)
+                        repository.removeFavorite(event.feedItem.id)
                     } else {
-                        repository.addFavorite(event.feedItem)
+                        repository.addFavorite(event.feedItem.id)
                     }
                 }
                 is FeedViewModel.Event.ReloadContent -> {

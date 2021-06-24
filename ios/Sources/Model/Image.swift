@@ -21,13 +21,3 @@ public struct Image: Equatable {
         self.standardURLString = model.standardUrl
     }
 }
-
-public extension Image {
-    var kmmModel: DroidKaigiMPP.Image {
-        .init(
-            smallUrl: smallURLString,
-            standardUrl: standardURLString,
-            largeUrl: largeURLString
-        )
-    }
-}

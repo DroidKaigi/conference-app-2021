@@ -26,9 +26,3 @@ public struct MultiLangText: Equatable {
         }
     }
 }
-
-public extension MultiLangText {
-    var kmmModel: DroidKaigiMPP.MultiLangText {
-        .init(jaTitle: jaTitle, enTitle: enTitle)
-    }
-}
