@@ -3,13 +3,13 @@ import Model
 
 public struct FeedRepositoryMock: FeedRepositoryProtocol {
     public init() {}
-    public func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError> {
+    public func feedContents() -> AnyPublisher<[FeedContent], KotlinError> {
         Empty().eraseToAnyPublisher()
     }
-    public func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError> {
+    public func addFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
         Empty().eraseToAnyPublisher()
     }
-    public func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError> {
+    public func removeFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
         Empty().eraseToAnyPublisher()
     }
 }
