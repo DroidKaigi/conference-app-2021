@@ -3,9 +3,9 @@ import DroidKaigiMPP
 import Model
 
 public protocol FeedRepositoryProtocol {
-    func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError>
-    func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError>
-    func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError>
+    func feedContents() -> AnyPublisher<[FeedContent], KotlinError>
+    func addFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError>
+    func removeFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError>
 }
 
 public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
@@ -19,8 +19,8 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
         self.repository = container.get(type: RepositoryType.self)
     }
 
-    public func feedContents() -> AnyPublisher<Model.FeedContents, KotlinError> {
-        Future<DroidKaigiMPP.FeedContents, KotlinError> { promise in
+    public func feedContents() -> AnyPublisher<[FeedContent], KotlinError> {
+        Future<FeedContents, KotlinError> { promise in
             repository.feedContents()
                 .subscribe(scope: scopeProvider.scope) {
                     promise(.success($0))
@@ -29,13 +29,13 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
                     promise(.failure(KotlinError.fetchFailed($0.description())))
                 }
         }
-        .map(Model.FeedContents.init(from:))
+        .map([FeedContent].init(from:))
         .eraseToAnyPublisher()
     }
 
-    public func addFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError> {
+    public func addFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
         Future<Void, KotlinError> { promise in
-            repository.addFavorite(feedItem: feedItem.item)
+            repository.addFavorite(feedItem: feedItem.kmmModel)
                 .subscribe(scope: scopeProvider.scope) { _ in
                     promise(.success(()))
                 } onFailure: {
@@ -45,9 +45,9 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
         }.eraseToAnyPublisher()
     }
 
-    public func removeFavorite(feedItem: Model.FeedItemType) -> AnyPublisher<Void, KotlinError> {
+    public func removeFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
         Future<Void, KotlinError> { promise in
-            repository.removeFavorite(feedItem: feedItem.item)
+            repository.removeFavorite(feedItem: feedItem.kmmModel)
                 .subscribe(scope: scopeProvider.scope) { _ in
                     promise(.success(()))
                 } onFailure: {

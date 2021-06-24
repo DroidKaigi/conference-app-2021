@@ -1,72 +1,53 @@
 import DroidKaigiMPP
 
-public enum FeedItemType: Equatable {
-    case blog(Blog)
-    case podcast(Podcast)
-    case video(Video)
+public protocol FeedItem {
+    var id: String { get set }
+    var image: Image { get set }
+    var link: String { get set }
+    var media: Media { get set }
+    var publishedAt: Date { get set }
+    var summary: MultiLangText { get set }
+    var title: MultiLangText { get set }
+    var _kmmModel: DroidKaigiMPP.FeedItem { get } // swiftlint:disable:this identifier_name
+}
 
-    public var item: DroidKaigiMPP.FeedItem {
-        switch self {
-        case let .blog(blog):
-            return blog.kmmModel
-        case let .podcast(podcast):
-            return podcast.kmmModel
-        case let .video(video):
-            return video.kmmModel
-        }
+@dynamicMemberLookup
+public struct AnyFeedItem: Equatable {
+
+    public var wrappedValue: FeedItem
+    public var kmmModel: DroidKaigiMPP.FeedItem { wrappedValue._kmmModel }
+
+    public init(_ feedItem: FeedItem) {
+        self.wrappedValue = feedItem
     }
 
-    public static func from(_ model: DroidKaigiMPP.FeedItem) -> FeedItemType? {
+    public static func from(_ model: DroidKaigiMPP.FeedItem) -> AnyFeedItem? {
         switch model {
         case let blog as DroidKaigiMPP.FeedItem.Blog:
-            return .blog(Blog(from: blog))
+            return .init(Blog(from: blog))
         case let podcast as DroidKaigiMPP.FeedItem.Podcast:
-            return .podcast(Podcast(from: podcast))
+            return .init(Podcast(from: podcast))
         case let video as DroidKaigiMPP.FeedItem.Video:
-            return .video(Video(from: video))
+            return .init(Video(from: video))
         default:
             return nil
         }
     }
-}
 
-public struct FeedItem: Equatable, Identifiable {
-    public var id: String
-    public var image: Image
-    public var link: String
-    public var media: Media
-    public var publishedAt: Date
-    public var summary: MultiLangText
-    public var title: MultiLangText
-    public var publishedDateString: String?
-
-    public init(
-        id: String,
-        image: Image,
-        link: String,
-        media: Media,
-        publishedAt: Date,
-        summary: MultiLangText,
-        title: MultiLangText
-    ) {
-        self.id = id
-        self.image = image
-        self.link = link
-        self.media = media
-        self.publishedAt = publishedAt
-        self.summary = summary
-        self.title = title
-        self.publishedDateString = nil
+    public static func == (lhs: Self, rhs: Self) -> Bool {
+        switch (lhs.wrappedValue, rhs.wrappedValue) {
+        case let (lhs, rhs) as (Blog, Blog):
+            return lhs == rhs
+        case let (lhs, rhs) as  (Video, Video):
+            return lhs == rhs
+        case let (lhs, rhs) as  (Podcast, Podcast):
+            return lhs == rhs
+        default:
+            return false
+        }
     }
 
-    public init(from model: DroidKaigiMPP.FeedItem) {
-        self.id = model.id
-        self.image = Image(from: model.image)
-        self.link = model.link
-        self.media = Media.from(model.media)
-        self.publishedAt = model.publishedAt.toNSDate()
-        self.summary = MultiLangText(from: model.summary)
-        self.title = MultiLangText(from: model.title)
-        self.publishedDateString = model.publishedDateString()
+    public subscript<T>(dynamicMember keyPath: KeyPath<FeedItem, T>) -> T {
+        self.wrappedValue[keyPath: keyPath]
     }
 }

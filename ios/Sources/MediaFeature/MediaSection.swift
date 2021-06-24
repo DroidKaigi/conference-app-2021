@@ -8,7 +8,7 @@ public struct MediaSection: View {
 
     var icon: SwiftUI.Image
     var title: String
-    let store: Store<[FeedItem], ViewAction>
+    let store: Store<[FeedContent], ViewAction>
 
     enum ViewAction {
         case showMore
@@ -24,13 +24,14 @@ public struct MediaSection: View {
                 )
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: 0) {
-                        ForEach(viewStore.state) { item in
+                        ForEach(viewStore.state) { content in
+                            let item = content.item
                             MediumCard(
                                 title: item.title.get(by: .ja),
                                 imageURL: URL(string: item.image.standardURLString),
                                 tag: item.media,
                                 date: item.publishedAt,
-                                isFavorited: false,
+                                isFavorited: content.isFavorited,
                                 tapAction: {},
                                 tapFavoriteAction: {}
                             )
@@ -47,27 +48,6 @@ public struct MediaSection: View {
 
 public struct MediaSection_Previews: PreviewProvider {
 
-    private static let mockItems: [FeedItem] = [
-        .init(
-            id: "0",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .medium,
-            publishedAt: .init(),
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて")
-        ),
-        .init(
-            id: "1",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .medium,
-            publishedAt: .init(),
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs")
-        ),
-    ]
-
     public static var previews: some View {
         let sizeCategories: [ContentSizeCategory] = [
             .large, // Default
@@ -78,7 +58,7 @@ public struct MediaSection_Previews: PreviewProvider {
                 MediaSection(
                     icon: AssetImage.iconBlog.image.renderingMode(.template),
                     title: L10n.MediaScreen.Section.Blog.title,
-                    store: .init(initialState: mockItems, reducer: .empty, environment: {})
+                    store: .init(initialState: .mockBlogs, reducer: .empty, environment: {})
                 )
                 .background(AssetColor.Background.primary.color)
                 .environment(\.sizeCategory, sizeCategory)
