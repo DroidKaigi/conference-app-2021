@@ -11,7 +11,7 @@ import androidx.core.app.NotificationManagerCompat
 import androidx.core.os.bundleOf
 import com.google.firebase.messaging.RemoteMessage
 import io.github.droidkaigi.feeder.MainActivity
-import io.github.droidkaigi.feeder.R
+import io.github.droidkaigi.feeder.main.R as MainR
 
 object NotificationUtil {
     @JvmStatic
@@ -53,7 +53,7 @@ object NotificationUtil {
         val channel = AppNotificationChannel.fromId(remoteNotification.channelId ?: "")
         val manager = NotificationManagerCompat.from(context)
         val notification = NotificationCompat.Builder(context, channel.id)
-            .setSmallIcon(R.drawable.ic_logo)
+            .setSmallIcon(MainR.drawable.ic_logo)
             .setContentTitle(remoteNotification.title)
             .setContentText(remoteNotification.body)
             .setAutoCancel(true)
