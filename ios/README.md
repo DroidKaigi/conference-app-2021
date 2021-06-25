@@ -18,12 +18,12 @@ For example, if you preview `AboutScreen.swift` file, change build scheme to `Ab
 ```swift
 // Change this 
 func testAppScreen() {
-    assertPreviewSnapshot(AppScreen_Previews.self, with: .iPhoneX)
+    assertPreviewScreenSnapshot(AppScreen_Previews.self)
 }
 
 // To following
 func testAppScreen() {
-    assertPreviewSnapshot(AppScreen_Previews.self, with: .iPhoneX, record: true)
+    assertPreviewScreenSnapshot(AppScreen_Previews.self, record: true)
 }
 ```
 

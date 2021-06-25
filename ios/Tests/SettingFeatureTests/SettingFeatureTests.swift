@@ -4,7 +4,7 @@ import XCTest
 
 final class SettingFeatureTests: XCTestCase {
     func testSettingScreen() {
-        assertPreviewSnapshot(SettingScreen_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(SettingScreen_Previews.self)
     }
 
     func testSettingToggleItem() {

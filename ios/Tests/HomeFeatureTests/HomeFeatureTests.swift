@@ -4,7 +4,7 @@ import XCTest
 
 final class HomeFeatureTests: XCTestCase {
     func testHomeScreen() {
-        assertPreviewSnapshot(HomeScreen_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(HomeScreen_Previews.self)
     }
 
     func testQuestionnaireView() {

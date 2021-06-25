@@ -4,7 +4,7 @@ import XCTest
 
 final class AboutFeatureTests: XCTestCase {
     func testAboutScreen() {
-        assertPreviewSnapshot(AboutScreen_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(AboutScreen_Previews.self)
     }
 
     func testContributorCell() {
@@ -16,6 +16,6 @@ final class AboutFeatureTests: XCTestCase {
     }
 
     func testAboutDroidKaigiScreen() {
-        assertPreviewSnapshot(AboutDroidKaigiScreen_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(AboutDroidKaigiScreen_Previews.self)
     }
 }

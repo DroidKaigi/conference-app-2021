@@ -29,23 +29,28 @@ public func assertPreviewSnapshot<T: PreviewProvider>(
     }
 }
 
-public func assertPreviewSnapshot<T: PreviewProvider>(
+public func assertPreviewScreenSnapshot<T: PreviewProvider>(
     _ target: T.Type,
-    with device: SnapshotTesting.ViewImageConfig,
+    with devices: [TestDevice] = [.iPhoneX, .iPhone8, .iPhoneSe],
     record recording: Bool = false,
     file: StaticString = #file,
     testName: String = #function,
     line: UInt = #line
 ) {
+    var deviceCounter: [TestDevice:Int] = [:]
     for preview in T._allPreviews {
         let vc = UIHostingController(rootView: preview.content)
-        assertSnapshot(
-            matching: vc,
-            as: .image(on: device),
-            record: recording,
-            file: file,
-            testName: testName,
-            line: line
-        )
+        for device in devices {
+            deviceCounter[device, default: 0] += 1
+            assertSnapshot(
+                matching: vc,
+                as: .image(on: device.config),
+                named: "\(device).\(deviceCounter[device, default: 0])",
+                record: recording,
+                file: file,
+                testName: testName,
+                line: line
+            )
+        }
     }
 }

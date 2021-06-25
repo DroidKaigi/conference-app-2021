@@ -4,15 +4,15 @@ import XCTest
 
 final class MediaFeatureTests: XCTestCase {
     func testMediaDetail() {
-        assertPreviewSnapshot(MediaDetail_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(MediaDetail_Previews.self)
     }
 
     func testMediaListView() {
-        assertPreviewSnapshot(MediaListView_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(MediaListView_Previews.self)
     }
 
     func testMediaScreen() {
-        assertPreviewSnapshot(MediaScreen_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(MediaScreen_Previews.self)
     }
 
     func testMediaSection() {
@@ -24,6 +24,6 @@ final class MediaFeatureTests: XCTestCase {
     }
 
     func testSearchResultView() {
-        assertPreviewSnapshot(SearchResultView_Previews.self, with: .iPhoneX)
+        assertPreviewScreenSnapshot(SearchResultView_Previews.self)
     }
 }
