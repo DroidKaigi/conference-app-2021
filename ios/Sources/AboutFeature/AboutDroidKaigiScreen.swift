@@ -2,7 +2,7 @@ import Introspect
 import SwiftUI
 import Styleguide
 
-enum AboutDroidKaigiModel: CaseIterable {
+private enum AboutDroidKaigiModel: CaseIterable {
     case behaviorCode
     case opensourceLicense
     case privacyPolicy
@@ -41,6 +41,7 @@ public struct AboutDroidKaigiScreen: View {
                 VStack(spacing: 24) {
                     VStack(spacing: 8) {
                         Text(L10n.AboutDroidKaigiScreen.whatIs)
+                            .foregroundColor(AssetColor.Base.primary.color)
                             .font(.title2)
 
                         AssetImage.logoTitle.image
@@ -50,11 +51,11 @@ public struct AboutDroidKaigiScreen: View {
                     }
 
                     Text(L10n.AboutDroidKaigiScreen.description)
+                        .foregroundColor(AssetColor.Base.primary.color)
                         .multilineTextAlignment(.center)
                         .font(.body)
                         .opacity(0.7)
                 }
-                .foregroundColor(AssetColor.Base.primary.color)
                 .padding(.horizontal, 32)
 
                 List {
@@ -63,13 +64,14 @@ public struct AboutDroidKaigiScreen: View {
                             HStack {
                                 Text(model.title)
                                     .font(.subheadline)
+                                    .foregroundColor(AssetColor.Base.primary.color)
                                 Spacer()
                                 model.image
+                                    .foregroundColor(AssetColor.Base.secondary.color)
                             }
                         })
                     }
                     .listRowBackground(AssetColor.Background.contents.color)
-                    .foregroundColor(AssetColor.Base.primary.color)
                 }
                 .introspectTableView { tableView in
                     tableView.isScrollEnabled = false
@@ -105,7 +107,6 @@ struct AboutDroidKaigiScreen_Previews: PreviewProvider {
             AboutDroidKaigiScreen()
                 .previewDevice(.init(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, .dark)
-
             AboutDroidKaigiScreen()
                 .previewDevice(.init(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, .light)
