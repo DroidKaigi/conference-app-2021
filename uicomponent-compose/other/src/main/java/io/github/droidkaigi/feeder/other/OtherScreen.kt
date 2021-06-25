@@ -40,6 +40,7 @@ import io.github.droidkaigi.feeder.Contributor
 import io.github.droidkaigi.feeder.Staff
 import io.github.droidkaigi.feeder.about.AboutThisApp
 import io.github.droidkaigi.feeder.contributor.ContributorList
+import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.setting.Settings
@@ -141,11 +142,11 @@ private fun AppBar(
     val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Image(painterResource(R.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
+        title = { Image(painterResource(CoreR.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
-                Icon(painterResource(R.drawable.ic_baseline_menu_24), "menu")
+                Icon(painterResource(CoreR.drawable.ic_baseline_menu_24), "menu")
             }
         }
     )

@@ -18,6 +18,11 @@
 "AboutScreen.Title" = "About";
 "AboutScreen.Picker.Staff" = "Staff";
 "AboutScreen.Picker.Contributor" = "Contributor";
+"AboutDroidKaigiScreen.WhatIs" = "What is";
+"AboutDroidKaigiScreen.Description" = "DroidKaigiはエンジニアが主役のAndroid\nカンファレンスです。Android技術情報\nの共有とコミュニケーションを目的\nに、イベントを開催しています。";
+"AboutDroidKaigiScreen.BehaviorCode" = "行動規範";
+"AboutDroidKaigiScreen.OpensourceLincense" = "オープンソースライセンス";
+"AboutDroidKaigiScreen.PrivacyPolicy" = "プライバシーポリシー";
 
 // MARK: Setting
 "SettingScreen.Title" = "Setting";
