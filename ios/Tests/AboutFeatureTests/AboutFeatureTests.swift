@@ -14,4 +14,8 @@ final class AboutFeatureTests: XCTestCase {
     func testStaffCell() {
         assertPreviewSnapshot(StaffCell_Previews.self)
     }
+
+    func testAboutDroidKaigiScreen() {
+        assertPreviewSnapshot(AboutDroidKaigiScreen_Previews.self, with: .iPhoneX)
+    }
 }

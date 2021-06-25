@@ -101,8 +101,8 @@ public struct AboutDroidKaigiScreen: View {
     }
 }
 
-struct AboutDroidKaigiScreen_Previews: PreviewProvider {
-    static var previews: some View {
+public struct AboutDroidKaigiScreen_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             AboutDroidKaigiScreen()
                 .previewDevice(.init(rawValue: "iPhone 12"))
