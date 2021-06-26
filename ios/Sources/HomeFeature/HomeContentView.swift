@@ -19,7 +19,9 @@ public struct HomeContentView: View {
                     LargeCard(
                         content: topic,
                         tapAction: {},
-                        tapFavoriteAction: {}
+                        tapFavoriteAction: {
+                            viewStore.send(.tapFavorite(topic))
+                        }
                     )
                 }
                 Separator()
@@ -31,7 +33,9 @@ public struct HomeContentView: View {
                     ListItem(
                         content: feedContent,
                         tapAction: {},
-                        tapFavoriteAction: {}
+                        tapFavoriteAction: {
+                            viewStore.send(.tapFavorite(feedContent))
+                        }
                     )
                 }
             }
