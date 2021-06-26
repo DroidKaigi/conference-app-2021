@@ -35,8 +35,8 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     homeReducer.pullback(
         state: \.homeState,
         action: /AppAction.home,
-        environment: { _ -> HomeEnvironment in
-            .init()
+        environment: { environment -> HomeEnvironment in
+            .init(feedRepository: environment.feedRepository)
         }
     ),
     mediaReducer.pullback(
