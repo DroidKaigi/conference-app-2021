@@ -39,9 +39,15 @@ public struct QuestionnaireView: View {
     }
 }
 
-struct QuestionnaireView_Previews: PreviewProvider {
-    static var previews: some View {
+public struct QuestionnaireView_Previews: PreviewProvider {
+    public static var previews: some View {
         QuestionnaireView(tapAnswerAction: {})
+            .frame(width: 375, height: 100)
             .previewLayout(.sizeThatFits)
+            .environment(\.colorScheme, .light)
+        QuestionnaireView(tapAnswerAction: {})
+            .frame(width: 375, height: 100)
+            .previewLayout(.sizeThatFits)
+            .environment(\.colorScheme, .dark)
     }
 }

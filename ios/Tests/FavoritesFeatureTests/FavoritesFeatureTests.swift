@@ -1,6 +1,9 @@
+import FavoritesFeature
+import TestUtils
 import XCTest
 
-@testable import FavoritesFeature
-
 final class FavoritesFeatureTests: XCTestCase {
+    func testFavoritesScreen() {
+        assertPreviewScreenSnapshot(FavoritesScreen_Previews.self)
+    }
 }

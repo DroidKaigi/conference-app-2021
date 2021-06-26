@@ -1,6 +1,13 @@
+import HomeFeature
+import TestUtils
 import XCTest
 
-@testable import HomeFeature
-
 final class HomeFeatureTests: XCTestCase {
+    func testHomeScreen() {
+        assertPreviewScreenSnapshot(HomeScreen_Previews.self)
+    }
+
+    func testQuestionnaireView() {
+        assertPreviewSnapshot(QuestionnaireView_Previews.self)
+    }
 }

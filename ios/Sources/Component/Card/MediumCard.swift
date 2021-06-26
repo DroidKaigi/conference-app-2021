@@ -37,6 +37,7 @@ public struct MediumCard: View {
                 placeholderSize: .medium
             )
             .aspectRatio(225/114, contentMode: .fit)
+            .scaledToFill()
             .layoutPriority(1)
 
             VStack(alignment: .leading, spacing: 12) {
@@ -74,14 +75,14 @@ public struct MediumCard: View {
     }
 }
 
-struct MediumCard_Previews: PreviewProvider {
-    static var previews: some View {
+public struct MediumCard_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             MediumCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .droidKaigiFm,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -93,7 +94,7 @@ struct MediumCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .medium,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -105,7 +106,7 @@ struct MediumCard_Previews: PreviewProvider {
                 title: "タイトル",
                 imageURL: URL(string: ""),
                 tag: .youtube,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -117,7 +118,7 @@ struct MediumCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .droidKaigiFm,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -129,7 +130,7 @@ struct MediumCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .medium,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -141,7 +142,7 @@ struct MediumCard_Previews: PreviewProvider {
                 title: "タイトル",
                 imageURL: URL(string: ""),
                 tag: .youtube,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}

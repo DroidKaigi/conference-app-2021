@@ -1,6 +1,9 @@
+import AppFeature
+import TestUtils
 import XCTest
 
-@testable import AppFeature
-
 final class AppFeatureTests: XCTestCase {
+    func testAppScreen() {
+        assertPreviewScreenSnapshot(AppScreen_Previews.self)
+    }
 }

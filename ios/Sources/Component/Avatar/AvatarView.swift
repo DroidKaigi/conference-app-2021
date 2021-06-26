@@ -67,8 +67,8 @@ extension AvatarView {
     }
 }
 
-struct AvatarView_Previews: PreviewProvider {
-    static var previews: some View {
+public struct AvatarView_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             // Failed
             AvatarView(avatarImageURL: nil, style: .large)

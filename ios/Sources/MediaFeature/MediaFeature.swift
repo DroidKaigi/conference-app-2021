@@ -137,7 +137,7 @@ extension Array where Element == FeedContent {
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
             media: .medium,
-            publishedAt: .init(),
+            publishedAt: Date(timeIntervalSince1970: 0),
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
             author: .init(link: "", name: ""),
@@ -148,7 +148,7 @@ extension Array where Element == FeedContent {
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
             media: .medium,
-            publishedAt: .init(),
+            publishedAt: Date(timeIntervalSince1970: 0),
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs"),
             author: .init(link: "", name: ""),
@@ -164,7 +164,7 @@ extension Array where Element == FeedContent {
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
             media: .youtube,
-            publishedAt: .init(),
+            publishedAt: Date(timeIntervalSince1970: 0),
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
         ),
@@ -173,7 +173,7 @@ extension Array where Element == FeedContent {
             image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
             link: "",
             media: .youtube,
-            publishedAt: .init(),
+            publishedAt: Date(timeIntervalSince1970: 0),
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - Day 2 Night Session")
         ),
@@ -188,7 +188,7 @@ extension Array where Element == FeedContent {
             link: "",
             media: .droidKaigiFm,
             podcastLink: "",
-            publishedAt: .init(),
+            publishedAt: Date(timeIntervalSince1970: 0),
             speakers: [],
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
@@ -199,7 +199,7 @@ extension Array where Element == FeedContent {
             link: "",
             media: .droidKaigiFm,
             podcastLink: "",
-            publishedAt: .init(),
+            publishedAt: Date(timeIntervalSince1970: 0),
             speakers: [],
             summary: .init(enTitle: "", jaTitle: ""),
             title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")

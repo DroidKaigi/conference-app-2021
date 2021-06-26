@@ -9,7 +9,7 @@ public struct FavoriteItem: Equatable, Identifiable {
     let isFavorited: Bool
     let imageURL: URL? = nil
     let tag: Media = .medium
-    let date: Date = Date()
+    let date: Date = Date(timeIntervalSince1970: 0)
 
     public init(isFavorited: Bool) {
         self.isFavorited = isFavorited

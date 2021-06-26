@@ -1,0 +1,66 @@
+{
+  "configurations" : [
+    {
+      "id" : "F01BD786-478D-41D4-8F4E-81BDE5EB7075",
+      "name" : "Configuration 1",
+      "options" : {
+
+      }
+    }
+  ],
+  "defaultOptions" : {
+    "codeCoverage" : false
+  },
+  "testTargets" : [
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "HomeFeatureTests",
+        "name" : "HomeFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AboutFeatureTests",
+        "name" : "AboutFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "AppFeatureTests",
+        "name" : "AppFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "ComponentTests",
+        "name" : "ComponentTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "FavoritesFeatureTests",
+        "name" : "FavoritesFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "MediaFeatureTests",
+        "name" : "MediaFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "SettingFeatureTests",
+        "name" : "SettingFeatureTests"
+      }
+    }
+  ],
+  "version" : 1
+}

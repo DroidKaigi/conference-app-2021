@@ -10,6 +10,23 @@ Change to build scheme which places the view  you want to preview.
 
 For example, if you preview `AboutScreen.swift` file, change build scheme to `AboutFeature` .
 
+### Snapshot Testing
+
+- In this app, we introduce Snapshot Testing. Snapshots are saved in each Test module's `__Snapshots__` directory.
+- When you update component or view's appearance, you need to update current snapshots. You can update snapshots by making `assertPreviewSnapshot` function's `record` argument to `true`. Example is following.
+
+```swift
+// Change this 
+func testAppScreen() {
+    assertPreviewScreenSnapshot(AppScreen_Previews.self)
+}
+
+// To following
+func testAppScreen() {
+    assertPreviewScreenSnapshot(AppScreen_Previews.self, record: true)
+}
+```
+
 ## Requirements
 
 Xcode version is 12.4

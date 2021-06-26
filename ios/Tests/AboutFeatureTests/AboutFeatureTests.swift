@@ -1,6 +1,21 @@
+import AboutFeature
+import TestUtils
 import XCTest
 
-@testable import AppFeature
+final class AboutFeatureTests: XCTestCase {
+    func testAboutScreen() {
+        assertPreviewScreenSnapshot(AboutScreen_Previews.self)
+    }
 
-final class AppFeatureTests: XCTestCase {
+    func testContributorCell() {
+        assertPreviewSnapshot(ContributorCell_Preview.self)
+    }
+
+    func testStaffCell() {
+        assertPreviewSnapshot(StaffCell_Previews.self)
+    }
+
+    func testAboutDroidKaigiScreen() {
+        assertPreviewScreenSnapshot(AboutDroidKaigiScreen_Previews.self)
+    }
 }

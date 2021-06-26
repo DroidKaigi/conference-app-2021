@@ -55,11 +55,16 @@ public struct ListItem: View {
                         .font(.headline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(users.isEmpty ? 3 : 2)
+                    Spacer(minLength: 8)
                     if !users.isEmpty {
                         HStack(spacing: -4) {
                             ForEach(Array(users.enumerated()), id: \.0) { (index, _) in
-                                AvatarView(avatarImageURL: nil, style: .small)
-                                    .zIndex(Double(Const.maximumShowingUser - index))
+                                if index > Const.maximumShowingUser {
+                                    EmptyView()
+                                } else {
+                                    AvatarView(avatarImageURL: nil, style: .small)
+                                        .zIndex(Double(Const.maximumShowingUser - index))
+                                }
                             }
                             if users.count > Const.maximumShowingUser {
                                 Text("+\(users.count - Const.maximumShowingUser)")
@@ -96,8 +101,8 @@ public struct ListItem: View {
     }
 }
 
-struct ListItem_Previews: PreviewProvider {
-    static var previews: some View {
+public struct ListItem_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
@@ -109,6 +114,7 @@ struct ListItem_Previews: PreviewProvider {
                 tapFavoriteAction: {},
                 tapAction: {}
             )
+            .frame(width: 343, height: 132)
             .background(AssetColor.Background.primary.color)
             .environment(\.colorScheme, .dark)
             ListItem(
@@ -121,6 +127,7 @@ struct ListItem_Previews: PreviewProvider {
                 tapFavoriteAction: {},
                 tapAction: {}
             )
+            .frame(width: 343, height: 132)
             .environment(\.colorScheme, .light)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
@@ -132,6 +139,7 @@ struct ListItem_Previews: PreviewProvider {
                 tapFavoriteAction: {},
                 tapAction: {}
             )
+            .frame(width: 343, height: 132)
             .background(AssetColor.Background.primary.color)
             .environment(\.colorScheme, .dark)
             ListItem(
@@ -144,6 +152,7 @@ struct ListItem_Previews: PreviewProvider {
                 tapFavoriteAction: {},
                 tapAction: {}
             )
+            .frame(width: 343, height: 132)
             .environment(\.colorScheme, .light)
         }
         .previewLayout(.sizeThatFits)

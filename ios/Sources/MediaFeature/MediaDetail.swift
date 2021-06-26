@@ -4,7 +4,7 @@ import Model
 import Styleguide
 import SwiftUI
 
-struct MediaDetail: View {
+public struct MediaDetail: View {
     let store: Store<ViewState, Never>
 
     struct ViewState: Equatable {
@@ -12,7 +12,7 @@ struct MediaDetail: View {
         var feedContents: [FeedContent]
     }
 
-    var body: some View {
+    public var body: some View {
         WithViewStore(store) { viewStore in
             AssetColor.Background.primary.color.ignoresSafeArea()
                 .navigationTitle(viewStore.title)
@@ -20,8 +20,8 @@ struct MediaDetail: View {
     }
 }
 
-struct MediaDetail_Previews: PreviewProvider {
-    static var previews: some View {
+public struct MediaDetail_Previews: PreviewProvider {
+    public static var previews: some View {
         MediaDetail(store: .init(
             initialState: .init(title: "Blog", feedContents: []),
             reducer: .empty,

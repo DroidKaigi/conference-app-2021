@@ -64,6 +64,7 @@ var package = Package(
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", .upToNextMajor(from: "0.1.3")),
         .package(url: "https://github.com/kean/NukeUI.git", .exact("0.6.1")),
         .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", .exact("8.1.1")),
+        .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .exact("1.9.0")),
     ],
     targets: [
         .target(
@@ -165,23 +166,66 @@ var package = Package(
 package.targets.append(contentsOf: [
     .testTarget(
         name: "AboutFeatureTests",
-        dependencies: ["AboutFeature"]
+        dependencies: [
+            "AboutFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "AppFeatureTests",
-        dependencies: ["AppFeature"]
+        dependencies: [
+            "AppFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
+    ),
+    .testTarget(
+        name: "ComponentTests",
+        dependencies: [
+            "Component",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "FavoritesFeatureTests",
-        dependencies: ["FavoritesFeature"]
+        dependencies: [
+            "FavoritesFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "HomeFeatureTests",
-        dependencies: ["HomeFeature"]
+        dependencies: [
+            "HomeFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
     ),
     .testTarget(
         name: "MediaFeatureTests",
-        dependencies: ["MediaFeature"]
+        dependencies: [
+            "MediaFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
+    ),
+    .testTarget(
+        name: "SettingFeatureTests",
+        dependencies: [
+            "SettingFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
+    ),
+    .target(
+        name: "TestUtils",
+        dependencies: [
+            .product(name: "SnapshotTesting", package: "SnapshotTesting"),
+        ],
+        path: "Tests/TestUtils"
     ),
 ])
 

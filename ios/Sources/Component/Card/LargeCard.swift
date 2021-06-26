@@ -37,6 +37,7 @@ public struct LargeCard: View {
                 placeholderSize: .large
             )
             .aspectRatio(343/190, contentMode: .fit)
+            .scaledToFill()
 
             VStack(alignment: .leading, spacing: 13) {
                 Text(title)
@@ -70,14 +71,14 @@ public struct LargeCard: View {
     }
 }
 
-struct LargeCard_Previews: PreviewProvider {
-    static var previews: some View {
+public struct LargeCard_Previews: PreviewProvider {
+    public static var previews: some View {
         Group {
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .droidKaigiFm,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -89,7 +90,7 @@ struct LargeCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .medium,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -101,7 +102,7 @@ struct LargeCard_Previews: PreviewProvider {
                 title: "タイトル",
                 imageURL: URL(string: ""),
                 tag: .youtube,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -113,7 +114,7 @@ struct LargeCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .droidKaigiFm,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -125,7 +126,7 @@ struct LargeCard_Previews: PreviewProvider {
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
                 tag: .medium,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}
@@ -137,7 +138,7 @@ struct LargeCard_Previews: PreviewProvider {
                 title: "タイトル",
                 imageURL: URL(string: ""),
                 tag: .youtube,
-                date: Date(),
+                date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
                 tapFavoriteAction: {}

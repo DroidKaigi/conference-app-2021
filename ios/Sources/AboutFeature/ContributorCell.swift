@@ -27,20 +27,25 @@ public struct ContributorCell: View {
     }
 }
 
-struct ContributorCell_Preview: PreviewProvider {
-    static var previews: some View {
+public struct ContributorCell_Preview: PreviewProvider {
+    public static var previews: some View {
         ContributorCell(
             contributor: Contributor(
                 name: "dummy name",
                 iconUrl: URL(string: "https://example.com")!
             )
         )
+        .frame(width: 111, height: 116)
+        .environment(\.colorScheme, .light)
+        .previewLayout(.sizeThatFits)
         ContributorCell(
             contributor: Contributor(
                 name: "dummy name",
                 iconUrl: URL(string: "https://example.com")!
             )
         )
+        .frame(width: 111, height: 116)
         .environment(\.colorScheme, .dark)
+        .previewLayout(.sizeThatFits)
     }
 }
