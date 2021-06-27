@@ -18,7 +18,9 @@ public struct HomeContentView: View {
                 if let topic = viewStore.topic {
                     LargeCard(
                         content: topic,
-                        tapAction: {},
+                        tapAction: {
+                            viewStore.send(.selectFeedContent)
+                        },
                         tapFavoriteAction: {
                             viewStore.send(.tapFavorite(topic))
                         }
@@ -32,7 +34,9 @@ public struct HomeContentView: View {
                 ForEach(viewStore.listFeedContents) { feedContent in
                     ListItem(
                         content: feedContent,
-                        tapAction: {},
+                        tapAction: {
+                            viewStore.send(.selectFeedContent)
+                        },
                         tapFavoriteAction: {
                             viewStore.send(.tapFavorite(feedContent))
                         }
