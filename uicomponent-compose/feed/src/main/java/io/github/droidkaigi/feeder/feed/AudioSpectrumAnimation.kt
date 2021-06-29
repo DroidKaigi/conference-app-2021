@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.feed
 
-import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.annotation.FloatRange
+import androidx.compose.animation.core.InfiniteTransition
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
@@ -10,6 +11,7 @@ import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -19,9 +21,11 @@ import androidx.compose.ui.graphics.drawscope.rotate
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
 
-private const val DURATION = 500
+private const val DURATION = 600
+private val spectrumSize = 24.dp
 private val barWidth = 3.dp
 private val spacing = 1.dp
+private val maxBarHeight = 12.dp
 
 @Composable
 fun AudioSpectrumAnimation(
@@ -31,70 +35,56 @@ fun AudioSpectrumAnimation(
     color: Color = MaterialTheme.colors.primary,
 ) {
     if (isVisible && isPlayingPodcast) {
-        val offsetY = with(LocalDensity.current) {
-            4.dp.toPx()
-        }
+        val offsetY = with(LocalDensity.current) { 6.dp.toPx() }
 
         val infiniteTransition = rememberInfiniteTransition()
-        val height1 by infiniteTransition.animateFloat(
-            initialValue = 15f,
-            targetValue = 1f,
-            animationSpec = infiniteRepeatable(
-                animation = keyframes {
-                    durationMillis = DURATION
-                    15f at 0 with FastOutSlowInEasing
-                    6f at (DURATION * 0.33).toInt() with FastOutSlowInEasing
-                    11f at (DURATION * 0.66).toInt() with FastOutSlowInEasing
-                    1f at DURATION with FastOutSlowInEasing
-                },
-                RepeatMode.Reverse
-            )
+        val leftBarFactor by infiniteTransition.animateHeight(
+            0.1f, 0.5f, 0.3f
         )
-        val height2 by infiniteTransition.animateFloat(
-            initialValue = 12f,
-            targetValue = 6f,
-            animationSpec = infiniteRepeatable(
-                animation = keyframes {
-                    durationMillis = DURATION
-                    12f at 0 with FastOutSlowInEasing
-                    6f at (DURATION * 0.33).toInt() with FastOutSlowInEasing
-                    10f at (DURATION * 0.66).toInt() with FastOutSlowInEasing
-                    6f at DURATION with FastOutSlowInEasing
-                },
-                RepeatMode.Reverse
-            )
+        val centerBarFactor by infiniteTransition.animateHeight(
+            0.7f, 0.35f, 0.6f
         )
-        val height3 by infiniteTransition.animateFloat(
-            initialValue = 7f,
-            targetValue = 12f,
-            animationSpec = infiniteRepeatable(
-                animation = keyframes {
-                    durationMillis = DURATION
-                    2f at (DURATION * 0.33).toInt() with FastOutSlowInEasing
-                    16f at (DURATION * 0.66).toInt() with FastOutSlowInEasing
-                },
-                RepeatMode.Reverse
-            )
+        val rightBarFactor by infiniteTransition.animateHeight(
+            0.2f, 0.6f, 0.4f
         )
 
-        Canvas(modifier.size(24.dp)) {
+        Canvas(modifier.size(spectrumSize)) {
             rotate(180f) {
                 drawRect(
                     color = color,
-                    topLeft = Offset(x = 10.dp.toPx(), y = offsetY),
-                    size = Size(3.dp.toPx(), height1)
+                    topLeft = Offset(x = 6.dp.toPx(), y = offsetY),
+                    size = Size(barWidth.toPx(), maxBarHeight.toPx() * rightBarFactor)
                 )
                 drawRect(
                     color = color,
                     topLeft = Offset(x = 10.dp.toPx(), y = offsetY),
-                    size = Size(3.dp.toPx(), height2)
+                    size = Size(barWidth.toPx(), maxBarHeight.toPx() * centerBarFactor)
                 )
                 drawRect(
                     color = color,
                     topLeft = Offset(x = 14.dp.toPx(), y = offsetY),
-                    size = Size(3.dp.toPx(), height3)
+                    size = Size(barWidth.toPx(), maxBarHeight.toPx() * leftBarFactor)
                 )
             }
         }
     }
 }
+
+@Composable
+private fun InfiniteTransition.animateHeight(
+    @FloatRange(from = 0.1, to = 1.0) frame1Factor: Float,
+    @FloatRange(from = 0.1, to = 1.0) frame2Factor: Float,
+    @FloatRange(from = 0.1, to = 1.0) frame3Factor: Float,
+): State<Float> = animateFloat(
+    initialValue = 0.5f,
+    targetValue = 0.5f,
+    animationSpec = infiniteRepeatable(
+        animation = keyframes {
+            durationMillis = DURATION
+            frame1Factor at DURATION / 4
+            frame2Factor at DURATION / 2
+            frame3Factor at DURATION / 4 * 3
+        },
+        RepeatMode.Reverse
+    )
+)
