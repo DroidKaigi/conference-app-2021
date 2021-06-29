@@ -39,13 +39,13 @@ fun AudioSpectrumAnimation(
 
         val infiniteTransition = rememberInfiniteTransition()
         val leftBarFactor by infiniteTransition.animateHeight(
-            0.1f, 0.5f, 0.3f
+            0.5f, 0.1f, 0.5f, 0.3f, 0.6f
         )
         val centerBarFactor by infiniteTransition.animateHeight(
-            0.7f, 0.35f, 0.6f
+            0.4f, 0.65f, 0.35f, 0.6f, 0.45f
         )
         val rightBarFactor by infiniteTransition.animateHeight(
-            0.2f, 0.6f, 0.4f
+            0.6f, 0.2f, 0.6f, 0.35f, 0.4f
         )
 
         Canvas(modifier.size(spectrumSize)) {
@@ -72,18 +72,16 @@ fun AudioSpectrumAnimation(
 
 @Composable
 private fun InfiniteTransition.animateHeight(
-    @FloatRange(from = 0.1, to = 1.0) frame1Factor: Float,
-    @FloatRange(from = 0.1, to = 1.0) frame2Factor: Float,
-    @FloatRange(from = 0.1, to = 1.0) frame3Factor: Float,
+    @FloatRange(from = 0.1, to = 1.0) vararg factors: Float,
 ): State<Float> = animateFloat(
     initialValue = 0.5f,
     targetValue = 0.5f,
     animationSpec = infiniteRepeatable(
         animation = keyframes {
             durationMillis = DURATION
-            frame1Factor at DURATION / 4
-            frame2Factor at DURATION / 2
-            frame3Factor at DURATION / 4 * 3
+            factors.forEachIndexed { index, factor ->
+                factor at DURATION / (factors.size - 1) * index
+            }
         },
         RepeatMode.Reverse
     )
