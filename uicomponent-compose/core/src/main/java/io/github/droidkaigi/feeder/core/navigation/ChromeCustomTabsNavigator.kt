@@ -12,7 +12,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import io.github.droidkaigi.feeder.Logger
 import java.net.URLDecoder
-import java.net.URLEncoder
 
 @Navigator.Name("chrome")
 class ChromeCustomTabsNavigator(private val context: Context) :
