@@ -43,8 +43,10 @@ fun NavController.navigateChromeCustomTabs(
     builder: NavOptionsBuilder.() -> Unit = {},
 ) {
     navigate(
-        NavDeepLinkRequest.Builder.fromUri(createRoute("chrome/${URLEncoder.encode(url, "utf-8")}")
-            .toUri()).build(),
+        NavDeepLinkRequest.Builder.fromUri(
+            createRoute("chrome/${URLEncoder.encode(url, "utf-8")}")
+                .toUri()
+        ).build(),
         navOptions(builder)
     )
 }
