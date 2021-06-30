@@ -24,7 +24,6 @@ import androidx.compose.ui.unit.dp
 private const val DURATION = 600
 private val spectrumSize = 24.dp
 private val barWidth = 3.dp
-private val spacing = 1.dp
 private val maxBarHeight = 12.dp
 
 @Composable
