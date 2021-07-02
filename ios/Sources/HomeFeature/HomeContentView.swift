@@ -72,11 +72,12 @@ private extension ListItem {
         tapAction: @escaping () -> Void,
         tapFavoriteAction: @escaping () -> Void
     ) {
+        let users = (content.item.wrappedValue as? Podcast)?.speakers ?? []
         self.init(
             title: content.item.title.jaTitle,
             tag: content.item.media,
-            imageURL: URL(string: content.item.image.largeURLString),
-            users: [],
+            imageURL: URL(string: content.item.image.smallURLString),
+            users: users.compactMap { URL(string: $0.iconURLString) },
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapFavoriteAction: tapFavoriteAction,

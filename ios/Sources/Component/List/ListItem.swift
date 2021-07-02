@@ -10,7 +10,6 @@ public struct ListItem: View {
     private let title: String
     private let tag: Media
     private let imageURL: URL?
-    // TODO: Replace with real value
     private let users: [URL]
     private let date: Date
     private let isFavorited: Bool
@@ -46,9 +45,10 @@ public struct ListItem: View {
                 VStack(spacing: 8) {
                     ImageView(
                         imageURL: imageURL,
-                        placeholderSize: .small
+                        placeholderSize: .small,
+                        width: 100,
+                        height: 100
                     )
-                    .frame(width: 100, height: 100)
                 }
                 VStack(alignment: .leading) {
                     Text(title)
