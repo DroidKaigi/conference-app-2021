@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.ComposeNavigator
 import androidx.navigation.navOptions
+import java.net.URLEncoder
 
 internal const val KEY_ROUTE = "android-support-nav:controller:chrome"
 
@@ -42,7 +43,10 @@ fun NavController.navigateChromeCustomTabs(
     builder: NavOptionsBuilder.() -> Unit = {},
 ) {
     navigate(
-        NavDeepLinkRequest.Builder.fromUri(createRoute("chrome/$url").toUri()).build(),
+        NavDeepLinkRequest.Builder.fromUri(
+            createRoute("chrome/${URLEncoder.encode(url, "utf-8")}")
+                .toUri()
+        ).build(),
         navOptions(builder)
     )
 }

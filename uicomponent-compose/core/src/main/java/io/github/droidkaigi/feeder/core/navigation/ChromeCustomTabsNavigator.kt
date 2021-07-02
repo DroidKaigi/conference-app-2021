@@ -11,6 +11,7 @@ import androidx.navigation.NavDestination
 import androidx.navigation.NavOptions
 import androidx.navigation.Navigator
 import io.github.droidkaigi.feeder.Logger
+import java.net.URLDecoder
 
 @Navigator.Name("chrome")
 class ChromeCustomTabsNavigator(private val context: Context) :
@@ -22,8 +23,9 @@ class ChromeCustomTabsNavigator(private val context: Context) :
         navOptions: NavOptions?,
         navigatorExtras: Extras?,
     ): NavDestination? {
-        val url = args?.getString(ARGUMENT_NAME_URL)
+        val encodedUrl = args?.getString(ARGUMENT_NAME_URL)
             ?: throw IllegalStateException("Destination ${destination.id} does not have an url.")
+        val url = URLDecoder.decode(encodedUrl, "utf-8")
 
         if (url.isInvalidWebUrl()) {
             throw IllegalArgumentException("Url($url) is a invalid web URL.")
