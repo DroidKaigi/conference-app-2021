@@ -12,6 +12,8 @@ public struct MediaSection: View {
 
     enum ViewAction {
         case showMore
+        case tap(FeedContent)
+        case favorite(String)
     }
 
     public var body: some View {
@@ -32,8 +34,12 @@ public struct MediaSection: View {
                                 tag: item.media,
                                 date: item.publishedAt,
                                 isFavorited: content.isFavorited,
-                                tapAction: {},
-                                tapFavoriteAction: {}
+                                tapAction: {
+                                    viewStore.send(.tap(content))
+                                },
+                                tapFavoriteAction: {
+                                    viewStore.send(.favorite(content.id))
+                                }
                             )
                             .aspectRatio(257.0 / 258, contentMode: .fit)
                         }

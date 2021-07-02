@@ -90,8 +90,11 @@ struct MediaListView: View {
         .background(
             NavigationLink(
                 destination: IfLetStore(
-                    self.store.actionless.scope(state: MediaDetail.ViewState.init(state:)),
-                    then: MediaDetail.init(store:)
+                    store.scope(
+                        state: MediaDetailState.init(state:),
+                        action: MediaListAction.init(action:)
+                    ),
+                    then: MediaDetailScreen.init(store:)
                 ),
                 isActive: viewStore.binding(
                     get: \.isMoreActive,
@@ -118,7 +121,7 @@ private extension MediaListAction {
     }
 }
 
-private extension MediaDetail.ViewState {
+private extension MediaDetailState {
     init?(state: MediaListState) {
         guard case let .more(mediaType) = state.next else {
             return nil
@@ -126,13 +129,13 @@ private extension MediaDetail.ViewState {
         switch mediaType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
-            feedContents = state.blogs
+            contents = state.blogs
         case .video:
             title = L10n.MediaScreen.Section.Video.title
-            feedContents = state.videos
+            contents = state.videos
         case .podcast:
             title = L10n.MediaScreen.Section.Podcast.title
-            feedContents = state.podcasts
+            contents = state.podcasts
         }
     }
 }
@@ -142,6 +145,19 @@ private extension MediaListAction {
         switch action {
         case .showMore:
             self = .showMore(for: mediaType)
+        case .tap(let content):
+            self = .tap(content)
+        case .favorite(let contentId):
+            self = .favorite(contentId)
+        }
+    }
+
+    init(action: MediaDetailAction) {
+        switch action {
+        case .tap(let content):
+            self = .tap(content)
+        case .favorite(let contentId):
+            self = .favorite(contentId)
         }
     }
 }

@@ -17,26 +17,15 @@ public struct FavoritesScreen: View {
         NavigationView {
             ScrollView {
                 WithViewStore(store) { viewStore in
-                    LazyVGrid(
-                        columns: Array(
-                            repeating: GridItem(.flexible(), spacing: .zero),
-                            count: 2
-                        ),
-                        spacing: 16
-                    ) {
-                        ForEach(viewStore.items) { item in
-                            createCard(
-                                item: item,
-                                tapAction: {
-                                    viewStore.send(.tap(item))
-                                },
-                                tapFavoritesAction: {
-                                    viewStore.send(.favorite(item))
-                                }
-                            )
-                            .padding(8)
+                    FeedContentListView(
+                        feedContents: viewStore.contents,
+                        tapContent: { content in
+                            viewStore.send(.tap(content))
+                        },
+                        tapFavorite: { contentId in
+                            viewStore.send(.favorite(contentId))
                         }
-                    }
+                    )
                     .onAppear {
                         viewStore.send(.refresh)
                     }
@@ -53,20 +42,6 @@ public struct FavoritesScreen: View {
                 viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
             }
         }
-    }
-}
-
-extension FavoritesScreen {
-    private func createCard(item: FavoriteItem, tapAction: @escaping () -> Void, tapFavoritesAction: @escaping () -> Void) -> some View {
-        SmallCard(
-            title: item.title,
-            imageURL: item.imageURL,
-            tag: item.tag,
-            date: item.date,
-            isFavorited: item.isFavorited,
-            tapAction: tapAction,
-            tapFavoriteAction: tapFavoritesAction
-        )
     }
 }
 
