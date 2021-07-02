@@ -13,8 +13,9 @@ public struct HomeContentView: View {
     public var body: some View {
         WithViewStore(store) { viewStore in
             VStack(alignment: .trailing, spacing: 0) {
+                Spacer(minLength: 16)
                 MessageBar(title: viewStore.message)
-                    .padding(.top, 16)
+                    .padding(.trailing, 16)
                 if let topic = viewStore.topic {
                     LargeCard(
                         content: topic,
