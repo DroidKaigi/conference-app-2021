@@ -3,8 +3,8 @@ import TestUtils
 import XCTest
 
 final class MediaFeatureTests: XCTestCase {
-    func testMediaDetail() {
-        assertPreviewScreenSnapshot(MediaDetail_Previews.self)
+    func testMediaDetailScreen() {
+        assertPreviewScreenSnapshot(MediaDetailScreen_Previews.self)
     }
 
     func testMediaListView() {

@@ -19,17 +19,25 @@ struct MediaListView: View {
         var hasVideos: Bool
         var hasPodcasts: Bool
         var isSearchResultVisible: Bool
+        var isSearchTextEditing: Bool
         var isMoreActive: Bool
 
         init(state: MediaListState) {
             hasBlogs = !state.blogs.isEmpty
             hasVideos = !state.videos.isEmpty
             hasPodcasts = !state.podcasts.isEmpty
-            if case let .searchText(text) = state.next,
-               !text.isEmpty {
+            if case let .searchText(text) = state.next, !text.isEmpty {
                 isSearchResultVisible = true
             } else {
                 isSearchResultVisible = false
+            }
+            switch state.next {
+            case .isSearchTextEditing(let isEditing):
+                isSearchTextEditing = isEditing
+            case .searchText:
+                isSearchTextEditing = true
+            default:
+                isSearchTextEditing = false
             }
             if case .more = state.next {
                 isMoreActive = true
@@ -82,10 +90,14 @@ struct MediaListView: View {
             .separatorStyle(ThickSeparatorStyle())
             .zIndex(0)
 
-            if viewStore.isSearchResultVisible {
-                SearchResultView()
-                    .zIndex(1)
-            }
+            Color.black.opacity(0.4)
+                .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
+                .animation(.easeInOut)
+                .zIndex(1)
+
+            SearchResultScreen(contents: [.mock(), .mock(), .mock(), .mock(), .mock()])
+                .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
+                .zIndex(2)
         }
         .background(
             NavigationLink(
@@ -109,6 +121,28 @@ struct MediaListView: View {
     private var separator: some View {
         Separator()
             .padding()
+    }
+}
+
+// TODO: remove
+private extension FeedContent {
+    static func mock(id: UUID = UUID()) -> Self {
+        .init(
+            item: AnyFeedItem(
+                Blog(
+                    id: id.uuidString,
+                    image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+                    link: "",
+                    media: .medium,
+                    publishedAt: Date(timeIntervalSince1970: 0),
+                    summary: .init(enTitle: "", jaTitle: ""),
+                    title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
+                    author: .init(link: "", name: ""),
+                    language: ""
+                )
+            ),
+            isFavorited: false
+        )
     }
 }
 

@@ -47,7 +47,7 @@ public struct MediaDetailScreen: View {
     }
 }
 
-public struct MediaDetail_Previews: PreviewProvider {
+public struct MediaDetailScreen_Previews: PreviewProvider {
     public static var previews: some View {
         MediaDetailScreen(
             store: .init(

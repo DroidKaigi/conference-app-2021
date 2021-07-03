@@ -16,6 +16,7 @@ public struct MediaListState: Equatable {
 
     enum Next: Equatable {
         case searchText(String)
+        case isSearchTextEditing(Bool)
         case more(for: MediaType)
     }
 
@@ -39,7 +40,7 @@ public enum MediaAction: Equatable {
 
 public enum MediaListAction: Equatable {
     case searchTextDidChange(to: String?)
-    case willDismissSearchController
+    case isSearchTextEditing(Bool)
     case showMore(for: MediaType)
     case moreDismissed
     case tap(FeedContent)
@@ -54,16 +55,21 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, a
     switch action {
     case let .searchTextDidChange(to: searchText):
         switch state.next {
-        case nil,
-             .searchText:
+        case nil, .searchText, .isSearchTextEditing:
             state.next = searchText.map { .searchText($0) }
         default:
             break
         }
         return .none
-    case .willDismissSearchController:
-        if case .searchText = state.next {
-            state.next = nil
+    case let .isSearchTextEditing(isEditing):
+        switch state.next {
+        case nil, .searchText, .isSearchTextEditing:
+            state.next = .isSearchTextEditing(isEditing)
+            if !isEditing {
+                state.next = nil
+            }
+        default:
+            break
         }
         return .none
     case let .showMore(mediaType):
