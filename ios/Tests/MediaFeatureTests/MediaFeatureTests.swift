@@ -24,6 +24,6 @@ final class MediaFeatureTests: XCTestCase {
     }
 
     func testSearchResultView() {
-        assertPreviewScreenSnapshot(SearchResultView_Previews.self)
+        assertPreviewScreenSnapshot(SearchResultScreen_Previews.self)
     }
 }

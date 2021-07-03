@@ -95,6 +95,8 @@ struct MediaListView: View {
                 .animation(.easeInOut)
                 .zIndex(1)
 
+            // TODO: show filtered result of feed contents
+            // Also, make tap & favorite action works
             SearchResultScreen(
                 store: .init(
                     initialState: .init(),
