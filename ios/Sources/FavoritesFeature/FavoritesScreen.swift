@@ -19,15 +19,6 @@ public struct FavoritesScreen: View {
     public var body: some View {
         NavigationView {
             ScrollView {
-                NavigationLink(
-                    destination: SettingScreen(isDarkModeOn: true, isLanguageOn: true),
-                    isActive: viewStore.binding(
-                        get: \.isSettingActive,
-                        send: .settings(false)
-                    )
-                ) {
-                    EmptyView()
-                }
                 LazyVGrid(
                     columns: Array(
                         repeating: GridItem(.flexible(), spacing: .zero),
@@ -55,14 +46,22 @@ public struct FavoritesScreen: View {
             }
             .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
             .navigationBarItems(
-                trailing:
-                    Button(action:
-                            { viewStore.send(.settings(true)) })
-                    {
-                        AssetImage.iconSetting.image
-                            .renderingMode(.template)
-                            .foregroundColor(AssetColor.Base.primary.color)
-                    }
+                trailing: Button(action: {
+                    viewStore.send(.toggleSettings(true))
+                }) {
+                    AssetImage.iconSetting.image
+                        .renderingMode(.template)
+                        .foregroundColor(AssetColor.Base.primary.color)
+                }
+                .sheet(
+                    isPresented:
+                        viewStore.binding(
+                            get: \.isSettingPresented,
+                            send: .toggleSettings(false)
+                        ),
+                    content: {
+                        SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                    })
             )
             .introspectViewController { viewController in
                 viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
@@ -87,26 +86,24 @@ extension FavoritesScreen {
 
 public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        Group {
-            FavoritesScreen(
-                store: .init(
-                    initialState: .init(),
-                    reducer: favoritesReducer,
-                    environment: .init()
-                )
+        FavoritesScreen(
+            store: .init(
+                initialState: .init(),
+                reducer: favoritesReducer,
+                environment: .init()
             )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
+        )
+        .previewDevice(.init(rawValue: "iPhone 12"))
+        .environment(\.colorScheme, .light)
 
-            FavoritesScreen(
-                store: .init(
-                    initialState: .init(),
-                    reducer: favoritesReducer,
-                    environment: .init()
-                )
+        FavoritesScreen(
+            store: .init(
+                initialState: .init(),
+                reducer: favoritesReducer,
+                environment: .init()
             )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-        }
+        )
+        .previewDevice(.init(rawValue: "iPhone 12"))
+        .environment(\.colorScheme, .dark)
     }
 }
