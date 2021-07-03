@@ -1,3 +1,4 @@
+import Styleguide
 import UIKit
 
 @propertyWrapper
@@ -8,16 +9,19 @@ public class SearchController: NSObject {
     private let isSearchTextEditing: (Bool) -> Void
 
     public init(
-        searchBarPlaceHolder: String? = nil,
+        searchBarPlaceHolder: String,
         searchTextDidChangeTo: @escaping (String) -> Void,
         isSearchTextEditing: @escaping (Bool) -> Void
     ) {
         self.searchTextDidChangeTo = searchTextDidChangeTo
         self.isSearchTextEditing = isSearchTextEditing
         super.init()
+        wrappedValue.searchBar.placeholder = searchBarPlaceHolder
         wrappedValue.searchBar.delegate = self
-        // W/A first time showing search result, black blur view does not work correctly
+        // W/A first time showing search result, black clear view does not work correctly
         wrappedValue.obscuresBackgroundDuringPresentation = false
+        let cancelButtonAttributes: [NSAttributedString.Key: Any] = [.foregroundColor: AssetColor.primary.uiColor]
+        UIBarButtonItem.appearance().setTitleTextAttributes(cancelButtonAttributes, for: .normal)
     }
 }
 
