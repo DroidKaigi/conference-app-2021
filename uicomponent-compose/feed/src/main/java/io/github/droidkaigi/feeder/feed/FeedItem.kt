@@ -117,15 +117,14 @@ fun FeedItem(
                     if (feedItem is FeedItem.Podcast) onClickPlayPodcastButton(feedItem)
                 }
         )
-        AudioSpectrumAnimation(
-            isPlayingPodcast = isPlayingPodcast,
-            isVisible = feedItem is FeedItem.Podcast,
-            modifier = Modifier
-                .constrainAs(audioSpectrum) {
+        if (feedItem is FeedItem.Podcast && isPlayingPodcast) {
+            AudioSpectrumAnimation(
+                modifier = Modifier.constrainAs(audioSpectrum) {
                     linkTo(image.top, image.bottom, bias = 1.0f)
                     linkTo(image.start, image.end, bias = 1.0f)
                 }
-        )
+            )
+        }
         Text(
             modifier = Modifier.constrainAs(title) {
                 start.linkTo(image.end, 16.dp)

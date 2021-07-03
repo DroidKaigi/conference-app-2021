@@ -29,42 +29,38 @@ private val maxBarHeight = 12.dp
 @Composable
 fun AudioSpectrumAnimation(
     modifier: Modifier,
-    isVisible: Boolean,
-    isPlayingPodcast: Boolean,
     color: Color = MaterialTheme.colors.primary,
 ) {
-    if (isVisible && isPlayingPodcast) {
-        val offsetY = with(LocalDensity.current) { 6.dp.toPx() }
+    val offsetY = with(LocalDensity.current) { 6.dp.toPx() }
 
-        val infiniteTransition = rememberInfiniteTransition()
-        val leftBarFactor by infiniteTransition.animateHeight(
-            0.5f, 0.1f, 0.5f, 0.3f, 0.6f
-        )
-        val centerBarFactor by infiniteTransition.animateHeight(
-            0.4f, 0.65f, 0.35f, 0.6f, 0.45f
-        )
-        val rightBarFactor by infiniteTransition.animateHeight(
-            0.6f, 0.2f, 0.6f, 0.35f, 0.4f
-        )
+    val infiniteTransition = rememberInfiniteTransition()
+    val leftBarFactor by infiniteTransition.animateHeight(
+        0.5f, 0.1f, 0.5f, 0.3f, 0.6f
+    )
+    val centerBarFactor by infiniteTransition.animateHeight(
+        0.4f, 0.65f, 0.35f, 0.6f, 0.45f
+    )
+    val rightBarFactor by infiniteTransition.animateHeight(
+        0.6f, 0.2f, 0.6f, 0.35f, 0.4f
+    )
 
-        Canvas(modifier.size(spectrumSize)) {
-            rotate(180f) {
-                drawRect(
-                    color = color,
-                    topLeft = Offset(x = 6.dp.toPx(), y = offsetY),
-                    size = Size(barWidth.toPx(), maxBarHeight.toPx() * rightBarFactor)
-                )
-                drawRect(
-                    color = color,
-                    topLeft = Offset(x = 10.dp.toPx(), y = offsetY),
-                    size = Size(barWidth.toPx(), maxBarHeight.toPx() * centerBarFactor)
-                )
-                drawRect(
-                    color = color,
-                    topLeft = Offset(x = 14.dp.toPx(), y = offsetY),
-                    size = Size(barWidth.toPx(), maxBarHeight.toPx() * leftBarFactor)
-                )
-            }
+    Canvas(modifier.size(spectrumSize)) {
+        rotate(180f) {
+            drawRect(
+                color = color,
+                topLeft = Offset(x = 6.dp.toPx(), y = offsetY),
+                size = Size(barWidth.toPx(), maxBarHeight.toPx() * rightBarFactor)
+            )
+            drawRect(
+                color = color,
+                topLeft = Offset(x = 10.dp.toPx(), y = offsetY),
+                size = Size(barWidth.toPx(), maxBarHeight.toPx() * centerBarFactor)
+            )
+            drawRect(
+                color = color,
+                topLeft = Offset(x = 14.dp.toPx(), y = offsetY),
+                size = Size(barWidth.toPx(), maxBarHeight.toPx() * leftBarFactor)
+            )
         }
     }
 }
