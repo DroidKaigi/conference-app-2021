@@ -23,7 +23,7 @@ final class MediaFeatureTests: XCTestCase {
         assertPreviewSnapshot(MediaSectionHeader_Previews.self)
     }
 
-    func testSearchResultView() {
+    func testSearchResultScreen() {
         assertPreviewScreenSnapshot(SearchResultScreen_Previews.self)
     }
 }
