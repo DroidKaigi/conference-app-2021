@@ -6,7 +6,6 @@ import SwiftUI
 import Styleguide
 
 public struct FavoritesScreen: View {
-
     private let store: Store<FavoritesState, FavoritesAction>
     @ObservedObject private var viewStore: ViewStore<FavoritesState, FavoritesAction>
 
