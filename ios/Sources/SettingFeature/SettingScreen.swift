@@ -46,41 +46,40 @@ public struct SettingScreen: View {
     }
 
     public var body: some View {
-        NavigationView {
-            InlineTitleNavigationBarScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(items.indices) { index in
-                        ZStack(alignment: .bottom) {
-                            SettingToggleItem(
-                                title: items[index].title,
-                                isOn: Binding(get: {
-                                    items[index].isOn
-                                }, set: { isOn in
-                                    items[index].update(isOn: isOn)
-                                })
-                            )
-                            .frame(minHeight: 44)
-                            Separator()
-                        }
-                        .padding(.horizontal, 16)
-                        .background(AssetColor.Background.contents.color)
+        InlineTitleNavigationBarScrollView {
+            LazyVStack(spacing: 0) {
+                ForEach(items.indices) { index in
+                    ZStack(alignment: .bottom) {
+                        SettingToggleItem(
+                            title: items[index].title,
+                            isOn: Binding(get: {
+                                items[index].isOn
+                            }, set: { isOn in
+                                items[index].update(isOn: isOn)
+                            })
+                        )
+                        .frame(minHeight: 44)
+                        Separator()
                     }
+                    .padding(.horizontal, 16)
+                    .background(AssetColor.Background.contents.color)
                 }
-                .padding(.top, 24)
             }
-            .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
-            .navigationBarItems(
-                trailing: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    AssetImage.iconClose.image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                })
-            )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
-            }
+            .padding(.top, 24)
+        }
+        .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
+        .navigationBarItems(
+            trailing: Button(action: {
+                presentationMode.wrappedValue.dismiss()
+            }, label: {
+                AssetImage.iconClose.image
+                    .renderingMode(.template)
+                    .foregroundColor(AssetColor.Base.primary.color)
+            })
+        )
+        .navigationBarBackButtonHidden(true)
+        .introspectViewController { viewController in
+            viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
         }
     }
 }
