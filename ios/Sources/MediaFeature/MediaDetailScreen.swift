@@ -4,26 +4,26 @@ import Model
 import Styleguide
 import SwiftUI
 
-public struct MediaDetailState: Equatable {
-    public var title: String
-    public var contents: [FeedContent]
-
-    public init(
-        title: String,
-        contents: [FeedContent] = []
-    ) {
-        self.title = title
-        self.contents = contents
-    }
-}
-
-enum MediaDetailAction {
-    case tap(FeedContent)
-    case favorite(String)
-}
-
 public struct MediaDetailScreen: View {
-    let store: Store<MediaDetailState, MediaDetailAction>
+    let store: Store<ViewState, ViewAction>
+
+    struct ViewState: Equatable {
+        var title: String
+        var contents: [FeedContent]
+
+        init(
+            title: String,
+            contents: [FeedContent] = []
+        ) {
+            self.title = title
+            self.contents = contents
+        }
+    }
+
+    enum ViewAction {
+        case tap(FeedContent)
+        case favorite(String)
+    }
 
     public var body: some View {
         WithViewStore(store) { viewStore in
@@ -56,5 +56,17 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
                 environment: {}
             )
         )
+        .previewDevice(.init(rawValue: "iPhone 12"))
+        .environment(\.colorScheme, .light)
+
+        MediaDetailScreen(
+            store: .init(
+                initialState: .init(title: "BLOG", contents: []),
+                reducer: .empty,
+                environment: {}
+            )
+        )
+        .previewDevice(.init(rawValue: "iPhone 12"))
+        .environment(\.colorScheme, .dark)
     }
 }

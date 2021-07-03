@@ -95,15 +95,21 @@ struct MediaListView: View {
                 .animation(.easeInOut)
                 .zIndex(1)
 
-            SearchResultScreen(contents: [.mock(), .mock(), .mock(), .mock(), .mock()])
-                .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
-                .zIndex(2)
+            SearchResultScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
+            .zIndex(2)
         }
         .background(
             NavigationLink(
                 destination: IfLetStore(
                     store.scope(
-                        state: MediaDetailState.init(state:),
+                        state: MediaDetailScreen.ViewState.init(state:),
                         action: MediaListAction.init(action:)
                     ),
                     then: MediaDetailScreen.init(store:)
@@ -155,7 +161,7 @@ private extension MediaListAction {
     }
 }
 
-private extension MediaDetailState {
+private extension MediaDetailScreen.ViewState {
     init?(state: MediaListState) {
         guard case let .more(mediaType) = state.next else {
             return nil
@@ -186,7 +192,7 @@ private extension MediaListAction {
         }
     }
 
-    init(action: MediaDetailAction) {
+    init(action: MediaDetailScreen.ViewAction) {
         switch action {
         case .tap(let content):
             self = .tap(content)
