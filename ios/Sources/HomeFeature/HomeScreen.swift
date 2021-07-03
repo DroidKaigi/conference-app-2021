@@ -80,6 +80,24 @@ public struct HomeScreen_Previews: PreviewProvider {
         Group {
             HomeScreen(
                 store: .init(
+                    initialState: .needToInitialize,
+                    reducer: .empty,
+                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .dark)
+            HomeScreen(
+                store: .init(
+                    initialState: .needToInitialize,
+                    reducer: .empty,
+                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .light)
+            HomeScreen(
+                store: .init(
                     initialState: .initialized(.init(feedContents: [.mock(), .mock()])),
                     reducer: .empty,
                     environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
