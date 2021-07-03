@@ -288,7 +288,7 @@ GitHub : [Contributors](https://github.com/DroidKaigi/conference-app-2021/graphs
 
 ## Designer
 
-[nontan](https://github.com/nontan)
+[nontan](https://github.com/nontan)  
 [nobo](https://github.com/nobonobopurin)
 
 # Trouble Shooting
