@@ -2,8 +2,8 @@ name: ios-commit-snapshots
 
 on:
   issue_comment:
-  types:
-    - created
+    types:
+      - created
 
 jobs:
   take-snapshots:
