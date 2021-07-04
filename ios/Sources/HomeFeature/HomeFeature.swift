@@ -27,6 +27,7 @@ public struct HomeState: Equatable {
     // TODO: Replace to real models
     private var feedItems: [FeedItem]
     public var message: String
+    public var isSettingPresented: Bool
 
     public var topic: FeedItem? {
         feedItems.first
@@ -42,20 +43,29 @@ public struct HomeState: Equatable {
     ) {
         self.feedItems = feedItems
         self.message = message
+        self.isSettingPresented = false
     }
 }
 
 public enum HomeAction {
     case answerQuestionnaire
+    case showSettings
+    case hideSettings
 }
 
 public struct HomeEnvironment {
     public init() {}
 }
 
-public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, action, _ in
+public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { state, action, _ in
     switch action {
     case .answerQuestionnaire:
+        return .none
+    case .showSettings:
+        state.isSettingPresented = true
+        return .none
+    case .hideSettings:
+        state.isSettingPresented = false
         return .none
     }
 }

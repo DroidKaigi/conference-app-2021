@@ -1,6 +1,7 @@
 import Component
 import ComposableArchitecture
 import Model
+import SettingFeature
 import Styleguide
 import SwiftUI
 
@@ -13,12 +14,12 @@ public struct HomeScreen: View {
 
     public var body: some View {
         NavigationView {
-            InlineTitleNavigationBarScrollView {
-                ZStack(alignment: .top) {
-                    AssetColor.primary.color
-                        .frame(width: nil, height: 200)
-                        .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
-                    WithViewStore(store) { viewStore in
+            WithViewStore(store) { viewStore in
+                InlineTitleNavigationBarScrollView {
+                    ZStack(alignment: .top) {
+                        AssetColor.primary.color
+                            .frame(width: nil, height: 200)
+                            .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
                         VStack(alignment: .trailing, spacing: 0) {
                             MessageBar(title: viewStore.message)
                                 .padding(.top, 16)
@@ -46,20 +47,34 @@ public struct HomeScreen: View {
                         .separatorStyle(ThickSeparatorStyle())
                     }
                 }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    AssetImage.logoTitle.image
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        AssetImage.logoTitle.image
+                    }
                 }
-            }
-            .navigationBarItems(
-                trailing: AssetImage.iconSetting.image
-                    .renderingMode(.template)
-                    .foregroundColor(AssetColor.Base.primary.color)
-            )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        viewStore.send(.showSettings)
+                    })
+                    {
+                        AssetImage.iconSetting.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    }
+                    .sheet(
+                        isPresented: viewStore.binding(
+                            get: \.isSettingPresented,
+                            send: .hideSettings
+                        ),
+                        content: {
+                            SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                        }
+                    )
+                )
+                .introspectViewController { viewController in
+                    viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                }
             }
         }
     }
