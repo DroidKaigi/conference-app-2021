@@ -66,6 +66,7 @@ fun FeedItem(
             favoriteAnim,
             speakers,
             audioControl,
+            audioSpectrum,
         ) = createRefs()
         if (showMediaLabel) {
             Text(
@@ -116,6 +117,14 @@ fun FeedItem(
                     if (feedItem is FeedItem.Podcast) onClickPlayPodcastButton(feedItem)
                 }
         )
+        if (feedItem is FeedItem.Podcast && isPlayingPodcast) {
+            AudioSpectrumAnimation(
+                modifier = Modifier.constrainAs(audioSpectrum) {
+                    linkTo(image.top, image.bottom, bias = 1.0f)
+                    linkTo(image.start, image.end, bias = 1.0f)
+                }
+            )
+        }
         Text(
             modifier = Modifier.constrainAs(title) {
                 start.linkTo(image.end, 16.dp)
