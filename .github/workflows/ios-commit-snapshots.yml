@@ -1,13 +1,14 @@
 name: ios-commit-snapshots
 
 on:
-  issue_comment:
-    types:
-      - created
+  push:
+    branches:
+      - main
+    paths:
+      - 'ios/**'
 
 jobs:
   take-snapshots:
-    if: (github.event.issue.pull_request != null) && github.event.comment.body == '!github take-ios-snapshots'
     name: "iOS Take and Commit Snapshots"
     runs-on: macos-latest
     steps:
@@ -34,10 +35,10 @@ jobs:
       - name: Take Snapshots
         working-directory: ./ios
         run: make take-snapshots
-      - name: Commit new Snapshots
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Actions"
-
-          git commit -am "Update iOS Snapshots"
-          git push
+      - name: Commit Snapshots
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update iOS Snapshots
+          branch: 'main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

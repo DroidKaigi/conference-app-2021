@@ -81,4 +81,4 @@ test-modules:
 .PHONY: take-snapshots
 take-snapshots:
 	make build-kmm-module-debug
-	./scripts/xcodebuild.sh test ModuleTestRecording Debug
+	./scripts/xcodebuild.sh test ModuleTestRecording Debug || echo
