@@ -91,10 +91,26 @@ public struct HomeContentView_Previews: PreviewProvider {
     public static var previews: some View {
         HomeContentView(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    feedContents: [.mock(), .mock(), .mock()]
+                ),
                 reducer: .empty,
                 environment: {}
             )
         )
+        .background(Color.black)
+        .previewLayout(.sizeThatFits)
+        .environment(\.colorScheme, .dark)
+        HomeContentView(
+            store: .init(
+                initialState: .init(
+                    feedContents: [.mock(), .mock(), .mock()]
+                ),
+                reducer: .empty,
+                environment: {}
+            )
+        )
+        .previewLayout(.sizeThatFits)
+        .environment(\.colorScheme, .light)
     }
 }

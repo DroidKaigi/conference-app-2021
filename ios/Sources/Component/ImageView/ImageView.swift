@@ -69,6 +69,7 @@ public struct ImageView: View {
                 placeholderView
             }
         }
+        .frame(width: width, height: height)
         .overlay(
             RoundedRectangle(cornerRadius: 2)
                 .stroke(AssetColor.Separate.image.color, lineWidth: 1)

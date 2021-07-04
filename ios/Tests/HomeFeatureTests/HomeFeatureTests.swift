@@ -10,6 +10,10 @@ final class HomeFeatureTests: XCTestCase {
     func testHomeScreen() {
         assertPreviewScreenSnapshot(HomeScreen_Previews.self)
     }
+    
+    func testHomeContentView() {
+        assertPreviewScreenSnapshot(HomeContentView_Previews.self)
+    }
 
     func testQuestionnaireView() {
         assertPreviewSnapshot(QuestionnaireView_Previews.self)
