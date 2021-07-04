@@ -31,7 +31,8 @@ public enum FavoritesAction {
     case refresh
     case tap(FavoriteItem)
     case favorite(FavoriteItem)
-    case toggleSettings(_ isPresented: Bool)
+    case showSettings
+    case hideSettings
 }
 
 public struct FavoritesEnvironment {
@@ -54,8 +55,11 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
         return .none
     case .favorite:
         return .none
-    case let .toggleSettings(isPresented):
-        state.isSettingPresented = isPresented
+    case .showSettings:
+        state.isSettingPresented = true
+        return .none
+    case .hideSettings:
+        state.isSettingPresented = false
         return .none
     }
 }

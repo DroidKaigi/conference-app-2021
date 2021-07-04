@@ -7,64 +7,63 @@ import Styleguide
 
 public struct FavoritesScreen: View {
     private let store: Store<FavoritesState, FavoritesAction>
-    @ObservedObject private var viewStore: ViewStore<FavoritesState, FavoritesAction>
 
     public init(
         store: Store<FavoritesState, FavoritesAction>
     ) {
         self.store = store
-        self.viewStore = .init(store)
     }
 
     public var body: some View {
         NavigationView {
-            ScrollView {
-                LazyVGrid(
-                    columns: Array(
-                        repeating: GridItem(.flexible(), spacing: .zero),
-                        count: 2
-                    ),
-                    spacing: 16
-                ) {
-                    ForEach(viewStore.items) { item in
-                        createCard(
-                            item: item,
-                            tapAction: {
-                                viewStore.send(.tap(item))
-                            },
-                            tapFavoritesAction: {
-                                viewStore.send(.favorite(item))
-                            }
-                        )
-                        .padding(8)
-                    }
-                }
-                .onAppear {
-                    viewStore.send(.refresh)
-                }
-                .padding(.horizontal, 8)
-            }
-            .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
-            .navigationBarItems(
-                trailing: Button(action: {
-                    viewStore.send(.toggleSettings(true))
-                }) {
-                    AssetImage.iconSetting.image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                }
-                .sheet(
-                    isPresented:
-                        viewStore.binding(
-                            get: \.isSettingPresented,
-                            send: .toggleSettings(false)
+            WithViewStore(store) { viewStore in
+                ScrollView {
+                    LazyVGrid(
+                        columns: Array(
+                            repeating: GridItem(.flexible(), spacing: .zero),
+                            count: 2
                         ),
+                        spacing: 16
+                    ) {
+                        ForEach(viewStore.items) { item in
+                            createCard(
+                                item: item,
+                                tapAction: {
+                                    viewStore.send(.tap(item))
+                                },
+                                tapFavoritesAction: {
+                                    viewStore.send(.favorite(item))
+                                }
+                            )
+                            .padding(8)
+                        }
+                    }
+                    .onAppear {
+                        viewStore.send(.refresh)
+                    }
+                    .padding(.horizontal, 8)
+                }
+                .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        viewStore.send(.showSettings)
+                    })
+                    {
+                        AssetImage.iconSetting.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    }
+                    .sheet(isPresented: viewStore.binding(
+                        get: \.isSettingPresented,
+                        send: .hideSettings
+                    ),
                     content: {
                         SettingScreen(isDarkModeOn: true, isLanguageOn: true)
                     })
-            )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                )
+                .introspectViewController { viewController in
+                    viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                }
             }
         }
     }
