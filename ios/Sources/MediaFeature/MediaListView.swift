@@ -132,28 +132,6 @@ struct MediaListView: View {
     }
 }
 
-// TODO: remove
-private extension FeedContent {
-    static func mock(id: UUID = UUID()) -> Self {
-        .init(
-            item: AnyFeedItem(
-                Blog(
-                    id: id.uuidString,
-                    image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-                    link: "",
-                    media: .medium,
-                    publishedAt: Date(timeIntervalSince1970: 0),
-                    summary: .init(enTitle: "", jaTitle: ""),
-                    title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
-                    author: .init(link: "", name: ""),
-                    language: ""
-                )
-            ),
-            isFavorited: false
-        )
-    }
-}
-
 private extension MediaListAction {
     init(action: MediaListView.ViewAction) {
         switch action {
@@ -209,7 +187,12 @@ public struct MediaListView_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaListView(
                 store: .init(
-                    initialState: .mock,
+                    initialState: .init(
+                        blogs: [.blogMock(), .blogMock()],
+                        videos: [.videoMock(), .videoMock()],
+                        podcasts: [.podcastMock(), .podcastMock()],
+                        next: nil
+                    ),
                     reducer: .empty,
                     environment: {}
                 )

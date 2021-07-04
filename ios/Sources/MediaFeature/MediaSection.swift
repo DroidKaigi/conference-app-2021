@@ -64,7 +64,7 @@ public struct MediaSection_Previews: PreviewProvider {
                 MediaSection(
                     icon: AssetImage.iconBlog.image.renderingMode(.template),
                     title: L10n.MediaScreen.Section.Blog.title,
-                    store: .init(initialState: .mockBlogs, reducer: .empty, environment: {})
+                    store: .init(initialState: [], reducer: .empty, environment: {})
                 )
                 .background(AssetColor.Background.primary.color)
                 .environment(\.sizeCategory, sizeCategory)

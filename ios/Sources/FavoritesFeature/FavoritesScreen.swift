@@ -49,7 +49,16 @@ public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
         FavoritesScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .videoMock(),
+                        .videoMock(),
+                        .podcastMock(),
+                        .podcastMock()
+                    ]
+                ),
                 reducer: favoritesReducer,
                 environment: .init()
             )
@@ -59,7 +68,16 @@ public struct FavoritesScreen_Previews: PreviewProvider {
 
         FavoritesScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .videoMock(),
+                        .videoMock(),
+                        .podcastMock(),
+                        .podcastMock()
+                    ]
+                ),
                 reducer: favoritesReducer,
                 environment: .init()
             )
