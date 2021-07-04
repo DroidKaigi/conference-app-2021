@@ -53,13 +53,15 @@ public struct FavoritesScreen: View {
                             .renderingMode(.template)
                             .foregroundColor(AssetColor.Base.primary.color)
                     }
-                    .sheet(isPresented: viewStore.binding(
-                        get: \.isSettingPresented,
-                        send: .hideSettings
-                    ),
-                    content: {
-                        SettingScreen(isDarkModeOn: true, isLanguageOn: true)
-                    })
+                    .sheet(
+                        isPresented: viewStore.binding(
+                            get: \.isSettingPresented,
+                            send: .hideSettings
+                        ),
+                        content: {
+                            SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                        }
+                    )
                 )
                 .introspectViewController { viewController in
                     viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
