@@ -63,7 +63,16 @@ public struct SearchResultScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SearchResultScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                    ]
+                ),
                 reducer: .empty,
                 environment: {}
             )
@@ -73,7 +82,16 @@ public struct SearchResultScreen_Previews: PreviewProvider {
 
         SearchResultScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                    ]
+                ),
                 reducer: .empty,
                 environment: {}
             )
