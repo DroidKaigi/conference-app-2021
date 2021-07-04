@@ -60,7 +60,14 @@ extension FeedContentListView {
 public struct FeedContentListView_Previews: PreviewProvider {
     public static var previews: some View {
         FeedContentListView(
-            feedContents: [],
+            feedContents: [
+                .blogMock(),
+                .blogMock(),
+                .videoMock(),
+                .videoMock(),
+                .podcastMock(),
+                .podcastMock()
+            ],
             tapContent: { _ in },
             tapFavorite: { _, _ in }
         )
@@ -68,7 +75,14 @@ public struct FeedContentListView_Previews: PreviewProvider {
         .environment(\.colorScheme, .light)
 
         FeedContentListView(
-            feedContents: [],
+            feedContents: [
+                .blogMock(),
+                .blogMock(),
+                .videoMock(),
+                .videoMock(),
+                .podcastMock(),
+                .podcastMock()
+            ],
             tapContent: { _ in },
             tapFavorite: { _, _ in }
         )

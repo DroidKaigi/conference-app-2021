@@ -51,7 +51,17 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
     public static var previews: some View {
         MediaDetailScreen(
             store: .init(
-                initialState: .init(title: "BLOG", contents: []),
+                initialState: .init(
+                    title: "BLOG",
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock()
+                    ]
+                ),
                 reducer: .empty,
                 environment: {}
             )
@@ -61,7 +71,17 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
 
         MediaDetailScreen(
             store: .init(
-                initialState: .init(title: "BLOG", contents: []),
+                initialState: .init(
+                    title: "BLOG",
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock()
+                    ]
+                ),
                 reducer: .empty,
                 environment: {}
             )
