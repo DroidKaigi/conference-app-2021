@@ -1,32 +1,22 @@
 {
   "configurations" : [
     {
-      "id" : "F01BD786-478D-41D4-8F4E-81BDE5EB7075",
+      "id" : "722C703A-7491-4951-BDDF-5320C649826A",
       "name" : "Configuration 1",
       "options" : {
-        "environmentVariableEntries" : [
 
-        ]
       }
     }
   ],
   "defaultOptions" : {
-    "codeCoverage" : false,
     "environmentVariableEntries" : [
       {
         "key" : "recording",
-        "value" : "false"
+        "value" : "true"
       }
     ]
   },
   "testTargets" : [
-    {
-      "target" : {
-        "containerPath" : "container:",
-        "identifier" : "HomeFeatureTests",
-        "name" : "HomeFeatureTests"
-      }
-    },
     {
       "target" : {
         "containerPath" : "container:",
@@ -53,6 +43,13 @@
         "containerPath" : "container:",
         "identifier" : "FavoritesFeatureTests",
         "name" : "FavoritesFeatureTests"
+      }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "HomeFeatureTests",
+        "name" : "HomeFeatureTests"
       }
     },
     {

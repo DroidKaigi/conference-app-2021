@@ -2,6 +2,10 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
+public func initSnapshotTesting() {
+    isRecording = ProcessInfo.processInfo.environment["recording"] == "true"
+}
+
 /// Asserts that a given preview contents match on disk.
 ///
 /// - Parameters:
@@ -20,7 +24,7 @@ public func assertPreviewSnapshot<T: PreviewProvider>(
     for preview in T._allPreviews {
         assertSnapshot(
             matching: preview.content,
-            as: .image,
+            as: .image(precision: 0.9),
             record: recording,
             file: file,
             testName: testName,
@@ -44,7 +48,7 @@ public func assertPreviewScreenSnapshot<T: PreviewProvider>(
             deviceCounter[device, default: 0] += 1
             assertSnapshot(
                 matching: vc,
-                as: .image(on: device.config),
+                as: .image(on: device.config, precision: 0.9),
                 named: "\(device).\(deviceCounter[device, default: 0])",
                 record: recording,
                 file: file,
