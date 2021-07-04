@@ -58,11 +58,11 @@ public struct ListItem: View {
                     Spacer(minLength: 8)
                     if !users.isEmpty {
                         HStack(spacing: -4) {
-                            ForEach(Array(users.enumerated()), id: \.0) { (index, _) in
+                            ForEach(Array(users.enumerated()), id: \.0) { (index, user) in
                                 if index > Const.maximumShowingUser {
                                     EmptyView()
                                 } else {
-                                    AvatarView(avatarImageURL: nil, style: .small)
+                                    AvatarView(avatarImageURL: user, style: .small)
                                         .zIndex(Double(Const.maximumShowingUser - index))
                                 }
                             }
