@@ -3,6 +3,10 @@ import TestUtils
 import XCTest
 
 final class CardTests: XCTestCase {
+    override func setUp() {
+        initSnapshotTesting()
+    }
+    
     func testLargeCard() {
         assertPreviewSnapshot(LargeCard_Previews.self)
     }

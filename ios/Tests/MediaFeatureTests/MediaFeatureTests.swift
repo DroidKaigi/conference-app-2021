@@ -3,6 +3,10 @@ import TestUtils
 import XCTest
 
 final class MediaFeatureTests: XCTestCase {
+    override func setUp() {
+        initSnapshotTesting()
+    }
+    
     func testMediaDetail() {
         assertPreviewScreenSnapshot(MediaDetail_Previews.self)
     }

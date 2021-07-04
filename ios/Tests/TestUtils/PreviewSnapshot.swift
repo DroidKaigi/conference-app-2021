@@ -2,6 +2,11 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
+/// Initialize SnapshotTesting with Environment Variable
+public func initSnapshotTesting() {
+    isRecording = ProcessInfo.processInfo.environment["recording"] == "true"
+}
+
 /// Asserts that a given preview contents match on disk.
 ///
 /// - Parameters:
@@ -20,7 +25,7 @@ public func assertPreviewSnapshot<T: PreviewProvider>(
     for preview in T._allPreviews {
         assertSnapshot(
             matching: preview.content,
-            as: .image,
+            as: .image(precision: 0.9),
             record: recording,
             file: file,
             testName: testName,
@@ -29,6 +34,15 @@ public func assertPreviewSnapshot<T: PreviewProvider>(
     }
 }
 
+/// Asserts that a given preview contents match on disk for Screen.
+///
+/// - Parameters:
+///   - target: Target preview type.
+///   - devices: Target devices.
+///   - recording: Whether or not to record a new reference. If component that was already recorded, make this property to `true` and re-test.
+///   - file: The file in which failure occurred. Defaults to the file name of the test case in which this function was called.
+///   - testName: The name of the test in which failure occurred. Defaults to the function name of the test case in which this function was called.
+///   - line: The line number on which failure occurred. Defaults to the line number on which this function was called.
 public func assertPreviewScreenSnapshot<T: PreviewProvider>(
     _ target: T.Type,
     with devices: [TestDevice] = [.iPhoneX, .iPhone8, .iPhoneSe],
@@ -44,7 +58,7 @@ public func assertPreviewScreenSnapshot<T: PreviewProvider>(
             deviceCounter[device, default: 0] += 1
             assertSnapshot(
                 matching: vc,
-                as: .image(on: device.config),
+                as: .image(on: device.config, precision: 0.9),
                 named: "\(device).\(deviceCounter[device, default: 0])",
                 record: recording,
                 file: file,
