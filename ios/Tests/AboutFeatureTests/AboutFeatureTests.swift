@@ -3,6 +3,10 @@ import TestUtils
 import XCTest
 
 final class AboutFeatureTests: XCTestCase {
+    override func setUp() {
+        initSnapshotTesting()
+    }
+    
     func testAboutScreen() {
         assertPreviewScreenSnapshot(AboutScreen_Previews.self)
     }

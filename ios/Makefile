@@ -76,3 +76,9 @@ build-modules:
 test-modules:
 	make build-kmm-module-debug
 	./scripts/xcodebuild.sh test ModuleTest Debug
+
+# Take Snapshots
+.PHONY: take-snapshots
+take-snapshots:
+	make build-kmm-module-debug
+	./scripts/xcodebuild.sh test ModuleTestRecording Debug || echo

@@ -1,0 +1,44 @@
+name: ios-commit-snapshots
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'ios/**'
+
+jobs:
+  take-snapshots:
+    name: "iOS Take and Commit Snapshots"
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1
+        with:
+          java-version: '11'
+      - name: Select Xcode Version
+        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+      - name: Show Xcode Version
+        run: xcodebuild -version
+      - uses: eskatos/gradle-command-action@v1
+        with:
+          arguments: "ios-framework:createXCFramework"
+          dependencies-cache-key: |
+            **/*.gradle
+            **/*.gradle.kts
+            buildSrc/src/**/*.kt
+            **/gradle.properties
+            gradle/**
+      - name: Generate Strings & Colors & Assets
+        working-directory: ./ios
+        run: make run-swiftgen
+      - name: Take Snapshots
+        working-directory: ./ios
+        run: make take-snapshots
+      - name: Commit Snapshots
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: Update iOS Snapshots
+          branch: 'main'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
