@@ -28,7 +28,7 @@ jobs:
             buildSrc/src/**/*.kt
             **/gradle.properties
             gradle/**
-      - name Generate Strings & Colors & Assets
+      - name: Generate Strings & Colors & Assets
         working-directory: ./ios
         run: make run-swiftgen
       - name: Take Snapshots
