@@ -25,7 +25,7 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
     case .refresh:
         state.contents = [.mock(), .mock(), .mock(), .mock(), .mock(), .mock()]
         return .none
-    case .tap(let contents):
+    case .tap(let content):
         return .none
     case .favorite:
         return .none

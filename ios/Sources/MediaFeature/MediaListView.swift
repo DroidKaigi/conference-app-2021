@@ -32,7 +32,7 @@ struct MediaListView: View {
                 isSearchResultVisible = false
             }
             switch state.next {
-            case .isSearchTextEditing(let isEditing):
+            case .isEditingDidChange(let isEditing):
                 isSearchTextEditing = isEditing
             case .searchText:
                 isSearchTextEditing = true

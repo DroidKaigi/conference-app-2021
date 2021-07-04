@@ -22,7 +22,7 @@ public struct FavoritesScreen: View {
                         tapContent: { content in
                             viewStore.send(.tap(content))
                         },
-                        tapFavorite: { contentId in
+                        tapFavorite: { _, contentId in
                             viewStore.send(.favorite(contentId))
                         }
                     )

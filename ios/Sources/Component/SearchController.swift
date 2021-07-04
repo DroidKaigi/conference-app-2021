@@ -6,15 +6,15 @@ public class SearchController: NSObject {
 
     public let wrappedValue = UISearchController()
     private let searchTextDidChangeTo: (String) -> Void
-    private let isSearchTextEditing: (Bool) -> Void
+    private let isEditingDidChangeTo: (Bool) -> Void
 
     public init(
         searchBarPlaceHolder: String,
         searchTextDidChangeTo: @escaping (String) -> Void,
-        isSearchTextEditing: @escaping (Bool) -> Void
+        isEditingDidChangeTo: @escaping (Bool) -> Void
     ) {
         self.searchTextDidChangeTo = searchTextDidChangeTo
-        self.isSearchTextEditing = isSearchTextEditing
+        self.isEditingDidChangeTo = isEditingDidChangeTo
         super.init()
         wrappedValue.searchBar.placeholder = searchBarPlaceHolder
         wrappedValue.searchBar.delegate = self
@@ -31,10 +31,10 @@ extension SearchController: UISearchBarDelegate {
     }
 
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
-        isSearchTextEditing(true)
+        isEditingDidChangeTo(true)
     }
 
     public func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
-        isSearchTextEditing(false)
+        isEditingDidChangeTo(false)
     }
 }

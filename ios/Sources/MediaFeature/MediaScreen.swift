@@ -20,8 +20,8 @@ public struct MediaScreen: View {
             searchTextDidChangeTo: { text in
                 viewStore.send(.searchTextDidChange(to: text))
             },
-            isSearchTextEditing: { isEditing in
-                viewStore.send(.isSearchTextEditing(isEditing))
+            isEditingDidChangeTo: { isEditing in
+                viewStore.send(.isEditingDidChange(to: isEditing))
             }
         )
     }
@@ -41,7 +41,7 @@ public struct MediaScreen: View {
     enum ViewAction {
         case progressViewAppeared
         case searchTextDidChange(to: String)
-        case isSearchTextEditing(Bool)
+        case isEditingDidChange(to: Bool)
     }
 
     public var body: some View {
@@ -85,8 +85,8 @@ private extension MediaAction {
             self = .loadItems
         case let .searchTextDidChange(to: text):
             self = .mediaList(.searchTextDidChange(to: text))
-        case let .isSearchTextEditing(isEditing):
-            self = .mediaList(.isSearchTextEditing(isEditing))
+        case let .isEditingDidChange(isEditing):
+            self = .mediaList(.isEditingDidChange(to: isEditing))
         }
     }
 

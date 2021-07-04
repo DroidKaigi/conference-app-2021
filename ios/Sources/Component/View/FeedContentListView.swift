@@ -4,12 +4,12 @@ import SwiftUI
 public struct FeedContentListView: View {
     private var feedContents: [FeedContent]
     private let tapContent: (FeedContent) -> Void
-    private let tapFavorite: (String) -> Void
+    private let tapFavorite: (_ isFavorited: Bool, _ id: String) -> Void
 
     public init(
         feedContents: [FeedContent],
         tapContent: @escaping (FeedContent) -> Void,
-        tapFavorite: @escaping (String) -> Void
+        tapFavorite: @escaping (_ isFavorited: Bool, _ id: String) -> Void
     ) {
         self.feedContents = feedContents
         self.tapContent = tapContent
@@ -31,7 +31,7 @@ public struct FeedContentListView: View {
                         tapContent(content)
                     },
                     tapFavoritesAction: {
-                        tapFavorite(content.id)
+                        tapFavorite(content.isFavorited, content.id)
                     }
                 )
             }
@@ -54,5 +54,25 @@ extension FeedContentListView {
             tapAction: tapAction,
             tapFavoriteAction: tapFavoritesAction
         )
+    }
+}
+
+public struct FeedContentListView_Previews: PreviewProvider {
+    public static var previews: some View {
+        FeedContentListView(
+            feedContents: [],
+            tapContent: { _ in },
+            tapFavorite: { _, _ in }
+        )
+        .previewDevice(.init(rawValue: "iPhone 12"))
+        .environment(\.colorScheme, .light)
+
+        FeedContentListView(
+            feedContents: [],
+            tapContent: { _ in },
+            tapFavorite: { _, _ in }
+        )
+        .previewDevice(.init(rawValue: "iPhone 12"))
+        .environment(\.colorScheme, .dark)
     }
 }
