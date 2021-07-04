@@ -13,19 +13,7 @@ For example, if you preview `AboutScreen.swift` file, change build scheme to `Ab
 ### Snapshot Testing
 
 - In this app, we introduce Snapshot Testing. Snapshots are saved in each Test module's `__Snapshots__` directory.
-- When you update component or view's appearance, you need to update current snapshots. You can update snapshots by making `assertPreviewSnapshot` function's `record` argument to `true`. Example is following.
-
-```swift
-// Change this 
-func testAppScreen() {
-    assertPreviewScreenSnapshot(AppScreen_Previews.self)
-}
-
-// To following
-func testAppScreen() {
-    assertPreviewScreenSnapshot(AppScreen_Previews.self, record: true)
-}
-```
+- When component or view's appearance are updated, there is no need to update snapshots in PR. CI will automaticaly update snapshots.
 
 ## Requirements
 

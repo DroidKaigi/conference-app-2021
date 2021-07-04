@@ -2,6 +2,7 @@ import SnapshotTesting
 import SwiftUI
 import XCTest
 
+/// Initialize SnapshotTesting with Environment Variable
 public func initSnapshotTesting() {
     isRecording = ProcessInfo.processInfo.environment["recording"] == "true"
 }
@@ -33,6 +34,15 @@ public func assertPreviewSnapshot<T: PreviewProvider>(
     }
 }
 
+/// Asserts that a given preview contents match on disk for Screen.
+///
+/// - Parameters:
+///   - target: Target preview type.
+///   - devices: Target devices.
+///   - recording: Whether or not to record a new reference. If component that was already recorded, make this property to `true` and re-test.
+///   - file: The file in which failure occurred. Defaults to the file name of the test case in which this function was called.
+///   - testName: The name of the test in which failure occurred. Defaults to the function name of the test case in which this function was called.
+///   - line: The line number on which failure occurred. Defaults to the line number on which this function was called.
 public func assertPreviewScreenSnapshot<T: PreviewProvider>(
     _ target: T.Type,
     with devices: [TestDevice] = [.iPhoneX, .iPhone8, .iPhoneSe],
