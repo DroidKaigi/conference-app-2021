@@ -52,8 +52,8 @@ public struct MediaSection: View {
     }
 }
 
+#if DEBUG
 public struct MediaSection_Previews: PreviewProvider {
-
     public static var previews: some View {
         let sizeCategories: [ContentSizeCategory] = [
             .large, // Default
@@ -87,3 +87,4 @@ public struct MediaSection_Previews: PreviewProvider {
         .accentColor(AssetColor.primary.color)
     }
 }
+#endif

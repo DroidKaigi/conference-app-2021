@@ -45,6 +45,7 @@ public struct FavoritesScreen: View {
     }
 }
 
+#if DEBUG
 public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
         FavoritesScreen(
@@ -86,3 +87,4 @@ public struct FavoritesScreen_Previews: PreviewProvider {
         .environment(\.colorScheme, .dark)
     }
 }
+#endif

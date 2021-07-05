@@ -182,6 +182,7 @@ private extension MediaListAction {
     }
 }
 
+#if DEBUG
 public struct MediaListView_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
@@ -203,3 +204,4 @@ public struct MediaListView_Previews: PreviewProvider {
         .accentColor(AssetColor.primary.color)
     }
 }
+#endif

@@ -57,6 +57,7 @@ extension FeedContentListView {
     }
 }
 
+#if DEBUG
 public struct FeedContentListView_Previews: PreviewProvider {
     public static var previews: some View {
         FeedContentListView(
@@ -90,3 +91,4 @@ public struct FeedContentListView_Previews: PreviewProvider {
         .environment(\.colorScheme, .dark)
     }
 }
+#endif
