@@ -2,54 +2,31 @@ import Model
 import Component
 import ComposableArchitecture
 
-// TODO: Replace to real models
-public struct FavoriteItem: Equatable, Identifiable {
-    public let id: UUID = UUID()
-    let title: String = "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトル"
-    let isFavorited: Bool
-    let imageURL: URL? = nil
-    let tag: Media = .medium
-    let date: Date = Date(timeIntervalSince1970: 0)
-
-    public init(isFavorited: Bool) {
-        self.isFavorited = isFavorited
-    }
-}
-
 public struct FavoritesState: Equatable {
-    // TODO: Replace to real models
-    public var items: [FavoriteItem]
+    public var contents: [FeedContent]
 
-    public init(items: [FavoriteItem] = []) {
-        self.items = items
+    public init(contents: [FeedContent] = []) {
+        self.contents = contents
     }
 }
 
 public enum FavoritesAction {
     case refresh
-    case tap(FavoriteItem)
-    case favorite(FavoriteItem)
+    case tap(FeedContent)
+    case tapFavorite(isFavorited: Bool, id: String)
 }
 
 public struct FavoritesEnvironment {
     public init() {}
 }
 
-public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> { state, action, _ in
+public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, FavoritesEnvironment> { _, action, _ in
     switch action {
     case .refresh:
-        state.items = [
-            .init(isFavorited: true),
-            .init(isFavorited: false),
-            .init(isFavorited: true),
-            .init(isFavorited: false),
-            .init(isFavorited: true),
-            .init(isFavorited: false)
-        ]
         return .none
-    case .tap(let item):
+    case .tap(let content):
         return .none
-    case .favorite:
+    case .tapFavorite:
         return .none
     }
 }

@@ -16,6 +16,7 @@ public struct MediaListState: Equatable {
 
     enum Next: Equatable {
         case searchText(String)
+        case isEditingDidChange(Bool)
         case more(for: MediaType)
     }
 
@@ -39,9 +40,11 @@ public enum MediaAction: Equatable {
 
 public enum MediaListAction: Equatable {
     case searchTextDidChange(to: String?)
-    case willDismissSearchController
+    case isEditingDidChange(to: Bool)
     case showMore(for: MediaType)
     case moreDismissed
+    case tap(FeedContent)
+    case tapFavorite(isFavorited: Bool, id: String)
 }
 
 public struct MediaEnvironment {
@@ -52,16 +55,21 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, a
     switch action {
     case let .searchTextDidChange(to: searchText):
         switch state.next {
-        case nil,
-             .searchText:
+        case nil, .searchText, .isEditingDidChange:
             state.next = searchText.map { .searchText($0) }
         default:
             break
         }
         return .none
-    case .willDismissSearchController:
-        if case .searchText = state.next {
-            state.next = nil
+    case let .isEditingDidChange(isEditing):
+        switch state.next {
+        case nil, .searchText, .isEditingDidChange:
+            state.next = .isEditingDidChange(isEditing)
+            if !isEditing {
+                state.next = nil
+            }
+        default:
+            break
         }
         return .none
     case let .showMore(mediaType):
@@ -73,6 +81,10 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, a
         if case .more = state.next {
             state.next = nil
         }
+        return .none
+    case .tap(let content):
+        return .none
+    case .tapFavorite(let isFavorited, let contentId):
         return .none
     }
 }
@@ -123,88 +135,5 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
 )
 
 private extension MediaAction {
-    static let mockItemsLoads: Self = .itemsLoaded(.mockBlogs + .mockVideos + .mockPodcasts)
-}
-
-extension MediaListState {
-    static let mock: Self = .init(blogs: .mockBlogs, videos: .mockVideos, podcasts: .mockPodcasts, next: nil)
-}
-
-extension Array where Element == FeedContent {
-    static let mockBlogs: Self = [
-        Blog(
-            id: "0",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .medium,
-            publishedAt: Date(timeIntervalSince1970: 0),
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
-            author: .init(link: "", name: ""),
-            language: ""
-        ),
-        Blog(
-            id: "1",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .medium,
-            publishedAt: Date(timeIntervalSince1970: 0),
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Codelabs"),
-            author: .init(link: "", name: ""),
-            language: ""
-        ),
-    ]
-    .map(AnyFeedItem.init)
-    .map { .init(item: $0, isFavorited: false) }
-
-    static let mockVideos: Self = [
-        Video(
-            id: "0",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .youtube,
-            publishedAt: Date(timeIntervalSince1970: 0),
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
-        ),
-        Video(
-            id: "1",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .youtube,
-            publishedAt: Date(timeIntervalSince1970: 0),
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - Day 2 Night Session")
-        ),
-    ]
-    .map(AnyFeedItem.init)
-    .map { .init(item: $0, isFavorited: false) }
-
-    static let mockPodcasts: Self = [
-        Podcast(
-            id: "0",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .droidKaigiFm,
-            podcastLink: "",
-            publishedAt: Date(timeIntervalSince1970: 0),
-            speakers: [],
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
-        ),
-        Podcast(
-            id: "1",
-            image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
-            link: "",
-            media: .droidKaigiFm,
-            podcastLink: "",
-            publishedAt: Date(timeIntervalSince1970: 0),
-            speakers: [],
-            summary: .init(enTitle: "", jaTitle: ""),
-            title: .init(enTitle: "", jaTitle: "5. Notificiationよもやま話")
-        ),
-    ]
-    .map(AnyFeedItem.init)
-    .map { .init(item: $0, isFavorited: false) }
+    static let mockItemsLoads: Self = .itemsLoaded([])
 }
