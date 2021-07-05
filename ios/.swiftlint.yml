@@ -7,3 +7,6 @@ excluded:
   - .build
   - Tools/.build
   - Sources/Styleguide/Generated
+
+identifier_name:
+  min_length: 2

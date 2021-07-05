@@ -12,6 +12,8 @@ public struct MediaSection: View {
 
     enum ViewAction {
         case showMore
+        case tap(FeedContent)
+        case tapFavorite(isFavorited: Bool, id: String)
     }
 
     public var body: some View {
@@ -32,8 +34,12 @@ public struct MediaSection: View {
                                 tag: item.media,
                                 date: item.publishedAt,
                                 isFavorited: content.isFavorited,
-                                tapAction: {},
-                                tapFavoriteAction: {}
+                                tapAction: {
+                                    viewStore.send(.tap(content))
+                                },
+                                tapFavoriteAction: {
+                                    viewStore.send(.tapFavorite(isFavorited: content.isFavorited, id: content.id))
+                                }
                             )
                             .aspectRatio(257.0 / 258, contentMode: .fit)
                         }
@@ -46,8 +52,8 @@ public struct MediaSection: View {
     }
 }
 
+#if DEBUG
 public struct MediaSection_Previews: PreviewProvider {
-
     public static var previews: some View {
         let sizeCategories: [ContentSizeCategory] = [
             .large, // Default
@@ -58,7 +64,18 @@ public struct MediaSection_Previews: PreviewProvider {
                 MediaSection(
                     icon: AssetImage.iconBlog.image.renderingMode(.template),
                     title: L10n.MediaScreen.Section.Blog.title,
-                    store: .init(initialState: .mockBlogs, reducer: .empty, environment: {})
+                    store: .init(
+                        initialState: [
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                        ],
+                        reducer: .empty,
+                        environment: {}
+                    )
                 )
                 .background(AssetColor.Background.primary.color)
                 .environment(\.sizeCategory, sizeCategory)
@@ -70,3 +87,4 @@ public struct MediaSection_Previews: PreviewProvider {
         .accentColor(AssetColor.primary.color)
     }
 }
+#endif

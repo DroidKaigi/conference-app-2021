@@ -25,25 +25,55 @@ extension Array where Element == FeedContent {
 
 #if DEBUG
 public extension FeedContent {
-    static func mock(
-        id: String = UUID().uuidString,
-        imageURLString: String = "",
-        link: String = "",
-        media: Media = .medium,
-        publishedAt: Date = Date(timeIntervalSince1970: 0),
-        summary: String = "",
-        title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"
-    ) -> FeedContent {
+    static func blogMock(id: UUID = UUID()) -> Self {
         .init(
-            item: .init(
+            item: AnyFeedItem(
+                Blog(
+                    id: id.uuidString,
+                    image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+                    link: "",
+                    media: .medium,
+                    publishedAt: Date(timeIntervalSince1970: 0),
+                    summary: .init(enTitle: "", jaTitle: ""),
+                    title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
+                    author: .init(link: "", name: ""),
+                    language: ""
+                )
+            ),
+            isFavorited: false
+        )
+    }
+
+    static func podcastMock(id: UUID = UUID()) -> Self {
+        .init(
+            item: AnyFeedItem(
+                Podcast(
+                    id: id.uuidString,
+                    image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+                    link: "",
+                    media: .droidKaigiFm,
+                    podcastLink: "",
+                    publishedAt: Date(timeIntervalSince1970: 0),
+                    speakers: [],
+                    summary: .init(enTitle: "", jaTitle: ""),
+                    title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
+                )
+            ),
+            isFavorited: false
+        )
+    }
+
+    static func videoMock(id: UUID = UUID()) -> Self {
+        .init(
+            item: AnyFeedItem(
                 Video(
-                    id: id,
-                    image: .init(largeURLString: imageURLString, smallURLString: "", standardURLString: ""),
-                    link: link,
-                    media: media,
-                    publishedAt: publishedAt,
-                    summary: .init(enTitle: summary, jaTitle: summary),
-                    title: .init(enTitle: title, jaTitle: title)
+                    id: id.uuidString,
+                    image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
+                    link: "",
+                    media: .youtube,
+                    publishedAt: Date(timeIntervalSince1970: 0),
+                    summary: .init(enTitle: "", jaTitle: ""),
+                    title: .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
                 )
             ),
             isFavorited: false

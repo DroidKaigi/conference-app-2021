@@ -30,6 +30,18 @@ object Dep {
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha06"
+
+        const val core = "androidx.core:core-ktx:1.5.0-beta01"
+        const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
+        const val activity = "androidx.activity:activity-ktx:1.2.0"
+        const val lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
+        const val hiltCommon = "androidx.hilt:hilt-common:1.0.0-alpha03"
+        const val hiltLifeCycleViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
+
+        object Test {
+            const val ext = "androidx.test.ext:junit:1.1.2"
+            const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
+        }
     }
 
     object MultiplatformSettings {
@@ -107,20 +119,6 @@ object Dep {
 
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
-
-    object AndroidX {
-        const val core = "androidx.core:core-ktx:1.5.0-beta01"
-        const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
-        const val activity = "androidx.activity:activity-ktx:1.2.0"
-        const val lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
-        const val hiltCommon = "androidx.hilt:hilt-common:1.0.0-alpha03"
-        const val hiltLifeCycleViewModel = "androidx.hilt:hilt-lifecycle-viewmodel:1.0.0-alpha03"
-
-        object Test {
-            const val ext = "androidx.test.ext:junit:1.1.2"
-            const val espresso = "androidx.test.espresso:espresso-core:3.3.0"
-        }
-    }
 
     const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 

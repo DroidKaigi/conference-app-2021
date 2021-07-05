@@ -19,17 +19,25 @@ struct MediaListView: View {
         var hasVideos: Bool
         var hasPodcasts: Bool
         var isSearchResultVisible: Bool
+        var isSearchTextEditing: Bool
         var isMoreActive: Bool
 
         init(state: MediaListState) {
             hasBlogs = !state.blogs.isEmpty
             hasVideos = !state.videos.isEmpty
             hasPodcasts = !state.podcasts.isEmpty
-            if case let .searchText(text) = state.next,
-               !text.isEmpty {
+            if case let .searchText(text) = state.next, !text.isEmpty {
                 isSearchResultVisible = true
             } else {
                 isSearchResultVisible = false
+            }
+            switch state.next {
+            case .isEditingDidChange(let isEditing):
+                isSearchTextEditing = isEditing
+            case .searchText:
+                isSearchTextEditing = true
+            default:
+                isSearchTextEditing = false
             }
             if case .more = state.next {
                 isMoreActive = true
@@ -82,16 +90,31 @@ struct MediaListView: View {
             .separatorStyle(ThickSeparatorStyle())
             .zIndex(0)
 
-            if viewStore.isSearchResultVisible {
-                SearchResultView()
-                    .zIndex(1)
-            }
+            Color.black.opacity(0.4)
+                .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
+                .animation(.easeInOut)
+                .zIndex(1)
+
+            // TODO: show filtered result of feed contents
+            // Also, make tap & favorite action works
+            SearchResultScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
+            .zIndex(2)
         }
         .background(
             NavigationLink(
                 destination: IfLetStore(
-                    self.store.actionless.scope(state: MediaDetail.ViewState.init(state:)),
-                    then: MediaDetail.init(store:)
+                    store.scope(
+                        state: MediaDetailScreen.ViewState.init(state:),
+                        action: MediaListAction.init(action:)
+                    ),
+                    then: MediaDetailScreen.init(store:)
                 ),
                 isActive: viewStore.binding(
                     get: \.isMoreActive,
@@ -118,7 +141,7 @@ private extension MediaListAction {
     }
 }
 
-private extension MediaDetail.ViewState {
+private extension MediaDetailScreen.ViewState {
     init?(state: MediaListState) {
         guard case let .more(mediaType) = state.next else {
             return nil
@@ -126,13 +149,13 @@ private extension MediaDetail.ViewState {
         switch mediaType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
-            feedContents = state.blogs
+            contents = state.blogs
         case .video:
             title = L10n.MediaScreen.Section.Video.title
-            feedContents = state.videos
+            contents = state.videos
         case .podcast:
             title = L10n.MediaScreen.Section.Podcast.title
-            feedContents = state.podcasts
+            contents = state.podcasts
         }
     }
 }
@@ -142,16 +165,35 @@ private extension MediaListAction {
         switch action {
         case .showMore:
             self = .showMore(for: mediaType)
+        case .tap(let content):
+            self = .tap(content)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        }
+    }
+
+    init(action: MediaDetailScreen.ViewAction) {
+        switch action {
+        case .tap(let content):
+            self = .tap(content)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
         }
     }
 }
 
+#if DEBUG
 public struct MediaListView_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaListView(
                 store: .init(
-                    initialState: .mock,
+                    initialState: .init(
+                        blogs: [.blogMock(), .blogMock()],
+                        videos: [.videoMock(), .videoMock()],
+                        podcasts: [.podcastMock(), .podcastMock()],
+                        next: nil
+                    ),
                     reducer: .empty,
                     environment: {}
                 )
@@ -162,3 +204,4 @@ public struct MediaListView_Previews: PreviewProvider {
         .accentColor(AssetColor.primary.color)
     }
 }
+#endif

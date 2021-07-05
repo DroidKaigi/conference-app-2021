@@ -98,7 +98,7 @@ public struct HomeScreen_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
             HomeScreen(
                 store: .init(
-                    initialState: .initialized(.init(feedContents: [.mock(), .mock()])),
+                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
                     reducer: .empty,
                     environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
                 )
@@ -107,7 +107,7 @@ public struct HomeScreen_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             HomeScreen(
                 store: .init(
-                    initialState: .initialized(.init(feedContents: [.mock(), .mock()])),
+                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
                     reducer: .empty,
                     environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
                 )

@@ -17,26 +17,15 @@ public struct FavoritesScreen: View {
         NavigationView {
             ScrollView {
                 WithViewStore(store) { viewStore in
-                    LazyVGrid(
-                        columns: Array(
-                            repeating: GridItem(.flexible(), spacing: .zero),
-                            count: 2
-                        ),
-                        spacing: 16
-                    ) {
-                        ForEach(viewStore.items) { item in
-                            createCard(
-                                item: item,
-                                tapAction: {
-                                    viewStore.send(.tap(item))
-                                },
-                                tapFavoritesAction: {
-                                    viewStore.send(.favorite(item))
-                                }
-                            )
-                            .padding(8)
+                    FeedContentListView(
+                        feedContents: viewStore.contents,
+                        tapContent: { content in
+                            viewStore.send(.tap(content))
+                        },
+                        tapFavorite: { isFavorited, contentId in
+                            viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
                         }
-                    }
+                    )
                     .onAppear {
                         viewStore.send(.refresh)
                     }
@@ -56,25 +45,21 @@ public struct FavoritesScreen: View {
     }
 }
 
-extension FavoritesScreen {
-    private func createCard(item: FavoriteItem, tapAction: @escaping () -> Void, tapFavoritesAction: @escaping () -> Void) -> some View {
-        SmallCard(
-            title: item.title,
-            imageURL: item.imageURL,
-            tag: item.tag,
-            date: item.date,
-            isFavorited: item.isFavorited,
-            tapAction: tapAction,
-            tapFavoriteAction: tapFavoritesAction
-        )
-    }
-}
-
+#if DEBUG
 public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
         FavoritesScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .videoMock(),
+                        .videoMock(),
+                        .podcastMock(),
+                        .podcastMock()
+                    ]
+                ),
                 reducer: favoritesReducer,
                 environment: .init()
             )
@@ -84,7 +69,16 @@ public struct FavoritesScreen_Previews: PreviewProvider {
 
         FavoritesScreen(
             store: .init(
-                initialState: .init(),
+                initialState: .init(
+                    contents: [
+                        .blogMock(),
+                        .blogMock(),
+                        .videoMock(),
+                        .videoMock(),
+                        .podcastMock(),
+                        .podcastMock()
+                    ]
+                ),
                 reducer: favoritesReducer,
                 environment: .init()
             )
@@ -93,3 +87,4 @@ public struct FavoritesScreen_Previews: PreviewProvider {
         .environment(\.colorScheme, .dark)
     }
 }
+#endif

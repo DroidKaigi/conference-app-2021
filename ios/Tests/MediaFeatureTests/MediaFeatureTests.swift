@@ -6,9 +6,9 @@ final class MediaFeatureTests: XCTestCase {
     override func setUp() {
         initSnapshotTesting()
     }
-    
-    func testMediaDetail() {
-        assertPreviewScreenSnapshot(MediaDetail_Previews.self)
+
+    func testMediaDetailScreen() {
+        assertPreviewScreenSnapshot(MediaDetailScreen_Previews.self)
     }
 
     func testMediaListView() {
@@ -27,7 +27,7 @@ final class MediaFeatureTests: XCTestCase {
         assertPreviewSnapshot(MediaSectionHeader_Previews.self)
     }
 
-    func testSearchResultView() {
-        assertPreviewScreenSnapshot(SearchResultView_Previews.self)
+    func testSearchResultScreen() {
+        assertPreviewScreenSnapshot(SearchResultScreen_Previews.self)
     }
 }

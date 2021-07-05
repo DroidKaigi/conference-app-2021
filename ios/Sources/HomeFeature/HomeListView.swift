@@ -93,7 +93,7 @@ public struct HomeListView_Previews: PreviewProvider {
         HomeListView(
             store: .init(
                 initialState: .init(
-                    feedContents: [.mock(), .mock(), .mock()]
+                    feedContents: [.videoMock(), .videoMock(), .videoMock()]
                 ),
                 reducer: .empty,
                 environment: {}
@@ -105,7 +105,7 @@ public struct HomeListView_Previews: PreviewProvider {
         HomeListView(
             store: .init(
                 initialState: .init(
-                    feedContents: [.mock(), .mock(), .mock()]
+                    feedContents: [.videoMock(), .videoMock(), .videoMock()]
                 ),
                 reducer: .empty,
                 environment: {}

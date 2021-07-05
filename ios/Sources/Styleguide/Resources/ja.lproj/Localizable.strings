@@ -10,6 +10,7 @@
 "MediaScreen.Section.Video.Title" = "VIDEO";
 "MediaScreen.Section.Podcast.Title" = "PODCAST";
 "MediaScreen.Section.More" = "More";
+"SearchResultScreen.Empty.Title" = "該当するものが見つかりませんでした。";
 
 // MARK: Favorite
 "FavoriteScreen.Title" = "Favorites";
