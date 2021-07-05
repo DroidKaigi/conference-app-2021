@@ -101,6 +101,7 @@ public struct ListItem: View {
     }
 }
 
+#if DEBUG
 public struct ListItem_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
@@ -158,3 +159,4 @@ public struct ListItem_Previews: PreviewProvider {
         .previewLayout(.sizeThatFits)
     }
 }
+#endif

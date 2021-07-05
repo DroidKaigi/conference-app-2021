@@ -74,6 +74,7 @@ private extension HomeAction {
     }
 }
 
+#if DEBUG
 public struct HomeScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
@@ -116,3 +117,4 @@ public struct HomeScreen_Previews: PreviewProvider {
         }
     }
 }
+#endif

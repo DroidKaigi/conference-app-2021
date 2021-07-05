@@ -87,6 +87,7 @@ private extension ListItem {
     }
 }
 
+#if DEBUG
 public struct HomeListView_Previews: PreviewProvider {
     public static var previews: some View {
         HomeListView(
@@ -114,3 +115,4 @@ public struct HomeListView_Previews: PreviewProvider {
         .environment(\.colorScheme, .light)
     }
 }
+#endif
