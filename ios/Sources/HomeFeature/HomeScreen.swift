@@ -74,7 +74,6 @@ private extension HomeAction {
     }
 }
 
-#if DEBUG
 public struct HomeScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
@@ -117,31 +116,3 @@ public struct HomeScreen_Previews: PreviewProvider {
         }
     }
 }
-
-extension FeedContent {
-    static func mock(
-        id: String = UUID().uuidString,
-        imageURLString: String = "",
-        link: String = "",
-        media: Media = .medium,
-        publishedAt: Date = Date(timeIntervalSince1970: 0),
-        summary: String = "",
-        title: String = "DroidKaigi 2021とその他活動予定についてのお知らせ"
-    ) -> FeedContent {
-        .init(
-            item: .init(
-                Video(
-                    id: id,
-                    image: .init(largeURLString: imageURLString, smallURLString: "", standardURLString: ""),
-                    link: link,
-                    media: media,
-                    publishedAt: publishedAt,
-                    summary: .init(enTitle: summary, jaTitle: summary),
-                    title: .init(enTitle: title, jaTitle: title)
-                )
-            ),
-            isFavorited: false
-        )
-    }
-}
-#endif
