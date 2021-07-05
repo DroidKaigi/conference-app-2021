@@ -44,7 +44,7 @@ public enum MediaListAction: Equatable {
     case showMore(for: MediaType)
     case moreDismissed
     case tap(FeedContent)
-    case favorite(String)
+    case tapFavorite(isFavorited: Bool, id: String)
 }
 
 public struct MediaEnvironment {
@@ -84,7 +84,7 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, Void> { state, a
         return .none
     case .tap(let content):
         return .none
-    case .favorite(let contentId):
+    case .tapFavorite(let isFavorited, let contentId):
         return .none
     }
 }

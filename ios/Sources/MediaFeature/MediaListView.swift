@@ -167,8 +167,8 @@ private extension MediaListAction {
             self = .showMore(for: mediaType)
         case .tap(let content):
             self = .tap(content)
-        case .favorite(let contentId):
-            self = .favorite(contentId)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
         }
     }
 
@@ -176,8 +176,8 @@ private extension MediaListAction {
         switch action {
         case .tap(let content):
             self = .tap(content)
-        case .favorite(let contentId):
-            self = .favorite(contentId)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
         }
     }
 }

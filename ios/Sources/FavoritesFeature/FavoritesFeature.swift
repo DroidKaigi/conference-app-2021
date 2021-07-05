@@ -13,7 +13,7 @@ public struct FavoritesState: Equatable {
 public enum FavoritesAction {
     case refresh
     case tap(FeedContent)
-    case favorite(String)
+    case tapFavorite(isFavorited: Bool, id: String)
 }
 
 public struct FavoritesEnvironment {
@@ -26,7 +26,7 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
         return .none
     case .tap(let content):
         return .none
-    case .favorite:
+    case .tapFavorite:
         return .none
     }
 }

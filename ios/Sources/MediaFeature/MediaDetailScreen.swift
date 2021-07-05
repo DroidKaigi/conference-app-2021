@@ -22,7 +22,7 @@ public struct MediaDetailScreen: View {
 
     enum ViewAction {
         case tap(FeedContent)
-        case favorite(String)
+        case tapFavorite(isFavorited: Bool, id: String)
     }
 
     public var body: some View {
@@ -33,8 +33,8 @@ public struct MediaDetailScreen: View {
                     tapContent: { content in
                         viewStore.send(.tap(content))
                     },
-                    tapFavorite: { _, contentId in
-                        viewStore.send(.favorite(contentId))
+                    tapFavorite: { isFavorited, contentId in
+                        viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
                     }
                 )
                 .padding(.horizontal, 8)
