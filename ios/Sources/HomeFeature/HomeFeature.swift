@@ -5,7 +5,7 @@ import Repository
 
 public enum HomeState: Equatable {
     case needToInitialize
-    case initialized(HomeContentState)
+    case initialized(HomeListState)
 
     public init() {
         self = .needToInitialize
@@ -15,7 +15,7 @@ public enum HomeState: Equatable {
 public enum HomeAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
-    case homeContent(HomeContentAction)
+    case homeList(HomeListAction)
 }
 
 public struct HomeEnvironment {
@@ -29,9 +29,9 @@ public struct HomeEnvironment {
 }
 
 public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment>.combine(
-    homeContentReducer.pullback(
+    HomeListReducer.pullback(
         state: /HomeState.initialized,
-        action: /HomeAction.homeContent,
+        action: /HomeAction.homeList,
         environment: {
             .init(feedRepository: $0.feedRepository)
         }
@@ -51,7 +51,7 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment>.combine
             print(error.localizedDescription)
             // TODO: Error handling
             return .none
-        case .homeContent:
+        case .homeList:
             return .none
         }
     }

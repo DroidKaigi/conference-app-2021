@@ -6,13 +6,13 @@ final class HomeFeatureTests: XCTestCase {
     override func setUp() {
         initSnapshotTesting()
     }
-    
+
     func testHomeScreen() {
         assertPreviewScreenSnapshot(HomeScreen_Previews.self)
     }
-    
-    func testHomeContentView() {
-        assertPreviewScreenSnapshot(HomeContentView_Previews.self)
+
+    func testHomeListView() {
+        assertPreviewScreenSnapshot(HomeListView_Previews.self)
     }
 
     func testQuestionnaireView() {

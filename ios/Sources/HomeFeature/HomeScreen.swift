@@ -39,7 +39,7 @@ public struct HomeScreen: View {
                         CaseLet(
                             state: /HomeState.initialized,
                             action: HomeAction.init(action:),
-                            then: HomeContentView.init(store:))
+                            then: HomeListView.init(store:))
                     }
                 }
             }
@@ -69,8 +69,8 @@ private extension HomeAction {
         }
     }
 
-    init(action: HomeContentAction) {
-        self = .homeContent(action)
+    init(action: HomeListAction) {
+        self = .homeList(action)
     }
 }
 

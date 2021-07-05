@@ -2,7 +2,7 @@ import ComposableArchitecture
 import Model
 import Repository
 
-public struct HomeContentState: Equatable {
+public struct HomeListState: Equatable {
     public var feedContents: [FeedContent]
     public var message: String {
         "Finished! 🤖"
@@ -21,14 +21,14 @@ public struct HomeContentState: Equatable {
     }
 }
 
-public enum HomeContentAction {
+public enum HomeListAction {
     case selectFeedContent
     case tapFavorite(FeedContent)
     case favoriteResponse(Result<FeedContent, KotlinError>)
     case answerQuestionnaire
 }
 
-public struct HomeContentEnvironment {
+public struct HomeListEnvironment {
     public let feedRepository: FeedRepositoryProtocol
 
     public init(
@@ -38,7 +38,7 @@ public struct HomeContentEnvironment {
     }
 }
 
-public let homeContentReducer = Reducer<HomeContentState, HomeContentAction, HomeContentEnvironment> { state, action, environment in
+public let HomeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvironment> { state, action, environment in
     switch action {
     case .selectFeedContent:
         // TODO: open content page
@@ -48,12 +48,12 @@ public let homeContentReducer = Reducer<HomeContentState, HomeContentAction, Hom
             return environment.feedRepository.removeFavorite(feedItem: feedContent.item)
                 .map { _ in feedContent }
                 .catchToEffect()
-                .map(HomeContentAction.favoriteResponse)
+                .map(HomeListAction.favoriteResponse)
         } else {
             return environment.feedRepository.addFavorite(feedItem: feedContent.item)
                 .map { _ in feedContent }
                 .catchToEffect()
-                .map(HomeContentAction.favoriteResponse)
+                .map(HomeListAction.favoriteResponse)
         }
     case let .favoriteResponse(.success(feedContent)):
         if let index = state.feedContents.firstIndex(of: feedContent) {

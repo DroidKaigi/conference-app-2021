@@ -3,10 +3,10 @@ import ComposableArchitecture
 import Model
 import SwiftUI
 
-public struct HomeContentView: View {
-    private let store: Store<HomeContentState, HomeContentAction>
+public struct HomeListView: View {
+    private let store: Store<HomeListState, HomeListAction>
 
-    public init(store: Store<HomeContentState, HomeContentAction>) {
+    public init(store: Store<HomeListState, HomeListAction>) {
         self.store = store
     }
 
@@ -87,9 +87,9 @@ private extension ListItem {
     }
 }
 
-public struct HomeContentView_Previews: PreviewProvider {
+public struct HomeListView_Previews: PreviewProvider {
     public static var previews: some View {
-        HomeContentView(
+        HomeListView(
             store: .init(
                 initialState: .init(
                     feedContents: [.mock(), .mock(), .mock()]
@@ -101,7 +101,7 @@ public struct HomeContentView_Previews: PreviewProvider {
         .background(Color.black)
         .previewLayout(.sizeThatFits)
         .environment(\.colorScheme, .dark)
-        HomeContentView(
+        HomeListView(
             store: .init(
                 initialState: .init(
                     feedContents: [.mock(), .mock(), .mock()]
