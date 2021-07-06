@@ -74,7 +74,13 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
                 break
             }
             return .none
-        case .media:
+        case .media(let mediaAction):
+            switch mediaAction {
+            case .showSettings:
+                state.isSettingPresented = true
+            default:
+                break
+            }
             return .none
         case .favorites(let favoritesAction):
             switch favoritesAction {
