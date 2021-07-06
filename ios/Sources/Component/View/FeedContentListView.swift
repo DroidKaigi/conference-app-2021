@@ -48,7 +48,7 @@ extension FeedContentListView {
         SmallCard(
             title: content.item.title.jaTitle,
             imageURL: URL(string: content.item.image.smallURLString),
-            tag: content.item.media,
+            media: content.item.media,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
