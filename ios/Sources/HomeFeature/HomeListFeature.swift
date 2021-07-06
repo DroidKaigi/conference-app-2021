@@ -23,8 +23,8 @@ public struct HomeListState: Equatable {
 
 public enum HomeListAction {
     case selectFeedContent
-    case tapFavorite(FeedContent)
-    case favoriteResponse(Result<FeedContent, KotlinError>)
+    case tapFavorite(isFavorited: Bool, id: String)
+    case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
 }
 
@@ -43,20 +43,16 @@ public let HomeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvi
     case .selectFeedContent:
         // TODO: open content page
         return .none
-    case let .tapFavorite(feedContent):
-        if feedContent.isFavorited {
-            return environment.feedRepository.removeFavorite(feedItem: feedContent.item)
-                .map { _ in feedContent }
-                .catchToEffect()
-                .map(HomeListAction.favoriteResponse)
-        } else {
-            return environment.feedRepository.addFavorite(feedItem: feedContent.item)
-                .map { _ in feedContent }
-                .catchToEffect()
-                .map(HomeListAction.favoriteResponse)
-        }
-    case let .favoriteResponse(.success(feedContent)):
-        if let index = state.feedContents.firstIndex(of: feedContent) {
+    case .tapFavorite(let isFavorited, let id):
+        let publisher = isFavorited
+            ? environment.feedRepository.removeFavorite(id: id)
+            : environment.feedRepository.addFavorite(id: id)
+        return publisher
+            .map { id }
+            .catchToEffect()
+            .map(HomeListAction.favoriteResponse)
+    case let .favoriteResponse(.success(id)):
+        if let index = state.feedContents.map(\.id).firstIndex(of: id) {
             state.feedContents[index].isFavorited.toggle()
         }
         return .none
