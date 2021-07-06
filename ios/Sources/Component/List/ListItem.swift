@@ -8,7 +8,7 @@ public struct ListItem: View {
     }
 
     private let title: String
-    private let tag: Media
+    private let media: Media
     private let imageURL: URL?
     private let speakers: [Speaker]
     private let date: Date
@@ -18,7 +18,7 @@ public struct ListItem: View {
 
     public init(
         title: String,
-        tag: Media,
+        media: Media,
         imageURL: URL?,
         speakers: [Speaker],
         date: Date,
@@ -27,7 +27,7 @@ public struct ListItem: View {
         tapAction: @escaping () -> Void
     ) {
         self.title = title
-        self.tag = tag
+        self.media = media
         self.imageURL = imageURL
         self.speakers = speakers
         self.date = date
@@ -38,9 +38,8 @@ public struct ListItem: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            Tag(type: tag) {
-                // Set action if needed.
-            }
+            Tag(media: media)
+
             HStack(alignment: .top) {
                 VStack(spacing: 8) {
                     ImageView(
@@ -107,7 +106,7 @@ public struct ListItem_Previews: PreviewProvider {
         Group {
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
                 speakers: [],
                 date: Date(timeIntervalSince1970: 0),
@@ -120,7 +119,7 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
                 speakers: [],
                 date: Date(timeIntervalSince1970: 0),
@@ -132,7 +131,7 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
                 speakers: Array(repeating: .mock(), count: 8),
                 date: Date(timeIntervalSince1970: 0),
@@ -145,7 +144,7 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
                 speakers: Array(repeating: .mock(), count: 8),
                 date: Date(timeIntervalSince1970: 0),

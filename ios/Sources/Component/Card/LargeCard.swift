@@ -5,7 +5,7 @@ import Styleguide
 public struct LargeCard: View {
     private let title: String
     private let imageURL: URL?
-    private let tag: Media
+    private let media: Media
     private let date: Date
     private let isFavorited: Bool
     private let tapAction: () -> Void
@@ -14,7 +14,7 @@ public struct LargeCard: View {
     public init(
         title: String,
         imageURL: URL?,
-        tag: Media,
+        media: Media,
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
@@ -22,7 +22,7 @@ public struct LargeCard: View {
     ) {
         self.title = title
         self.imageURL = imageURL
-        self.tag = tag
+        self.media = media
         self.date = date
         self.isFavorited = isFavorited
         self.tapAction = tapAction
@@ -39,17 +39,13 @@ public struct LargeCard: View {
                     width: geometry.size.width,
                     height: geometry.size.width * 190/343
                 )
-
                 VStack(alignment: .leading, spacing: 13) {
                     Text(title)
                         .font(.headline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(2)
-
                     HStack(spacing: 8) {
-                        Tag(type: tag) {
-                            // do something if needed
-                        }
+                        Tag(media: media)
 
                         Text(date.formatted)
                             .font(.caption)
@@ -78,7 +74,7 @@ public struct LargeCard_Previews: PreviewProvider {
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
@@ -90,7 +86,7 @@ public struct LargeCard_Previews: PreviewProvider {
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .medium,
+                media: .medium,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
@@ -102,7 +98,7 @@ public struct LargeCard_Previews: PreviewProvider {
             LargeCard(
                 title: "タイトル",
                 imageURL: URL(string: ""),
-                tag: .youtube,
+                media: .youtube,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
@@ -114,7 +110,7 @@ public struct LargeCard_Previews: PreviewProvider {
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
@@ -126,7 +122,7 @@ public struct LargeCard_Previews: PreviewProvider {
             LargeCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .medium,
+                media: .medium,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
@@ -138,7 +134,7 @@ public struct LargeCard_Previews: PreviewProvider {
             LargeCard(
                 title: "タイトル",
                 imageURL: URL(string: ""),
-                tag: .youtube,
+                media: .youtube,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
