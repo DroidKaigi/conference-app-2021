@@ -104,7 +104,6 @@ var package = Package(
             dependencies: [
                 .target(name: "Component"),
                 .target(name: "Model"),
-                .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
@@ -112,7 +111,6 @@ var package = Package(
         .target(
             name: "HomeFeature",
             dependencies: [
-                .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
                 .target(name: "Component"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),

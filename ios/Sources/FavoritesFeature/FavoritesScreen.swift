@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import Component
 import Introspect
-import SettingFeature
 import SwiftUI
 import Styleguide
 

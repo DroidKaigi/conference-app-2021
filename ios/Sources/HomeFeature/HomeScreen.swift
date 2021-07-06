@@ -1,7 +1,6 @@
 import Component
 import ComposableArchitecture
 import Model
-import SettingFeature
 import Styleguide
 import SwiftUI
 
