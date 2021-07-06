@@ -53,13 +53,13 @@ public struct HomeScreen: View {
                     }
                 }
                 .navigationBarItems(
-                    trailing: Button(
-                        action: { viewStore.send(.showSetting) }
-                    ) {
+                    trailing: Button(action: {
+                        viewStore.send(.showSetting)
+                    }, label: {
                         AssetImage.iconSetting.image
                             .renderingMode(.template)
                             .foregroundColor(AssetColor.Base.primary.color)
-                    }
+                    })
                 )
                 .introspectViewController { viewController in
                     viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
