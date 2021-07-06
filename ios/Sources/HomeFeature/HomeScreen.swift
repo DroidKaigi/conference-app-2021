@@ -56,21 +56,11 @@ public struct HomeScreen: View {
                 .navigationBarItems(
                     trailing: Button(action: {
                         viewStore.send(.showSettings)
-                    })
-                    {
+                    }) {
                         AssetImage.iconSetting.image
                             .renderingMode(.template)
                             .foregroundColor(AssetColor.Base.primary.color)
                     }
-                    .sheet(
-                        isPresented: viewStore.binding(
-                            get: \.isSettingPresented,
-                            send: .hideSettings
-                        ),
-                        content: {
-                            SettingScreen(isDarkModeOn: true, isLanguageOn: true)
-                        }
-                    )
                 )
                 .introspectViewController { viewController in
                     viewController.view.backgroundColor = AssetColor.Background.primary.uiColor

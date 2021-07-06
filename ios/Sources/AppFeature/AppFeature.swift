@@ -66,12 +66,18 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     ),
     .init { state, action, _ in
         switch action {
-        case .home:
+        case .home(let homeAction):
+            switch homeAction {
+            case .showSettings:
+                state.isSettingPresented = true
+            default:
+                break
+            }
             return .none
         case .media:
             return .none
-        case let .favorites(action):
-            switch action {
+        case .favorites(let favoritesAction):
+            switch favoritesAction {
             case .showSettings:
                 state.isSettingPresented = true
             default:
