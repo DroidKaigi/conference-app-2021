@@ -19,11 +19,9 @@ public struct FavoriteItem: Equatable, Identifiable {
 public struct FavoritesState: Equatable {
     // TODO: Replace to real models
     public var items: [FavoriteItem]
-    public var isSettingPresented: Bool
 
     public init(items: [FavoriteItem] = []) {
         self.items = items
-        self.isSettingPresented = false
     }
 }
 
@@ -32,7 +30,6 @@ public enum FavoritesAction {
     case tap(FavoriteItem)
     case favorite(FavoriteItem)
     case showSettings
-    case hideSettings
 }
 
 public struct FavoritesEnvironment {
@@ -55,11 +52,7 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
         return .none
     case .favorite:
         return .none
-    case .showSettings:
-        state.isSettingPresented = true
-        return .none
-    case .hideSettings:
-        state.isSettingPresented = false
+    default:
         return .none
     }
 }
