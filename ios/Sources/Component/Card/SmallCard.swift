@@ -5,7 +5,7 @@ import Styleguide
 public struct SmallCard: View {
     private let title: String
     private let imageURL: URL?
-    private let tag: Media
+    private let media: Media
     private let date: Date
     private let isFavorited: Bool
     private let tapAction: () -> Void
@@ -14,7 +14,7 @@ public struct SmallCard: View {
     public init(
         title: String,
         imageURL: URL?,
-        tag: Media,
+        media: Media,
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
@@ -22,7 +22,7 @@ public struct SmallCard: View {
     ) {
         self.title = title
         self.imageURL = imageURL
-        self.tag = tag
+        self.media = media
         self.date = date
         self.isFavorited = isFavorited
         self.tapAction = tapAction
@@ -53,9 +53,7 @@ public struct SmallCard: View {
                 }
 
                 HStack(spacing: 8) {
-                    Tag(type: tag) {
-                        // do something if needed
-                    }
+                    Tag(media: media)
 
                     Spacer()
 
@@ -80,7 +78,7 @@ public struct SmallCard_Previews: PreviewProvider {
             SmallCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
@@ -92,7 +90,7 @@ public struct SmallCard_Previews: PreviewProvider {
             SmallCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .medium,
+                media: .medium,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
@@ -104,7 +102,7 @@ public struct SmallCard_Previews: PreviewProvider {
             SmallCard(
                 title: "タイトル",
                 imageURL: URL(string: ""),
-                tag: .youtube,
+                media: .youtube,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
@@ -116,7 +114,7 @@ public struct SmallCard_Previews: PreviewProvider {
             SmallCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: false,
                 tapAction: {},
@@ -128,7 +126,7 @@ public struct SmallCard_Previews: PreviewProvider {
             SmallCard(
                 title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                 imageURL: URL(string: ""),
-                tag: .medium,
+                media: .medium,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
@@ -140,7 +138,7 @@ public struct SmallCard_Previews: PreviewProvider {
             SmallCard(
                 title: "タイトル",
                 imageURL: URL(string: ""),
-                tag: .youtube,
+                media: .youtube,
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapAction: {},
