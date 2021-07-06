@@ -53,9 +53,9 @@ public struct HomeScreen: View {
                     }
                 }
                 .navigationBarItems(
-                    trailing: Button(action: {
-                        viewStore.send(.showSettings)
-                    }) {
+                    trailing: Button(
+                        action: { viewStore.send(.showSetting) }
+                    ) {
                         AssetImage.iconSetting.image
                             .renderingMode(.template)
                             .foregroundColor(AssetColor.Base.primary.color)

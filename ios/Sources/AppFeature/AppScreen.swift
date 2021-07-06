@@ -104,7 +104,7 @@ public struct AppScreen: View {
             .sheet(
                 isPresented: viewStore.binding(
                     get: \.isSettingPresented,
-                    send: .hideSettings
+                    send: .hideSetting
                 ),
                 content: {
                     SettingScreen(isDarkModeOn: true, isLanguageOn: true)

@@ -29,7 +29,7 @@ public enum FavoritesAction {
     case refresh
     case tap(FavoriteItem)
     case favorite(FavoriteItem)
-    case showSettings
+    case showSetting
 }
 
 public struct FavoritesEnvironment {
@@ -52,7 +52,7 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
         return .none
     case .favorite:
         return .none
-    default:
+    case .showSetting:
         return .none
     }
 }

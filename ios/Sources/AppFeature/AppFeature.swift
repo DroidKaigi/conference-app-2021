@@ -32,7 +32,7 @@ public enum AppAction {
     case media(MediaAction)
     case favorites(FavoritesAction)
     case about(AboutAction)
-    case hideSettings
+    case hideSetting
 }
 
 public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
@@ -68,7 +68,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         switch action {
         case .home(let homeAction):
             switch homeAction {
-            case .showSettings:
+            case .showSetting:
                 state.isSettingPresented = true
             default:
                 break
@@ -76,7 +76,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             return .none
         case .media(let mediaAction):
             switch mediaAction {
-            case .showSettings:
+            case .showSetting:
                 state.isSettingPresented = true
             default:
                 break
@@ -84,7 +84,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             return .none
         case .favorites(let favoritesAction):
             switch favoritesAction {
-            case .showSettings:
+            case .showSetting:
                 state.isSettingPresented = true
             default:
                 break
@@ -92,7 +92,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             return .none
         case .about:
             return .none
-        case .hideSettings:
+        case .hideSetting:
             state.isSettingPresented = false
             return .none
         }

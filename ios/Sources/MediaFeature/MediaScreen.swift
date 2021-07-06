@@ -38,7 +38,7 @@ public struct MediaScreen: View {
         case progressViewAppeared
         case searchTextDidChange(to: String)
         case willDismissSearchController
-        case showSettings
+        case showSetting
     }
 
     public var body: some View {
@@ -59,9 +59,9 @@ public struct MediaScreen: View {
             }
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
-                trailing: Button(action: {
-                    viewStore.send(.showSettings)
-                }) {
+                trailing: Button(
+                    action: { viewStore.send(.showSetting) }
+                ) {
                     AssetImage.iconSetting.image
                         .renderingMode(.template)
                         .foregroundColor(AssetColor.Base.primary.color)
@@ -88,8 +88,8 @@ private extension MediaAction {
             self = .mediaList(.searchTextDidChange(to: text))
         case .willDismissSearchController:
             self = .mediaList(.willDismissSearchController)
-        case .showSettings:
-            self = .showSettings
+        case .showSetting:
+            self = .showSetting
         }
     }
 

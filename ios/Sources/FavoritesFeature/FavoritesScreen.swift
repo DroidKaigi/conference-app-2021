@@ -44,9 +44,9 @@ public struct FavoritesScreen: View {
                 }
                 .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
                 .navigationBarItems(
-                    trailing: Button(action: {
-                        viewStore.send(.showSettings)
-                    }) {
+                    trailing: Button(
+                        action: { viewStore.send(.showSetting) }
+                    ) {
                         AssetImage.iconSetting.image
                             .renderingMode(.template)
                             .foregroundColor(AssetColor.Base.primary.color)
