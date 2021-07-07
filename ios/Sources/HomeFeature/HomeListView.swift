@@ -23,7 +23,7 @@ public struct HomeListView: View {
                             viewStore.send(.selectFeedContent)
                         },
                         tapFavoriteAction: {
-                            viewStore.send(.tapFavorite(topic))
+                            viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
                         }
                     )
                 }
@@ -39,7 +39,7 @@ public struct HomeListView: View {
                             viewStore.send(.selectFeedContent)
                         },
                         tapFavoriteAction: {
-                            viewStore.send(.tapFavorite(feedContent))
+                            viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))
                         }
                     )
                 }
@@ -58,7 +58,7 @@ private extension LargeCard {
         self.init(
             title: content.item.title.jaTitle,
             imageURL: URL(string: content.item.image.largeURLString),
-            tag: content.item.media,
+            media: content.item.media,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
@@ -76,7 +76,7 @@ private extension ListItem {
         let speakers = (content.item.wrappedValue as? Podcast)?.speakers ?? []
         self.init(
             title: content.item.title.jaTitle,
-            tag: content.item.media,
+            media: content.item.media,
             imageURL: URL(string: content.item.image.smallURLString),
             speakers: speakers,
             date: content.item.publishedAt,
