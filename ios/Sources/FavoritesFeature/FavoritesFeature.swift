@@ -14,6 +14,7 @@ public enum FavoritesAction {
     case refresh
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
+    case showSetting
 }
 
 public struct FavoritesEnvironment {
@@ -27,6 +28,8 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
     case .tap(let content):
         return .none
     case .tapFavorite:
+        return .none
+    case .showSetting:
         return .none
     }
 }
