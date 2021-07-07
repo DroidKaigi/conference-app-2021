@@ -38,9 +38,9 @@ jobs:
       - name: Create Update Snapshots PullRequest
         uses: peter-evans/create-pull-request@v3
         with:
-          commit-message: [iOS] Update iOS Snapshots
+          commit-message: "[iOS] Update iOS Snapshots"
           branch: update-ios-snapshots
           delete-branch: true
           branch-suffix: short-commit-hash
-          title: Update iOS Snapshots
+          title: "[iOS] Update iOS Snapshots"
           reviewers: ry-itto,ostk0069
