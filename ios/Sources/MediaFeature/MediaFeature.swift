@@ -36,6 +36,7 @@ public enum MediaAction: Equatable {
     case loadItems
     case itemsLoaded([FeedContent])
     case mediaList(MediaListAction)
+    case showSetting
 }
 
 public enum MediaListAction: Equatable {
@@ -129,6 +130,8 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
             }
             return .none
         case .mediaList:
+            return .none
+        case .showSetting:
             return .none
         }
     }
