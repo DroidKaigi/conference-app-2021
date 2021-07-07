@@ -10,17 +10,20 @@ public struct AppState: Equatable {
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
+    public var isSettingPresented: Bool
 
     public init(
         homeState: HomeState = .init(),
         mediaState: MediaState = .init(),
         favoritesState: FavoritesState = .init(),
-        aboutState: AboutState = .init()
+        aboutState: AboutState = .init(),
+        isSettingPresented: Bool = false
     ) {
         self.homeState = homeState
         self.mediaState = mediaState
         self.favoritesState = favoritesState
         self.aboutState = aboutState
+        self.isSettingPresented = isSettingPresented
     }
 }
 
@@ -29,6 +32,7 @@ public enum AppAction {
     case media(MediaAction)
     case favorites(FavoritesAction)
     case about(AboutAction)
+    case hideSetting
 }
 
 public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
@@ -60,15 +64,36 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             .init()
         }
     ),
-    .init { _, action, _ in
+    .init { state, action, _ in
         switch action {
-        case .home:
+        case .home(let homeAction):
+            switch homeAction {
+            case .showSetting:
+                state.isSettingPresented = true
+            default:
+                break
+            }
             return .none
-        case .media:
+        case .media(let mediaAction):
+            switch mediaAction {
+            case .showSetting:
+                state.isSettingPresented = true
+            default:
+                break
+            }
             return .none
-        case .favorites:
+        case .favorites(let favoritesAction):
+            switch favoritesAction {
+            case .showSetting:
+                state.isSettingPresented = true
+            default:
+                break
+            }
             return .none
         case .about:
+            return .none
+        case .hideSetting:
+            state.isSettingPresented = false
             return .none
         }
     }

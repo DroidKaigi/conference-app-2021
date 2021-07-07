@@ -15,8 +15,8 @@ public struct FavoritesScreen: View {
 
     public var body: some View {
         NavigationView {
-            ScrollView {
-                WithViewStore(store) { viewStore in
+            WithViewStore(store) { viewStore in
+                ScrollView {
                     FeedContentListView(
                         feedContents: viewStore.contents,
                         tapContent: { content in
@@ -29,17 +29,21 @@ public struct FavoritesScreen: View {
                     .onAppear {
                         viewStore.send(.refresh)
                     }
+                    .padding(.horizontal, 8)
                 }
-                .padding(.horizontal, 8)
-            }
-            .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
-            .navigationBarItems(
-                trailing: AssetImage.iconSetting.image
-                    .renderingMode(.template)
-                    .foregroundColor(AssetColor.Base.primary.color)
-            )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        viewStore.send(.showSetting)
+                    }, label: {
+                        AssetImage.iconSetting.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    })
+                )
+                .introspectViewController { viewController in
+                    viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                }
             }
         }
     }
