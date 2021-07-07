@@ -17,3 +17,17 @@ public struct Speaker: Equatable {
         self.iconURLString = model.iconUrl
     }
 }
+
+#if DEBUG
+public extension Speaker {
+    static func mock(
+        name: String = "Mr. Droid",
+        iconURLString: String = ""
+    ) -> Self {
+        .init(
+            name: name,
+            iconURLString: iconURLString
+        )
+    }
+}
+#endif

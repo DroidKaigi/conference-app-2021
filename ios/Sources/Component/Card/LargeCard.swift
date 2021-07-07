@@ -30,42 +30,41 @@ public struct LargeCard: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            ImageView(
-                imageURL: imageURL,
-                placeholder: .noImage,
-                placeholderSize: .large
-            )
-            .aspectRatio(343/190, contentMode: .fit)
-            .scaledToFill()
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 16) {
+                ImageView(
+                    imageURL: imageURL,
+                    placeholder: .noImage,
+                    placeholderSize: .large,
+                    width: geometry.size.width,
+                    height: geometry.size.width * 190/343
+                )
+                VStack(alignment: .leading, spacing: 13) {
+                    Text(title)
+                        .font(.headline)
+                        .foregroundColor(AssetColor.Base.primary.color)
+                        .lineLimit(2)
+                    HStack(spacing: 8) {
+                        Tag(media: media)
 
-            VStack(alignment: .leading, spacing: 13) {
-                Text(title)
-                    .font(.headline)
-                    .foregroundColor(AssetColor.Base.primary.color)
-                    .lineLimit(2)
-
-                HStack(spacing: 8) {
-                    Tag(media: media)
-
-                    Text(date.formatted)
-                        .font(.caption)
-                        .foregroundColor(AssetColor.Base.tertiary.color)
-
-                    Spacer()
-
-                    Button(action: tapFavoriteAction, label: {
-                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                        image
-                            .renderingMode(.template)
-                            .foregroundColor(AssetColor.primary.color)
-                    })
+                        Text(date.formatted)
+                            .font(.caption)
+                            .foregroundColor(AssetColor.Base.tertiary.color)
+                        Spacer()
+                        Button(action: tapFavoriteAction, label: {
+                            let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                            image
+                                .renderingMode(.template)
+                                .foregroundColor(AssetColor.primary.color)
+                        })
+                    }
                 }
             }
+            .background(Color.clear)
+            .onTapGesture(perform: tapAction)
         }
         .padding(16)
-        .background(Color.clear)
-        .onTapGesture(perform: tapAction)
+        .frame(width: UIScreen.main.bounds.width, height: UIScreen.main.bounds.width * 319/375)
     }
 }
 

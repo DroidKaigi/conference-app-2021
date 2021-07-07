@@ -6,10 +6,10 @@ public struct FeedRepositoryMock: FeedRepositoryProtocol {
     public func feedContents() -> AnyPublisher<[FeedContent], KotlinError> {
         Empty().eraseToAnyPublisher()
     }
-    public func addFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
+    public func addFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
         Empty().eraseToAnyPublisher()
     }
-    public func removeFavorite(feedItem: AnyFeedItem) -> AnyPublisher<Void, KotlinError> {
+    public func removeFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
         Empty().eraseToAnyPublisher()
     }
 }
