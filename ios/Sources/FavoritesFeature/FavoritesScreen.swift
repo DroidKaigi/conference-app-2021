@@ -12,7 +12,12 @@ public struct FavoritesScreen: View {
 
     public init(store: Store<FavoritesState, FavoritesAction>) {
         self.store = store
-        self.viewStore = ViewStore<ViewState, ViewAction>(store.scope(state: ViewState.init(state:), action: FavoritesAction.init(action:)))
+        self.viewStore = ViewStore<ViewState, ViewAction>(
+            store.scope(
+                state: ViewState.init(state:),
+                action: FavoritesAction.init(action:)
+            )
+        )
     }
 
     internal struct ViewState: Equatable {
