@@ -30,46 +30,48 @@ public struct MediumCard: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 13) {
-            ImageView(
-                imageURL: imageURL,
-                placeholder: .noImage,
-                placeholderSize: .medium
-            )
-            .aspectRatio(225/114, contentMode: .fit)
-            .scaledToFill()
-            .layoutPriority(1)
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 13) {
+                ImageView(
+                    imageURL: imageURL,
+                    placeholder: .noImage,
+                    placeholderSize: .medium,
+                    width: geometry.size.width,
+                    height: geometry.size.width * 114/225
+                )
 
-            VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .font(.subheadline)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                        .lineLimit(2)
-                        .frame(maxHeight: .infinity, alignment: .top)
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: 4) {
+                        Text(title)
+                            .font(.subheadline)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                            .lineLimit(2)
+                            .frame(maxHeight: .infinity, alignment: .top)
 
-                    Text(date.formatted)
-                        .font(.caption)
-                        .foregroundColor(AssetColor.Base.tertiary.color)
-                }
+                        Text(date.formatted)
+                            .font(.caption)
+                            .foregroundColor(AssetColor.Base.tertiary.color)
+                    }
 
-                HStack(spacing: 8) {
-                    Tag(media: media)
+                    HStack(spacing: 8) {
+                        Tag(media: media)
 
-                    Spacer()
+                        Spacer()
 
-                    Button(action: tapFavoriteAction, label: {
-                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                        image
-                            .renderingMode(.template)
-                            .foregroundColor(AssetColor.primary.color)
-                    })
+                        Button(action: tapFavoriteAction, label: {
+                            let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                            image
+                                .renderingMode(.template)
+                                .foregroundColor(AssetColor.primary.color)
+                        })
+                    }
                 }
             }
+            .background(Color.clear)
+            .onTapGesture(perform: tapAction)
         }
         .padding(16)
-        .background(Color.clear)
-        .onTapGesture(perform: tapAction)
+        .frame(width: 257, height: 258)
     }
 }
 

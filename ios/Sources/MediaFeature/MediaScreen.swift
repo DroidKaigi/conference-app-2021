@@ -30,6 +30,7 @@ public struct MediaScreen: View {
         var isSearchBarEnabled: Bool
 
         init(state: MediaState) {
+
             if case .initialized = state {
                 isSearchBarEnabled = true
             } else {
@@ -82,7 +83,7 @@ private extension MediaAction {
     init(action: MediaScreen.ViewAction) {
         switch action {
         case .progressViewAppeared:
-            self = .loadItems
+            self = .refresh
         case let .searchTextDidChange(to: text):
             self = .mediaList(.searchTextDidChange(to: text))
         case let .isEditingDidChange(isEditing):
