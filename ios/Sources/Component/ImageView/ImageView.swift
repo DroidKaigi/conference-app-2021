@@ -59,7 +59,7 @@ public struct ImageView: View {
         LazyImage(source: imageURL) { state in
             if let image = state.image {
                 image
-                    .resizingMode(.aspectFit)
+                    .resizingMode(.aspectFill)
                     .frame(width: width, height: height)
                     .clipped()
                     .allowsHitTesting(false)

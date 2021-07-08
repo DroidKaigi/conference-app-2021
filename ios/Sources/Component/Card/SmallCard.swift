@@ -3,6 +3,10 @@ import SwiftUI
 import Styleguide
 
 public struct SmallCard: View {
+    enum Const {
+        static let cardWidth = (UIScreen.main.bounds.width - 8) / 2
+    }
+
     private let title: String
     private let imageURL: URL?
     private let media: Media
@@ -30,45 +34,50 @@ public struct SmallCard: View {
     }
 
     public var body: some View {
-        VStack(alignment: .leading, spacing: 16) {
-            ImageView(
-                imageURL: imageURL,
-                placeholder: .noImage,
-                placeholderSize: .small
-            )
-            .aspectRatio(163/114, contentMode: .fit)
-            .scaledToFill()
+        GeometryReader { geometry in
+            VStack(alignment: .leading, spacing: 16) {
+                ImageView(
+                    imageURL: imageURL,
+                    placeholder: .noImage,
+                    placeholderSize: .small,
+                    width: geometry.size.width,
+                    height: geometry.size.width * 114/163
+                )
 
-            VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
-                    Text(title)
-                        .font(.subheadline)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                        .lineLimit(3)
-                        .frame(maxHeight: .infinity, alignment: .top)
+                VStack(alignment: .leading, spacing: 12) {
+                    VStack(alignment: .leading, spacing: .zero) {
+                        Text(title)
+                            .font(.subheadline)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                            .lineLimit(3)
+                            .frame(maxHeight: .infinity, alignment: .top)
 
-                    Text(date.formatted)
-                        .font(.caption)
-                        .foregroundColor(AssetColor.Base.tertiary.color)
-                }
+                        Spacer(minLength: 4)
 
-                HStack(spacing: 8) {
-                    Tag(media: media)
+                        Text(date.formatted)
+                            .font(.caption)
+                            .foregroundColor(AssetColor.Base.tertiary.color)
+                    }
 
-                    Spacer()
+                    HStack(spacing: 8) {
+                        Tag(media: media)
 
-                    Button(action: tapFavoriteAction, label: {
-                        let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                        image
-                            .renderingMode(.template)
-                            .foregroundColor(AssetColor.primary.color)
-                    })
+                        Spacer()
+
+                        Button(action: tapFavoriteAction, label: {
+                            let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
+                            image
+                                .renderingMode(.template)
+                                .foregroundColor(AssetColor.primary.color)
+                        })
+                    }
                 }
             }
+            .background(Color.clear)
+            .onTapGesture(perform: tapAction)
         }
         .padding(8)
-        .background(Color.clear)
-        .onTapGesture(perform: tapAction)
+        .frame(width: Const.cardWidth, height: Const.cardWidth * 278/179)
     }
 }
 
