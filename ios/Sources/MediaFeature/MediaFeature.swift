@@ -32,7 +32,9 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
     mediaListReducer.pullback(
         state: /MediaState.initialized,
         action: /MediaAction.mediaList,
-        environment: { _ in () }
+        environment: {
+            .init(feedRepository: $0.feedRepository)
+        }
     ),
     .init { state, action, environment in
         switch action {
@@ -63,7 +65,15 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
                 listState.podcasts = podcasts
                 state = .initialized(listState)
             } else {
-                state = .initialized(.init(blogs: blogs, videos: videos, podcasts: podcasts, next: nil))
+                state = .initialized(
+                    .init(
+                        feedContents: feedContents,
+                        blogs: blogs,
+                        videos: videos,
+                        podcasts: podcasts,
+                        next: nil
+                    )
+                )
             }
             return .none
         case let .refreshResponse(.failure(error)):

@@ -112,6 +112,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                     store: .init(
                         initialState: MediaState.initialized(
                             .init(
+                                feedContents: [],
                                 blogs: [.blogMock(), .blogMock()],
                                 videos: [.videoMock(), .videoMock()],
                                 podcasts: [.podcastMock(), .podcastMock()],
