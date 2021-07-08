@@ -46,29 +46,30 @@ extension SearchResultScreen {
 #if DEBUG
 public struct SearchResultScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        // TODO: for each
-        SearchResultScreen(
-            feedContents: [],
-            tap: { _ in },
-            tapFavorite: { _, _ in }
-        )
-        .previewDevice(.init(rawValue: "iPhone 12"))
-        .environment(\.colorScheme, .light)
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            SearchResultScreen(
+                feedContents: [],
+                tap: { _ in },
+                tapFavorite: { _, _ in }
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
 
-        SearchResultScreen(
-            feedContents: [
-                .blogMock(),
-                .blogMock(),
-                .blogMock(),
-                .blogMock(),
-                .blogMock(),
-                .blogMock()
-            ],
-            tap: { _ in },
-            tapFavorite: { _, _ in }
-        )
-        .previewDevice(.init(rawValue: "iPhone 12"))
-        .environment(\.colorScheme, .dark)
+            SearchResultScreen(
+                feedContents: [
+                    .blogMock(),
+                    .blogMock(),
+                    .blogMock(),
+                    .blogMock(),
+                    .blogMock(),
+                    .blogMock()
+                ],
+                tap: { _ in },
+                tapFavorite: { _, _ in }
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+        }
     }
 }
 #endif
