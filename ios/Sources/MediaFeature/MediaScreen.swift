@@ -30,7 +30,6 @@ public struct MediaScreen: View {
         var isSearchBarEnabled: Bool
 
         init(state: MediaState) {
-
             if case .initialized = state {
                 isSearchBarEnabled = true
             } else {
