@@ -2,14 +2,12 @@ import SwiftUI
 import Styleguide
 
 public struct MediaSectionHeader: View {
-
-    let icon: Image
-    let title: String
+    let type: MediaType
     let moreAction: () -> Void
 
     public var body: some View {
         HStack(spacing: 0) {
-            Label { Text(title) } icon: { icon }
+            Label { Text(type.title) } icon: { type.icon }
                 .font(.headline)
                 .layoutPriority(1)
             Spacer()
@@ -27,6 +25,30 @@ public struct MediaSectionHeader: View {
     }
 }
 
+private extension MediaType {
+    var icon: SwiftUI.Image {
+        switch self {
+        case .blog:
+            return AssetImage.iconBlog.image.renderingMode(.template)
+        case .video:
+            return AssetImage.iconVideo.image.renderingMode(.template)
+        case .podcast:
+            return AssetImage.iconPodcast.image.renderingMode(.template)
+        }
+    }
+
+    var title: String {
+        switch self {
+        case .blog:
+            return L10n.MediaScreen.Section.Blog.title
+        case .video:
+            return L10n.MediaScreen.Section.Video.title
+        case .podcast:
+            return L10n.MediaScreen.Section.Podcast.title
+        }
+    }
+}
+
 public struct MediaSectionHeader_Previews: PreviewProvider {
     public static var previews: some View {
         let sizeCategories: [ContentSizeCategory] = [
@@ -35,8 +57,7 @@ public struct MediaSectionHeader_Previews: PreviewProvider {
         ]
         ForEach(sizeCategories, id: \.self) { (sizeCategory: ContentSizeCategory) in
             MediaSectionHeader(
-                icon: AssetImage.iconBlog.image,
-                title: L10n.MediaScreen.Section.Podcast.title,
+                type: .blog,
                 moreAction: {}
             )
             .previewLayout(.sizeThatFits)
