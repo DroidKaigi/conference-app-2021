@@ -46,7 +46,7 @@ public struct SmallCard: View {
             )
 
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: .zero) {
+                Group {
                     Text(title)
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)

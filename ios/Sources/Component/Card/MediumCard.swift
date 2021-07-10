@@ -46,11 +46,13 @@ public struct MediumCard: View {
             )
 
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
+                Group {
                     Text(title)
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(2)
+
+                    Spacer(minLength: 4)
 
                     Text(date.formatted)
                         .font(.caption)
