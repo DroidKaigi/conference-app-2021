@@ -17,7 +17,9 @@ public struct MediaListState: Equatable {
     var blogs: [FeedContent]
     var videos: [FeedContent]
     var podcasts: [FeedContent]
-    var next: Next?
+    var isSearchResultVisible: Bool
+    var isSearchTextEditing: Bool
+    var isMoreActiveType: MediaType?
 
     init(
         feedContents: [FeedContent],
@@ -25,14 +27,18 @@ public struct MediaListState: Equatable {
         blogs: [FeedContent],
         videos: [FeedContent],
         podcasts: [FeedContent],
-        next: Next?
+        isSearchResultVisible: Bool = false,
+        isSearchTextEditing: Bool = false,
+        isMoreActiveType: MediaType? = nil
     ) {
         self.feedContents = feedContents
         self.searchedFeedContents = searchedFeedContents
         self.blogs = blogs
         self.videos = videos
         self.podcasts = podcasts
-        self.next = next
+        self.isSearchResultVisible = isSearchResultVisible
+        self.isSearchTextEditing = isSearchTextEditing
+        self.isMoreActiveType = isMoreActiveType
     }
 }
 
@@ -55,38 +61,21 @@ public enum MediaType {
 let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment> { state, action, environment in
     switch action {
     case let .searchTextDidChange(to: searchText):
-        switch state.next {
-        case nil, .searchText, .isEditingDidChange:
-            state.next = searchText.map { .searchText($0) }
-            if let searchText = searchText {
-                state.searchedFeedContents = state.feedContents.filter { content in
-                    content.item.title.jaTitle.lowercased().contains(searchText.lowercased())
-                }
+        state.isSearchResultVisible = !(searchText?.isEmpty ?? true)
+        if let searchText = searchText {
+            state.searchedFeedContents = state.feedContents.filter { content in
+                content.item.title.jaTitle.lowercased().contains(searchText.lowercased())
             }
-        default:
-            break
         }
         return .none
     case let .isEditingDidChange(isEditing):
-        switch state.next {
-        case nil, .searchText, .isEditingDidChange:
-            state.next = .isEditingDidChange(isEditing)
-            if !isEditing {
-                state.next = nil
-            }
-        default:
-            break
-        }
+        state.isSearchTextEditing = isEditing
         return .none
     case let .showMore(mediaType):
-        if state.next == nil {
-            state.next = .more(for: mediaType)
-        }
+        state.isMoreActiveType = mediaType
         return .none
     case .moreDismissed:
-        if case .more = state.next {
-            state.next = nil
-        }
+        state.isMoreActiveType = nil
         return .none
     case .tap(let content):
         // TODO: open content page

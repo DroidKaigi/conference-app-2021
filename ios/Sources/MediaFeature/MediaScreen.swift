@@ -114,8 +114,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                                 feedContents: [],
                                 blogs: [.blogMock(), .blogMock()],
                                 videos: [.videoMock(), .videoMock()],
-                                podcasts: [.podcastMock(), .podcastMock()],
-                                next: nil
+                                podcasts: [.podcastMock(), .podcastMock()]
                             )
                         ),
                         reducer: .empty,
