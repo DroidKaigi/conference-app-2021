@@ -10,6 +10,8 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          lfs: true
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
@@ -75,7 +77,7 @@ jobs:
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
         with:
-          arguments: "ios-framework:createXCFramework" 
+          arguments: "ios-framework:createXCFramework"
           dependencies-cache-key: |
             **/*.gradle
             **/*.gradle.kts
