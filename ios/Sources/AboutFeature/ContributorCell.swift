@@ -3,6 +3,10 @@ import Styleguide
 import SwiftUI
 
 public struct ContributorCell: View {
+    enum Const {
+        static let imageSize: CGFloat = 60
+    }
+
     private let contributor: Contributor
 
     public init(contributor: Contributor) {
@@ -14,8 +18,8 @@ public struct ContributorCell: View {
             ImageView(
                 imageURL: contributor.iconUrl,
                 placeholderSize: .medium,
-                width: 60,
-                height: 60
+                width: Const.imageSize,
+                height: Const.imageSize
             )
             .clipShape(Circle())
             .overlay(
