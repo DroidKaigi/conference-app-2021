@@ -232,7 +232,7 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
 
 fun fakeFeedItemDao(error: AppError? = null): FeedItemDao = object : FeedItemDao {
     private val channel = Channel<List<FeedItem>>(Channel.CONFLATED).apply {
-        offer(emptyList())
+        trySend(emptyList())
     }
 
     override fun selectAll(): Flow<List<FeedItem>> = flow {

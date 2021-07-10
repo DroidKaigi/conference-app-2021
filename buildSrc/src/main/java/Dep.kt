@@ -1,8 +1,8 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.0-beta08"
-    const val coroutines = "1.4.2-native-mt"
+    const val compose = "1.0.0-rc01"
+    const val coroutines = "1.5.0-native-mt"
 }
 
 object Dep {
@@ -31,7 +31,7 @@ object Dep {
         const val browser = "androidx.browser:browser:1.3.0"
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha06"
 
-        const val core = "androidx.core:core-ktx:1.5.0-beta01"
+        const val core = "androidx.core:core-ktx:1.6.0"
         const val fragment = "androidx.fragment:fragment-ktx:1.3.0"
         const val activity = "androidx.activity:activity-ktx:1.2.0"
         const val lifecycle = "androidx.lifecycle:lifecycle-livedata-ktx:2.3.0"
@@ -79,7 +79,7 @@ object Dep {
     }
 
     object Ktor {
-        const val bom = "io.ktor:ktor-bom:1.5.2"
+        const val bom = "io.ktor:ktor-bom:1.6.1"
         const val core = "io.ktor:ktor-client-core"
         const val json = "io.ktor:ktor-client-json"
         const val logging = "io.ktor:ktor-client-logging"
@@ -104,12 +104,12 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.10.0"
-        const val coil = "com.google.accompanist:accompanist-coil:0.10.0"
-        const val pager = "com.google.accompanist:accompanist-pager:0.10.0"
-        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.10.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.13.0"
+        const val coil = "com.google.accompanist:accompanist-coil:0.13.0"
+        const val pager = "com.google.accompanist:accompanist-pager:0.13.0"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.13.0"
         const val systemuicontroller =
-            "com.google.accompanist:accompanist-systemuicontroller:0.10.0"
+            "com.google.accompanist:accompanist-systemuicontroller:0.13.0"
     }
 
     object FirebaseCrashlytics {
