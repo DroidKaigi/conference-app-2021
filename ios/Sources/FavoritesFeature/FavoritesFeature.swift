@@ -45,9 +45,9 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
                 .map(FavoritesAction.refreshResponse)
         case let .refreshResponse(.success(feedContents)):
             let filteredFeedContents = feedContents.filter(\.isFavorited)
-            state = filteredFeedContents.isEmpty
+            state = feedContents.isEmpty
                 ? .emptyInitialized
-                : .initialized(.init(feedContents: filteredFeedContents))
+                : .initialized(.init(feedContents: feedContents))
             return .none
         case let .refreshResponse(.failure(error)):
             print(error.localizedDescription)
