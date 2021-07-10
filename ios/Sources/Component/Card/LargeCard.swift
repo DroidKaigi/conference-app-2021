@@ -8,6 +8,7 @@ public struct LargeCard: View {
         static let cardWidth = UIScreen.main.bounds.width
         static let imageViewWidth = Const.cardWidth - (Const.margin * 2) - (ImageView.Const.roundedLineWidth * 2)
     }
+
     private let title: String
     private let imageURL: URL?
     private let media: Media
