@@ -21,31 +21,16 @@ struct MediaListView: View {
         var hasPodcasts: Bool
         var isSearchResultVisible: Bool
         var isSearchTextEditing: Bool
-        var isMoreActive: Bool
+        var moreActiveType: MediaType?
 
         init(state: MediaListState) {
             searchedFeedContents = state.searchedFeedContents
             hasBlogs = !state.blogs.isEmpty
             hasVideos = !state.videos.isEmpty
             hasPodcasts = !state.podcasts.isEmpty
-            if case let .searchText(text) = state.next, !text.isEmpty {
-                isSearchResultVisible = true
-            } else {
-                isSearchResultVisible = false
-            }
-            switch state.next {
-            case .isEditingDidChange(let isEditing):
-                isSearchTextEditing = isEditing
-            case .searchText:
-                isSearchTextEditing = true
-            default:
-                isSearchTextEditing = false
-            }
-            if case .more = state.next {
-                isMoreActive = true
-            } else {
-                isMoreActive = false
-            }
+            isSearchResultVisible = state.isSearchResultVisible
+            isSearchTextEditing = state.isSearchTextEditing
+            moreActiveType = state.moreActiveType
         }
     }
 
@@ -133,6 +118,12 @@ struct MediaListView: View {
     }
 }
 
+private extension MediaListView.ViewState {
+    var isMoreActive: Bool {
+        moreActiveType != nil
+    }
+}
+
 private extension MediaListAction {
     init(action: MediaListView.ViewAction) {
         switch action {
@@ -148,10 +139,8 @@ private extension MediaListAction {
 
 private extension MediaDetailScreen.ViewState {
     init?(state: MediaListState) {
-        guard case let .more(mediaType) = state.next else {
-            return nil
-        }
-        switch mediaType {
+        guard let moreActiveType = state.moreActiveType else { return nil }
+        switch moreActiveType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
             contents = state.blogs
@@ -197,8 +186,7 @@ public struct MediaListView_Previews: PreviewProvider {
                         feedContents: [],
                         blogs: [.blogMock(), .blogMock()],
                         videos: [.videoMock(), .videoMock()],
-                        podcasts: [.podcastMock(), .podcastMock()],
-                        next: nil
+                        podcasts: [.podcastMock(), .podcastMock()]
                     ),
                     reducer: .empty,
                     environment: {}

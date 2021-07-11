@@ -3,13 +3,6 @@ import Model
 import Repository
 
 public struct MediaListState: Equatable {
-
-    enum Next: Equatable {
-        case searchText(String)
-        case isEditingDidChange(Bool)
-        case more(for: MediaType)
-    }
-
     // In order not to use any networks for searching feature,
     // `feedContents` is storage to search from & `searchedFeedContents` is searched result from `feedContents`
     var feedContents: [FeedContent]
@@ -17,7 +10,9 @@ public struct MediaListState: Equatable {
     var blogs: [FeedContent]
     var videos: [FeedContent]
     var podcasts: [FeedContent]
-    var next: Next?
+    var isSearchResultVisible: Bool
+    var isSearchTextEditing: Bool
+    var moreActiveType: MediaType?
 
     init(
         feedContents: [FeedContent],
@@ -25,14 +20,18 @@ public struct MediaListState: Equatable {
         blogs: [FeedContent],
         videos: [FeedContent],
         podcasts: [FeedContent],
-        next: Next?
+        isSearchResultVisible: Bool = false,
+        isSearchTextEditing: Bool = false,
+        moreActiveType: MediaType? = nil
     ) {
         self.feedContents = feedContents
         self.searchedFeedContents = searchedFeedContents
         self.blogs = blogs
         self.videos = videos
         self.podcasts = podcasts
-        self.next = next
+        self.isSearchResultVisible = isSearchResultVisible
+        self.isSearchTextEditing = isSearchTextEditing
+        self.moreActiveType = moreActiveType
     }
 }
 
@@ -55,38 +54,22 @@ public enum MediaType {
 let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment> { state, action, environment in
     switch action {
     case let .searchTextDidChange(to: searchText):
-        switch state.next {
-        case nil, .searchText, .isEditingDidChange:
-            state.next = searchText.map { .searchText($0) }
-            if let searchText = searchText {
-                state.searchedFeedContents = state.feedContents.filter { content in
-                    content.item.title.jaTitle.lowercased().contains(searchText.lowercased())
-                }
+        state.isSearchResultVisible = !(searchText?.isEmpty ?? true)
+        if let searchText = searchText {
+            state.searchedFeedContents = state.feedContents.filter { content in
+                content.item.title.jaTitle.filterForSeaching.contains(searchText.filterForSeaching)
+                || content.item.title.enTitle.filterForSeaching.contains(searchText.filterForSeaching)
             }
-        default:
-            break
         }
         return .none
     case let .isEditingDidChange(isEditing):
-        switch state.next {
-        case nil, .searchText, .isEditingDidChange:
-            state.next = .isEditingDidChange(isEditing)
-            if !isEditing {
-                state.next = nil
-            }
-        default:
-            break
-        }
+        state.isSearchTextEditing = isEditing
         return .none
     case let .showMore(mediaType):
-        if state.next == nil {
-            state.next = .more(for: mediaType)
-        }
+        state.moreActiveType = mediaType
         return .none
     case .moreDismissed:
-        if case .more = state.next {
-            state.next = nil
-        }
+        state.moreActiveType = nil
         return .none
     case .tap(let content):
         // TODO: open content page
@@ -108,5 +91,13 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)
         return .none
+    }
+}
+
+private extension String {
+    var filterForSeaching: Self {
+        self.replacingOccurrences(of: " ", with: "")
+            .trimmingCharacters(in: .whitespaces)
+            .lowercased()
     }
 }
