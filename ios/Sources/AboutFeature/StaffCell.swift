@@ -23,7 +23,7 @@ public struct StaffCell: View {
             )
             .clipShape(Circle())
             .overlay(
-                RoundedRectangle(cornerRadius: 30)
+                RoundedRectangle(cornerRadius: Const.imageSize / 2)
                     .stroke(AssetColor.Separate.image.color, lineWidth: 2)
             )
             VStack(alignment: .leading, spacing: 3) {
