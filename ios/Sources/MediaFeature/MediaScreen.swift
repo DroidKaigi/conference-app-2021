@@ -78,6 +78,7 @@ public struct MediaScreen: View {
         }
         .onAppear {
             if ViewStore(store).state != .needToInitialize {
+                searchController.isActive = false
                 viewStore.send(.viewAppearedAgain)
             }
         }
