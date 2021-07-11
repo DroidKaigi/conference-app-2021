@@ -40,6 +40,7 @@ public struct MediaScreen: View {
 
     enum ViewAction {
         case progressViewAppeared
+        case viewAppearedAgain
         case searchTextDidChange(to: String)
         case isEditingDidChange(to: Bool)
     }
@@ -75,6 +76,11 @@ public struct MediaScreen: View {
                 viewController.navigationController?.navigationBar.sizeToFit()
             }
         }
+        .onAppear {
+            if ViewStore(store).state != .needToInitialize {
+                viewStore.send(.viewAppearedAgain)
+            }
+        }
     }
 }
 
@@ -83,6 +89,8 @@ private extension MediaAction {
         switch action {
         case .progressViewAppeared:
             self = .refresh
+        case .viewAppearedAgain:
+            self = .needRefresh
         case let .searchTextDidChange(to: text):
             self = .mediaList(.searchTextDidChange(to: text))
         case let .isEditingDidChange(isEditing):

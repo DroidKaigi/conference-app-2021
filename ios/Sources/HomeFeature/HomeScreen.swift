@@ -20,6 +20,7 @@ public struct HomeScreen: View {
 
     internal enum ViewAction {
         case progressViewAppeared
+        case viewAppearedAgain
     }
 
     public var body: some View {
@@ -57,6 +58,11 @@ public struct HomeScreen: View {
             .introspectViewController { viewController in
                 viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
             }
+            .onAppear {
+                if ViewStore(store).state != .needToInitialize {
+                    viewStore.send(.viewAppearedAgain)
+                }
+            }
         }
     }
 }
@@ -66,6 +72,8 @@ private extension HomeAction {
         switch action {
         case .progressViewAppeared:
             self = .refresh
+        case .viewAppearedAgain:
+            self = .needRefresh
         }
     }
 

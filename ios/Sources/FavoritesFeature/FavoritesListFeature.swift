@@ -32,6 +32,9 @@ public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListActio
         // TODO: open content page
         return .none
     case .tapFavorite(let isFavorited, let id):
+        if let index = state.feedContents.map(\.id).firstIndex(of: id) {
+            state.feedContents[index].isFavorited.toggle()
+        }
         let publisher = isFavorited
             ? environment.feedRepository.removeFavorite(id: id)
             : environment.feedRepository.addFavorite(id: id)
@@ -40,9 +43,6 @@ public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListActio
             .catchToEffect()
             .map(FavoritesListAction.favoriteResponse)
     case let .favoriteResponse(.success(id)):
-        if let index = state.feedContents.map(\.id).firstIndex(of: id) {
-            state.feedContents[index].isFavorited.toggle()
-        }
         return .none
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)

@@ -16,6 +16,7 @@ public enum FavoritesState: Equatable {
 public enum FavoritesAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
+    case needRefresh
     case favoritesList(FavoritesListAction)
 }
 
@@ -52,6 +53,9 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
         case let .refreshResponse(.failure(error)):
             print(error.localizedDescription)
             // TODO: Error handling
+            return .none
+        case .needRefresh:
+            state = .needToInitialize
             return .none
         case .favoritesList:
             return .none

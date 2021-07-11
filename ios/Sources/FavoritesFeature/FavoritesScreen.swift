@@ -26,6 +26,7 @@ public struct FavoritesScreen: View {
 
     internal enum ViewAction {
         case progressViewAppeared
+        case viewAppearedAgain
     }
 
     public var body: some View {
@@ -59,6 +60,11 @@ public struct FavoritesScreen: View {
                 viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
             }
         }
+        .onAppear {
+            if ViewStore(store).state != .needToInitialize {
+                viewStore.send(.viewAppearedAgain)
+            }
+        }
     }
 }
 
@@ -67,6 +73,8 @@ private extension FavoritesAction {
         switch action {
         case .progressViewAppeared:
             self = .refresh
+        case .viewAppearedAgain:
+            self = .needRefresh
         }
     }
 

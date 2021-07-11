@@ -15,6 +15,7 @@ public enum MediaState: Equatable {
 public enum MediaAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
+    case needRefresh
     case mediaList(MediaListAction)
 }
 
@@ -78,6 +79,9 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
         case let .refreshResponse(.failure(error)):
             print(error.localizedDescription)
             // TODO: Error handling
+            return .none
+        case .needRefresh:
+            state = .needToInitialize
             return .none
         case .mediaList:
             return .none

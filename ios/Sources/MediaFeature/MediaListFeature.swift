@@ -60,6 +60,8 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
                 content.item.title.jaTitle.filterForSeaching.contains(searchText.filterForSeaching)
                 || content.item.title.enTitle.filterForSeaching.contains(searchText.filterForSeaching)
             }
+        } else {
+            state.searchedFeedContents = []
         }
         return .none
     case let .isEditingDidChange(isEditing):
@@ -75,6 +77,21 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
         // TODO: open content page
         return .none
     case .tapFavorite(let isFavorited, let id):
+        if let index = state.feedContents.map(\.id).firstIndex(of: id) {
+            state.feedContents[index].isFavorited.toggle()
+        }
+        if let index = state.searchedFeedContents.map(\.id).firstIndex(of: id) {
+            state.searchedFeedContents[index].isFavorited.toggle()
+        }
+        if let index = state.blogs.map(\.id).firstIndex(of: id) {
+            state.blogs[index].isFavorited.toggle()
+        }
+        if let index = state.videos.map(\.id).firstIndex(of: id) {
+            state.videos[index].isFavorited.toggle()
+        }
+        if let index = state.podcasts.map(\.id).firstIndex(of: id) {
+            state.podcasts[index].isFavorited.toggle()
+        }
         let publisher = isFavorited
             ? environment.feedRepository.removeFavorite(id: id)
             : environment.feedRepository.addFavorite(id: id)
@@ -83,10 +100,6 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
             .catchToEffect()
             .map(MediaListAction.favoriteResponse)
     case let .favoriteResponse(.success(id)):
-        if let index = state.feedContents.map(\.id).firstIndex(of: id) {
-            state.feedContents[index].isFavorited.toggle()
-            state.searchedFeedContents[index].isFavorited.toggle()
-        }
         return .none
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)

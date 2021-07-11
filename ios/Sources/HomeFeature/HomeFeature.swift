@@ -15,6 +15,7 @@ public enum HomeState: Equatable {
 public enum HomeAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
+    case needRefresh
     case homeList(HomeListAction)
 }
 
@@ -50,6 +51,9 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment>.combine
         case let .refreshResponse(.failure(error)):
             print(error.localizedDescription)
             // TODO: Error handling
+            return .none
+        case .needRefresh:
+            state = .needToInitialize
             return .none
         case .homeList:
             return .none
