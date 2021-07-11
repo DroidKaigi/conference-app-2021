@@ -3,13 +3,6 @@ import Model
 import Repository
 
 public struct MediaListState: Equatable {
-
-    enum Next: Equatable {
-        case searchText(String)
-        case isEditingDidChange(Bool)
-        case more(for: MediaType)
-    }
-
     // In order not to use any networks for searching feature,
     // `feedContents` is storage to search from & `searchedFeedContents` is searched result from `feedContents`
     var feedContents: [FeedContent]
@@ -19,7 +12,7 @@ public struct MediaListState: Equatable {
     var podcasts: [FeedContent]
     var isSearchResultVisible: Bool
     var isSearchTextEditing: Bool
-    var isMoreActiveType: MediaType?
+    var moreActiveType: MediaType?
 
     init(
         feedContents: [FeedContent],
@@ -29,7 +22,7 @@ public struct MediaListState: Equatable {
         podcasts: [FeedContent],
         isSearchResultVisible: Bool = false,
         isSearchTextEditing: Bool = false,
-        isMoreActiveType: MediaType? = nil
+        moreActiveType: MediaType? = nil
     ) {
         self.feedContents = feedContents
         self.searchedFeedContents = searchedFeedContents
@@ -38,7 +31,7 @@ public struct MediaListState: Equatable {
         self.podcasts = podcasts
         self.isSearchResultVisible = isSearchResultVisible
         self.isSearchTextEditing = isSearchTextEditing
-        self.isMoreActiveType = isMoreActiveType
+        self.moreActiveType = moreActiveType
     }
 }
 
@@ -64,7 +57,8 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
         state.isSearchResultVisible = !(searchText?.isEmpty ?? true)
         if let searchText = searchText {
             state.searchedFeedContents = state.feedContents.filter { content in
-                content.item.title.jaTitle.lowercased().contains(searchText.lowercased())
+                content.item.title.jaTitle.filterForSeaching.contains(searchText.filterForSeaching)
+                || content.item.title.enTitle.filterForSeaching.contains(searchText.filterForSeaching)
             }
         }
         return .none
@@ -72,10 +66,10 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
         state.isSearchTextEditing = isEditing
         return .none
     case let .showMore(mediaType):
-        state.isMoreActiveType = mediaType
+        state.moreActiveType = mediaType
         return .none
     case .moreDismissed:
-        state.isMoreActiveType = nil
+        state.moreActiveType = nil
         return .none
     case .tap(let content):
         // TODO: open content page
@@ -97,5 +91,13 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)
         return .none
+    }
+}
+
+private extension String {
+    var filterForSeaching: Self {
+        self.replacingOccurrences(of: " ", with: "")
+            .trimmingCharacters(in: .whitespaces)
+            .lowercased()
     }
 }

@@ -21,7 +21,7 @@ struct MediaListView: View {
         var hasPodcasts: Bool
         var isSearchResultVisible: Bool
         var isSearchTextEditing: Bool
-        var isMoreActiveType: MediaType?
+        var moreActiveType: MediaType?
 
         init(state: MediaListState) {
             searchedFeedContents = state.searchedFeedContents
@@ -30,7 +30,7 @@ struct MediaListView: View {
             hasPodcasts = !state.podcasts.isEmpty
             isSearchResultVisible = state.isSearchResultVisible
             isSearchTextEditing = state.isSearchTextEditing
-            isMoreActiveType = state.isMoreActiveType
+            moreActiveType = state.moreActiveType
         }
     }
 
@@ -120,7 +120,7 @@ struct MediaListView: View {
 
 private extension MediaListView.ViewState {
     var isMoreActive: Bool {
-        isMoreActiveType != nil
+        moreActiveType != nil
     }
 }
 
@@ -139,7 +139,7 @@ private extension MediaListAction {
 
 private extension MediaDetailScreen.ViewState {
     init?(state: MediaListState) {
-        guard let moreActiveType = state.isMoreActiveType else { return nil }
+        guard let moreActiveType = state.moreActiveType else { return nil }
         switch moreActiveType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title

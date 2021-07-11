@@ -70,7 +70,7 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
                         feedContents: feedContents,
                         blogs: blogs,
                         videos: videos,
-                        podcasts: videos
+                        podcasts: podcasts
                     )
                 )
             }
