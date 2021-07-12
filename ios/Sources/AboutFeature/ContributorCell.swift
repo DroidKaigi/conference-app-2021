@@ -1,4 +1,5 @@
 import Component
+import Model
 import Styleguide
 import SwiftUI
 
@@ -11,7 +12,7 @@ public struct ContributorCell: View {
 
     public var body: some View {
         VStack {
-            ImageView(imageURL: contributor.iconUrl, placeholderSize: .medium)
+            ImageView(imageURL: URL(string: contributor.imageURLString), placeholderSize: .medium)
                 .scaledToFill()
                 .frame(width: 60, height: 60)
                 .clipShape(Circle())
@@ -30,19 +31,13 @@ public struct ContributorCell: View {
 public struct ContributorCell_Preview: PreviewProvider {
     public static var previews: some View {
         ContributorCell(
-            contributor: Contributor(
-                name: "dummy name",
-                iconUrl: URL(string: "https://example.com")!
-            )
+            contributor: .mock()
         )
         .frame(width: 111, height: 116)
         .environment(\.colorScheme, .light)
         .previewLayout(.sizeThatFits)
         ContributorCell(
-            contributor: Contributor(
-                name: "dummy name",
-                iconUrl: URL(string: "https://example.com")!
-            )
+            contributor: .mock()
         )
         .frame(width: 111, height: 116)
         .environment(\.colorScheme, .dark)

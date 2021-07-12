@@ -71,6 +71,9 @@ public struct AboutScreen: View {
                         }
                         .background(AssetColor.Background.primary.color)
                         .navigationBarTitleDisplayMode(.inline)
+                        .onAppear {
+                            viewStore.send(.refresh)
+                        }
                     }
                 }
             }
@@ -89,17 +92,18 @@ private extension SelectedType {
     }
 }
 
+#if DEBUG
 public struct AboutScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
             AboutScreen(
                 store: .init(
                     initialState: .init(
-                        staffs: dummyStaffs,
-                        contributors: dummyContributors
+                        staffs: [.mock(), .mock(), .mock()],
+                        contributors: [.mock(), .mock(), .mock()]
                     ),
-                    reducer: aboutReducer,
-                    environment: .init()
+                    reducer: .empty,
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -107,11 +111,11 @@ public struct AboutScreen_Previews: PreviewProvider {
             AboutScreen(
                 store: .init(
                     initialState: .init(
-                        staffs: dummyStaffs,
-                        contributors: dummyContributors
+                        staffs: [.mock(), .mock(), .mock()],
+                        contributors: [.mock(), .mock(), .mock()]
                     ),
-                    reducer: aboutReducer,
-                    environment: .init()
+                    reducer: .empty,
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -119,3 +123,4 @@ public struct AboutScreen_Previews: PreviewProvider {
         }
     }
 }
+#endif

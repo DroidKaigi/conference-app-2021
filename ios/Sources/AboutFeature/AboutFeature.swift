@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Model
 
 public struct AboutState: Equatable {
     public var staffs: [Staff]
@@ -6,15 +7,14 @@ public struct AboutState: Equatable {
     public var selectedType: SelectedType
 
     public init(staffs: [Staff] = [], contributors: [Contributor] = [], selectedType: SelectedType = .staff) {
-        // TODO: Replace with real data.
-        self.staffs = dummyStaffs
-        // TODO: Replace with real data.
-        self.contributors = dummyContributors
+        self.staffs = staffs
+        self.contributors = contributors
         self.selectedType = selectedType
     }
 }
 
 public enum AboutAction {
+    case refresh
     case selectedPicker(SelectedType)
 }
 
@@ -24,6 +24,11 @@ public struct AboutEnvironment {
 
 public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, _ in
     switch action {
+    case .refresh:
+        // TODO: Fetch data from server
+        state.staffs = [.mock(), .mock(), .mock()]
+        state.contributors = [.mock(), .mock(), .mock()]
+        return .none
     case .selectedPicker(let selectedType):
         state.selectedType = selectedType
         return .none

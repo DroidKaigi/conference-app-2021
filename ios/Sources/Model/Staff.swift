@@ -25,3 +25,21 @@ public struct Staff: Equatable, Identifiable {
         self.urlString = model.url
     }
 }
+
+#if DEBUG
+public extension Staff {
+    static func mock(
+        id: String = UUID().uuidString,
+        imageURLString: String = "https://example.com",
+        name: String = "dummy name",
+        urlString: String = "https://github.com"
+    ) -> Self {
+        .init(
+            id: id,
+            imageURLString: imageURLString,
+            name: name,
+            urlString: urlString
+        )
+    }
+}
+#endif
