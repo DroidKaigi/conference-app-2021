@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Model
 import Repository
+import UIApplicationClient
 
 public struct HomeListState: Equatable {
     public var feedContents: [FeedContent]
@@ -22,26 +23,38 @@ public struct HomeListState: Equatable {
 }
 
 public enum HomeListAction {
-    case selectFeedContent
+    case selectFeedContent(id: String)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
+    case urlOpened(Bool)
 }
 
 public struct HomeListEnvironment {
     public let feedRepository: FeedRepositoryProtocol
+    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol
+        feedRepository: FeedRepositoryProtocol,
+        applicationClient: UIApplicationClientProtocol
     ) {
         self.feedRepository = feedRepository
+        self.applicationClient = applicationClient
     }
 }
 
 public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvironment> { state, action, environment in
     switch action {
-    case .selectFeedContent:
-        // TODO: open content page
+    case let .selectFeedContent(id):
+        if let selectedFeedContent = state.feedContents.first(where: { $0.id == id }),
+           let url = URL(string: selectedFeedContent.item.link) {
+            return environment.applicationClient.open(
+                url: url,
+                options: [:]
+            )
+            .eraseToEffect()
+            .map(HomeListAction.urlOpened)
+        }
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -61,6 +74,8 @@ public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvi
         return .none
     case .answerQuestionnaire:
         // TODO: open questionnaire
+        return .none
+    case .urlOpened:
         return .none
     }
 }

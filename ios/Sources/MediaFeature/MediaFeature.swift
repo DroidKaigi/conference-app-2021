@@ -2,6 +2,7 @@ import Component
 import ComposableArchitecture
 import Model
 import Repository
+import UIApplicationClient
 
 public enum MediaState: Equatable {
     case needToInitialize
@@ -20,11 +21,14 @@ public enum MediaAction {
 
 public struct MediaEnvironment {
     public let feedRepository: FeedRepositoryProtocol
+    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol
+        feedRepository: FeedRepositoryProtocol,
+        applicationClient: UIApplicationClientProtocol
     ) {
         self.feedRepository = feedRepository
+        self.applicationClient = applicationClient
     }
 }
 
@@ -33,7 +37,10 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
         state: /MediaState.initialized,
         action: /MediaAction.mediaList,
         environment: {
-            .init(feedRepository: $0.feedRepository)
+            .init(
+                feedRepository: $0.feedRepository,
+                applicationClient: $0.applicationClient
+            )
         }
     ),
     .init { state, action, environment in

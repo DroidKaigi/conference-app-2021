@@ -40,9 +40,10 @@ public enum MediaListAction {
     case isEditingDidChange(to: Bool)
     case showMore(for: MediaType)
     case moreDismissed
-    case tap(FeedContent)
+    case tap(id: String)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
+    case urlOpened(Bool)
 }
 
 public enum MediaType {
@@ -71,8 +72,16 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
     case .moreDismissed:
         state.moreActiveType = nil
         return .none
-    case .tap(let content):
-        // TODO: open content page
+    case .tap(let id):
+        if let selectedFeedContent = state.feedContents.first(where: { $0.id == id }),
+           let url = URL(string: selectedFeedContent.item.link) {
+            return environment.applicationClient.open(
+                url: url,
+                options: [:]
+            )
+            .eraseToEffect()
+            .map(MediaListAction.urlOpened)
+        }
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -90,6 +99,8 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
         return .none
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)
+        return .none
+    case .urlOpened:
         return .none
     }
 }

@@ -1,6 +1,7 @@
 import ComposableArchitecture
 import Model
 import Repository
+import UIApplicationClient
 
 public struct FavoritesListState: Equatable {
     public var feedContents: [FeedContent]
@@ -11,25 +12,37 @@ public struct FavoritesListState: Equatable {
 }
 
 public enum FavoritesListAction {
-    case tap(FeedContent)
+    case tap(id: String)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
+    case urlOpened(Bool)
 }
 
 public struct FavoritesListEnvironment {
     public let feedRepository: FeedRepositoryProtocol
+    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol
+        feedRepository: FeedRepositoryProtocol,
+        applicationClient: UIApplicationClientProtocol
     ) {
         self.feedRepository = feedRepository
+        self.applicationClient = applicationClient
     }
 }
 
 public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListAction, FavoritesListEnvironment> { state, action, environment in
     switch action {
-    case .tap:
-        // TODO: open content page
+    case let .tap(id):
+        if let selectedFeedContent = state.feedContents.first(where: { $0.id == id }),
+           let url = URL(string: selectedFeedContent.item.link) {
+            return environment.applicationClient.open(
+                url: url,
+                options: [:]
+            )
+            .eraseToEffect()
+            .map(FavoritesListAction.urlOpened)
+        }
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -46,6 +59,8 @@ public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListActio
         return .none
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)
+        return .none
+    case .urlOpened:
         return .none
     }
 }

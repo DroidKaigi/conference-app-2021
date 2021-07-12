@@ -83,7 +83,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .needToInitialize,
                     reducer: .empty,
-                    environment: FavoritesEnvironment(feedRepository: FeedRepositoryMock())
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -92,7 +92,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .needToInitialize,
                     reducer: .empty,
-                    environment: FavoritesEnvironment(feedRepository: FeedRepositoryMock())
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -102,7 +102,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .emptyInitialized,
                     reducer: .empty,
-                    environment: FavoritesEnvironment(feedRepository: FeedRepositoryMock())
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -111,7 +111,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .emptyInitialized,
                     reducer: .empty,
-                    environment: FavoritesEnvironment(feedRepository: FeedRepositoryMock())
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -121,7 +121,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
                     reducer: .empty,
-                    environment: FavoritesEnvironment(feedRepository: FeedRepositoryMock())
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -130,7 +130,7 @@ public struct FavoritesScreen_Previews: PreviewProvider {
                 store: .init(
                     initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
                     reducer: .empty,
-                    environment: FavoritesEnvironment(feedRepository: FeedRepositoryMock())
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
