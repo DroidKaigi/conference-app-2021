@@ -5,9 +5,11 @@ import SwiftUI
 
 public struct StaffCell: View {
     private let staff: Staff
+    private let onTap: (Staff) -> Void
 
-    public init(staff: Staff) {
+    public init(staff: Staff, onTap: @escaping (Staff) -> Void) {
         self.staff = staff
+        self.onTap = onTap
     }
 
     public var body: some View {
@@ -31,6 +33,9 @@ public struct StaffCell: View {
             }
         }
         .padding(.leading, 20)
+        .onTapGesture {
+            onTap(staff)
+        }
     }
 }
 
@@ -38,13 +43,15 @@ public struct StaffCell: View {
 public struct StaffCell_Previews: PreviewProvider {
     public static var previews: some View {
         StaffCell(
-            staff: .mock()
+            staff: .mock(),
+            onTap: { _ in }
         )
         .frame(width: 375, height: 84)
         .environment(\.colorScheme, .light)
         .previewLayout(.sizeThatFits)
         StaffCell(
-            staff: .mock()
+            staff: .mock(),
+            onTap: { _ in }
         )
         .frame(width: 375, height: 84)
         .environment(\.colorScheme, .dark)

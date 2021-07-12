@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Model
+import UIApplicationClient
 
 public struct AboutState: Equatable {
     public var staffs: [Staff]
@@ -16,13 +17,22 @@ public struct AboutState: Equatable {
 public enum AboutAction {
     case refresh
     case selectedPicker(SelectedType)
+    case tapStaff(Staff)
+    case tapContributor(Contributor)
+    case urlOpened(Bool)
 }
 
 public struct AboutEnvironment {
-    public init() {}
+    public let applicationClient: UIApplicationClientProtocol
+
+    public init(
+        applicationClient: UIApplicationClientProtocol
+    ) {
+        self.applicationClient = applicationClient
+    }
 }
 
-public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, _ in
+public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, environment in
     switch action {
     case .refresh:
         // TODO: Fetch data from server
@@ -31,6 +41,28 @@ public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { s
         return .none
     case .selectedPicker(let selectedType):
         state.selectedType = selectedType
+        return .none
+    case let .tapStaff(staff):
+        if let url = URL(string: staff.urlString) {
+            return environment.applicationClient.open(
+                url: url,
+                options: [:]
+            )
+            .eraseToEffect()
+            .map(AboutAction.urlOpened)
+        }
+        return .none
+    case let .tapContributor(contributor):
+        if let url = URL(string: contributor.urlString) {
+            return environment.applicationClient.open(
+                url: url,
+                options: [:]
+            )
+            .eraseToEffect()
+            .map(AboutAction.urlOpened)
+        }
+        return .none
+    case .urlOpened:
         return .none
     }
 }

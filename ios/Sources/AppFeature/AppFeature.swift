@@ -65,8 +65,10 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     aboutReducer.pullback(
         state: \.aboutState,
         action: /AppAction.about,
-        environment: { _ -> AboutEnvironment in
-            .init()
+        environment: { environment -> AboutEnvironment in
+            .init(
+                applicationClient: environment.applicationClient
+            )
         }
     ),
     .init { _, action, _ in

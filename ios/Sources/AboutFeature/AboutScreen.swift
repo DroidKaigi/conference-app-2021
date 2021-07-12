@@ -34,7 +34,9 @@ public struct AboutScreen: View {
                             case .staff:
                                 LazyVStack(alignment: .leading, spacing: 24) {
                                     ForEach(viewStore.staffs) { staff in
-                                        StaffCell(staff: staff)
+                                        StaffCell(staff: staff) { staff in
+                                            viewStore.send(.tapStaff(staff))
+                                        }
                                     }
                                 }
                                 .padding(.top, 20)
@@ -44,7 +46,9 @@ public struct AboutScreen: View {
                                     spacing: 40
                                 ) {
                                     ForEach(viewStore.contributors) { contributor in
-                                        ContributorCell(contributor: contributor)
+                                        ContributorCell(contributor: contributor) { contributor in
+                                            viewStore.send(.tapContributor(contributor))
+                                        }
                                     }
                                 }
                                 .listStyle(PlainListStyle())
