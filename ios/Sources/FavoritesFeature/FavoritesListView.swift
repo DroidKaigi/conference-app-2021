@@ -23,7 +23,6 @@ public struct FavoritesListView: View {
                     }
                 )
             }
-            .padding(.horizontal, 8)
         }
     }
 }

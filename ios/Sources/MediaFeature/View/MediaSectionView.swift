@@ -33,14 +33,11 @@ public struct MediaSectionView: View {
                                     viewStore.send(.tapFavorite(isFavorited: content.isFavorited, id: content.id))
                                 }
                             )
-                            .aspectRatio(257.0 / 258, contentMode: .fit)
                         }
                     }
-                    .padding(.horizontal, 8)
                 }
             }
         }
-        .aspectRatio(375.0 / 301, contentMode: .fit)
     }
 }
 
