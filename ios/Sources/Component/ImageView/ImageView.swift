@@ -35,18 +35,22 @@ public enum PlaceHolder {
 }
 
 public struct ImageView: View {
+    enum Const {
+        static let roundedLineWidth: CGFloat = 1
+    }
+
     private let imageURL: URL?
     private let placeholder: PlaceHolder
     private let placeholderSize: PlaceHolder.Size
-    private let width: CGFloat?
-    private let height: CGFloat?
+    private let width: CGFloat
+    private let height: CGFloat
 
     public init(
         imageURL: URL?,
         placeholder: PlaceHolder = .noImage,
         placeholderSize: PlaceHolder.Size,
-        width: CGFloat? = nil,
-        height: CGFloat? = nil
+        width: CGFloat,
+        height: CGFloat
     ) {
         self.imageURL = imageURL
         self.placeholder = placeholder
@@ -72,7 +76,10 @@ public struct ImageView: View {
         .frame(width: width, height: height)
         .overlay(
             RoundedRectangle(cornerRadius: 2)
-                .stroke(AssetColor.Separate.image.color, lineWidth: 1)
+                .stroke(
+                    AssetColor.Separate.image.color,
+                    lineWidth: Const.roundedLineWidth
+                )
         )
     }
 }
@@ -96,49 +103,55 @@ public struct ImageView_Previews: PreviewProvider {
             ImageView(
                 imageURL: nil,
                 placeholder: .noImage,
-                placeholderSize: .large
+                placeholderSize: .large,
+                width: 343,
+                height: 190
             )
-            .frame(width: 343, height: 190)
             .previewLayout(.sizeThatFits)
 
             ImageView(
                 imageURL: nil,
                 placeholder: .noImagePodcast,
-                placeholderSize: .large
+                placeholderSize: .large,
+                width: 343,
+                height: 190
             )
-            .frame(width: 343, height: 190)
             .previewLayout(.sizeThatFits)
 
             ImageView(
                 imageURL: nil,
                 placeholder: .noImage,
-                placeholderSize: .medium
+                placeholderSize: .medium,
+                width: 225,
+                height: 114
             )
-            .frame(width: 225, height: 114)
             .previewLayout(.sizeThatFits)
 
             ImageView(
                 imageURL: nil,
                 placeholder: .noImagePodcast,
-                placeholderSize: .medium
+                placeholderSize: .medium,
+                width: 225,
+                height: 114
             )
-            .frame(width: 225, height: 114)
             .previewLayout(.sizeThatFits)
 
             ImageView(
                 imageURL: nil,
                 placeholder: .noImage,
-                placeholderSize: .small
+                placeholderSize: .small,
+                width: 163,
+                height: 114
             )
-            .frame(width: 163, height: 114)
             .previewLayout(.sizeThatFits)
 
             ImageView(
                 imageURL: nil,
                 placeholder: .noImagePodcast,
-                placeholderSize: .small
+                placeholderSize: .small,
+                width: 163,
+                height: 114
             )
-            .frame(width: 163, height: 114)
             .previewLayout(.sizeThatFits)
         }
     }

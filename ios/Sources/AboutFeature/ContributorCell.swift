@@ -4,6 +4,10 @@ import Styleguide
 import SwiftUI
 
 public struct ContributorCell: View {
+    enum Const {
+        static let imageSize: CGFloat = 60
+    }
+
     private let contributor: Contributor
     private let onTap: (Contributor) -> Void
 
@@ -14,14 +18,17 @@ public struct ContributorCell: View {
 
     public var body: some View {
         VStack {
-            ImageView(imageURL: URL(string: contributor.imageURLString), placeholderSize: .medium)
-                .scaledToFill()
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(AssetColor.Separate.image.color, lineWidth: 2)
-                )
+            ImageView(
+                imageURL: URL(string: contributor.imageURLString),
+                placeholderSize: .medium,
+                width: Const.imageSize,
+                height: Const.imageSize
+            )
+            .clipShape(Circle())
+            .overlay(
+                RoundedRectangle(cornerRadius: Const.imageSize / 2)
+                    .stroke(AssetColor.Separate.image.color, lineWidth: 2)
+            )
             Text(contributor.name)
                 .foregroundColor(AssetColor.Base.primary.color)
                 .font(.caption)
