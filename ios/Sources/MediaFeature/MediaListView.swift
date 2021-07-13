@@ -130,7 +130,7 @@ private extension MediaListAction {
         case .moreDismissed:
             self = .moreDismissed
         case .tap(let feedContent):
-            self = .tap(id: feedContent.id)
+            self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
         }
@@ -160,7 +160,7 @@ private extension MediaListAction {
         case .showMore:
             self = .showMore(for: mediaType)
         case .tap(let content):
-            self = .tap(id: content.id)
+            self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
         }
@@ -169,7 +169,7 @@ private extension MediaListAction {
     init(action: MediaDetailScreen.ViewAction) {
         switch action {
         case .tap(let content):
-            self = .tap(id: content.id)
+            self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
         }

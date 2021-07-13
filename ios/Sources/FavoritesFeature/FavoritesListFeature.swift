@@ -12,7 +12,7 @@ public struct FavoritesListState: Equatable {
 }
 
 public enum FavoritesListAction {
-    case tap(id: String)
+    case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case urlOpened(Bool)
@@ -33,9 +33,8 @@ public struct FavoritesListEnvironment {
 
 public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListAction, FavoritesListEnvironment> { state, action, environment in
     switch action {
-    case let .tap(id):
-        if let selectedFeedContent = state.feedContents.first(where: { $0.id == id }),
-           let url = URL(string: selectedFeedContent.item.link) {
+    case let .tap(feedContent):
+        if let url = URL(string: feedContent.item.link) {
             return environment.applicationClient.open(
                 url: url,
                 options: [:]

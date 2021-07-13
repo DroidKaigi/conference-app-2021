@@ -16,7 +16,7 @@ public struct FavoritesListView: View {
                 FeedContentListView(
                     feedContents: viewStore.feedContents,
                     tapContent: { content in
-                        viewStore.send(.tap(id: content.id))
+                        viewStore.send(.tap(content))
                     },
                     tapFavorite: { isFavorited, contentId in
                         viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))

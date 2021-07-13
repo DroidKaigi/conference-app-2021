@@ -23,7 +23,7 @@ public struct HomeListState: Equatable {
 }
 
 public enum HomeListAction {
-    case selectFeedContent(id: String)
+    case selectFeedContent(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
@@ -45,9 +45,8 @@ public struct HomeListEnvironment {
 
 public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvironment> { state, action, environment in
     switch action {
-    case let .selectFeedContent(id):
-        if let selectedFeedContent = state.feedContents.first(where: { $0.id == id }),
-           let url = URL(string: selectedFeedContent.item.link) {
+    case let .selectFeedContent(feedContent):
+        if let url = URL(string: feedContent.item.link) {
             return environment.applicationClient.open(
                 url: url,
                 options: [:]
