@@ -9,11 +9,11 @@ public struct StaffCell: View {
     }
 
     private let staff: Staff
-    private let onTap: (Staff) -> Void
+    private let tapAction: (Staff) -> Void
 
-    public init(staff: Staff, onTap: @escaping (Staff) -> Void) {
+    public init(staff: Staff, tapAction: @escaping (Staff) -> Void) {
         self.staff = staff
-        self.onTap = onTap
+        self.tapAction = tapAction
     }
 
     public var body: some View {
@@ -41,7 +41,7 @@ public struct StaffCell: View {
         }
         .padding(.leading, 20)
         .onTapGesture {
-            onTap(staff)
+            tapAction(staff)
         }
     }
 }
@@ -51,14 +51,14 @@ public struct StaffCell_Previews: PreviewProvider {
     public static var previews: some View {
         StaffCell(
             staff: .mock(),
-            onTap: { _ in }
+            tapAction: { _ in }
         )
         .frame(width: 375, height: 84)
         .environment(\.colorScheme, .light)
         .previewLayout(.sizeThatFits)
         StaffCell(
             staff: .mock(),
-            onTap: { _ in }
+            tapAction: { _ in }
         )
         .frame(width: 375, height: 84)
         .environment(\.colorScheme, .dark)

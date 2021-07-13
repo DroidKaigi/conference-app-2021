@@ -9,11 +9,11 @@ public struct ContributorCell: View {
     }
 
     private let contributor: Contributor
-    private let onTap: (Contributor) -> Void
+    private let tapAction: (Contributor) -> Void
 
-    public init(contributor: Contributor, onTap: @escaping (Contributor) -> Void) {
+    public init(contributor: Contributor, tapAction: @escaping (Contributor) -> Void) {
         self.contributor = contributor
-        self.onTap = onTap
+        self.tapAction = tapAction
     }
 
     public var body: some View {
@@ -35,7 +35,7 @@ public struct ContributorCell: View {
                 .fontWeight(.medium)
         }
         .onTapGesture {
-            onTap(contributor)
+            tapAction(contributor)
         }
     }
 }
@@ -44,14 +44,14 @@ public struct ContributorCell_Preview: PreviewProvider {
     public static var previews: some View {
         ContributorCell(
             contributor: .mock(),
-            onTap: { _ in }
+            tapAction: { _ in }
         )
         .frame(width: 111, height: 116)
         .environment(\.colorScheme, .light)
         .previewLayout(.sizeThatFits)
         ContributorCell(
             contributor: .mock(),
-            onTap: { _ in }
+            tapAction: { _ in }
         )
         .frame(width: 111, height: 116)
         .environment(\.colorScheme, .dark)
