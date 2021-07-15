@@ -3,6 +3,13 @@ import SwiftUI
 import Styleguide
 
 public struct MediumCard: View {
+    enum Const {
+        static let margin: CGFloat = 16
+        static let cardWidth: CGFloat = 257
+        static let cardHeight: CGFloat = 258
+        static let imageViewWidth = Const.cardWidth - (Const.margin * 2) - (ImageView.Const.roundedLineWidth * 2)
+    }
+
     private let title: String
     private let imageURL: URL?
     private let media: Media
@@ -30,125 +37,95 @@ public struct MediumCard: View {
     }
 
     public var body: some View {
-        GeometryReader { geometry in
-            VStack(alignment: .leading, spacing: 13) {
-                ImageView(
-                    imageURL: imageURL,
-                    placeholder: .noImage,
-                    placeholderSize: .medium,
-                    width: geometry.size.width,
-                    height: geometry.size.width * 114/225
-                )
+        VStack(alignment: .leading, spacing: 13) {
+            ImageView(
+                imageURL: imageURL,
+                placeholder: .noImage,
+                placeholderSize: .medium,
+                width: Const.imageViewWidth,
+                height: Const.imageViewWidth * 114/225
+            )
 
-                VStack(alignment: .leading, spacing: 12) {
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(title)
-                            .font(.subheadline)
-                            .foregroundColor(AssetColor.Base.primary.color)
-                            .lineLimit(2)
-                            .frame(maxHeight: .infinity, alignment: .top)
+            VStack(alignment: .leading, spacing: 12) {
+                Group {
+                    Text(title)
+                        .font(.subheadline)
+                        .foregroundColor(AssetColor.Base.primary.color)
+                        .lineLimit(2)
 
-                        Text(date.formatted)
-                            .font(.caption)
-                            .foregroundColor(AssetColor.Base.tertiary.color)
-                    }
+                    Spacer(minLength: 4)
 
-                    HStack(spacing: 8) {
-                        Tag(media: media)
+                    Text(date.formatted)
+                        .font(.caption)
+                        .foregroundColor(AssetColor.Base.tertiary.color)
+                }
 
-                        Spacer()
+                HStack(spacing: 8) {
+                    Tag(media: media)
 
-                        Button(action: tapFavoriteAction, label: {
-                            let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
-                            image
-                                .renderingMode(.template)
-                                .foregroundColor(AssetColor.primary.color)
-                        })
-                    }
+                    Spacer()
+
+                    Button(action: tapFavoriteAction, label: {
+                        let image = isFavorited
+                            ? AssetImage.iconFavorite.image
+                            : AssetImage.iconFavoriteOff.image
+                        image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.primary.color)
+                    })
                 }
             }
-            .background(Color.clear)
-            .onTapGesture(perform: tapAction)
         }
-        .padding(16)
-        .frame(width: 257, height: 258)
+        .padding(Const.margin)
+        .background(Color.clear)
+        .onTapGesture(perform: tapAction)
+        .frame(width: Const.cardWidth, height: Const.cardHeight)
     }
 }
 
 public struct MediumCard_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
-            MediumCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                media: .droidKaigiFm,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: false,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 257, height: 258)
-            .environment(\.colorScheme, .light)
+            ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+                MediumCard(
+                    title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
+                    imageURL: URL(string: ""),
+                    media: .droidKaigiFm,
+                    date: Date(timeIntervalSince1970: 0),
+                    isFavorited: false,
+                    tapAction: {},
+                    tapFavoriteAction: {}
+                )
+                .background(AssetColor.Background.primary.color)
+                .previewDevice(.init(rawValue: "iPhone X"))
+                .environment(\.colorScheme, colorScheme)
 
-            MediumCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                media: .medium,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 257, height: 258)
-            .environment(\.colorScheme, .light)
+                MediumCard(
+                    title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
+                    imageURL: URL(string: ""),
+                    media: .medium,
+                    date: Date(timeIntervalSince1970: 0),
+                    isFavorited: true,
+                    tapAction: {},
+                    tapFavoriteAction: {}
+                )
+                .background(AssetColor.Background.primary.color)
+                .previewDevice(.init(rawValue: "iPhone X"))
+                .environment(\.colorScheme, colorScheme)
 
-            MediumCard(
-                title: "タイトル",
-                imageURL: URL(string: ""),
-                media: .youtube,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 257, height: 258)
-            .environment(\.colorScheme, .light)
-
-            MediumCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                media: .droidKaigiFm,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: false,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 257, height: 258)
-            .environment(\.colorScheme, .dark)
-
-            MediumCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                media: .medium,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 257, height: 258)
-            .environment(\.colorScheme, .dark)
-
-            MediumCard(
-                title: "タイトル",
-                imageURL: URL(string: ""),
-                media: .youtube,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 257, height: 258)
-            .environment(\.colorScheme, .dark)
+                MediumCard(
+                    title: "タイトル",
+                    imageURL: URL(string: ""),
+                    media: .youtube,
+                    date: Date(timeIntervalSince1970: 0),
+                    isFavorited: true,
+                    tapAction: {},
+                    tapFavoriteAction: {}
+                )
+                .background(AssetColor.Background.primary.color)
+                .previewDevice(.init(rawValue: "iPhone X"))
+                .environment(\.colorScheme, colorScheme)
+            }
         }
         .previewLayout(.sizeThatFits)
     }

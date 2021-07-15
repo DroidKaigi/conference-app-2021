@@ -20,8 +20,6 @@ public struct SearchResultScreen: View {
                         tapContent: tap,
                         tapFavorite: tapFavorite
                     )
-                    .padding(.horizontal, 8)
-                    .animation(.easeInOut)
                 }
             }
         }

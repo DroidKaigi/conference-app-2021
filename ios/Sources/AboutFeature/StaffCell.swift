@@ -3,6 +3,10 @@ import Styleguide
 import SwiftUI
 
 public struct StaffCell: View {
+    enum Const {
+        static let imageSize: CGFloat = 60
+    }
+
     private let staff: Staff
 
     public init(staff: Staff) {
@@ -11,14 +15,17 @@ public struct StaffCell: View {
 
     public var body: some View {
         HStack {
-            ImageView(imageURL: staff.iconUrl, placeholderSize: .medium)
-                .scaledToFill()
-                .frame(width: 60, height: 60)
-                .clipShape(Circle())
-                .overlay(
-                    RoundedRectangle(cornerRadius: 30)
-                        .stroke(AssetColor.Separate.image.color, lineWidth: 2)
-                )
+            ImageView(
+                imageURL: staff.iconUrl,
+                placeholderSize: .medium,
+                width: Const.imageSize,
+                height: Const.imageSize
+            )
+            .clipShape(Circle())
+            .overlay(
+                RoundedRectangle(cornerRadius: Const.imageSize / 2)
+                    .stroke(AssetColor.Separate.image.color, lineWidth: 2)
+            )
             VStack(alignment: .leading, spacing: 3) {
                 Text(staff.name)
                     .font(.body)
