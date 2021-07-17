@@ -98,7 +98,7 @@ public struct AppScreen: View {
 
     internal enum ViewAction {
         case progressViewAppeared
-        case tapReload
+        case reload
     }
 
     public var body: some View {
@@ -125,6 +125,14 @@ public struct AppScreen: View {
                         }
                     }
                 )
+                .onReceive(
+                    NotificationCenter
+                        .default
+                        .publisher(for: UIApplication.willEnterForegroundNotification)
+                ) { _ in
+                    print("hoge")
+                    viewStore.send(.reload)
+                }
             }
             CaseLet(
                 state: /AppState.AppCoreState.errorOccurred,
@@ -133,7 +141,7 @@ public struct AppScreen: View {
                     Text("エラーが発生しました")
 
                     Button(action: {
-                        viewStore.send(.tapReload)
+                        viewStore.send(.reload)
                     }, label: {
                         Text("再度読み込み")
                             .foregroundColor(AssetColor.primary.color)
@@ -151,7 +159,7 @@ private extension AppAction {
         switch action {
         case .progressViewAppeared:
             self = .refresh
-        case .tapReload:
+        case .reload:
             self = .needRefresh
         }
     }
