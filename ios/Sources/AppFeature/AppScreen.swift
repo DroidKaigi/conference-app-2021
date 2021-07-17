@@ -78,29 +78,82 @@ public struct AppScreen: View {
     @State var selection = 0
 
     private let store: Store<AppState, AppAction>
+    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
+        self.viewStore = ViewStore<ViewState, ViewAction>(
+            store.scope(
+                state: ViewState.init(state:),
+                action: AppAction.init(action:)
+            )
+        )
         UITabBar.appearance().configureWithDefaultStyle()
         UINavigationBar.appearance().configureWithDefaultStyle()
     }
 
+    internal struct ViewState: Equatable {
+        init(state: AppState) {}
+    }
+
+    internal enum ViewAction {
+        case progressViewAppeared
+        case tapReload
+    }
+
     public var body: some View {
-        TabView(
-            selection: $selection,
-            content: {
-                ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
-                    tab.view(store)
-                        .tabItem {
-                            tab.image.renderingMode(.template)
-                            Text(tab.title)
+        SwitchStore(store.scope(state: \.coreState)) {
+            CaseLet(
+                state: /AppState.AppCoreState.needToInitialize,
+                action: AppAction.init(action:)) { _ in
+                ProgressView()
+                    .onAppear { viewStore.send(.progressViewAppeared) }
+            }
+            CaseLet(
+                state: /AppState.AppCoreState.initialized,
+                action: AppAction.init(action:)) { _ in
+                TabView(
+                    selection: $selection,
+                    content: {
+                        ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
+                            tab.view(store)
+                                .tabItem {
+                                    tab.image.renderingMode(.template)
+                                    Text(tab.title)
+                                }
+                                .tag(offset)
                         }
-                        .tag(offset)
+                    }
+                )
+            }
+            CaseLet(
+                state: /AppState.AppCoreState.errorOccurred,
+                action: AppAction.init(action:)) { _ in
+                VStack(spacing: 16) {
+                    Text("エラーが発生しました")
+
+                    Button(action: {
+                        viewStore.send(.tapReload)
+                    }, label: {
+                        Text("再度読み込み")
+                            .foregroundColor(AssetColor.primary.color)
+                    })
                 }
             }
-        )
+        }
         .accentColor(AssetColor.primary.color)
         .background(AssetColor.Background.primary.color)
+    }
+}
+
+private extension AppAction {
+    init(action: AppScreen.ViewAction) {
+        switch action {
+        case .progressViewAppeared:
+            self = .refresh
+        case .tapReload:
+            self = .needRefresh
+        }
     }
 }
 
