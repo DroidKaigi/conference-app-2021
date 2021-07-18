@@ -7,73 +7,6 @@ import Styleguide
 import SwiftUI
 import UIKit
 
-enum AppTab: CaseIterable {
-    case home
-    case media
-    case favorites
-    case about
-
-    var title: String {
-        switch self {
-        case .home:
-            return L10n.HomeScreen.title
-        case .media:
-            return L10n.MediaScreen.title
-        case .favorites:
-            return L10n.FavoriteScreen.title
-        case .about:
-            return L10n.AboutScreen.title
-        }
-    }
-
-    var image: Image {
-        switch self {
-        case .home:
-            return AssetImage.iconHome.image
-        case .media:
-            return AssetImage.iconBlog.image
-        case .favorites:
-            return AssetImage.iconStar.image
-        case .about:
-            return AssetImage.iconAbout.image
-        }
-    }
-
-    @ViewBuilder
-    func view(_ store: Store<AppState, AppAction>) -> some View {
-        switch self {
-        case .home:
-            HomeScreen(
-                store: store.scope(
-                    state: \.homeState,
-                    action: AppAction.home
-                )
-            )
-        case .media:
-            MediaScreen(
-                store: store.scope(
-                    state: \.mediaState,
-                    action: AppAction.media
-                )
-            )
-        case .favorites:
-            FavoritesScreen(
-                store: store.scope(
-                    state: \.favoritesState,
-                    action: AppAction.favorites
-                )
-            )
-        case .about:
-            AboutScreen(
-                store: store.scope(
-                    state: \.aboutState,
-                    action: AppAction.about
-                )
-            )
-        }
-    }
-}
-
 public struct AppScreen: View {
     @State var selection = 0
 
@@ -111,29 +44,9 @@ public struct AppScreen: View {
             }
             CaseLet(
                 state: /AppState.AppCoreState.initialized,
-                action: AppAction.init(action:)) { _ in
-                TabView(
-                    selection: $selection,
-                    content: {
-                        ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
-                            tab.view(store)
-                                .tabItem {
-                                    tab.image.renderingMode(.template)
-                                    Text(tab.title)
-                                }
-                                .tag(offset)
-                        }
-                    }
-                )
-                .onReceive(
-                    NotificationCenter
-                        .default
-                        .publisher(for: UIApplication.willEnterForegroundNotification)
-                ) { _ in
-                    print("hoge")
-                    viewStore.send(.reload)
-                }
-            }
+                action: AppAction.init(action:),
+                then: AppTabView.init(store:)
+            )
             CaseLet(
                 state: /AppState.AppCoreState.errorOccurred,
                 action: AppAction.init(action:)) { _ in
@@ -162,6 +75,10 @@ private extension AppAction {
         case .reload:
             self = .needRefresh
         }
+    }
+
+    init(action: AppTabAction) {
+        self = .appTab
     }
 }
 

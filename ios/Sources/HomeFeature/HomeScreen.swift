@@ -7,20 +7,9 @@ import SwiftUI
 
 public struct HomeScreen: View {
     private let store: Store<HomeState, HomeAction>
-    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     public init(store: Store<HomeState, HomeAction>) {
         self.store = store
-        self.viewStore = ViewStore<ViewState, ViewAction>(store.scope(state: ViewState.init(state:), action: HomeAction.init(action:)))
-    }
-
-    internal struct ViewState: Equatable {
-        init(state: HomeState) {}
-    }
-
-    internal enum ViewAction {
-        case progressViewAppeared
-        case viewAppearedAgain
     }
 
     public var body: some View {
@@ -30,17 +19,40 @@ public struct HomeScreen: View {
                     AssetColor.primary.color
                         .frame(width: nil, height: 200)
                         .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
-                    SwitchStore(store) {
-                        CaseLet(
-                            state: /HomeState.needToInitialize,
-                            action: HomeAction.init(action:)) { _ in
-                            ProgressView()
-                                .onAppear { viewStore.send(.progressViewAppeared) }
+                    WithViewStore(store) { viewStore in
+                        VStack(alignment: .trailing, spacing: 0) {
+                            Spacer(minLength: 16)
+                            MessageBar(title: viewStore.message)
+                                .padding(.trailing, 16)
+                            if let topic = viewStore.topic {
+                                LargeCard(
+                                    content: topic,
+                                    tapAction: {
+                                        viewStore.send(.selectFeedContent)
+                                    },
+                                    tapFavoriteAction: {
+                                        viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
+                                    }
+                                )
+                            }
+                            Separator()
+                            QuestionnaireView(tapAnswerAction: {
+                                viewStore.send(.answerQuestionnaire)
+                            })
+                            Separator()
+                            ForEach(viewStore.listFeedContents) { feedContent in
+                                ListItem(
+                                    content: feedContent,
+                                    tapAction: {
+                                        viewStore.send(.selectFeedContent)
+                                    },
+                                    tapFavoriteAction: {
+                                        viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))
+                                    }
+                                )
+                            }
                         }
-                        CaseLet(
-                            state: /HomeState.initialized,
-                            action: HomeAction.init(action:),
-                            then: HomeListView.init(store:))
+                        .separatorStyle(ThickSeparatorStyle())
                     }
                 }
             }
@@ -58,71 +70,104 @@ public struct HomeScreen: View {
             .introspectViewController { viewController in
                 viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
             }
-            .onAppear {
-                if ViewStore(store).state != .needToInitialize {
-                    viewStore.send(.viewAppearedAgain)
-                }
-            }
         }
     }
 }
 
-private extension HomeAction {
-    init(action: HomeScreen.ViewAction) {
-        switch action {
-        case .progressViewAppeared:
-            self = .refresh
-        case .viewAppearedAgain:
-            self = .needRefresh
-        }
-    }
-
-    init(action: HomeListAction) {
-        self = .homeList(action)
+private extension LargeCard {
+    init(
+        content: FeedContent,
+        tapAction: @escaping () -> Void,
+        tapFavoriteAction: @escaping () -> Void
+    ) {
+        self.init(
+            title: content.item.title.jaTitle,
+            imageURL: URL(string: content.item.image.largeURLString),
+            media: content.item.media,
+            date: content.item.publishedAt,
+            isFavorited: content.isFavorited,
+            tapAction: tapAction,
+            tapFavoriteAction: tapFavoriteAction
+        )
     }
 }
+
+private extension ListItem {
+    init(
+        content: FeedContent,
+        tapAction: @escaping () -> Void,
+        tapFavoriteAction: @escaping () -> Void
+    ) {
+        let speakers = (content.item.wrappedValue as? Podcast)?.speakers ?? []
+        self.init(
+            title: content.item.title.jaTitle,
+            media: content.item.media,
+            imageURL: URL(string: content.item.image.smallURLString),
+            speakers: speakers,
+            date: content.item.publishedAt,
+            isFavorited: content.isFavorited,
+            tapFavoriteAction: tapFavoriteAction,
+            tapAction: tapAction
+        )
+    }
+}
+
+// private extension HomeAction {
+//    init(action: HomeScreen.ViewAction) {
+//        switch action {
+//        case .progressViewAppeared:
+//            self = .refresh
+//        case .viewAppearedAgain:
+//            self = .needRefresh
+//        }
+//    }
+//
+//    init(action: HomeListAction) {
+//        self = .homeList(action)
+//    }
+// }
 
 #if DEBUG
-public struct HomeScreen_Previews: PreviewProvider {
-    public static var previews: some View {
-        Group {
-            HomeScreen(
-                store: .init(
-                    initialState: .needToInitialize,
-                    reducer: .empty,
-                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-            HomeScreen(
-                store: .init(
-                    initialState: .needToInitialize,
-                    reducer: .empty,
-                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
-            HomeScreen(
-                store: .init(
-                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
-                    reducer: .empty,
-                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-            HomeScreen(
-                store: .init(
-                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
-                    reducer: .empty,
-                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
-        }
-    }
-}
+// public struct HomeScreen_Previews: PreviewProvider {
+//    public static var previews: some View {
+//        Group {
+//            HomeScreen(
+//                store: .init(
+//                    initialState: .needToInitialize,
+//                    reducer: .empty,
+//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
+//                )
+//            )
+//            .previewDevice(.init(rawValue: "iPhone 12"))
+//            .environment(\.colorScheme, .dark)
+//            HomeScreen(
+//                store: .init(
+//                    initialState: .needToInitialize,
+//                    reducer: .empty,
+//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
+//                )
+//            )
+//            .previewDevice(.init(rawValue: "iPhone 12"))
+//            .environment(\.colorScheme, .light)
+//            HomeScreen(
+//                store: .init(
+//                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
+//                    reducer: .empty,
+//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
+//                )
+//            )
+//            .previewDevice(.init(rawValue: "iPhone 12"))
+//            .environment(\.colorScheme, .dark)
+//            HomeScreen(
+//                store: .init(
+//                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
+//                    reducer: .empty,
+//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
+//                )
+//            )
+//            .previewDevice(.init(rawValue: "iPhone 12"))
+//            .environment(\.colorScheme, .light)
+//        }
+//    }
+// }
 #endif
