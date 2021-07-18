@@ -30,13 +30,6 @@ public enum AppTabAction {
 }
 
 public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.combine(
-    homeReducer.pullback(
-        state: \.homeState,
-        action: /AppTabAction.home,
-        environment: { environment -> HomeEnvironment in
-            .init(feedRepository: environment.feedRepository)
-        }
-    ),
     mediaReducer.pullback(
         state: \.mediaState,
         action: /AppTabAction.media,

@@ -112,21 +112,6 @@ private extension ListItem {
     }
 }
 
-// private extension HomeAction {
-//    init(action: HomeScreen.ViewAction) {
-//        switch action {
-//        case .progressViewAppeared:
-//            self = .refresh
-//        case .viewAppearedAgain:
-//            self = .needRefresh
-//        }
-//    }
-//
-//    init(action: HomeListAction) {
-//        self = .homeList(action)
-//    }
-// }
-
 #if DEBUG
 // public struct HomeScreen_Previews: PreviewProvider {
 //    public static var previews: some View {

@@ -28,10 +28,11 @@ public struct AppState: Equatable {
 public enum AppAction {
     case refresh
     case needRefresh
+    case selectFeedContent
     case refreshResponse(Result<[FeedContent], KotlinError>)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
-    case appTab
+    case appTab(AppTabAction)
 }
 
 public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, action, environment in
@@ -48,6 +49,8 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment> { state, ac
         return .none
     case let .refreshResponse(.failure(error)):
         state.coreState = .errorOccurred
+        return .none
+    case .selectFeedContent:
         return .none
     case .tapFavorite(let isFavorited, let id):
         if let index = state.feedContents.map(\.id).firstIndex(of: id) {

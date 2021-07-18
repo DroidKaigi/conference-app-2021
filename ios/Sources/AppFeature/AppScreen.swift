@@ -78,7 +78,38 @@ private extension AppAction {
     }
 
     init(action: AppTabAction) {
-        self = .appTab
+        switch action {
+        case .home(let action):
+            switch action {
+            case .selectFeedContent:
+                self = .selectFeedContent
+            case .tapFavorite(let isFavorited, let id):
+                self = .tapFavorite(isFavorited: isFavorited, id: id)
+            case .answerQuestionnaire:
+                self = .selectFeedContent
+            }
+        case .media(let action):
+            switch action {
+            case .refresh:
+                self = .selectFeedContent
+            case .refreshResponse:
+                self = .selectFeedContent
+            case .needRefresh:
+                self = .selectFeedContent
+            case .mediaList:
+                self = .selectFeedContent
+            }
+        case .favorites(let action):
+            self = .selectFeedContent
+//            switch action {
+//
+//            }
+        case .about(let action):
+            self = .selectFeedContent
+//            switch action {
+//
+//            }
+        }
     }
 }
 
