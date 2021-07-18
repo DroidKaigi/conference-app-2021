@@ -160,7 +160,7 @@ private extension MediaDetailScreen.ViewState {
 }
 
 #if DEBUG
- public struct MediaScreen_Previews: PreviewProvider {
+public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             Group {
@@ -220,5 +220,5 @@ private extension MediaDetailScreen.ViewState {
             }
         }
     }
- }
+}
 #endif
