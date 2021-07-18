@@ -1,6 +1,5 @@
 import ComposableArchitecture
 import Model
-import UIApplicationClient
 
 public struct AboutState: Equatable {
     public var staffs: [Staff]
