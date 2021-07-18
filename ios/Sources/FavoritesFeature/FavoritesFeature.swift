@@ -22,14 +22,11 @@ public enum FavoritesAction {
 
 public struct FavoritesEnvironment {
     public let feedRepository: FeedRepositoryProtocol
-    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol,
-        applicationClient: UIApplicationClientProtocol
+        feedRepository: FeedRepositoryProtocol
     ) {
         self.feedRepository = feedRepository
-        self.applicationClient = applicationClient
     }
 }
 
@@ -39,8 +36,7 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
         action: /FavoritesAction.favoritesList,
         environment: {
             .init(
-                feedRepository: $0.feedRepository,
-                applicationClient: $0.applicationClient
+                feedRepository: $0.feedRepository
             )
         }
     ),

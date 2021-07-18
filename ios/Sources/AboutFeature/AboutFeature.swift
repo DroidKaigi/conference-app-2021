@@ -6,6 +6,11 @@ public struct AboutState: Equatable {
     public var staffs: [Staff]
     public var contributors: [Contributor]
     public var selectedType: SelectedType
+    public var showingURL: URL?
+
+    public var isShowingWebView: Bool {
+        showingURL != nil
+    }
 
     public init(staffs: [Staff] = [], contributors: [Contributor] = [], selectedType: SelectedType = .staff) {
         self.staffs = staffs
@@ -19,20 +24,14 @@ public enum AboutAction {
     case selectedPicker(SelectedType)
     case tapStaff(Staff)
     case tapContributor(Contributor)
-    case urlOpened(Bool)
+    case hideWebView
 }
 
 public struct AboutEnvironment {
-    public let applicationClient: UIApplicationClientProtocol
-
-    public init(
-        applicationClient: UIApplicationClientProtocol
-    ) {
-        self.applicationClient = applicationClient
-    }
+    public init() {}
 }
 
-public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, environment in
+public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, _ in
     switch action {
     case .refresh:
         // TODO: Fetch data from server
@@ -43,26 +42,13 @@ public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { s
         state.selectedType = selectedType
         return .none
     case let .tapStaff(staff):
-        if let url = URL(string: staff.urlString) {
-            return environment.applicationClient.open(
-                url: url,
-                options: [:]
-            )
-            .eraseToEffect()
-            .map(AboutAction.urlOpened)
-        }
+        state.showingURL = URL(string: staff.urlString)
         return .none
     case let .tapContributor(contributor):
-        if let url = URL(string: contributor.urlString) {
-            return environment.applicationClient.open(
-                url: url,
-                options: [:]
-            )
-            .eraseToEffect()
-            .map(AboutAction.urlOpened)
-        }
+        state.showingURL = URL(string: contributor.urlString)
         return .none
-    case .urlOpened:
+    case .hideWebView:
+        state.showingURL = nil
         return .none
     }
 }

@@ -72,7 +72,6 @@ var package = Package(
             dependencies: [
                 .target(name: "Component"),
                 .target(name: "Styleguide"),
-                .target(name: "UIApplicationClient"),
                 .product(name: "Introspect", package: "Introspect"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
@@ -88,7 +87,6 @@ var package = Package(
                 .target(name: "Repository"),
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
-                .target(name: "UIApplicationClient"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -108,7 +106,6 @@ var package = Package(
                 .target(name: "Model"),
                 .target(name: "Repository"),
                 .target(name: "Styleguide"),
-                .target(name: "UIApplicationClient"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -118,7 +115,6 @@ var package = Package(
                 .target(name: "Component"),
                 .target(name: "Repository"),
                 .target(name: "Styleguide"),
-                .target(name: "UIApplicationClient"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -129,7 +125,6 @@ var package = Package(
                 .target(name: "Model"),
                 .target(name: "Repository"),
                 .target(name: "Styleguide"),
-                .target(name: "UIApplicationClient"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
                 .product(name: "Introspect", package: "Introspect"),
             ]
@@ -163,7 +158,6 @@ var package = Package(
                 .process("Resources"),
             ]
         ),
-        .target(name: "UIApplicationClient"),
         .target(
             name: "Utility",
             dependencies: []

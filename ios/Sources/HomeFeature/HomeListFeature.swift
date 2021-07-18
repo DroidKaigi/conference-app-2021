@@ -5,6 +5,7 @@ import UIApplicationClient
 
 public struct HomeListState: Equatable {
     public var feedContents: [FeedContent]
+    public var showingURL: URL?
     public var message: String {
         "Finished! 🤖"
     }
@@ -17,8 +18,13 @@ public struct HomeListState: Equatable {
         Array(feedContents.dropFirst())
     }
 
+    public var isShowingWebView: Bool {
+        showingURL != nil
+    }
+
     public init(feedContents: [FeedContent] = []) {
         self.feedContents = feedContents
+        self.showingURL = nil
     }
 }
 
@@ -27,33 +33,23 @@ public enum HomeListAction {
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
-    case urlOpened(Bool)
+    case hideWebView
 }
 
 public struct HomeListEnvironment {
     public let feedRepository: FeedRepositoryProtocol
-    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol,
-        applicationClient: UIApplicationClientProtocol
+        feedRepository: FeedRepositoryProtocol
     ) {
         self.feedRepository = feedRepository
-        self.applicationClient = applicationClient
     }
 }
 
 public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvironment> { state, action, environment in
     switch action {
     case let .selectFeedContent(feedContent):
-        if let url = URL(string: feedContent.item.link) {
-            return environment.applicationClient.open(
-                url: url,
-                options: [:]
-            )
-            .eraseToEffect()
-            .map(HomeListAction.urlOpened)
-        }
+        state.showingURL = URL(string: feedContent.item.link)
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -74,7 +70,8 @@ public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvi
     case .answerQuestionnaire:
         // TODO: open questionnaire
         return .none
-    case .urlOpened:
+    case .hideWebView:
+        state.showingURL = nil
         return .none
     }
 }

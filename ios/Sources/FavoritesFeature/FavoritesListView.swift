@@ -22,6 +22,14 @@ public struct FavoritesListView: View {
                         viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
                     }
                 )
+                .sheet(
+                    isPresented: viewStore.binding(
+                        get: \.isShowingWebView,
+                        send: FavoritesListAction.hideWebView
+                    ), content: {
+                        WebView(url: viewStore.showingURL!)
+                    }
+                )
             }
         }
     }

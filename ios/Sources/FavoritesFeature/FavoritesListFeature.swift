@@ -5,9 +5,15 @@ import UIApplicationClient
 
 public struct FavoritesListState: Equatable {
     public var feedContents: [FeedContent]
+    public var showingURL: URL?
+
+    public var isShowingWebView: Bool {
+        showingURL != nil
+    }
 
     public init(feedContents: [FeedContent] = []) {
         self.feedContents = feedContents
+        self.showingURL = nil
     }
 }
 
@@ -15,33 +21,23 @@ public enum FavoritesListAction {
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
-    case urlOpened(Bool)
+    case hideWebView
 }
 
 public struct FavoritesListEnvironment {
     public let feedRepository: FeedRepositoryProtocol
-    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol,
-        applicationClient: UIApplicationClientProtocol
+        feedRepository: FeedRepositoryProtocol
     ) {
         self.feedRepository = feedRepository
-        self.applicationClient = applicationClient
     }
 }
 
 public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListAction, FavoritesListEnvironment> { state, action, environment in
     switch action {
     case let .tap(feedContent):
-        if let url = URL(string: feedContent.item.link) {
-            return environment.applicationClient.open(
-                url: url,
-                options: [:]
-            )
-            .eraseToEffect()
-            .map(FavoritesListAction.urlOpened)
-        }
+        state.showingURL = URL(string: feedContent.item.link)
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -59,7 +55,8 @@ public let favoritesListReducer = Reducer<FavoritesListState, FavoritesListActio
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)
         return .none
-    case .urlOpened:
+    case .hideWebView:
+        state.showingURL = nil
         return .none
     }
 }

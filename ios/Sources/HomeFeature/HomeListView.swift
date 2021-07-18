@@ -45,6 +45,14 @@ public struct HomeListView: View {
                 }
             }
             .separatorStyle(ThickSeparatorStyle())
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.isShowingWebView,
+                    send: HomeListAction.hideWebView
+                ), content: {
+                    WebView(url: viewStore.showingURL!)
+                }
+            )
         }
     }
 }

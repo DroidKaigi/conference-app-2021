@@ -21,14 +21,11 @@ public enum HomeAction {
 
 public struct HomeEnvironment {
     public let feedRepository: FeedRepositoryProtocol
-    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol,
-        applicationClient: UIApplicationClientProtocol
+        feedRepository: FeedRepositoryProtocol
     ) {
         self.feedRepository = feedRepository
-        self.applicationClient = applicationClient
     }
 }
 
@@ -38,8 +35,7 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment>.combine
         action: /HomeAction.homeList,
         environment: {
             .init(
-                feedRepository: $0.feedRepository,
-                applicationClient: $0.applicationClient
+                feedRepository: $0.feedRepository
             )
         }
     ),

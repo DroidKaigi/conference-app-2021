@@ -21,14 +21,11 @@ public enum MediaAction {
 
 public struct MediaEnvironment {
     public let feedRepository: FeedRepositoryProtocol
-    public let applicationClient: UIApplicationClientProtocol
 
     public init(
-        feedRepository: FeedRepositoryProtocol,
-        applicationClient: UIApplicationClientProtocol
+        feedRepository: FeedRepositoryProtocol
     ) {
         self.feedRepository = feedRepository
-        self.applicationClient = applicationClient
     }
 }
 
@@ -38,8 +35,7 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
         action: /MediaAction.mediaList,
         environment: {
             .init(
-                feedRepository: $0.feedRepository,
-                applicationClient: $0.applicationClient
+                feedRepository: $0.feedRepository
             )
         }
     ),

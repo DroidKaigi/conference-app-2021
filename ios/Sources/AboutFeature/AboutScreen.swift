@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import SwiftUI
 import Styleguide
@@ -79,6 +80,14 @@ public struct AboutScreen: View {
                             viewStore.send(.refresh)
                         }
                     }
+                    .sheet(
+                        isPresented: viewStore.binding(
+                            get: \.isShowingWebView,
+                            send: AboutAction.hideWebView
+                        ), content: {
+                            WebView(url: viewStore.showingURL!)
+                        }
+                    )
                 }
             }
         }
