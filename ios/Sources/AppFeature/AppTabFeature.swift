@@ -19,7 +19,7 @@ public struct AppTabState: Equatable {
     ) {
         self.feedContents = feedContents
         self.homeState = HomeState(feedContents: feedContents)
-        self.mediaState = MediaState.init()
+        self.mediaState = MediaState(feedContents: feedContents)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
         self.aboutState = AboutState()
     }
@@ -31,6 +31,7 @@ public enum AppTabAction {
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
+    case none
 
     init(action: HomeAction) {
         switch action {
@@ -39,20 +40,24 @@ public enum AppTabAction {
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
         case .answerQuestionnaire:
-            self = .answerQuestionnaire
+            self = .none
         }
     }
 
     init(action: MediaAction) {
         switch action {
-        case .refresh:
+        case .searchTextDidChange:
+            self = .none
+        case .isEditingDidChange:
+            self = .none
+        case .showMore:
+            self = .none
+        case .moreDismissed:
+            self = .none
+        case .tap:
             self = .selectFeedContent
-        case .refreshResponse:
-            self = .selectFeedContent
-        case .needRefresh:
-            self = .selectFeedContent
-        case .mediaList:
-            self = .selectFeedContent
+        case .tapFavorite(let isFavorited, let id):
+            self = .tapFavorite(isFavorited: isFavorited, id: id)
         }
     }
 
@@ -68,7 +73,7 @@ public enum AppTabAction {
     init(action: AboutAction) {
         switch action {
         case .selectedPicker:
-            self = .selectFeedContent
+            self = .none
         }
     }
 }
@@ -84,8 +89,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     mediaReducer.pullback(
         state: \.mediaState,
         action: /AppTabAction.init(action:),
-        environment: { environment in
-            .init(feedRepository: environment.feedRepository)
+        environment: { _ in
+            .init()
         }
     ),
     favoritesReducer.pullback(
@@ -111,7 +116,6 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .answerQuestionnaire:
             return .none
         case .tapFavorite(let isFavorited, let id):
-            print("tap favorite")
             let publisher = isFavorited
                 ? environment.feedRepository.removeFavorite(id: id)
                 : environment.feedRepository.addFavorite(id: id)
@@ -120,16 +124,17 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
                 .catchToEffect()
                 .map(AppTabAction.favoriteResponse)
         case let .favoriteResponse(.success(id)):
-            print("tap favorite success")
             if let index = state.feedContents.map(\.id).firstIndex(of: id) {
                 state.feedContents[index].isFavorited.toggle()
             }
             state.homeState.feedContents = state.feedContents
-            state.favoritesState.feedContents = state.feedContents
+            state.mediaState.feedContents = state.feedContents
+            state.favoritesState.feedContents = state.feedContents.filter(\.isFavorited)
             return .none
         case let .favoriteResponse(.failure(error)):
-            print("tap favorite failed")
             print(error.localizedDescription)
+            return .none
+        case .none:
             return .none
         }
     }

@@ -6,61 +6,97 @@ import SwiftUI
 import Styleguide
 
 public struct MediaScreen: View {
-
     private let store: Store<MediaState, MediaAction>
-    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
     @SearchController private var searchController: UISearchController
 
     public init(store: Store<MediaState, MediaAction>) {
         self.store = store
-        let viewStore = ViewStore<ViewState, ViewAction>(store.scope(state: ViewState.init(state:), action: MediaAction.init(action:)))
-        self.viewStore = viewStore
         self._searchController = .init(
             searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
             searchTextDidChangeTo: { text in
-                viewStore.send(.searchTextDidChange(to: text))
+                ViewStore(store).send(.searchTextDidChange(to: text))
             },
             isEditingDidChangeTo: { isEditing in
-                viewStore.send(.isEditingDidChange(to: isEditing))
+                ViewStore(store).send(.isEditingDidChange(to: isEditing))
             }
         )
     }
 
-    struct ViewState: Equatable {
-        var isSearchBarEnabled: Bool
-
-        init(state: MediaState) {
-            if case .initialized = state {
-                isSearchBarEnabled = true
-            } else {
-                isSearchBarEnabled = false
-            }
-        }
-    }
-
-    enum ViewAction {
-        case progressViewAppeared
-        case viewAppearedAgain
-        case searchTextDidChange(to: String)
-        case isEditingDidChange(to: Bool)
-    }
-
     public var body: some View {
-        searchController.searchBar.isUserInteractionEnabled = viewStore.isSearchBarEnabled
+        searchController.searchBar.isUserInteractionEnabled = true
         return NavigationView {
-            SwitchStore(store) {
-                CaseLet(
-                    state: /MediaState.initialized,
-                    action: MediaAction.init(action:),
-                    then: MediaListView.init(store:)
-                )
-                CaseLet(
-                    state: /MediaState.needToInitialize,
-                    action: MediaAction.init(action:)) { _ in
-                    ProgressView()
-                        .onAppear { viewStore.send(.progressViewAppeared) }
+            WithViewStore(store) { viewStore in
+                ZStack {
+                    ScrollView {
+                        if viewStore.hasBlogs {
+                            MediaSectionView(
+                                type: .blog,
+                                store: store.scope(
+                                    state: \.blogs,
+                                    action: { .init(action: $0, for: .blog) }
+                                )
+                            )
+                            separator
+                        }
+                        if viewStore.hasVideos {
+                            MediaSectionView(
+                                type: .video,
+                                store: store.scope(
+                                    state: \.videos,
+                                    action: { .init(action: $0, for: .video) }
+                                )
+                            )
+                            separator
+                        }
+                        if viewStore.hasPodcasts {
+                            MediaSectionView(
+                                type: .podcast,
+                                store: store.scope(
+                                    state: \.podcasts,
+                                    action: { .init(action: $0, for: .podcast) }
+                                )
+                            )
+                        }
+                    }
+                    .separatorStyle(ThickSeparatorStyle())
+                    .zIndex(0)
+
+                    Color.black.opacity(0.4)
+                        .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
+                        .animation(.easeInOut)
+                        .zIndex(1)
+
+                    SearchResultScreen(
+                        feedContents: viewStore.searchedFeedContents,
+                        tap: { feedContent in
+                            viewStore.send(.tap(feedContent))
+                        },
+                        tapFavorite: { isFavorited, contentId in
+                            viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                        }
+                    )
+                    .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
+                    .zIndex(2)
                 }
+                .animation(.easeInOut)
             }
+            .background(
+                NavigationLink(
+                    destination: IfLetStore(
+                        store.scope(
+                            state: MediaDetailScreen.ViewState.init(state:),
+                            action: MediaAction.init(action:)
+                        ),
+                        then: MediaDetailScreen.init(store:)
+                    ),
+                    isActive: ViewStore(store).binding(
+                        get: \.isMoreActive,
+                        send: { _ in .moreDismissed }
+                    )
+                ) {
+                    EmptyView()
+                }
+            )
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
                 trailing: AssetImage.iconSetting.image
@@ -76,64 +112,113 @@ public struct MediaScreen: View {
                 viewController.navigationController?.navigationBar.sizeToFit()
             }
         }
-        .onAppear {
-            if ViewStore(store).state != .needToInitialize {
-                searchController.isActive = false
-                viewStore.send(.viewAppearedAgain)
-            }
-        }
+    }
+
+    private var separator: some View {
+        Separator()
+            .padding()
     }
 }
 
 private extension MediaAction {
-    init(action: MediaScreen.ViewAction) {
+    init(action: MediaSectionView.ViewAction, for mediaType: MediaType) {
         switch action {
-        case .progressViewAppeared:
-            self = .refresh
-        case .viewAppearedAgain:
-            self = .needRefresh
-        case let .searchTextDidChange(to: text):
-            self = .mediaList(.searchTextDidChange(to: text))
-        case let .isEditingDidChange(isEditing):
-            self = .mediaList(.isEditingDidChange(to: isEditing))
+        case .showMore:
+            self = .showMore(for: mediaType)
+        case .tap(let content):
+            self = .tap(content)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
         }
     }
 
-    init(action: MediaListAction) {
-        self = .mediaList(action)
+    init(action: MediaDetailScreen.ViewAction) {
+        switch action {
+        case .tap(let content):
+            self = .tap(content)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        }
+    }
+}
+
+private extension MediaDetailScreen.ViewState {
+    init?(state: MediaState) {
+        guard let moreActiveType = state.moreActiveType else { return nil }
+        switch moreActiveType {
+        case .blog:
+            title = L10n.MediaScreen.Section.Blog.title
+            contents = state.blogs
+        case .video:
+            title = L10n.MediaScreen.Section.Video.title
+            contents = state.videos
+        case .podcast:
+            title = L10n.MediaScreen.Section.Podcast.title
+            contents = state.podcasts
+        }
     }
 }
 
 #if DEBUG
-public struct MediaScreen_Previews: PreviewProvider {
+ public struct MediaScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             Group {
                 MediaScreen(
                     store: .init(
-                        initialState: MediaState(),
-                        reducer: .empty,
-                        environment: {}
-                    )
-                )
-                MediaScreen(
-                    store: .init(
-                        initialState: MediaState.initialized(
-                            .init(
-                                feedContents: [],
-                                blogs: [.blogMock(), .blogMock()],
-                                videos: [.videoMock(), .videoMock()],
-                                podcasts: [.podcastMock(), .podcastMock()]
-                            )
+                        initialState: .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .videoMock(),
+                                .videoMock(),
+                                .videoMock(),
+                                .podcastMock(),
+                                .podcastMock(),
+                                .podcastMock()
+                            ]
                         ),
                         reducer: .empty,
                         environment: {}
                     )
                 )
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
+
+                MediaScreen(
+                    store: .init(
+                        initialState: .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .videoMock(),
+                                .videoMock(),
+                                .videoMock(),
+                                .podcastMock(),
+                                .podcastMock(),
+                                .podcastMock()
+                            ],
+                            searchedFeedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ],
+                            isSearchResultVisible: true,
+                            isSearchTextEditing: true
+                        ),
+                        reducer: .empty,
+                        environment: {}
+                    )
+                )
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
             }
-            .environment(\.colorScheme, colorScheme)
         }
-        .accentColor(AssetColor.primary.color)
     }
-}
+ }
 #endif

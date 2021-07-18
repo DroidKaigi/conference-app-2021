@@ -113,7 +113,7 @@ private extension ListItem {
 }
 
 #if DEBUG
- public struct HomeScreen_Previews: PreviewProvider {
+public struct HomeScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             HomeScreen(
@@ -136,5 +136,5 @@ private extension ListItem {
             .environment(\.colorScheme, colorScheme)
         }
     }
- }
+}
 #endif
