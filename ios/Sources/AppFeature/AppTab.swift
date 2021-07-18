@@ -12,32 +12,6 @@ enum AppTab: CaseIterable {
     case favorites
     case about
 
-    var title: String {
-        switch self {
-        case .home:
-            return L10n.HomeScreen.title
-        case .media:
-            return L10n.MediaScreen.title
-        case .favorites:
-            return L10n.FavoriteScreen.title
-        case .about:
-            return L10n.AboutScreen.title
-        }
-    }
-
-    var image: Image {
-        switch self {
-        case .home:
-            return AssetImage.iconHome.image
-        case .media:
-            return AssetImage.iconBlog.image
-        case .favorites:
-            return AssetImage.iconStar.image
-        case .about:
-            return AssetImage.iconAbout.image
-        }
-    }
-
     @ViewBuilder
     func view(_ store: Store<AppTabState, AppTabAction>) -> some View {
         switch self {
@@ -45,28 +19,28 @@ enum AppTab: CaseIterable {
             HomeScreen(
                 store: store.scope(
                     state: \.homeState,
-                    action: AppTabAction.home
+                    action: AppTabAction.init(action:)
                 )
             )
         case .media:
             MediaScreen(
                 store: store.scope(
                     state: \.mediaState,
-                    action: AppTabAction.media
+                    action: AppTabAction.init(action:)
                 )
             )
         case .favorites:
             FavoritesScreen(
                 store: store.scope(
                     state: \.favoritesState,
-                    action: AppTabAction.favorites
+                    action: AppTabAction.init(action:)
                 )
             )
         case .about:
             AboutScreen(
                 store: store.scope(
                     state: \.aboutState,
-                    action: AppTabAction.about
+                    action: AppTabAction.init(action:)
                 )
             )
         }

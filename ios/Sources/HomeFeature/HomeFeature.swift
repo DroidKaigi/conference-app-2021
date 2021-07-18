@@ -4,16 +4,17 @@ import Model
 import Repository
 
 public struct HomeState: Equatable {
-    let feedContents: [FeedContent]
-    public var message: String {
+    public var feedContents: [FeedContent]
+
+    var message: String {
         "Finished! 🤖"
     }
 
-    public var topic: FeedContent? {
+    var topic: FeedContent? {
         feedContents.first
     }
 
-    public var listFeedContents: [FeedContent] {
+    var listFeedContents: [FeedContent] {
         Array(feedContents.dropFirst())
     }
 
@@ -29,11 +30,16 @@ public enum HomeAction {
 }
 
 public struct HomeEnvironment {
-    public let feedRepository: FeedRepositoryProtocol
+    public init() {}
+}
 
-    public init(
-        feedRepository: FeedRepositoryProtocol
-    ) {
-        self.feedRepository = feedRepository
+public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, action, _ in
+    switch action {
+    case .selectFeedContent:
+        return .none
+    case .tapFavorite(isFavorited: let isFavorited, id: let id):
+        return .none
+    case .answerQuestionnaire:
+        return .none
     }
 }

@@ -113,46 +113,28 @@ private extension ListItem {
 }
 
 #if DEBUG
-// public struct HomeScreen_Previews: PreviewProvider {
-//    public static var previews: some View {
-//        Group {
-//            HomeScreen(
-//                store: .init(
-//                    initialState: .needToInitialize,
-//                    reducer: .empty,
-//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-//                )
-//            )
-//            .previewDevice(.init(rawValue: "iPhone 12"))
-//            .environment(\.colorScheme, .dark)
-//            HomeScreen(
-//                store: .init(
-//                    initialState: .needToInitialize,
-//                    reducer: .empty,
-//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-//                )
-//            )
-//            .previewDevice(.init(rawValue: "iPhone 12"))
-//            .environment(\.colorScheme, .light)
-//            HomeScreen(
-//                store: .init(
-//                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
-//                    reducer: .empty,
-//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-//                )
-//            )
-//            .previewDevice(.init(rawValue: "iPhone 12"))
-//            .environment(\.colorScheme, .dark)
-//            HomeScreen(
-//                store: .init(
-//                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
-//                    reducer: .empty,
-//                    environment: HomeEnvironment(feedRepository: FeedRepositoryMock())
-//                )
-//            )
-//            .previewDevice(.init(rawValue: "iPhone 12"))
-//            .environment(\.colorScheme, .light)
-//        }
-//    }
-// }
+ public struct HomeScreen_Previews: PreviewProvider {
+    public static var previews: some View {
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            HomeScreen(
+                store: .init(
+                    initialState: .init(
+                        feedContents: [
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock()
+                        ]
+                    ),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+        }
+    }
+ }
 #endif

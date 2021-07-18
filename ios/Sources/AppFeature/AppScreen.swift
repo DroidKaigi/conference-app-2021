@@ -35,20 +35,20 @@ public struct AppScreen: View {
     }
 
     public var body: some View {
-        SwitchStore(store.scope(state: \.coreState)) {
+        SwitchStore(store) {
             CaseLet(
-                state: /AppState.AppCoreState.needToInitialize,
+                state: /AppState.needToInitialize,
                 action: AppAction.init(action:)) { _ in
                 ProgressView()
                     .onAppear { viewStore.send(.progressViewAppeared) }
             }
             CaseLet(
-                state: /AppState.AppCoreState.initialized,
-                action: AppAction.init(action:),
-                then: AppTabView.init(store:)
+                state: /AppState.initialized,
+                action: AppAction.appTab,
+                then: AppTabScreen.init(store:)
             )
             CaseLet(
-                state: /AppState.AppCoreState.errorOccurred,
+                state: /AppState.errorOccurred,
                 action: AppAction.init(action:)) { _ in
                 VStack(spacing: 16) {
                     Text("エラーが発生しました")
@@ -76,62 +76,53 @@ private extension AppAction {
             self = .needRefresh
         }
     }
-
-    init(action: AppTabAction) {
-        switch action {
-        case .home(let action):
-            switch action {
-            case .selectFeedContent:
-                self = .selectFeedContent
-            case .tapFavorite(let isFavorited, let id):
-                self = .tapFavorite(isFavorited: isFavorited, id: id)
-            case .answerQuestionnaire:
-                self = .selectFeedContent
-            }
-        case .media(let action):
-            switch action {
-            case .refresh:
-                self = .selectFeedContent
-            case .refreshResponse:
-                self = .selectFeedContent
-            case .needRefresh:
-                self = .selectFeedContent
-            case .mediaList:
-                self = .selectFeedContent
-            }
-        case .favorites(let action):
-            self = .selectFeedContent
-//            switch action {
-//
-//            }
-        case .about(let action):
-            self = .selectFeedContent
-//            switch action {
-//
-//            }
-        }
-    }
 }
 
-public struct AppScreen_Previews: PreviewProvider {
+#if DEBUG
+ public struct AppScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        Group {
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             AppScreen(
                 store: .init(
-                    initialState: .init(),
+                    initialState: .needToInitialize,
                     reducer: .empty,
-                    environment: AppEnvironment.noop
+                    environment: {}
                 )
             )
-            .environment(\.colorScheme, .dark)
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+
             AppScreen(
                 store: .init(
-                    initialState: .init(),
+                    initialState: .errorOccurred,
                     reducer: .empty,
-                    environment: AppEnvironment.noop
+                    environment: {}
                 )
             )
-            .environment(\.colorScheme, .light)
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+
+            AppScreen(
+                store: .init(
+                    initialState: .initialized(
+                        .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ]
+                        )
+                    ),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
         }
     }
-}
+ }
+#endif
