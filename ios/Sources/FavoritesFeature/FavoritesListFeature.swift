@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import Model
 import Repository
-import UIApplicationClient
 
 public struct FavoritesListState: Equatable {
     public var feedContents: [FeedContent]

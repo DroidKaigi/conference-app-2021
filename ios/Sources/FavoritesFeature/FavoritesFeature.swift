@@ -2,7 +2,6 @@ import Component
 import ComposableArchitecture
 import Model
 import Repository
-import UIApplicationClient
 
 public enum FavoritesState: Equatable {
     case needToInitialize

@@ -1,7 +1,6 @@
 import ComposableArchitecture
 import Model
 import Repository
-import UIApplicationClient
 
 public struct HomeListState: Equatable {
     public var feedContents: [FeedContent]
