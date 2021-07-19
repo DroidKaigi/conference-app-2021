@@ -13,6 +13,7 @@ public struct MediaListState: Equatable {
     var isSearchResultVisible: Bool
     var isSearchTextEditing: Bool
     var moreActiveType: MediaType?
+    var showingURL: URL?
 
     init(
         feedContents: [FeedContent],
@@ -43,6 +44,7 @@ public enum MediaListAction {
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
+    case hideWebView
 }
 
 public enum MediaType {
@@ -71,8 +73,8 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
     case .moreDismissed:
         state.moreActiveType = nil
         return .none
-    case .tap(let content):
-        // TODO: open content page
+    case let .tap(feedContent):
+        state.showingURL = URL(string: feedContent.item.link)
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -90,6 +92,9 @@ let mediaListReducer = Reducer<MediaListState, MediaListAction, MediaEnvironment
         return .none
     case let .favoriteResponse(.failure(error)):
         print(error.localizedDescription)
+        return .none
+    case .hideWebView:
+        state.showingURL = nil
         return .none
     }
 }

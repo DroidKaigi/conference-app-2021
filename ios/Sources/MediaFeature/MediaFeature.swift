@@ -33,7 +33,9 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
         state: /MediaState.initialized,
         action: /MediaAction.mediaList,
         environment: {
-            .init(feedRepository: $0.feedRepository)
+            .init(
+                feedRepository: $0.feedRepository
+            )
         }
     ),
     .init { state, action, environment in

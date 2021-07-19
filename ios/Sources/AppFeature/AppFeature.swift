@@ -36,21 +36,27 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         state: \.homeState,
         action: /AppAction.home,
         environment: { environment -> HomeEnvironment in
-            .init(feedRepository: environment.feedRepository)
+            .init(
+                feedRepository: environment.feedRepository
+            )
         }
     ),
     mediaReducer.pullback(
         state: \.mediaState,
         action: /AppAction.media,
         environment: { environment in
-            .init(feedRepository: environment.feedRepository)
+            .init(
+                feedRepository: environment.feedRepository
+            )
         }
     ),
     favoritesReducer.pullback(
         state: \.favoritesState,
         action: /AppAction.favorites,
         environment: { environment -> FavoritesEnvironment in
-            .init(feedRepository: environment.feedRepository)
+            .init(
+                feedRepository: environment.feedRepository
+            )
         }
     ),
     aboutReducer.pullback(

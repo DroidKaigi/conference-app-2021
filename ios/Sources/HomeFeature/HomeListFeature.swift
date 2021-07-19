@@ -4,6 +4,7 @@ import Repository
 
 public struct HomeListState: Equatable {
     public var feedContents: [FeedContent]
+    public var showingURL: URL?
     public var message: String {
         "Finished! 🤖"
     }
@@ -16,16 +17,22 @@ public struct HomeListState: Equatable {
         Array(feedContents.dropFirst())
     }
 
+    public var isShowingWebView: Bool {
+        showingURL != nil
+    }
+
     public init(feedContents: [FeedContent] = []) {
         self.feedContents = feedContents
+        self.showingURL = nil
     }
 }
 
 public enum HomeListAction {
-    case selectFeedContent
+    case selectFeedContent(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
+    case hideWebView
 }
 
 public struct HomeListEnvironment {
@@ -40,8 +47,8 @@ public struct HomeListEnvironment {
 
 public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvironment> { state, action, environment in
     switch action {
-    case .selectFeedContent:
-        // TODO: open content page
+    case let .selectFeedContent(feedContent):
+        state.showingURL = URL(string: feedContent.item.link)
         return .none
     case .tapFavorite(let isFavorited, let id):
         let publisher = isFavorited
@@ -61,6 +68,9 @@ public let homeListReducer = Reducer<HomeListState, HomeListAction, HomeListEnvi
         return .none
     case .answerQuestionnaire:
         // TODO: open questionnaire
+        return .none
+    case .hideWebView:
+        state.showingURL = nil
         return .none
     }
 }

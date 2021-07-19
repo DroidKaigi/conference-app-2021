@@ -22,6 +22,8 @@ struct MediaListView: View {
         var isSearchResultVisible: Bool
         var isSearchTextEditing: Bool
         var moreActiveType: MediaType?
+        var showingURL: URL?
+        var isShowingWebView: Bool
 
         init(state: MediaListState) {
             searchedFeedContents = state.searchedFeedContents
@@ -31,6 +33,8 @@ struct MediaListView: View {
             isSearchResultVisible = state.isSearchResultVisible
             isSearchTextEditing = state.isSearchTextEditing
             moreActiveType = state.moreActiveType
+            showingURL = state.showingURL
+            isShowingWebView = state.showingURL != nil
         }
     }
 
@@ -38,6 +42,7 @@ struct MediaListView: View {
         case moreDismissed
         case tap(FeedContent)
         case tapFavorite(isFavorited: Bool, id: String)
+        case hideWebView
     }
 
     var body: some View {
@@ -110,6 +115,14 @@ struct MediaListView: View {
                 EmptyView()
             }
         )
+        .sheet(
+            isPresented: viewStore.binding(
+                get: \.isShowingWebView,
+                send: ViewAction.hideWebView
+            ), content: {
+                WebView(url: viewStore.showingURL!)
+            }
+        )
     }
 
     private var separator: some View {
@@ -133,6 +146,8 @@ private extension MediaListAction {
             self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
+        case .hideWebView:
+            self = .hideWebView
         }
     }
 }
