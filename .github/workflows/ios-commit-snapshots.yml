@@ -47,6 +47,9 @@ jobs:
       - name: Take Snapshots
         working-directory: ./ios
         run: make take-snapshots
+      - name: Add LFS tracked file
+        run: |
+          git lfs track "**/__Snapshots__/**.png"
       - name: Create Update Snapshots PullRequest
         uses: peter-evans/create-pull-request@v3
         with:
