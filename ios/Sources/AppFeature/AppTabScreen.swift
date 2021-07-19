@@ -23,34 +23,36 @@ public struct AppTabScreen: View {
     }
 
     public var body: some View {
-        TabView(
-            selection: $selection,
-            content: {
-                ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
-                    tab.view(store)
-                        .tabItem {
-                            tab.image.renderingMode(.template)
-                            Text(tab.title)
-                        }
-                        .tag(offset)
+        WithViewStore(store) { viewStore in
+            TabView(
+                selection: $selection,
+                content: {
+                    ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
+                        tab.view(store)
+                            .tabItem {
+                                tab.image.renderingMode(.template)
+                                Text(tab.title)
+                            }
+                            .tag(offset)
+                    }
                 }
+            )
+            .onReceive(
+                NotificationCenter
+                    .default
+                    .publisher(for: UIApplication.willEnterForegroundNotification)
+            ) { _ in
+                viewStore.send(.reload)
             }
-        )
-        .onReceive(
-            NotificationCenter
-                .default
-                .publisher(for: UIApplication.willEnterForegroundNotification)
-        ) { _ in
-            ViewStore(store).send(.reload)
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.isShowingWebView,
+                    send: .hideWebView
+                ), content: {
+                    WebView(url: viewStore.showingURL!)
+                }
+            )
         }
-        .sheet(
-            isPresented: ViewStore(store).binding(
-                get: \.isShowingWebView,
-                send: AppTabAction.hideWebView
-            ), content: {
-                WebView(url: ViewStore(store).showingURL!)
-            }
-        )
     }
 }
 
