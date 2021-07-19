@@ -28,7 +28,7 @@ public struct HomeScreen: View {
                                 LargeCard(
                                     content: topic,
                                     tapAction: {
-                                        viewStore.send(.selectFeedContent)
+                                        viewStore.send(.tap(topic))
                                     },
                                     tapFavoriteAction: {
                                         viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
@@ -44,7 +44,7 @@ public struct HomeScreen: View {
                                 ListItem(
                                     content: feedContent,
                                     tapAction: {
-                                        viewStore.send(.selectFeedContent)
+                                        viewStore.send(.tap(feedContent))
                                     },
                                     tapFavoriteAction: {
                                         viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))

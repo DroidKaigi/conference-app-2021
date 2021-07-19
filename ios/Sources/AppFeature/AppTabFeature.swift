@@ -9,15 +9,18 @@ import Repository
 
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent]
+    public var showingURL: URL?
     public var homeState: HomeState
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
 
     public init(
-        feedContents: [FeedContent]
+        feedContents: [FeedContent],
+        showingURL: URL? = nil
     ) {
         self.feedContents = feedContents
+        self.showingURL = showingURL
         self.homeState = HomeState(feedContents: feedContents)
         self.mediaState = MediaState(feedContents: feedContents)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
@@ -27,16 +30,18 @@ public struct AppTabState: Equatable {
 
 public enum AppTabAction {
     case reload
-    case selectFeedContent
+    case tap(FeedContent)
+    case hideWebView
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
+    case about(AboutAction)
     case none
 
     init(action: HomeAction) {
         switch action {
-        case .selectFeedContent:
-            self = .selectFeedContent
+        case .tap(let feedContent):
+            self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
         case .answerQuestionnaire:
@@ -54,8 +59,8 @@ public enum AppTabAction {
             self = .none
         case .moreDismissed:
             self = .none
-        case .tap:
-            self = .selectFeedContent
+        case .tap(let feedContent):
+            self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
         }
@@ -63,17 +68,10 @@ public enum AppTabAction {
 
     init(action: FavoritesAction) {
         switch action {
-        case .tap:
-            self = .selectFeedContent
+        case .tap(let feedContent):
+            self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
-        }
-    }
-
-    init(action: AboutAction) {
-        switch action {
-        case .selectedPicker:
-            self = .none
         }
     }
 }
@@ -102,7 +100,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     ),
     aboutReducer.pullback(
         state: \.aboutState,
-        action: /AppTabAction.init(action:),
+        action: /AppTabAction.about,
         environment: { _ -> AboutEnvironment in
             .init()
         }
@@ -111,7 +109,11 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         switch action {
         case .reload:
             return .none
-        case .selectFeedContent:
+        case .tap(let feedContent):
+            state.showingURL = URL(string: feedContent.item.link)
+            return .none
+        case .hideWebView:
+            state.showingURL = nil
             return .none
         case .answerQuestionnaire:
             return .none
@@ -135,6 +137,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             print(error.localizedDescription)
             return .none
         case .none:
+            return .none
+        case .about:
             return .none
         }
     }

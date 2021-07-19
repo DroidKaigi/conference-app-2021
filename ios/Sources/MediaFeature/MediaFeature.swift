@@ -92,8 +92,7 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { s
     case .moreDismissed:
         state.moreActiveType = nil
         return .none
-    case .tap(let content):
-        // TODO: open content page
+    case .tap:
         return .none
     case .tapFavorite(let isFavorited, let id):
         return .none

@@ -40,7 +40,7 @@ enum AppTab: CaseIterable {
             AboutScreen(
                 store: store.scope(
                     state: \.aboutState,
-                    action: AppTabAction.init(action:)
+                    action: AppTabAction.about
                 )
             )
         }

@@ -6,6 +6,7 @@ import AboutFeature
 import SwiftUI
 import Model
 import Styleguide
+import Component
 
 public struct AppTabScreen: View {
     @State var selection: Int = .zero
@@ -42,6 +43,14 @@ public struct AppTabScreen: View {
         ) { _ in
             ViewStore(store).send(.reload)
         }
+        .sheet(
+            isPresented: ViewStore(store).binding(
+                get: \.isShowingWebView,
+                send: AppTabAction.hideWebView
+            ), content: {
+                WebView(url: ViewStore(store).showingURL!)
+            }
+        )
     }
 }
 
@@ -70,6 +79,12 @@ private extension AppTab {
         case .about:
             return AssetImage.iconAbout.image
         }
+    }
+}
+
+private extension AppTabState {
+    var isShowingWebView: Bool {
+        showingURL != nil
     }
 }
 
