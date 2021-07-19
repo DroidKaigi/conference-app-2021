@@ -37,7 +37,7 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, ac
     switch action {
     case .selectFeedContent:
         return .none
-    case .tapFavorite(isFavorited: let isFavorited, id: let id):
+    case .tapFavorite(let isFavorited, let id):
         return .none
     case .answerQuestionnaire:
         return .none
