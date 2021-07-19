@@ -35,6 +35,7 @@ public enum AppTabAction {
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
+    case mediaView(MediaScreen.ViewAction)
     case about(AboutAction)
     case none
 
@@ -51,14 +52,6 @@ public enum AppTabAction {
 
     init(action: MediaAction) {
         switch action {
-        case .searchTextDidChange:
-            self = .none
-        case .isEditingDidChange:
-            self = .none
-        case .showMore:
-            self = .none
-        case .moreDismissed:
-            self = .none
         case .tap(let feedContent):
             self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
@@ -87,6 +80,13 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     mediaReducer.pullback(
         state: \.mediaState,
         action: /AppTabAction.init(action:),
+        environment: { _ in
+            .init()
+        }
+    ),
+    mediaViewReducer.pullback(
+        state: \.mediaState,
+        action: /AppTabAction.mediaView,
         environment: { _ in
             .init()
         }
@@ -130,13 +130,15 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
                 state.feedContents[index].isFavorited.toggle()
             }
             state.homeState.feedContents = state.feedContents
-            state.mediaState.feedContents = state.feedContents
+            state.mediaState.feedContents = state.feedContents // TODO: update search result
             state.favoritesState.feedContents = state.feedContents.filter(\.isFavorited)
             return .none
         case let .favoriteResponse(.failure(error)):
             print(error.localizedDescription)
             return .none
         case .none:
+            return .none
+        case .mediaView:
             return .none
         case .about:
             return .none

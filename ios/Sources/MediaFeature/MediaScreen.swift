@@ -7,54 +7,83 @@ import Styleguide
 
 public struct MediaScreen: View {
     private let store: Store<MediaState, MediaAction>
+    private let subStore: Store<MediaState, MediaScreen.ViewAction>
+    @ObservedObject private var subViewStore: ViewStore<MediaState, MediaScreen.ViewAction>
     @SearchController private var searchController: UISearchController
 
-    public init(store: Store<MediaState, MediaAction>) {
+    public init(store: Store<MediaState, MediaAction>, subStore: Store<MediaState, MediaScreen.ViewAction>) {
         self.store = store
+        self.subStore = subStore
+        let subViewStore = ViewStore(subStore)
+        self.subViewStore = subViewStore
         self._searchController = .init(
             searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
             searchTextDidChangeTo: { text in
-                ViewStore(store).send(.searchTextDidChange(to: text))
+                subViewStore.send(.searchTextDidChange(to: text))
             },
             isEditingDidChangeTo: { isEditing in
-                ViewStore(store).send(.isEditingDidChange(to: isEditing))
+                subViewStore.send(.isEditingDidChange(to: isEditing))
             }
         )
     }
 
+    public enum ViewAction {
+        case searchTextDidChange(to: String?)
+        case isEditingDidChange(to: Bool)
+        case showMore(for: MediaType)
+        case moreDismissed
+    }
+
     public var body: some View {
-        searchController.searchBar.isUserInteractionEnabled = true
-        return NavigationView {
+        NavigationView {
             WithViewStore(store) { viewStore in
                 ZStack {
                     ScrollView {
                         if viewStore.hasBlogs {
                             MediaSectionView(
                                 type: .blog,
-                                store: store.scope(
-                                    state: \.blogs,
-                                    action: { .init(action: $0, for: .blog) }
-                                )
+                                feedContent: viewStore.blogs,
+                                moreAction: {
+                                    ViewStore(subStore).send(.showMore(for: .blog))
+                                },
+                                tapAction: { feedContent in
+                                    viewStore.send(.tap(feedContent))
+                                },
+                                tapFavoriteAction: { isFavorited, id in
+                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: id))
+                                }
                             )
                             separator
                         }
                         if viewStore.hasVideos {
                             MediaSectionView(
                                 type: .video,
-                                store: store.scope(
-                                    state: \.videos,
-                                    action: { .init(action: $0, for: .video) }
-                                )
+                                feedContent: viewStore.videos,
+                                moreAction: {
+                                    ViewStore(subStore).send(.showMore(for: .video))
+                                },
+                                tapAction: { feedContent in
+                                    viewStore.send(.tap(feedContent))
+                                },
+                                tapFavoriteAction: { isFavorited, id in
+                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: id))
+                                }
                             )
                             separator
                         }
                         if viewStore.hasPodcasts {
                             MediaSectionView(
                                 type: .podcast,
-                                store: store.scope(
-                                    state: \.podcasts,
-                                    action: { .init(action: $0, for: .podcast) }
-                                )
+                                feedContent: viewStore.podcasts,
+                                moreAction: {
+                                    ViewStore(subStore).send(.showMore(for: .podcast))
+                                },
+                                tapAction: { feedContent in
+                                    viewStore.send(.tap(feedContent))
+                                },
+                                tapFavoriteAction: { isFavorited, id in
+                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: id))
+                                }
                             )
                         }
                     }
@@ -89,7 +118,7 @@ public struct MediaScreen: View {
                         ),
                         then: MediaDetailScreen.init(store:)
                     ),
-                    isActive: ViewStore(store).binding(
+                    isActive: ViewStore(subStore).binding(
                         get: \.isMoreActive,
                         send: { _ in .moreDismissed }
                     )
@@ -121,17 +150,6 @@ public struct MediaScreen: View {
 }
 
 private extension MediaAction {
-    init(action: MediaSectionView.ViewAction, for mediaType: MediaType) {
-        switch action {
-        case .showMore:
-            self = .showMore(for: mediaType)
-        case .tap(let content):
-            self = .tap(content)
-        case .tapFavorite(let isFavorited, let contentId):
-            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
-        }
-    }
-
     init(action: MediaDetailScreen.ViewAction) {
         switch action {
         case .tap(let content):
@@ -181,6 +199,20 @@ public struct MediaScreen_Previews: PreviewProvider {
                         ),
                         reducer: .empty,
                         environment: {}
+                    ),
+                    subStore: .init(
+                        initialState: .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ]
+                        ),
+                        reducer: .empty,
+                        environment: {}
                     )
                 )
                 .previewDevice(.init(rawValue: "iPhone 12"))
@@ -210,6 +242,20 @@ public struct MediaScreen_Previews: PreviewProvider {
                             ],
                             isSearchResultVisible: true,
                             isSearchTextEditing: true
+                        ),
+                        reducer: .empty,
+                        environment: {}
+                    ),
+                    subStore: .init(
+                        initialState: .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ]
                         ),
                         reducer: .empty,
                         environment: {}

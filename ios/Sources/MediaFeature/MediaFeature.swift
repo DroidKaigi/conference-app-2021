@@ -7,7 +7,7 @@ public struct MediaState: Equatable {
     // In order not to use any networks for searching feature,
     // `feedContents` is storage to search from & `searchedFeedContents` is searched result from `feedContents`
     public var feedContents: [FeedContent]
-    var searchedFeedContents: [FeedContent]
+    public var searchedFeedContents: [FeedContent]
     var isSearchResultVisible: Bool
     var isSearchTextEditing: Bool
     var moreActiveType: MediaType?
@@ -58,10 +58,6 @@ extension MediaState {
 }
 
 public enum MediaAction {
-    case searchTextDidChange(to: String?)
-    case isEditingDidChange(to: Bool)
-    case showMore(for: MediaType)
-    case moreDismissed
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
 }
@@ -70,7 +66,7 @@ public struct MediaEnvironment {
     public init() {}
 }
 
-public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { state, action, _ in
+public let mediaViewReducer = Reducer<MediaState, MediaScreen.ViewAction, MediaEnvironment> { state, action, _ in
     switch action {
     case let .searchTextDidChange(to: searchText):
         state.isSearchResultVisible = !(searchText?.isEmpty ?? true)
@@ -92,6 +88,11 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { s
     case .moreDismissed:
         state.moreActiveType = nil
         return .none
+    }
+}
+
+public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { _, action, _ in
+    switch action {
     case .tap:
         return .none
     case .tapFavorite(let isFavorited, let id):
