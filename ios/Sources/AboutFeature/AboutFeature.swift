@@ -33,9 +33,6 @@ public struct AboutEnvironment {
 public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, _ in
     switch action {
     case .refresh:
-        // TODO: Fetch data from server
-        state.staffs = [.mock(), .mock(), .mock()]
-        state.contributors = [.mock(), .mock(), .mock()]
         return .none
     case .selectedPicker(let selectedType):
         state.selectedType = selectedType

@@ -40,6 +40,7 @@ public struct ContributorCell: View {
     }
 }
 
+#if DEBUG
 public struct ContributorCell_Preview: PreviewProvider {
     public static var previews: some View {
         ContributorCell(
@@ -58,3 +59,4 @@ public struct ContributorCell_Preview: PreviewProvider {
         .previewLayout(.sizeThatFits)
     }
 }
+#endif
