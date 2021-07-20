@@ -1,6 +1,7 @@
 name: ios-commit-snapshots
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
