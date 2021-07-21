@@ -13,7 +13,9 @@ For example, if you preview `AboutScreen.swift` file, change build scheme to `Ab
 ### Snapshot Testing
 
 - In this app, we introduce Snapshot Testing. Snapshots are saved in each Test module's `__Snapshots__` directory.
-- When component or view's appearance are updated, there is no need to update snapshots in PR. CI will automaticaly update snapshots.
+- Snapshots in `__Snapshots__` are stored in Git LFS. So if you want to snapshot test. Please
+install Git LFS and `git lfs pull`
+- When component or view's appearance are updated, there is no need to update snapshots in PR. CI will automaticaly update snapshots and create PullRequest.
 
 ## Requirements
 

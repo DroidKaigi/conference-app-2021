@@ -1,64 +1,63 @@
 import Component
 import ComposableArchitecture
 import Model
+import Repository
 
-// dummy feed model
-public struct FeedItem: Equatable, Identifiable {
-    public var id: String
-    public var imageURLString: String
-    public var link: String
-    public var media: Media
-    public var publishedAt: Date
-    public var summary: String
-    public var title: String
+public enum HomeState: Equatable {
+    case needToInitialize
+    case initialized(HomeListState)
 
-    public init(id: String, imageURLString: String, link: String, media: Media, publishedAt: Date, summary: String, title: String) {
-        self.id = id
-        self.imageURLString = imageURLString
-        self.link = link
-        self.media = media
-        self.publishedAt = publishedAt
-        self.summary = summary
-        self.title = title
-    }
-}
-
-public struct HomeState: Equatable {
-    // TODO: Replace to real models
-    private var feedItems: [FeedItem]
-    public var message: String
-
-    public var topic: FeedItem? {
-        feedItems.first
-    }
-
-    public var listFeedItems: [FeedItem] {
-        Array(feedItems.dropFirst())
-    }
-
-    public init(
-        feedItems: [FeedItem] = [],
-        message: String = ""
-    ) {
-        self.feedItems = feedItems
-        self.message = message
+    public init() {
+        self = .needToInitialize
     }
 }
 
 public enum HomeAction {
-    case answerQuestionnaire
+    case refresh
+    case refreshResponse(Result<[FeedContent], KotlinError>)
+    case homeList(HomeListAction)
     case showSetting
 }
 
 public struct HomeEnvironment {
-    public init() {}
-}
+    public let feedRepository: FeedRepositoryProtocol
 
-public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, action, _ in
-    switch action {
-    case .answerQuestionnaire:
-        return .none
-    case .showSetting:
-        return .none
+    public init(
+        feedRepository: FeedRepositoryProtocol
+    ) {
+        self.feedRepository = feedRepository
     }
 }
+
+public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment>.combine(
+    homeListReducer.pullback(
+        state: /HomeState.initialized,
+        action: /HomeAction.homeList,
+        environment: {
+            .init(
+                feedRepository: $0.feedRepository
+            )
+        }
+    ),
+    .init { state, action, environment in
+        switch action {
+        case .refresh:
+            return environment.feedRepository.feedContents()
+                .catchToEffect()
+                .map(HomeAction.refreshResponse)
+        case let .refreshResponse(.success(feedContents)):
+            if !feedContents.isEmpty {
+                state = .initialized(.init(feedContents: feedContents))
+            }
+            return .none
+        case let .refreshResponse(.failure(error)):
+            print(error.localizedDescription)
+            // TODO: Error handling
+            return .none
+        case .homeList:
+            return .none
+        case .showSetting:
+            return .none
+        }
+    }
+)

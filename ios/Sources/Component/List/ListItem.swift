@@ -4,14 +4,13 @@ import SwiftUI
 
 public struct ListItem: View {
     private struct Const {
-        static let maximumShowingUser = 7
+        static let maximumShowingSpeaker = 7
     }
 
     private let title: String
-    private let tag: Media
+    private let media: Media
     private let imageURL: URL?
-    // TODO: Replace with real value
-    private let users: [URL]
+    private let speakers: [Speaker]
     private let date: Date
     private let isFavorited: Bool
     private let tapFavoriteAction: () -> Void
@@ -19,18 +18,18 @@ public struct ListItem: View {
 
     public init(
         title: String,
-        tag: Media,
+        media: Media,
         imageURL: URL?,
-        users: [URL],
+        speakers: [Speaker],
         date: Date,
         isFavorited: Bool,
         tapFavoriteAction: @escaping () -> Void,
         tapAction: @escaping () -> Void
     ) {
         self.title = title
-        self.tag = tag
+        self.media = media
         self.imageURL = imageURL
-        self.users = users
+        self.speakers = speakers
         self.date = date
         self.isFavorited = isFavorited
         self.tapFavoriteAction = tapFavoriteAction
@@ -39,35 +38,35 @@ public struct ListItem: View {
 
     public var body: some View {
         VStack(alignment: .leading) {
-            Tag(type: tag) {
-                // Set action if needed.
-            }
+            Tag(media: media)
+
             HStack(alignment: .top) {
                 VStack(spacing: 8) {
                     ImageView(
                         imageURL: imageURL,
-                        placeholderSize: .small
+                        placeholderSize: .small,
+                        width: 100,
+                        height: 100
                     )
-                    .frame(width: 100, height: 100)
                 }
                 VStack(alignment: .leading) {
                     Text(title)
                         .font(.headline)
                         .foregroundColor(AssetColor.Base.primary.color)
-                        .lineLimit(users.isEmpty ? 3 : 2)
+                        .lineLimit(speakers.isEmpty ? 3 : 2)
                     Spacer(minLength: 8)
-                    if !users.isEmpty {
+                    if !speakers.isEmpty {
                         HStack(spacing: -4) {
-                            ForEach(Array(users.enumerated()), id: \.0) { (index, _) in
-                                if index > Const.maximumShowingUser {
+                            ForEach(Array(speakers.enumerated()), id: \.0) { (index, speaker) in
+                                if index > Const.maximumShowingSpeaker {
                                     EmptyView()
                                 } else {
-                                    AvatarView(avatarImageURL: nil, style: .small)
-                                        .zIndex(Double(Const.maximumShowingUser - index))
+                                    AvatarView(avatarImageURL: URL(string: speaker.iconURLString), style: .small)
+                                        .zIndex(Double(Const.maximumShowingSpeaker - index))
                                 }
                             }
-                            if users.count > Const.maximumShowingUser {
-                                Text("+\(users.count - Const.maximumShowingUser)")
+                            if speakers.count > Const.maximumShowingSpeaker {
+                                Text("+\(speakers.count - Const.maximumShowingSpeaker)")
                                     .font(.caption)
                                     .padding(4)
                                     .background(AssetColor.Background.contents.color)
@@ -76,7 +75,7 @@ public struct ListItem: View {
                                         Circle()
                                             .stroke(AssetColor.Separate.image.color, lineWidth: 1)
                                     )
-                                    .zIndex(Double(-Const.maximumShowingUser))
+                                    .zIndex(Double(-Const.maximumShowingSpeaker))
                             }
                         }
                         .frame(width: nil, height: 24)
@@ -101,14 +100,15 @@ public struct ListItem: View {
     }
 }
 
+#if DEBUG
 public struct ListItem_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
-                users: [],
+                speakers: [],
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
@@ -119,9 +119,9 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
-                users: [],
+                speakers: [],
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
@@ -131,9 +131,9 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
-                users: Array(repeating: URL(string: "https://example.com")!, count: 8),
+                speakers: Array(repeating: .mock(), count: 8),
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
@@ -144,9 +144,9 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                tag: .droidKaigiFm,
+                media: .droidKaigiFm,
                 imageURL: nil,
-                users: Array(repeating: URL(string: "https://example.com")!, count: 8),
+                speakers: Array(repeating: .mock(), count: 8),
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
@@ -158,3 +158,4 @@ public struct ListItem_Previews: PreviewProvider {
         .previewLayout(.sizeThatFits)
     }
 }
+#endif

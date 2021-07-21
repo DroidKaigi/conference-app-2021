@@ -1,4 +1,5 @@
 import Model
+import Styleguide
 import SwiftUI
 
 public struct FeedContentListView: View {
@@ -36,6 +37,8 @@ public struct FeedContentListView: View {
                 )
             }
         }
+        .padding(.horizontal, SmallCard.Const.margin)
+        .animation(.easeInOut)
     }
 }
 
@@ -48,7 +51,7 @@ extension FeedContentListView {
         SmallCard(
             title: content.item.title.jaTitle,
             imageURL: URL(string: content.item.image.smallURLString),
-            tag: content.item.media,
+            media: content.item.media,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
@@ -60,35 +63,23 @@ extension FeedContentListView {
 #if DEBUG
 public struct FeedContentListView_Previews: PreviewProvider {
     public static var previews: some View {
-        FeedContentListView(
-            feedContents: [
-                .blogMock(),
-                .blogMock(),
-                .videoMock(),
-                .videoMock(),
-                .podcastMock(),
-                .podcastMock()
-            ],
-            tapContent: { _ in },
-            tapFavorite: { _, _ in }
-        )
-        .previewDevice(.init(rawValue: "iPhone 12"))
-        .environment(\.colorScheme, .light)
-
-        FeedContentListView(
-            feedContents: [
-                .blogMock(),
-                .blogMock(),
-                .videoMock(),
-                .videoMock(),
-                .podcastMock(),
-                .podcastMock()
-            ],
-            tapContent: { _ in },
-            tapFavorite: { _, _ in }
-        )
-        .previewDevice(.init(rawValue: "iPhone 12"))
-        .environment(\.colorScheme, .dark)
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            FeedContentListView(
+                feedContents: [
+                    .blogMock(),
+                    .blogMock(),
+                    .videoMock(),
+                    .videoMock(),
+                    .podcastMock(),
+                    .podcastMock()
+                ],
+                tapContent: { _ in },
+                tapFavorite: { _, _ in }
+            )
+            .background(AssetColor.Background.primary.color)
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+        }
     }
 }
 #endif

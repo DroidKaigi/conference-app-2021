@@ -87,7 +87,7 @@ private extension MediaAction {
     init(action: MediaScreen.ViewAction) {
         switch action {
         case .progressViewAppeared:
-            self = .loadItems
+            self = .refresh
         case let .searchTextDidChange(to: text):
             self = .mediaList(.searchTextDidChange(to: text))
         case let .isEditingDidChange(isEditing):
@@ -118,10 +118,10 @@ public struct MediaScreen_Previews: PreviewProvider {
                     store: .init(
                         initialState: MediaState.initialized(
                             .init(
+                                feedContents: [],
                                 blogs: [.blogMock(), .blogMock()],
                                 videos: [.videoMock(), .videoMock()],
-                                podcasts: [.podcastMock(), .podcastMock()],
-                                next: nil
+                                podcasts: [.podcastMock(), .podcastMock()]
                             )
                         ),
                         reducer: .empty,

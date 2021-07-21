@@ -15,49 +15,42 @@ struct MediaListView: View {
     }
 
     struct ViewState: Equatable {
+        var searchedFeedContents: [FeedContent]
         var hasBlogs: Bool
         var hasVideos: Bool
         var hasPodcasts: Bool
         var isSearchResultVisible: Bool
         var isSearchTextEditing: Bool
-        var isMoreActive: Bool
+        var moreActiveType: MediaType?
+        var showingURL: URL?
+        var isShowingWebView: Bool
 
         init(state: MediaListState) {
+            searchedFeedContents = state.searchedFeedContents
             hasBlogs = !state.blogs.isEmpty
             hasVideos = !state.videos.isEmpty
             hasPodcasts = !state.podcasts.isEmpty
-            if case let .searchText(text) = state.next, !text.isEmpty {
-                isSearchResultVisible = true
-            } else {
-                isSearchResultVisible = false
-            }
-            switch state.next {
-            case .isEditingDidChange(let isEditing):
-                isSearchTextEditing = isEditing
-            case .searchText:
-                isSearchTextEditing = true
-            default:
-                isSearchTextEditing = false
-            }
-            if case .more = state.next {
-                isMoreActive = true
-            } else {
-                isMoreActive = false
-            }
+            isSearchResultVisible = state.isSearchResultVisible
+            isSearchTextEditing = state.isSearchTextEditing
+            moreActiveType = state.moreActiveType
+            showingURL = state.showingURL
+            isShowingWebView = state.showingURL != nil
         }
     }
 
     enum ViewAction {
         case moreDismissed
+        case tap(FeedContent)
+        case tapFavorite(isFavorited: Bool, id: String)
+        case hideWebView
     }
 
     var body: some View {
         ZStack {
             ScrollView {
                 if viewStore.hasBlogs {
-                    MediaSection(
-                        icon: AssetImage.iconBlog.image.renderingMode(.template),
-                        title: L10n.MediaScreen.Section.Blog.title,
+                    MediaSectionView(
+                        type: .blog,
                         store: store.scope(
                             state: \.blogs,
                             action: { .init(action: $0, for: .blog) }
@@ -66,9 +59,8 @@ struct MediaListView: View {
                     separator
                 }
                 if viewStore.hasVideos {
-                    MediaSection(
-                        icon: AssetImage.iconVideo.image.renderingMode(.template),
-                        title: L10n.MediaScreen.Section.Video.title,
+                    MediaSectionView(
+                        type: .video,
                         store: store.scope(
                             state: \.videos,
                             action: { .init(action: $0, for: .video) }
@@ -77,9 +69,8 @@ struct MediaListView: View {
                     separator
                 }
                 if viewStore.hasPodcasts {
-                    MediaSection(
-                        icon: AssetImage.iconPodcast.image.renderingMode(.template),
-                        title: L10n.MediaScreen.Section.Podcast.title,
+                    MediaSectionView(
+                        type: .podcast,
                         store: store.scope(
                             state: \.podcasts,
                             action: { .init(action: $0, for: .podcast) }
@@ -95,14 +86,14 @@ struct MediaListView: View {
                 .animation(.easeInOut)
                 .zIndex(1)
 
-            // TODO: show filtered result of feed contents
-            // Also, make tap & favorite action works
             SearchResultScreen(
-                store: .init(
-                    initialState: .init(),
-                    reducer: .empty,
-                    environment: {}
-                )
+                feedContents: viewStore.searchedFeedContents,
+                tap: { feedContent in
+                    viewStore.send(.tap(feedContent))
+                },
+                tapFavorite: { isFavorited, contentId in
+                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                }
             )
             .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
             .zIndex(2)
@@ -124,6 +115,14 @@ struct MediaListView: View {
                 EmptyView()
             }
         )
+        .sheet(
+            isPresented: viewStore.binding(
+                get: \.isShowingWebView,
+                send: ViewAction.hideWebView
+            ), content: {
+                WebView(url: viewStore.showingURL!)
+            }
+        )
     }
 
     private var separator: some View {
@@ -132,21 +131,31 @@ struct MediaListView: View {
     }
 }
 
+private extension MediaListView.ViewState {
+    var isMoreActive: Bool {
+        moreActiveType != nil
+    }
+}
+
 private extension MediaListAction {
     init(action: MediaListView.ViewAction) {
         switch action {
         case .moreDismissed:
             self = .moreDismissed
+        case .tap(let feedContent):
+            self = .tap(feedContent)
+        case .tapFavorite(let isFavorited, let id):
+            self = .tapFavorite(isFavorited: isFavorited, id: id)
+        case .hideWebView:
+            self = .hideWebView
         }
     }
 }
 
 private extension MediaDetailScreen.ViewState {
     init?(state: MediaListState) {
-        guard case let .more(mediaType) = state.next else {
-            return nil
-        }
-        switch mediaType {
+        guard let moreActiveType = state.moreActiveType else { return nil }
+        switch moreActiveType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
             contents = state.blogs
@@ -161,7 +170,7 @@ private extension MediaDetailScreen.ViewState {
 }
 
 private extension MediaListAction {
-    init(action: MediaSection.ViewAction, for mediaType: MediaType) {
+    init(action: MediaSectionView.ViewAction, for mediaType: MediaType) {
         switch action {
         case .showMore:
             self = .showMore(for: mediaType)
@@ -189,10 +198,10 @@ public struct MediaListView_Previews: PreviewProvider {
             MediaListView(
                 store: .init(
                     initialState: .init(
+                        feedContents: [],
                         blogs: [.blogMock(), .blogMock()],
                         videos: [.videoMock(), .videoMock()],
-                        podcasts: [.podcastMock(), .podcastMock()],
-                        next: nil
+                        podcasts: [.podcastMock(), .podcastMock()]
                     ),
                     reducer: .empty,
                     environment: {}

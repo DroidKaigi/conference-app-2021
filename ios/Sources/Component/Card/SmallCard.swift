@@ -3,9 +3,15 @@ import SwiftUI
 import Styleguide
 
 public struct SmallCard: View {
+    enum Const {
+        static let margin: CGFloat = 8
+        static let cardWidth = (UIScreen.main.bounds.width - Const.margin) / 2
+        static let imageViewWidth = Const.cardWidth - (Const.margin * 2) - (ImageView.Const.roundedLineWidth * 2)
+    }
+
     private let title: String
     private let imageURL: URL?
-    private let tag: Media
+    private let media: Media
     private let date: Date
     private let isFavorited: Bool
     private let tapAction: () -> Void
@@ -14,7 +20,7 @@ public struct SmallCard: View {
     public init(
         title: String,
         imageURL: URL?,
-        tag: Media,
+        media: Media,
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
@@ -22,7 +28,7 @@ public struct SmallCard: View {
     ) {
         self.title = title
         self.imageURL = imageURL
-        self.tag = tag
+        self.media = media
         self.date = date
         self.isFavorited = isFavorited
         self.tapAction = tapAction
@@ -34,18 +40,20 @@ public struct SmallCard: View {
             ImageView(
                 imageURL: imageURL,
                 placeholder: .noImage,
-                placeholderSize: .small
+                placeholderSize: .small,
+                width: Const.imageViewWidth,
+                height: Const.imageViewWidth * 114/163
             )
-            .aspectRatio(163/114, contentMode: .fit)
-            .scaledToFill()
 
             VStack(alignment: .leading, spacing: 12) {
-                VStack(alignment: .leading, spacing: 4) {
+                Group {
                     Text(title)
                         .font(.subheadline)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(3)
                         .frame(maxHeight: .infinity, alignment: .top)
+
+                    Spacer(minLength: 4)
 
                     Text(date.formatted)
                         .font(.caption)
@@ -53,9 +61,7 @@ public struct SmallCard: View {
                 }
 
                 HStack(spacing: 8) {
-                    Tag(type: tag) {
-                        // do something if needed
-                    }
+                    Tag(media: media)
 
                     Spacer()
 
@@ -68,86 +74,58 @@ public struct SmallCard: View {
                 }
             }
         }
-        .padding(8)
         .background(Color.clear)
         .onTapGesture(perform: tapAction)
+        .padding(Const.margin)
     }
 }
 
 public struct SmallCard_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
-            SmallCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                tag: .droidKaigiFm,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: false,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 179, height: 278)
-            .environment(\.colorScheme, .light)
+            ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+                SmallCard(
+                    title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
+                    imageURL: URL(string: ""),
+                    media: .droidKaigiFm,
+                    date: Date(timeIntervalSince1970: 0),
+                    isFavorited: false,
+                    tapAction: {},
+                    tapFavoriteAction: {}
+                )
+                .frame(width: 179, height: 278)
+                .background(AssetColor.Background.primary.color)
+                .previewDevice(.init(rawValue: "iPhone X"))
+                .environment(\.colorScheme, colorScheme)
 
-            SmallCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                tag: .medium,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 179, height: 278)
-            .environment(\.colorScheme, .light)
+                SmallCard(
+                    title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
+                    imageURL: URL(string: ""),
+                    media: .medium,
+                    date: Date(timeIntervalSince1970: 0),
+                    isFavorited: true,
+                    tapAction: {},
+                    tapFavoriteAction: {}
+                )
+                .frame(width: 179, height: 278)
+                .background(AssetColor.Background.primary.color)
+                .previewDevice(.init(rawValue: "iPhone X"))
+                .environment(\.colorScheme, colorScheme)
 
-            SmallCard(
-                title: "タイトル",
-                imageURL: URL(string: ""),
-                tag: .youtube,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 179, height: 278)
-            .environment(\.colorScheme, .light)
-
-            SmallCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                tag: .droidKaigiFm,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: false,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 179, height: 278)
-            .environment(\.colorScheme, .dark)
-
-            SmallCard(
-                title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
-                imageURL: URL(string: ""),
-                tag: .medium,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 179, height: 278)
-            .environment(\.colorScheme, .dark)
-
-            SmallCard(
-                title: "タイトル",
-                imageURL: URL(string: ""),
-                tag: .youtube,
-                date: Date(timeIntervalSince1970: 0),
-                isFavorited: true,
-                tapAction: {},
-                tapFavoriteAction: {}
-            )
-            .frame(width: 179, height: 278)
-            .environment(\.colorScheme, .dark)
+                SmallCard(
+                    title: "タイトル",
+                    imageURL: URL(string: ""),
+                    media: .youtube,
+                    date: Date(timeIntervalSince1970: 0),
+                    isFavorited: true,
+                    tapAction: {},
+                    tapFavoriteAction: {}
+                )
+                .frame(width: 179, height: 278)
+                .background(AssetColor.Background.primary.color)
+                .previewDevice(.init(rawValue: "iPhone X"))
+                .environment(\.colorScheme, colorScheme)
+            }
         }
         .previewLayout(.sizeThatFits)
     }

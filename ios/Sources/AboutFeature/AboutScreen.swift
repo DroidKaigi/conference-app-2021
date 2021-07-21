@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import SwiftUI
 import Styleguide
@@ -34,7 +35,9 @@ public struct AboutScreen: View {
                             case .staff:
                                 LazyVStack(alignment: .leading, spacing: 24) {
                                     ForEach(viewStore.staffs) { staff in
-                                        StaffCell(staff: staff)
+                                        StaffCell(staff: staff) { staff in
+                                            viewStore.send(.tapStaff(staff))
+                                        }
                                     }
                                 }
                                 .padding(.top, 20)
@@ -44,7 +47,9 @@ public struct AboutScreen: View {
                                     spacing: 40
                                 ) {
                                     ForEach(viewStore.contributors) { contributor in
-                                        ContributorCell(contributor: contributor)
+                                        ContributorCell(contributor: contributor) { contributor in
+                                            viewStore.send(.tapContributor(contributor))
+                                        }
                                     }
                                 }
                                 .listStyle(PlainListStyle())
@@ -71,7 +76,18 @@ public struct AboutScreen: View {
                         }
                         .background(AssetColor.Background.primary.color)
                         .navigationBarTitleDisplayMode(.inline)
+                        .onAppear {
+                            viewStore.send(.refresh)
+                        }
                     }
+                    .sheet(
+                        isPresented: viewStore.binding(
+                            get: \.isShowingWebView,
+                            send: AboutAction.hideWebView
+                        ), content: {
+                            WebView(url: viewStore.showingURL!)
+                        }
+                    )
                 }
             }
         }
@@ -89,17 +105,18 @@ private extension SelectedType {
     }
 }
 
+#if DEBUG
 public struct AboutScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
             AboutScreen(
                 store: .init(
                     initialState: .init(
-                        staffs: dummyStaffs,
-                        contributors: dummyContributors
+                        staffs: [.mock(), .mock(), .mock()],
+                        contributors: [.mock(), .mock(), .mock()]
                     ),
-                    reducer: aboutReducer,
-                    environment: .init()
+                    reducer: .empty,
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -107,11 +124,11 @@ public struct AboutScreen_Previews: PreviewProvider {
             AboutScreen(
                 store: .init(
                     initialState: .init(
-                        staffs: dummyStaffs,
-                        contributors: dummyContributors
+                        staffs: [.mock(), .mock(), .mock()],
+                        contributors: [.mock(), .mock(), .mock()]
                     ),
-                    reducer: aboutReducer,
-                    environment: .init()
+                    reducer: .empty,
+                    environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
@@ -119,3 +136,4 @@ public struct AboutScreen_Previews: PreviewProvider {
         }
     }
 }
+#endif

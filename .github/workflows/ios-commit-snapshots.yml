@@ -1,6 +1,7 @@
 name: ios-commit-snapshots
 
 on:
+  workflow_dispatch:
   push:
     branches:
       - main
@@ -13,6 +14,18 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
+        with:
+          lfs: true
+      - name: Create LFS file list
+        run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
+      - name: Restore LFS cache
+        uses: actions/cache@v2
+        id: lfs-cache
+        with:
+          path: .git/lfs
+          key: ${{ runner.os }}-lfs-${{ hashFiles('.lfs-assets-id') }}-v1
+      - name: Git LFS Pull
+        run: git lfs pull
       - uses: actions/setup-java@v1
         with:
           java-version: '11'
@@ -35,10 +48,15 @@ jobs:
       - name: Take Snapshots
         working-directory: ./ios
         run: make take-snapshots
-      - name: Commit Snapshots
-        uses: stefanzweifel/git-auto-commit-action@v4
+      - name: Add LFS tracked file
+        run: |
+          git lfs track "**/__Snapshots__/**.png"
+      - name: Create Update Snapshots PullRequest
+        uses: peter-evans/create-pull-request@v3
         with:
-          commit_message: Update iOS Snapshots
-          branch: 'main'
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "[iOS] Update iOS Snapshots"
+          branch: update-ios-snapshots
+          delete-branch: true
+          branch-suffix: short-commit-hash
+          title: "[iOS] Update iOS Snapshots"
+          reviewers: ry-itto,ostk0069
