@@ -30,10 +30,8 @@ public struct MediaDetailScreen: View {
                     }
                 )
             }
+            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitle(viewStore.title, displayMode: .inline)
-        }
-        .introspectViewController { viewController in
-            viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
         }
     }
 }

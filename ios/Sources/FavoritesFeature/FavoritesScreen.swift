@@ -15,20 +15,23 @@ public struct FavoritesScreen: View {
 
     public var body: some View {
         NavigationView {
-            WithViewStore(store) { viewStore in
-                if viewStore.feedContents.isEmpty {
-                    Text("表示するコンテンツがありません")
-                } else {
-                    ScrollView {
-                        FeedContentListView(
-                            feedContents: viewStore.feedContents,
-                            tapContent: { content in
-                                viewStore.send(.tap(content))
-                            },
-                            tapFavorite: { isFavorited, contentId in
-                                viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
-                            }
-                        )
+            ZStack {
+                AssetColor.Background.primary.color.ignoresSafeArea()
+                WithViewStore(store) { viewStore in
+                    if viewStore.feedContents.isEmpty {
+                        Text("表示するコンテンツがありません")
+                    } else {
+                        ScrollView {
+                            FeedContentListView(
+                                feedContents: viewStore.feedContents,
+                                tapContent: { content in
+                                    viewStore.send(.tap(content))
+                                },
+                                tapFavorite: { isFavorited, contentId in
+                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                                }
+                            )
+                        }
                     }
                 }
             }
@@ -42,9 +45,6 @@ public struct FavoritesScreen: View {
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
-            }
         }
     }
 }
