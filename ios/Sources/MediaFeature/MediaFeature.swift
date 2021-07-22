@@ -16,6 +16,7 @@ public enum MediaAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
     case mediaList(MediaListAction)
+    case showSetting
 }
 
 public struct MediaEnvironment {
@@ -82,6 +83,8 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment>.com
             // TODO: Error handling
             return .none
         case .mediaList:
+            return .none
+        case .showSetting:
             return .none
         }
     }

@@ -17,6 +17,7 @@ public enum FavoritesAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
     case favoritesList(FavoritesListAction)
+    case showSetting
 }
 
 public struct FavoritesEnvironment {
@@ -56,6 +57,8 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
             // TODO: Error handling
             return .none
         case .favoritesList:
+            return .none
+        case .showSetting:
             return .none
         }
     }

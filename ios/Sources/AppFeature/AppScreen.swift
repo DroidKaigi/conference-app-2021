@@ -3,6 +3,7 @@ import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
 import MediaFeature
+import SettingFeature
 import Styleguide
 import SwiftUI
 import UIKit
@@ -86,21 +87,32 @@ public struct AppScreen: View {
     }
 
     public var body: some View {
-        TabView(
-            selection: $selection,
-            content: {
-                ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
-                    tab.view(store)
-                        .tabItem {
-                            tab.image.renderingMode(.template)
-                            Text(tab.title)
-                        }
-                        .tag(offset)
+        WithViewStore(store) { viewStore in
+            TabView(
+                selection: $selection,
+                content: {
+                    ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
+                        tab.view(store)
+                            .tabItem {
+                                tab.image.renderingMode(.template)
+                                Text(tab.title)
+                            }
+                            .tag(offset)
+                    }
                 }
-            }
-        )
-        .accentColor(AssetColor.primary.color)
-        .background(AssetColor.Background.primary.color)
+            )
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.isSettingPresented,
+                    send: .hideSetting
+                ),
+                content: {
+                    SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                }
+            )
+            .accentColor(AssetColor.primary.color)
+            .background(AssetColor.Background.primary.color)
+        }
     }
 }
 

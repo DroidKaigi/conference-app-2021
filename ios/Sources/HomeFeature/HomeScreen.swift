@@ -20,6 +20,7 @@ public struct HomeScreen: View {
 
     internal enum ViewAction {
         case progressViewAppeared
+        case showSetting
     }
 
     public var body: some View {
@@ -32,7 +33,9 @@ public struct HomeScreen: View {
                     SwitchStore(store) {
                         CaseLet(
                             state: /HomeState.needToInitialize,
-                            action: HomeAction.init(action:)) { _ in
+                            action: { (action: ViewAction) in
+                                HomeAction.init(action: action)
+                            }) { _ in
                             ProgressView()
                                 .onAppear { viewStore.send(.progressViewAppeared) }
                         }
@@ -42,20 +45,24 @@ public struct HomeScreen: View {
                             then: HomeListView.init(store:))
                     }
                 }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    AssetImage.logoTitle.image
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        AssetImage.logoTitle.image
+                    }
                 }
-            }
-            .navigationBarItems(
-                trailing: AssetImage.iconSetting.image
-                    .renderingMode(.template)
-                    .foregroundColor(AssetColor.Base.primary.color)
-            )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        viewStore.send(.showSetting)
+                    }, label: {
+                        AssetImage.iconSetting.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    })
+                )
+                .introspectViewController { viewController in
+                    viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                }
             }
         }
     }
@@ -66,6 +73,8 @@ private extension HomeAction {
         switch action {
         case .progressViewAppeared:
             self = .refresh
+        case .showSetting:
+            self = .showSetting
         }
     }
 

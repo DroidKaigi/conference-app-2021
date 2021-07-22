@@ -16,6 +16,7 @@ public enum HomeAction {
     case refresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
     case homeList(HomeListAction)
+    case showSetting
 }
 
 public struct HomeEnvironment {
@@ -54,6 +55,8 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment>.combine
             // TODO: Error handling
             return .none
         case .homeList:
+            return .none
+        case .showSetting:
             return .none
         }
     }
