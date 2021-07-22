@@ -33,7 +33,9 @@ public struct HomeScreen: View {
                     SwitchStore(store) {
                         CaseLet(
                             state: /HomeState.needToInitialize,
-                            action: HomeAction.init(action:)) { _ in
+                            action: { (action: ViewAction) in
+                                HomeAction.init(action: action)
+                            }) { _ in
                             ProgressView()
                                 .onAppear { viewStore.send(.progressViewAppeared) }
                         }
