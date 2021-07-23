@@ -1,69 +1,48 @@
 import Component
+import ComposableArchitecture
 import Introspect
 import Styleguide
 import SwiftUI
 
-public enum SettingModel: Hashable {
-    case darkMode(isOn: Bool)
-    case language(isOn: Bool)
-
-    var title: String {
-        switch self {
-        case .darkMode:
-            return L10n.SettingScreen.ListItem.darkMode
-        case .language:
-            return L10n.SettingScreen.ListItem.language
-        }
-    }
-
-    var isOn: Bool {
-        switch self {
-        case let .darkMode(isOn), let .language(isOn):
-            return isOn
-        }
-    }
-
-    mutating func update(isOn: Bool) {
-        switch self {
-        case .darkMode:
-            self = .darkMode(isOn: isOn)
-        case .language:
-            self = .language(isOn: isOn)
-        }
-    }
-}
-
 public struct SettingScreen: View {
 
-    @State private var items: [SettingModel]
-
     @Environment(\.presentationMode) var presentationMode
+    private let store: Store<SettingState, SettingAction>
 
-    public init(isDarkModeOn: Bool, isLanguageOn: Bool) {
+    public init(
+        isDarkModeOn: Bool, isLanguageOn: Bool
+    ) {
         let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
         let languageModel = SettingModel.language(isOn: isLanguageOn)
-        _items = State(initialValue: [darkModeModel, languageModel])
+        self.store = .init(
+            initialState: .init(items: [darkModeModel, languageModel]),
+            reducer: settingReducer,
+            environment: SettingEnvironment()
+        )
     }
 
     public var body: some View {
         NavigationView {
             InlineTitleNavigationBarScrollView {
                 LazyVStack(spacing: 0) {
-                    ForEach(items.indices) { index in
-                        ZStack(alignment: .bottom) {
-                            SettingToggleItem(
-                                title: items[index].title,
-                                isOn: Binding(get: {
-                                    items[index].isOn
-                                }, set: { isOn in
-                                    items[index].update(isOn: isOn)
-                                })
-                            )
-                            .frame(minHeight: 44)
-                            Separator()
+                    WithViewStore(store) { viewStore in
+                        let items = viewStore.items
+                        ForEach(items.indices) { index in
+                            ZStack(alignment: .bottom) {
+                                SettingToggleItem(
+                                    title: items[index].title,
+                                    isOn: Binding(get: {
+                                        items[index].isOn
+                                    }, set: { isOn in
+                                        viewStore.send(items[index].action(isOn: isOn))
+                                    })
+                                )
+                                .frame(minHeight: 44)
+                                Separator()
+                            }
+                            .padding(.horizontal, 16)
+                            .background(AssetColor.Background.contents.color)
                         }
-                        .padding(.horizontal, 16)
-                        .background(AssetColor.Background.contents.color)
                     }
                 }
                 .padding(.top, 24)
@@ -85,6 +64,34 @@ public struct SettingScreen: View {
     }
 }
 
+private extension SettingModel {
+    var title: String {
+        switch self {
+        case .darkMode:
+            return L10n.SettingScreen.ListItem.darkMode
+        case .language:
+            return L10n.SettingScreen.ListItem.language
+        }
+    }
+
+    var isOn: Bool {
+        switch self {
+        case let .darkMode(isOn), let .language(isOn):
+            return isOn
+        }
+    }
+
+    func action(isOn: Bool) -> SettingAction {
+        switch self {
+        case .darkMode:
+            return .darkMode(isOn: isOn)
+        case .language:
+            return .language(isOn: isOn)
+        }
+    }
+}
+
+#if DEBUG
 public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
@@ -99,3 +106,4 @@ public struct SettingScreen_Previews: PreviewProvider {
         .environment(\.colorScheme, .dark)
     }
 }
+#endif
