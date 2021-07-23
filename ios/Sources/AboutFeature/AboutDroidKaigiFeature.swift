@@ -13,7 +13,7 @@ public struct AboutDroidKaigiEnvironment {
     public init() {}
 }
 
-public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaigiAction, AboutDroidKaigiEnvironment> { state, action, _ in
+public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaigiAction, AboutDroidKaigiEnvironment> { _, action, _ in
     switch action {
     case .behaviorCode:
         return .none
