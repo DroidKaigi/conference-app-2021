@@ -1,3 +1,4 @@
+import ComposableArchitecture
 import Introspect
 import SwiftUI
 import Styleguide
@@ -28,12 +29,26 @@ private enum AboutDroidKaigiModel: CaseIterable {
             return Image(systemName: "magnifyingglass")
         }
     }
+
+    var action: AboutDroidKaigiAction {
+        switch self {
+        case .behaviorCode:
+            return .behaviorCode
+        case .opensourceLicense:
+            return .opensourceLicense
+        case .privacyPolicy:
+            return .privacyPolicy
+        }
+    }
 }
 
 public struct AboutDroidKaigiScreen: View {
     @Environment(\.presentationMode) var presentationMode
 
-    public init() {}
+    private let store: Store<AboutDroidKaigiState, AboutDroidKaigiAction>
+    public init(store: Store<AboutDroidKaigiState, AboutDroidKaigiAction>) {
+        self.store = store
+    }
 
     public var body: some View {
         NavigationView {
@@ -60,16 +75,20 @@ public struct AboutDroidKaigiScreen: View {
 
                 List {
                     ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
-                        Button(action: {}, label: {
-                            HStack {
-                                Text(model.title)
-                                    .font(.subheadline)
-                                    .foregroundColor(AssetColor.Base.primary.color)
-                                Spacer()
-                                model.image
-                                    .foregroundColor(AssetColor.Base.secondary.color)
-                            }
-                        })
+                        WithViewStore(store) { viewStore in
+                            Button(action: {
+                                viewStore.send(model.action)
+                            }, label: {
+                                HStack {
+                                    Text(model.title)
+                                        .font(.subheadline)
+                                        .foregroundColor(AssetColor.Base.primary.color)
+                                    Spacer()
+                                    model.image
+                                        .foregroundColor(AssetColor.Base.secondary.color)
+                                }
+                            })
+                        }
                     }
                     .listRowBackground(AssetColor.Background.contents.color)
                 }
@@ -101,15 +120,30 @@ public struct AboutDroidKaigiScreen: View {
     }
 }
 
+#if DEBUG
 public struct AboutDroidKaigiScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
-            AboutDroidKaigiScreen()
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .dark)
-            AboutDroidKaigiScreen()
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .light)
+            AboutDroidKaigiScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .dark)
+
+            AboutDroidKaigiScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .light)
         }
     }
 }
+#endif
