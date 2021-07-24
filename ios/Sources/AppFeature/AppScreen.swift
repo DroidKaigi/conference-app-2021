@@ -39,10 +39,14 @@ public struct AppScreen: View {
         SwitchStore(store) {
             CaseLet(
                 state: /AppState.needToInitialize,
-                action: AppAction.init(action:)) { _ in
+                action: { (action: AppScreen.ViewAction) in
+                    AppAction.init(action: action)
+                },
+                then: { _ in
                 ProgressView()
                     .onAppear { viewStore.send(.progressViewAppeared) }
-            }
+                }
+            )
             CaseLet(
                 state: /AppState.initialized,
                 action: AppAction.appTab,
@@ -50,18 +54,22 @@ public struct AppScreen: View {
             )
             CaseLet(
                 state: /AppState.errorOccurred,
-                action: AppAction.init(action:)) { _ in
-                VStack(spacing: 16) {
-                    Text("エラーが発生しました")
+                action: { (action: AppScreen.ViewAction) in
+                    AppAction.init(action: action)
+                },
+                then: { _ in
+                    VStack(spacing: 16) {
+                        Text("エラーが発生しました")
 
-                    Button(action: {
-                        viewStore.send(.reload)
-                    }, label: {
-                        Text("再度読み込み")
-                            .foregroundColor(AssetColor.primary.color)
-                    })
+                        Button(action: {
+                            viewStore.send(.reload)
+                        }, label: {
+                            Text("再度読み込み")
+                                .foregroundColor(AssetColor.primary.color)
+                        })
+                    }
                 }
-            }
+            )
         }
         .accentColor(AssetColor.primary.color)
         .background(AssetColor.Background.primary.color)
