@@ -3,6 +3,7 @@ import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
 import MediaFeature
+import SettingFeature
 import Styleguide
 import SwiftUI
 import UIKit

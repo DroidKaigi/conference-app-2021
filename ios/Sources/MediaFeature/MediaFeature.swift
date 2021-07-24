@@ -60,6 +60,7 @@ extension MediaState {
 public enum MediaAction {
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
+    case showSetting
 }
 
 public struct MediaEnvironment {
@@ -96,6 +97,8 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { _
     case .tap:
         return .none
     case .tapFavorite(let isFavorited, let id):
+        return .none
+    case .showSetting:
         return .none
     }
 }

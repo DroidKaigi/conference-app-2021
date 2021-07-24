@@ -55,20 +55,24 @@ public struct HomeScreen: View {
                         .separatorStyle(ThickSeparatorStyle())
                     }
                 }
-            }
-            .navigationBarTitleDisplayMode(.inline)
-            .toolbar {
-                ToolbarItem(placement: .principal) {
-                    AssetImage.logoTitle.image
+                .navigationBarTitleDisplayMode(.inline)
+                .toolbar {
+                    ToolbarItem(placement: .principal) {
+                        AssetImage.logoTitle.image
+                    }
                 }
-            }
-            .navigationBarItems(
-                trailing: AssetImage.iconSetting.image
-                    .renderingMode(.template)
-                    .foregroundColor(AssetColor.Base.primary.color)
-            )
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        ViewStore(store).send(.showSetting)
+                    }, label: {
+                        AssetImage.iconSetting.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    })
+                )
+                .introspectViewController { viewController in
+                    viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+                }
             }
         }
     }

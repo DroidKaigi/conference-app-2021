@@ -3,6 +3,7 @@ import HomeFeature
 import MediaFeature
 import FavoritesFeature
 import AboutFeature
+import SettingFeature
 import SwiftUI
 import Model
 import Styleguide
@@ -50,6 +51,15 @@ public struct AppTabScreen: View {
                     send: .hideWebView
                 ), content: {
                     WebView(url: viewStore.showingURL!)
+                }
+            )
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.isSettingPresented,
+                    send: .hideSetting
+                ),
+                content: {
+                    SettingScreen(isDarkModeOn: true, isLanguageOn: true)
                 }
             )
         }

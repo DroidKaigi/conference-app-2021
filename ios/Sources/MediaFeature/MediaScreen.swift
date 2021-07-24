@@ -128,9 +128,13 @@ public struct MediaScreen: View {
             )
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
-                trailing: AssetImage.iconSetting.image
-                    .renderingMode(.template)
-                    .foregroundColor(AssetColor.Base.primary.color)
+                trailing: Button(action: {
+                    ViewStore(store).send(.showSetting)
+                }, label: {
+                    AssetImage.iconSetting.image
+                        .renderingMode(.template)
+                        .foregroundColor(AssetColor.Base.primary.color)
+                })
             )
             .introspectViewController { viewController in
                 viewController.view.backgroundColor = AssetColor.Background.primary.uiColor

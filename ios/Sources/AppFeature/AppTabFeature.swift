@@ -10,6 +10,7 @@ import Repository
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent]
     public var showingURL: URL?
+    public var isSettingPresented: Bool
     public var homeState: HomeState
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
@@ -17,7 +18,8 @@ public struct AppTabState: Equatable {
 
     public init(
         feedContents: [FeedContent],
-        showingURL: URL? = nil
+        showingURL: URL? = nil,
+        isSettingPresented: Bool = false
     ) {
         self.feedContents = feedContents
         self.showingURL = showingURL
@@ -25,6 +27,7 @@ public struct AppTabState: Equatable {
         self.mediaState = MediaState(feedContents: feedContents)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
         self.aboutState = AboutState()
+        self.isSettingPresented = isSettingPresented
     }
 }
 
@@ -37,6 +40,8 @@ public enum AppTabAction {
     case answerQuestionnaire
     case mediaView(MediaScreen.ViewAction)
     case about(AboutAction)
+    case showSetting
+    case hideSetting
     case none
 
     init(action: HomeAction) {
@@ -47,6 +52,8 @@ public enum AppTabAction {
             self = .tapFavorite(isFavorited: isFavorited, id: id)
         case .answerQuestionnaire:
             self = .none
+        case .showSetting:
+            self = .showSetting
         }
     }
 
@@ -56,6 +63,8 @@ public enum AppTabAction {
             self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
+        case .showSetting:
+            self = .showSetting
         }
     }
 
@@ -65,6 +74,8 @@ public enum AppTabAction {
             self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
+        case .showSetting:
+            self = .showSetting
         }
     }
 }
@@ -130,7 +141,10 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
                 state.feedContents[index].isFavorited.toggle()
             }
             state.homeState.feedContents = state.feedContents
-            state.mediaState.feedContents = state.feedContents // TODO: update search result
+            state.mediaState.feedContents = state.feedContents
+            if let index = state.mediaState.searchedFeedContents.map(\.id).firstIndex(of: id) {
+                state.mediaState.searchedFeedContents[index].isFavorited.toggle()
+            }
             state.favoritesState.feedContents = state.feedContents.filter(\.isFavorited)
             return .none
         case let .favoriteResponse(.failure(error)):
@@ -141,6 +155,12 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .mediaView:
             return .none
         case .about:
+            return .none
+        case .showSetting:
+            state.isSettingPresented = true
+            return .none
+        case .hideSetting:
+            state.isSettingPresented = false
             return .none
         }
     }

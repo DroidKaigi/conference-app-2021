@@ -27,6 +27,7 @@ public enum HomeAction {
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case answerQuestionnaire
+    case showSetting
 }
 
 public struct HomeEnvironment {
@@ -40,6 +41,8 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, ac
     case .tapFavorite(let isFavorited, let id):
         return .none
     case .answerQuestionnaire:
+        return .none
+    case .showSetting:
         return .none
     }
 }
