@@ -1,0 +1,37 @@
+// MARK: Home
+"HomeScreen.Title" = "Home";
+"HomeScreen.Questionnaire.Title" = "Please give us your feedback";
+"HomeScreen.Questionnaire.Answer" = "Answer";
+
+// MARK: Media
+"MediaScreen.Title" = "Media";
+"MediaScreen.SearchBar.Placeholder" = "Search for Title";
+"MediaScreen.Section.Blog.Title" = "BLOG";
+"MediaScreen.Section.Video.Title" = "VIDEO";
+"MediaScreen.Section.Podcast.Title" = "PODCAST";
+"MediaScreen.Section.More" = "More";
+"SearchResultScreen.Empty.Title" = "No search results found.";
+
+// MARK: Favorite
+"FavoriteScreen.Title" = "Favorites";
+
+// MARK: About
+"AboutScreen.Title" = "About";
+"AboutScreen.Picker.Staff" = "Staff";
+"AboutScreen.Picker.Contributor" = "Contributor";
+"AboutDroidKaigiScreen.WhatIs" = "What is";
+"AboutDroidKaigiScreen.Description" = "DroidKaigi is a conference tailored for Android developers. Its main focus is to provide developers a place to network and share knowledge with their peers.";
+"AboutDroidKaigiScreen.BehaviorCode" = "Behavior Code";
+"AboutDroidKaigiScreen.OpensourceLincense" = "Opensource Lincense";
+"AboutDroidKaigiScreen.PrivacyPolicy" = "Privacy Policy";
+
+// MARK: Setting
+"SettingScreen.Title" = "Setting";
+"SettingScreen.ListItem.DarkMode" = "Dark Mode";
+"SettingScreen.ListItem.Language" = "Language";
+
+// MARK: Component
+"Component.Tag.DroidKaigiFm" = "DroidKaigi.fm";
+"Component.Tag.Medium" = "Medium";
+"Component.Tag.Youtube" = "Youtube";
+"Component.Tag.Other" = "Other";
