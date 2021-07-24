@@ -9,39 +9,40 @@ import Repository
 
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent]
-    public var showingURL: URL?
-    public var isSettingPresented: Bool
+    public var isSheetPresented: AppTabSheet?
     public var homeState: HomeState
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
 
+    public enum AppTabSheet: Equatable {
+        case url(URL)
+        case setting
+    }
+
     public init(
         feedContents: [FeedContent],
-        showingURL: URL? = nil,
-        isSettingPresented: Bool = false
+        isSheetPresented: AppTabSheet? = nil
     ) {
         self.feedContents = feedContents
-        self.showingURL = showingURL
+        self.isSheetPresented = isSheetPresented
         self.homeState = HomeState(feedContents: feedContents)
         self.mediaState = MediaState(feedContents: feedContents)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
         self.aboutState = AboutState()
-        self.isSettingPresented = isSettingPresented
     }
 }
 
 public enum AppTabAction {
     case reload
     case tap(FeedContent)
-    case hideWebView
+    case hideSheet
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
     case mediaView(MediaScreen.ViewAction)
     case about(AboutAction)
     case showSetting
-    case hideSetting
     case none
 
     init(action: HomeAction) {
@@ -121,10 +122,10 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .reload:
             return .none
         case .tap(let feedContent):
-            state.showingURL = URL(string: feedContent.item.link)
+            state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
             return .none
-        case .hideWebView:
-            state.showingURL = nil
+        case .hideSheet:
+            state.isSheetPresented = nil
             return .none
         case .answerQuestionnaire:
             return .none
@@ -157,10 +158,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .about:
             return .none
         case .showSetting:
-            state.isSettingPresented = true
-            return .none
-        case .hideSetting:
-            state.isSettingPresented = false
+            state.isSheetPresented = .setting
             return .none
         }
     }

@@ -19,14 +19,18 @@ enum AppTab: CaseIterable {
             HomeScreen(
                 store: store.scope(
                     state: \.homeState,
-                    action: AppTabAction.init(action:)
+                    action: { (action: HomeAction) in
+                        AppTabAction.init(action: action)
+                    }
                 )
             )
         case .media:
             MediaScreen(
                 store: store.scope(
                     state: \.mediaState,
-                    action: AppTabAction.init(action:)
+                    action: { (action: MediaAction) in
+                        AppTabAction.init(action: action)
+                    }
                 ),
                 subStore: store.scope(
                     state: \.mediaState,
@@ -37,7 +41,9 @@ enum AppTab: CaseIterable {
             FavoritesScreen(
                 store: store.scope(
                     state: \.favoritesState,
-                    action: AppTabAction.init(action:)
+                    action: { (action: FavoritesAction) in
+                        AppTabAction.init(action: action)
+                    }
                 )
             )
         case .about:

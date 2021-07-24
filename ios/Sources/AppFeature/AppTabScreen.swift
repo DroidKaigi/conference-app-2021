@@ -47,19 +47,17 @@ public struct AppTabScreen: View {
             }
             .sheet(
                 isPresented: viewStore.binding(
-                    get: \.isShowingWebView,
-                    send: .hideWebView
+                    get: \.isShowingSheet,
+                    send: .hideSheet
                 ), content: {
-                    WebView(url: viewStore.showingURL!)
-                }
-            )
-            .sheet(
-                isPresented: viewStore.binding(
-                    get: \.isSettingPresented,
-                    send: .hideSetting
-                ),
-                content: {
-                    SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                    switch viewStore.isSheetPresented {
+                    case .url(let url):
+                        WebView(url: url)
+                    case .setting:
+                        SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                    default:
+                        EmptyView()
+                    }
                 }
             )
         }
@@ -95,8 +93,8 @@ private extension AppTab {
 }
 
 private extension AppTabState {
-    var isShowingWebView: Bool {
-        showingURL != nil
+    var isShowingSheet: Bool {
+        isSheetPresented != nil
     }
 }
 
