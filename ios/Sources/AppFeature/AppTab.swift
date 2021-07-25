@@ -28,13 +28,7 @@ enum AppTab: CaseIterable {
             MediaScreen(
                 store: store.scope(
                     state: \.mediaState,
-                    action: { (action: MediaAction) in
-                        AppTabAction.init(action: action)
-                    }
-                ),
-                subStore: store.scope(
-                    state: \.mediaState,
-                    action: AppTabAction.mediaView
+                    action: AppTabAction.media
                 )
             )
         case .favorites:

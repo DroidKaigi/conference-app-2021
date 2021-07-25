@@ -40,7 +40,7 @@ public enum AppTabAction {
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
-    case mediaView(MediaScreen.ViewAction)
+    case media(MediaAction)
     case about(AboutAction)
     case showSetting
     case none
@@ -53,17 +53,6 @@ public enum AppTabAction {
             self = .tapFavorite(isFavorited: isFavorited, id: id)
         case .answerQuestionnaire:
             self = .none
-        case .showSetting:
-            self = .showSetting
-        }
-    }
-
-    init(action: MediaAction) {
-        switch action {
-        case .tap(let feedContent):
-            self = .tap(feedContent)
-        case .tapFavorite(let isFavorited, let id):
-            self = .tapFavorite(isFavorited: isFavorited, id: id)
         case .showSetting:
             self = .showSetting
         }
@@ -91,14 +80,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     ),
     mediaReducer.pullback(
         state: \.mediaState,
-        action: /AppTabAction.init(action:),
-        environment: { _ in
-            .init()
-        }
-    ),
-    mediaViewReducer.pullback(
-        state: \.mediaState,
-        action: /AppTabAction.mediaView,
+        action: /AppTabAction.media,
         environment: { _ in
             .init()
         }
@@ -121,7 +103,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         switch action {
         case .reload:
             return .none
-        case .tap(let feedContent):
+        case .tap(let feedContent), .media(.tap(let feedContent)):
             state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
             return .none
         case .hideSheet:
@@ -129,7 +111,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             return .none
         case .answerQuestionnaire:
             return .none
-        case .tapFavorite(let isFavorited, let id):
+        case .tapFavorite(let isFavorited, let id), .media(.tapFavorite(let isFavorited, let id)):
             let publisher = isFavorited
                 ? environment.feedRepository.removeFavorite(id: id)
                 : environment.feedRepository.addFavorite(id: id)
@@ -151,14 +133,14 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case let .favoriteResponse(.failure(error)):
             print(error.localizedDescription)
             return .none
+        case .showSetting, .media(.showSetting):
+            state.isSheetPresented = .setting
+            return .none
         case .none:
             return .none
-        case .mediaView:
+        case .media:
             return .none
         case .about:
-            return .none
-        case .showSetting:
-            state.isSheetPresented = .setting
             return .none
         }
     }

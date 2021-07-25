@@ -7,31 +7,22 @@ import Styleguide
 
 public struct MediaScreen: View {
     private let store: Store<MediaState, MediaAction>
-    private let subStore: Store<MediaState, MediaScreen.ViewAction>
-    @ObservedObject private var subViewStore: ViewStore<MediaState, MediaScreen.ViewAction>
+    @ObservedObject private var viewStore: ViewStore<MediaState, MediaAction>
     @SearchController private var searchController: UISearchController
 
-    public init(store: Store<MediaState, MediaAction>, subStore: Store<MediaState, MediaScreen.ViewAction>) {
+    public init(store: Store<MediaState, MediaAction>) {
         self.store = store
-        self.subStore = subStore
-        let subViewStore = ViewStore(subStore)
-        self.subViewStore = subViewStore
+        let viewStore = ViewStore(store)
+        self.viewStore = viewStore
         self._searchController = .init(
             searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
             searchTextDidChangeTo: { text in
-                subViewStore.send(.searchTextDidChange(to: text))
+                viewStore.send(.searchTextDidChange(to: text))
             },
             isEditingDidChangeTo: { isEditing in
-                subViewStore.send(.isEditingDidChange(to: isEditing))
+                viewStore.send(.isEditingDidChange(to: isEditing))
             }
         )
-    }
-
-    public enum ViewAction {
-        case searchTextDidChange(to: String?)
-        case isEditingDidChange(to: Bool)
-        case showMore(for: MediaType)
-        case moreDismissed
     }
 
     public var body: some View {
@@ -44,7 +35,7 @@ public struct MediaScreen: View {
                                 type: .blog,
                                 feedContent: viewStore.blogs,
                                 moreAction: {
-                                    ViewStore(subStore).send(.showMore(for: .blog))
+                                    viewStore.send(.showMore(for: .blog))
                                 },
                                 tapAction: { feedContent in
                                     viewStore.send(.tap(feedContent))
@@ -60,7 +51,7 @@ public struct MediaScreen: View {
                                 type: .video,
                                 feedContent: viewStore.videos,
                                 moreAction: {
-                                    ViewStore(subStore).send(.showMore(for: .video))
+                                    viewStore.send(.showMore(for: .video))
                                 },
                                 tapAction: { feedContent in
                                     viewStore.send(.tap(feedContent))
@@ -76,7 +67,7 @@ public struct MediaScreen: View {
                                 type: .podcast,
                                 feedContent: viewStore.podcasts,
                                 moreAction: {
-                                    ViewStore(subStore).send(.showMore(for: .podcast))
+                                    viewStore.send(.showMore(for: .podcast))
                                 },
                                 tapAction: { feedContent in
                                     viewStore.send(.tap(feedContent))
@@ -118,7 +109,7 @@ public struct MediaScreen: View {
                         ),
                         then: MediaDetailScreen.init(store:)
                     ),
-                    isActive: ViewStore(subStore).binding(
+                    isActive: ViewStore(store).binding(
                         get: \.isMoreActive,
                         send: { _ in .moreDismissed }
                     )
@@ -203,20 +194,6 @@ public struct MediaScreen_Previews: PreviewProvider {
                         ),
                         reducer: .empty,
                         environment: {}
-                    ),
-                    subStore: .init(
-                        initialState: .init(
-                            feedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock()
-                            ]
-                        ),
-                        reducer: .empty,
-                        environment: {}
                     )
                 )
                 .previewDevice(.init(rawValue: "iPhone 12"))
@@ -246,20 +223,6 @@ public struct MediaScreen_Previews: PreviewProvider {
                             ],
                             isSearchResultVisible: true,
                             isSearchTextEditing: true
-                        ),
-                        reducer: .empty,
-                        environment: {}
-                    ),
-                    subStore: .init(
-                        initialState: .init(
-                            feedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock()
-                            ]
                         ),
                         reducer: .empty,
                         environment: {}

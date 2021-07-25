@@ -58,6 +58,10 @@ extension MediaState {
 }
 
 public enum MediaAction {
+    case searchTextDidChange(to: String?)
+    case isEditingDidChange(to: Bool)
+    case showMore(for: MediaType)
+    case moreDismissed
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
     case showSetting
@@ -67,14 +71,14 @@ public struct MediaEnvironment {
     public init() {}
 }
 
-public let mediaViewReducer = Reducer<MediaState, MediaScreen.ViewAction, MediaEnvironment> { state, action, _ in
+public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { state, action, _ in
     switch action {
     case let .searchTextDidChange(to: searchText):
         state.isSearchResultVisible = !(searchText?.isEmpty ?? true)
         if let searchText = searchText {
             state.searchedFeedContents = state.feedContents.filter { content in
                 content.item.title.jaTitle.filterForSeaching.contains(searchText.filterForSeaching)
-                || content.item.title.enTitle.filterForSeaching.contains(searchText.filterForSeaching)
+                    || content.item.title.enTitle.filterForSeaching.contains(searchText.filterForSeaching)
             }
         } else {
             state.searchedFeedContents = []
@@ -89,11 +93,6 @@ public let mediaViewReducer = Reducer<MediaState, MediaScreen.ViewAction, MediaE
     case .moreDismissed:
         state.moreActiveType = nil
         return .none
-    }
-}
-
-public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { _, action, _ in
-    switch action {
     case .tap:
         return .none
     case .tapFavorite(let isFavorited, let id):
