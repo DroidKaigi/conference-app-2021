@@ -27,13 +27,11 @@ public struct MediaScreen: View {
 
     struct ViewState: Equatable {
         var isSearchTextEditing: Bool
-        var searchedFeedContents: [FeedContent]
         var isSearchResultVisible: Bool
         var isMoreActive: Bool
 
         init(state: MediaState) {
             isSearchTextEditing = state.isSearchTextEditing
-            searchedFeedContents = state.searchedFeedContents
             isSearchResultVisible = state.isSearchResultVisible
             isMoreActive = state.moreActiveType != nil
         }
@@ -54,13 +52,10 @@ public struct MediaScreen: View {
                     .zIndex(2)
 
                 SearchResultScreen(
-                    feedContents: viewStore.searchedFeedContents,
-                    tap: { feedContent in
-                        viewStore.send(.tap(feedContent))
-                    },
-                    tapFavorite: { isFavorited, contentId in
-                        viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
-                    }
+                    store: store.scope(
+                        state: \.searchedFeedContents,
+                        action: MediaAction.init(action:)
+                    )
                 )
                 .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
                 .zIndex(3)
@@ -111,6 +106,15 @@ public struct MediaScreen: View {
 
 private extension MediaAction {
     init(action: MediaDetailScreen.ViewAction) {
+        switch action {
+        case .tap(let content):
+            self = .tap(content)
+        case .tapFavorite(let isFavorited, let contentId):
+            self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        }
+    }
+
+    init(action: SearchResultScreen.ViewAction) {
         switch action {
         case .tap(let content):
             self = .tap(content)
