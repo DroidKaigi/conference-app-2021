@@ -44,6 +44,8 @@ public struct AppScreen: View {
                 },
                 then: { _ in
                 ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(AssetColor.Background.primary.color.ignoresSafeArea())
                     .onAppear { viewStore.send(.progressViewAppeared) }
                 }
             )
