@@ -7,12 +7,12 @@ import Styleguide
 
 public struct MediaScreen: View {
     private let store: Store<MediaState, MediaAction>
-    @ObservedObject private var viewStore: ViewStore<MediaState, MediaAction>
+    @ObservedObject private var viewStore: ViewStore<ViewState, MediaAction>
     @SearchController private var searchController: UISearchController
 
     public init(store: Store<MediaState, MediaAction>) {
         self.store = store
-        let viewStore = ViewStore(store)
+        let viewStore = ViewStore(store.scope(state: ViewState.init(state:)))
         self.viewStore = viewStore
         self._searchController = .init(
             searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
@@ -23,6 +23,20 @@ public struct MediaScreen: View {
                 viewStore.send(.isEditingDidChange(to: isEditing))
             }
         )
+    }
+
+    struct ViewState: Equatable {
+        var isSearchTextEditing: Bool
+        var searchedFeedContents: [FeedContent]
+        var isSearchResultVisible: Bool
+        var isMoreActive: Bool
+
+        init(state: MediaState) {
+            isSearchTextEditing = state.isSearchTextEditing
+            searchedFeedContents = state.searchedFeedContents
+            isSearchResultVisible = state.isSearchResultVisible
+            isMoreActive = state.isMoreActive
+        }
     }
 
     public var body: some View {
