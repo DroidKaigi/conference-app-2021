@@ -10,14 +10,6 @@ public struct MediaDetailScreen: View {
     struct ViewState: Equatable {
         var title: String
         var contents: [FeedContent]
-
-        init(
-            title: String,
-            contents: [FeedContent] = []
-        ) {
-            self.title = title
-            self.contents = contents
-        }
     }
 
     enum ViewAction {

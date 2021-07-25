@@ -8,52 +8,34 @@ import Styleguide
 
 public struct FavoritesScreen: View {
     private let store: Store<FavoritesState, FavoritesAction>
-    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     public init(store: Store<FavoritesState, FavoritesAction>) {
         self.store = store
-        self.viewStore = ViewStore<ViewState, ViewAction>(
-            store.scope(
-                state: ViewState.init(state:),
-                action: FavoritesAction.init(action:)
-            )
-        )
-    }
-
-    internal struct ViewState: Equatable {
-        init(state: FavoritesState) {}
-    }
-
-    internal enum ViewAction {
-        case progressViewAppeared
-        case showSetting
     }
 
     public var body: some View {
         NavigationView {
-            SwitchStore(store) {
-                CaseLet(
-                    state: /FavoritesState.needToInitialize,
-                    action: FavoritesAction.init(action:)) { _ in
-                    ProgressView()
-                        .onAppear { viewStore.send(.progressViewAppeared) }
-                }
-                CaseLet(
-                    state: /FavoritesState.emptyInitialized,
-                    action: FavoritesAction.init(action:)) { _ in
-                    // TODO: create view when empty
+            WithViewStore(store) { viewStore in
+                if viewStore.feedContents.isEmpty {
                     Text("表示するコンテンツがありません")
+                } else {
+                    ScrollView {
+                        FeedContentListView(
+                            feedContents: viewStore.feedContents,
+                            tapContent: { content in
+                                viewStore.send(.tap(content))
+                            },
+                            tapFavorite: { isFavorited, contentId in
+                                viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                            }
+                        )
+                    }
                 }
-                CaseLet(
-                    state: /FavoritesState.initialized,
-                    action: FavoritesAction.init(action:),
-                    then: FavoritesListView.init(store:)
-                )
             }
             .navigationBarTitle(L10n.FavoriteScreen.title, displayMode: .large)
             .navigationBarItems(
                 trailing: Button(action: {
-                    viewStore.send(.showSetting)
+                    ViewStore(store).send(.showSetting)
                 }, label: {
                     AssetImage.iconSetting.image
                         .renderingMode(.template)
@@ -67,82 +49,29 @@ public struct FavoritesScreen: View {
     }
 }
 
-private extension FavoritesAction {
-    init(action: FavoritesScreen.ViewAction) {
-        switch action {
-        case .progressViewAppeared:
-            self = .refresh
-        case .showSetting:
-            self = .showSetting
-        }
-    }
-
-    init(action: FavoritesListAction) {
-        self = .favoritesList(action)
-    }
-}
-
 #if DEBUG
-public struct FavoritesScreen_Previews: PreviewProvider {
+ public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        Group {
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             FavoritesScreen(
                 store: .init(
-                    initialState: .needToInitialize,
+                    initialState: .init(
+                        feedContents: [
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock(),
+                            .blogMock()
+                        ]
+                    ),
                     reducer: .empty,
                     environment: {}
                 )
             )
             .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-            FavoritesScreen(
-                store: .init(
-                    initialState: .needToInitialize,
-                    reducer: .empty,
-                    environment: {}
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
-
-            FavoritesScreen(
-                store: .init(
-                    initialState: .emptyInitialized,
-                    reducer: .empty,
-                    environment: {}
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-            FavoritesScreen(
-                store: .init(
-                    initialState: .emptyInitialized,
-                    reducer: .empty,
-                    environment: {}
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
-
-            FavoritesScreen(
-                store: .init(
-                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
-                    reducer: .empty,
-                    environment: {}
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-            FavoritesScreen(
-                store: .init(
-                    initialState: .initialized(.init(feedContents: [.videoMock(), .videoMock()])),
-                    reducer: .empty,
-                    environment: {}
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
+            .environment(\.colorScheme, colorScheme)
         }
     }
-}
+ }
 #endif

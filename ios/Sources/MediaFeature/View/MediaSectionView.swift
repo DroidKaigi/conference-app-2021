@@ -6,34 +6,29 @@ import Styleguide
 
 public struct MediaSectionView: View {
     let type: MediaType
-    let store: Store<[FeedContent], ViewAction>
-
-    enum ViewAction {
-        case showMore
-        case tap(FeedContent)
-        case tapFavorite(isFavorited: Bool, id: String)
-    }
+    let feedContent: [FeedContent]
+    let moreAction: () -> Void
+    let tapAction: (FeedContent) -> Void
+    let tapFavoriteAction: (_ isFavorited: Bool, _ id: String) -> Void
 
     public var body: some View {
         VStack(spacing: .zero) {
-            WithViewStore(store) { viewStore in
-                MediaSectionHeader(
-                    type: type,
-                    moreAction: { viewStore.send(.showMore) }
-                )
-                ScrollView(.horizontal, showsIndicators: false) {
-                    LazyHStack(spacing: .zero) {
-                        ForEach(viewStore.state) { content in
-                            MediumCard(
-                                content: content,
-                                tapAction: {
-                                    viewStore.send(.tap(content))
-                                },
-                                tapFavoriteAction: {
-                                    viewStore.send(.tapFavorite(isFavorited: content.isFavorited, id: content.id))
-                                }
-                            )
-                        }
+            MediaSectionHeader(
+                type: type,
+                moreAction: moreAction
+            )
+            ScrollView(.horizontal, showsIndicators: false) {
+                LazyHStack(spacing: .zero) {
+                    ForEach(feedContent) { content in
+                        MediumCard(
+                            content: content,
+                            tapAction: {
+                                tapAction(content)
+                            },
+                            tapFavoriteAction: {
+                                tapFavoriteAction(content.isFavorited, content.id)
+                            }
+                        )
                     }
                 }
             }
@@ -70,18 +65,17 @@ public struct MediaSectionView_Previews: PreviewProvider {
             ForEach(sizeCategories, id: \.self) { sizeCategory in
                 MediaSectionView(
                     type: .blog,
-                    store: .init(
-                        initialState: [
-                            .blogMock(),
-                            .blogMock(),
-                            .blogMock(),
-                            .blogMock(),
-                            .blogMock(),
-                            .blogMock(),
-                        ],
-                        reducer: .empty,
-                        environment: {}
-                    )
+                    feedContent: [
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock(),
+                        .blogMock()
+                    ],
+                    moreAction: {},
+                    tapAction: { _ in },
+                    tapFavoriteAction: { _, _ in }
                 )
                 .background(AssetColor.Background.primary.color)
                 .environment(\.sizeCategory, sizeCategory)

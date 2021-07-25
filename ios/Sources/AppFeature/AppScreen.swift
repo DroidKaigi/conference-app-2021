@@ -8,133 +8,132 @@ import Styleguide
 import SwiftUI
 import UIKit
 
-enum AppTab: CaseIterable {
-    case home
-    case media
-    case favorites
-    case about
-
-    var title: String {
-        switch self {
-        case .home:
-            return L10n.HomeScreen.title
-        case .media:
-            return L10n.MediaScreen.title
-        case .favorites:
-            return L10n.FavoriteScreen.title
-        case .about:
-            return L10n.AboutScreen.title
-        }
-    }
-
-    var image: Image {
-        switch self {
-        case .home:
-            return AssetImage.iconHome.image
-        case .media:
-            return AssetImage.iconBlog.image
-        case .favorites:
-            return AssetImage.iconStar.image
-        case .about:
-            return AssetImage.iconAbout.image
-        }
-    }
-
-    @ViewBuilder
-    func view(_ store: Store<AppState, AppAction>) -> some View {
-        switch self {
-        case .home:
-            HomeScreen(
-                store: store.scope(
-                    state: \.homeState,
-                    action: AppAction.home
-                )
-            )
-        case .media:
-            MediaScreen(
-                store: store.scope(
-                    state: \.mediaState,
-                    action: AppAction.media
-                )
-            )
-        case .favorites:
-            FavoritesScreen(
-                store: store.scope(
-                    state: \.favoritesState,
-                    action: AppAction.favorites
-                )
-            )
-        case .about:
-            AboutScreen(
-                store: store.scope(
-                    state: \.aboutState,
-                    action: AppAction.about
-                )
-            )
-        }
-    }
-}
-
 public struct AppScreen: View {
     @State var selection = 0
 
     private let store: Store<AppState, AppAction>
+    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
+        self.viewStore = ViewStore<ViewState, ViewAction>(
+            store.scope(
+                state: ViewState.init(state:),
+                action: AppAction.init(action:)
+            )
+        )
         UITabBar.appearance().configureWithDefaultStyle()
         UINavigationBar.appearance().configureWithDefaultStyle()
     }
 
+    internal struct ViewState: Equatable {
+        init(state: AppState) {}
+    }
+
+    internal enum ViewAction {
+        case progressViewAppeared
+        case reload
+    }
+
     public var body: some View {
-        WithViewStore(store) { viewStore in
-            TabView(
-                selection: $selection,
-                content: {
-                    ForEach(Array(AppTab.allCases.enumerated()), id: \.offset) { (offset, tab) in
-                        tab.view(store)
-                            .tabItem {
-                                tab.image.renderingMode(.template)
-                                Text(tab.title)
-                            }
-                            .tag(offset)
+        SwitchStore(store) {
+            CaseLet(
+                state: /AppState.needToInitialize,
+                action: { (action: AppScreen.ViewAction) in
+                    AppAction.init(action: action)
+                },
+                then: { _ in
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(AssetColor.Background.primary.color.ignoresSafeArea())
+                    .onAppear { viewStore.send(.progressViewAppeared) }
+                }
+            )
+            CaseLet(
+                state: /AppState.initialized,
+                action: AppAction.appTab,
+                then: AppTabScreen.init(store:)
+            )
+            CaseLet(
+                state: /AppState.errorOccurred,
+                action: { (action: AppScreen.ViewAction) in
+                    AppAction.init(action: action)
+                },
+                then: { _ in
+                    VStack(spacing: 16) {
+                        Text("エラーが発生しました")
+
+                        Button(action: {
+                            viewStore.send(.reload)
+                        }, label: {
+                            Text("再度読み込み")
+                                .foregroundColor(AssetColor.primary.color)
+                        })
                     }
                 }
             )
-            .sheet(
-                isPresented: viewStore.binding(
-                    get: \.isSettingPresented,
-                    send: .hideSetting
-                ),
-                content: {
-                    SettingScreen(isDarkModeOn: true, isLanguageOn: true)
-                }
-            )
-            .accentColor(AssetColor.primary.color)
-            .background(AssetColor.Background.primary.color)
+        }
+        .accentColor(AssetColor.primary.color)
+        .background(AssetColor.Background.primary.color)
+    }
+}
+
+private extension AppAction {
+    init(action: AppScreen.ViewAction) {
+        switch action {
+        case .progressViewAppeared:
+            self = .refresh
+        case .reload:
+            self = .needRefresh
         }
     }
 }
 
-public struct AppScreen_Previews: PreviewProvider {
+#if DEBUG
+ public struct AppScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        Group {
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             AppScreen(
                 store: .init(
-                    initialState: .init(),
+                    initialState: .needToInitialize,
                     reducer: .empty,
-                    environment: AppEnvironment.noop
+                    environment: {}
                 )
             )
-            .environment(\.colorScheme, .dark)
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+
             AppScreen(
                 store: .init(
-                    initialState: .init(),
+                    initialState: .errorOccurred,
                     reducer: .empty,
-                    environment: AppEnvironment.noop
+                    environment: {}
                 )
             )
-            .environment(\.colorScheme, .light)
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+
+            AppScreen(
+                store: .init(
+                    initialState: .initialized(
+                        .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ]
+                        )
+                    ),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
         }
     }
-}
+ }
+#endif
