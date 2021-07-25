@@ -31,12 +31,10 @@ public struct MediaScreen: View {
 
     struct ViewState: Equatable {
         var isSearchTextEditing: Bool
-        var isSearchResultVisible: Bool
         var isMoreActive: Bool
 
         init(state: MediaState) {
             isSearchTextEditing = state.isSearchTextEditing
-            isSearchResultVisible = state.isSearchResultVisible
             isMoreActive = state.moreActiveType != nil
         }
     }
@@ -55,13 +53,13 @@ public struct MediaScreen: View {
                     .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
                     .zIndex(2)
 
-                SearchResultScreen(
-                    store: store.scope(
+                IfLetStore(
+                    store.scope(
                         state: \.searchedFeedContents,
                         action: MediaAction.init(action:)
-                    )
+                    ),
+                    then: SearchResultScreen.init(store:)
                 )
-                .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
                 .zIndex(3)
             }
             .background(
@@ -193,7 +191,6 @@ public struct MediaScreen_Previews: PreviewProvider {
                                 .blogMock(),
                                 .blogMock()
                             ],
-                            isSearchResultVisible: true,
                             isSearchTextEditing: true
                         ),
                         reducer: .empty,
