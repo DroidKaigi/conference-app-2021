@@ -14,6 +14,8 @@
 
 // MARK: Favorite
 "FavoriteScreen.Title" = "Favorites";
+"FavoriteScreen.Empty.Title" = "まだお気に入り記事がありません";
+"FavoriteScreen.Empty.Description" = "お気に入りに入れた記事が表示されます\n気になる記事に♡をつけてみてください";
 
 // MARK: About
 "AboutScreen.Title" = "About";
