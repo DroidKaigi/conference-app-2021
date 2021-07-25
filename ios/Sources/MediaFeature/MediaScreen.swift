@@ -27,80 +27,31 @@ public struct MediaScreen: View {
 
     public var body: some View {
         NavigationView {
-            WithViewStore(store) { viewStore in
-                ZStack {
-                    AssetColor.Background.primary.color.ignoresSafeArea()
-                    ScrollView {
-                        if viewStore.hasBlogs {
-                            MediaSectionView(
-                                type: .blog,
-                                feedContent: viewStore.blogs,
-                                moreAction: {
-                                    viewStore.send(.showMore(for: .blog))
-                                },
-                                tapAction: { feedContent in
-                                    viewStore.send(.tap(feedContent))
-                                },
-                                tapFavoriteAction: { isFavorited, id in
-                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: id))
-                                }
-                            )
-                            separator
-                        }
-                        if viewStore.hasVideos {
-                            MediaSectionView(
-                                type: .video,
-                                feedContent: viewStore.videos,
-                                moreAction: {
-                                    viewStore.send(.showMore(for: .video))
-                                },
-                                tapAction: { feedContent in
-                                    viewStore.send(.tap(feedContent))
-                                },
-                                tapFavoriteAction: { isFavorited, id in
-                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: id))
-                                }
-                            )
-                            separator
-                        }
-                        if viewStore.hasPodcasts {
-                            MediaSectionView(
-                                type: .podcast,
-                                feedContent: viewStore.podcasts,
-                                moreAction: {
-                                    viewStore.send(.showMore(for: .podcast))
-                                },
-                                tapAction: { feedContent in
-                                    viewStore.send(.tap(feedContent))
-                                },
-                                tapFavoriteAction: { isFavorited, id in
-                                    viewStore.send(.tapFavorite(isFavorited: isFavorited, id: id))
-                                }
-                            )
-                        }
-                    }
-                    .separatorStyle(ThickSeparatorStyle())
+            ZStack {
+                AssetColor.Background.primary.color.ignoresSafeArea()
                     .zIndex(0)
 
-                    Color.black.opacity(0.4)
-                        .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
-                        .animation(.easeInOut)
-                        .zIndex(1)
+                MediaListView(store: store)
+                    .zIndex(1)
 
-                    SearchResultScreen(
-                        feedContents: viewStore.searchedFeedContents,
-                        tap: { feedContent in
-                            viewStore.send(.tap(feedContent))
-                        },
-                        tapFavorite: { isFavorited, contentId in
-                            viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
-                        }
-                    )
-                    .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
+                Color.black.opacity(0.4)
+                    .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
+                    .animation(.easeInOut)
                     .zIndex(2)
-                }
-                .animation(.easeInOut)
+
+                SearchResultScreen(
+                    feedContents: viewStore.searchedFeedContents,
+                    tap: { feedContent in
+                        viewStore.send(.tap(feedContent))
+                    },
+                    tapFavorite: { isFavorited, contentId in
+                        viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                    }
+                )
+                .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
+                .zIndex(3)
             }
+            .animation(.easeInOut)
             .background(
                 NavigationLink(
                     destination: IfLetStore(
@@ -110,7 +61,7 @@ public struct MediaScreen: View {
                         ),
                         then: MediaDetailScreen.init(store:)
                     ),
-                    isActive: ViewStore(store).binding(
+                    isActive: viewStore.binding(
                         get: \.isMoreActive,
                         send: { _ in .moreDismissed }
                     )
@@ -121,7 +72,7 @@ public struct MediaScreen: View {
             .navigationTitle(L10n.MediaScreen.title)
             .navigationBarItems(
                 trailing: Button(action: {
-                    ViewStore(store).send(.showSetting)
+                    viewStore.send(.showSetting)
                 }, label: {
                     AssetImage.iconSetting.image
                         .renderingMode(.template)
