@@ -20,9 +20,9 @@ struct MediaListView: View {
         var hasPodcasts: Bool
 
         init(state: MediaState) {
-            hasBlogs = !state.blogs.isEmpty
-            hasVideos = !state.videos.isEmpty
-            hasPodcasts = !state.podcasts.isEmpty
+            hasBlogs = state.feedContents.contains { $0.item.wrappedValue is Blog }
+            hasVideos = state.feedContents.contains { $0.item.wrappedValue is Video }
+            hasPodcasts = state.feedContents.contains { $0.item.wrappedValue is Podcast }
         }
     }
 

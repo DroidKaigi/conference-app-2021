@@ -35,7 +35,7 @@ public struct MediaScreen: View {
             isSearchTextEditing = state.isSearchTextEditing
             searchedFeedContents = state.searchedFeedContents
             isSearchResultVisible = state.isSearchResultVisible
-            isMoreActive = state.isMoreActive
+            isMoreActive = state.moreActiveType != nil
         }
     }
 

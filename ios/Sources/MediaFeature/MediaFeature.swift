@@ -27,6 +27,7 @@ public struct MediaState: Equatable {
     }
 }
 
+// Only use to scope `Store`
 extension MediaState {
     var blogs: [FeedContent] {
         feedContents.filter { ($0.item.wrappedValue as? Blog) != nil }
@@ -38,22 +39,6 @@ extension MediaState {
 
     var podcasts: [FeedContent] {
         feedContents.filter { ($0.item.wrappedValue as? Podcast) != nil }
-    }
-
-    var hasBlogs: Bool {
-        !blogs.isEmpty
-    }
-
-    var hasVideos: Bool {
-        !videos.isEmpty
-    }
-
-    var hasPodcasts: Bool {
-        !podcasts.isEmpty
-    }
-
-    var isMoreActive: Bool {
-        moreActiveType != nil
     }
 }
 
