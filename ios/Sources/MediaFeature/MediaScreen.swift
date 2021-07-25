@@ -17,10 +17,14 @@ public struct MediaScreen: View {
         self._searchController = .init(
             searchBarPlaceHolder: L10n.MediaScreen.SearchBar.placeholder,
             searchTextDidChangeTo: { text in
-                viewStore.send(.searchTextDidChange(to: text))
+                withAnimation(.easeInOut) {
+                    viewStore.send(.searchTextDidChange(to: text))
+                }
             },
             isEditingDidChangeTo: { isEditing in
-                viewStore.send(.isEditingDidChange(to: isEditing))
+                withAnimation(.easeInOut) {
+                    viewStore.send(.isEditingDidChange(to: isEditing))
+                }
             }
         )
     }
@@ -47,8 +51,8 @@ public struct MediaScreen: View {
                     .zIndex(1)
 
                 Color.black.opacity(0.4)
+                    .ignoresSafeArea()
                     .opacity(viewStore.isSearchTextEditing ? 1 : .zero)
-                    .animation(.easeInOut)
                     .zIndex(2)
 
                 SearchResultScreen(
@@ -60,7 +64,6 @@ public struct MediaScreen: View {
                 .opacity(viewStore.isSearchResultVisible ? 1 : .zero)
                 .zIndex(3)
             }
-            .animation(.easeInOut)
             .background(
                 NavigationLink(
                     destination: IfLetStore(
