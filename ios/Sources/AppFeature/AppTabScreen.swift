@@ -19,12 +19,20 @@ public struct AppTabScreen: View {
         UINavigationBar.appearance().configureWithDefaultStyle()
     }
 
+    struct ViewState: Equatable {
+        var isShowingSheet: Bool
+
+        init(state: AppTabState) {
+            isShowingSheet = state.isShowingSheet
+        }
+    }
+
     public enum ViewAction {
         case reload
     }
 
     public var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store.scope(state: ViewState.init(state:))) { viewStore in
             TabView(
                 selection: $selection,
                 content: {
@@ -50,13 +58,15 @@ public struct AppTabScreen: View {
                     get: \.isShowingSheet,
                     send: .hideSheet
                 ), content: {
-                    switch viewStore.isSheetPresented {
-                    case .url(let url):
-                        WebView(url: url)
-                    case .setting:
-                        SettingScreen(isDarkModeOn: true, isLanguageOn: true)
-                    default:
-                        EmptyView()
+                    IfLetStore(store.scope(state: \.isSheetPresented)) { store in
+                        WithViewStore(store) { viewStore in
+                            switch viewStore.state {
+                            case .url(let url):
+                                WebView(url: url)
+                            case .setting:
+                                SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                            }
+                        }
                     }
                 }
             )
