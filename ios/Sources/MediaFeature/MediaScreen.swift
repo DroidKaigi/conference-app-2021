@@ -29,6 +29,7 @@ public struct MediaScreen: View {
         NavigationView {
             WithViewStore(store) { viewStore in
                 ZStack {
+                    AssetColor.Background.primary.color.ignoresSafeArea()
                     ScrollView {
                         if viewStore.hasBlogs {
                             MediaSectionView(
@@ -128,7 +129,6 @@ public struct MediaScreen: View {
                 })
             )
             .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
                 guard viewController.navigationItem.searchController == nil else { return }
                 viewController.navigationItem.searchController = searchController
                 viewController.navigationItem.hidesSearchBarWhenScrolling = false

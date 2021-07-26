@@ -74,7 +74,7 @@ public struct AboutScreen: View {
                                 .pickerStyle(SegmentedPickerStyle())
                             }
                         }
-                        .background(AssetColor.Background.primary.color)
+                        .background(AssetColor.Background.primary.color.ignoresSafeArea())
                         .navigationBarTitleDisplayMode(.inline)
                         .onAppear {
                             viewStore.send(.refresh)
