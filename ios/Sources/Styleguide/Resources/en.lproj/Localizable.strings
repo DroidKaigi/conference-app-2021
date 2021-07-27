@@ -14,6 +14,8 @@
 
 // MARK: Favorite
 "FavoriteScreen.Title" = "Favorites";
+"FavoriteScreen.Empty.Title" = "No Favorited Articles Found";
+"FavoriteScreen.Empty.Description" = "Favorited Articles will be displayed.\nGive ♡ to any article get interested.";
 
 // MARK: About
 "AboutScreen.Title" = "About";

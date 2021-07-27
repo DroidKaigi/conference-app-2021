@@ -19,7 +19,7 @@ public struct FavoritesScreen: View {
                 AssetColor.Background.primary.color.ignoresSafeArea()
                 WithViewStore(store) { viewStore in
                     if viewStore.feedContents.isEmpty {
-                        Text("表示するコンテンツがありません")
+                        FavoritesEmptyView()
                     } else {
                         ScrollView {
                             FeedContentListView(
@@ -53,6 +53,18 @@ public struct FavoritesScreen: View {
  public struct FavoritesScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            FavoritesScreen(
+                store: .init(
+                    initialState: .init(
+                        feedContents: []
+                    ),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, colorScheme)
+
             FavoritesScreen(
                 store: .init(
                     initialState: .init(
