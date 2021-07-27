@@ -79,10 +79,8 @@ public struct AboutDroidKaigiScreen: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
+            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
-            .introspectViewController { viewController in
-                viewController.view.backgroundColor = AssetColor.Background.secondary.uiColor
-            }
             .introspectNavigationController { navigationController in
                 navigationController.navigationBar.barTintColor = AssetColor.Background.secondary.uiColor
                 navigationController.navigationBar.isTranslucent = false
