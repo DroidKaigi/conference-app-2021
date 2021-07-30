@@ -7,26 +7,24 @@ public struct MediaState: Equatable {
     // In order not to use any networks for searching feature,
     // `feedContents` is storage to search from & `searchedFeedContents` is searched result from `feedContents`
     public var feedContents: [FeedContent]
-    public var searchedFeedContents: [FeedContent]
-    var isSearchResultVisible: Bool
+    public var searchedFeedContents: [FeedContent]?
     var isSearchTextEditing: Bool
     var moreActiveType: MediaType?
 
     public init(
         feedContents: [FeedContent],
-        searchedFeedContents: [FeedContent] = [],
-        isSearchResultVisible: Bool = false,
+        searchedFeedContents: [FeedContent]? = nil,
         isSearchTextEditing: Bool = false,
         moreActiveType: MediaType? = nil
     ) {
         self.feedContents = feedContents
         self.searchedFeedContents = searchedFeedContents
-        self.isSearchResultVisible = isSearchResultVisible
         self.isSearchTextEditing = isSearchTextEditing
         self.moreActiveType = moreActiveType
     }
 }
 
+// Only use to scope `Store`
 extension MediaState {
     var blogs: [FeedContent] {
         feedContents.filter { ($0.item.wrappedValue as? Blog) != nil }
@@ -38,22 +36,6 @@ extension MediaState {
 
     var podcasts: [FeedContent] {
         feedContents.filter { ($0.item.wrappedValue as? Podcast) != nil }
-    }
-
-    var hasBlogs: Bool {
-        !blogs.isEmpty
-    }
-
-    var hasVideos: Bool {
-        !videos.isEmpty
-    }
-
-    var hasPodcasts: Bool {
-        !podcasts.isEmpty
-    }
-
-    var isMoreActive: Bool {
-        moreActiveType != nil
     }
 }
 
@@ -74,7 +56,10 @@ public struct MediaEnvironment {
 public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { state, action, _ in
     switch action {
     case let .searchTextDidChange(to: searchText):
-        state.isSearchResultVisible = !(searchText?.isEmpty ?? true)
+        guard searchText?.isEmpty == false else {
+            state.searchedFeedContents = nil
+            return .none
+        }
         if let searchText = searchText {
             state.searchedFeedContents = state.feedContents.filter { content in
                 content.item.title.jaTitle.filterForSeaching.contains(searchText.filterForSeaching)

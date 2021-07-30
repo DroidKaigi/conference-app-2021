@@ -125,8 +125,10 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             }
             state.homeState.feedContents = state.feedContents
             state.mediaState.feedContents = state.feedContents
-            if let index = state.mediaState.searchedFeedContents.map(\.id).firstIndex(of: id) {
-                state.mediaState.searchedFeedContents[index].isFavorited.toggle()
+            if var searchedFeedContents = state.mediaState.searchedFeedContents,
+                let index = searchedFeedContents.map(\.id).firstIndex(of: id) {
+                searchedFeedContents[index].isFavorited.toggle()
+                state.mediaState.searchedFeedContents = searchedFeedContents
             }
             state.favoritesState.feedContents = state.feedContents.filter(\.isFavorited)
             return .none
