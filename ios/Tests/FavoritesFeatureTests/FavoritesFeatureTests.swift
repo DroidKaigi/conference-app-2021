@@ -11,10 +11,6 @@ final class FavoritesFeatureTests: XCTestCase {
         assertPreviewScreenSnapshot(FavoritesScreen_Previews.self)
     }
 
-    func testFavoritesListView() {
-        assertPreviewScreenSnapshot(FavoritesListView_Previews.self)
-    }
-
     func testFavoritesEmptyView() {
         assertPreviewScreenSnapshot(FavoritesEmptyView_Previews.self)
     }
