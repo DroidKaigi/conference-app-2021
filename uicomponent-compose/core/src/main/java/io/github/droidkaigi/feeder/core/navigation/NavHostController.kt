@@ -12,6 +12,7 @@ import androidx.navigation.NavDeepLinkRequest
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.ComposeNavigator
+import androidx.navigation.compose.DialogNavigator
 import androidx.navigation.navOptions
 import java.net.URLEncoder
 
@@ -28,6 +29,7 @@ public fun rememberCustomNavController(): NavHostController {
 private fun createCustomNavController(context: Context) =
     NavHostController(context).apply {
         navigatorProvider.addNavigator(ChromeCustomTabsNavigator(context))
+        navigatorProvider.addNavigator(DialogNavigator())
         navigatorProvider.addNavigator(ComposeNavigator())
     }
 
