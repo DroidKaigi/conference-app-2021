@@ -1,16 +1,16 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.0-rc01"
+    const val compose = "1.0.1"
     const val coroutines = "1.5.0-native-mt"
 }
 
 object Dep {
     object Compose {
-        const val activity = "androidx.activity:activity-compose:1.3.0-alpha08"
+        const val activity = "androidx.activity:activity-compose:1.3.0"
         const val constraintLayout =
-            "androidx.constraintlayout:constraintlayout-compose:1.0.0-alpha07"
-        const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha01"
+            "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
+        const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha05"
         const val livedata = "androidx.compose.runtime:runtime-livedata:${Versions.compose}"
         const val runtime = "androidx.compose.runtime:runtime:${Versions.compose}"
         const val foundation = "androidx.compose.foundation:foundation:${Versions.compose}"
@@ -19,14 +19,14 @@ object Dep {
         const val test = "androidx.compose.ui:ui-test-junit4:${Versions.compose}"
         const val tooling = "androidx.compose.ui:ui-tooling:${Versions.compose}"
         const val util = "androidx.compose.ui:ui-util:${Versions.compose}"
-        const val material = "androidx.compose.material:material:${Versions.compose}1"
+        const val material = "androidx.compose.material:material:${Versions.compose}"
         const val iconsExtended =
             "androidx.compose.material:material-icons-extended:${Versions.compose}"
         const val animation = "androidx.compose.animation:animation:${Versions.compose}"
     }
 
     object Jetpack {
-        const val appcompat = "androidx.appcompat:appcompat:1.3.0-beta01"
+        const val appcompat = "androidx.appcompat:appcompat:1.3.0"
         const val startup = "androidx.startup:startup-runtime:1.0.0"
         const val browser = "androidx.browser:browser:1.3.0"
         const val dataStore = "androidx.datastore:datastore-preferences:1.0.0-alpha06"
@@ -52,13 +52,13 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.10"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.21"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.10"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.10"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.21"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.10"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
@@ -104,12 +104,12 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.13.0"
-        const val coil = "com.google.accompanist:accompanist-coil:0.13.0"
-        const val pager = "com.google.accompanist:accompanist-pager:0.13.0"
-        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.13.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.15.0"
+        const val coil = "com.google.accompanist:accompanist-coil:0.15.0"
+        const val pager = "com.google.accompanist:accompanist-pager:0.15.0"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.15.0"
         const val systemuicontroller =
-            "com.google.accompanist:accompanist-systemuicontroller:0.13.0"
+            "com.google.accompanist:accompanist-systemuicontroller:0.15.0"
     }
 
     object FirebaseCrashlytics {

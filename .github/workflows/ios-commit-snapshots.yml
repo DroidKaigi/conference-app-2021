@@ -14,8 +14,6 @@ jobs:
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-        with:
-          lfs: true
       - name: Create LFS file list
         run: git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
       - name: Restore LFS cache
@@ -50,7 +48,7 @@ jobs:
         run: make take-snapshots
       - name: Add LFS tracked file
         run: |
-          git lfs track "**/__Snapshots__/**.png"
+          git lfs track "**/__Snapshots__/*/*.png"
       - name: Create Update Snapshots PullRequest
         uses: peter-evans/create-pull-request@v3
         with:
