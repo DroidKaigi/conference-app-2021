@@ -131,6 +131,11 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
                     state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
                 } else {
                     environment.player.setUpPlayer(url: URL(string: podcast.podcastLink)!)
+                    if let playingIndex = state.feedContents.firstIndex(where: {
+                        $0.item.media == .droidKaigiFm(isPlaying: true)
+                    }) {
+                        state.feedContents[playingIndex].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
+                    }
                     state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: true)
                 }
             } else {
