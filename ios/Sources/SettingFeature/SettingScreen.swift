@@ -9,16 +9,8 @@ public struct SettingScreen: View {
     @Environment(\.presentationMode) var presentationMode
     private let store: Store<SettingState, SettingAction>
 
-    public init(
-        isDarkModeOn: Bool, isLanguageOn: Bool
-    ) {
-        let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
-        let languageModel = SettingModel.language(isOn: isLanguageOn)
-        self.store = .init(
-            initialState: .init(items: [darkModeModel, languageModel]),
-            reducer: settingReducer,
-            environment: SettingEnvironment()
-        )
+    public init(store: Store<SettingState, SettingAction>) {
+        self.store = store
     }
 
     public var body: some View {
@@ -26,15 +18,15 @@ public struct SettingScreen: View {
             InlineTitleNavigationBarScrollView {
                 LazyVStack(spacing: 0) {
                     WithViewStore(store) { viewStore in
-                        let items = viewStore.items
-                        ForEach(items.indices) { index in
+                        ForEach(viewStore.items.indices) { index in
                             ZStack(alignment: .bottom) {
+                                let item = viewStore.items[index]
                                 SettingToggleItem(
-                                    title: items[index].title,
+                                    title: item.title,
                                     isOn: Binding(get: {
-                                        items[index].isOn
+                                        item.isOn
                                     }, set: { isOn in
-                                        viewStore.send(items[index].action(isOn: isOn))
+                                        viewStore.send(.toggle(item.update(isOn: isOn)))
                                     })
                                 )
                                 .frame(minHeight: 44)
@@ -81,12 +73,12 @@ private extension SettingModel {
         }
     }
 
-    func action(isOn: Bool) -> SettingAction {
+    func update(isOn: Bool) -> Self {
         switch self {
         case .darkMode:
-            return .darkMode(isOn: isOn)
+            return .darkMode(isOn)
         case .language:
-            return .language(isOn: isOn)
+            return .language(isOn)
         }
     }
 }
@@ -95,13 +87,19 @@ private extension SettingModel {
 public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
-            isDarkModeOn: true,
-            isLanguageOn: false
+            store: .init(
+                initialState: .init(items: [SettingModel.darkMode(true), SettingModel.language(false)]),
+                reducer: settingReducer,
+                environment: SettingEnvironment()
+            )
         )
         .environment(\.colorScheme, .light)
         SettingScreen(
-            isDarkModeOn: true,
-            isLanguageOn: false
+            store: .init(
+                initialState: .init(items: [SettingModel.darkMode(false), SettingModel.language(true)]),
+                reducer: settingReducer,
+                environment: SettingEnvironment()
+            )
         )
         .environment(\.colorScheme, .dark)
     }

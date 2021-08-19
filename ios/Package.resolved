@@ -2,6 +2,24 @@
   "object": {
     "pins": [
       {
+        "package": "abseil",
+        "repositoryURL": "https://github.com/firebase/abseil-cpp-SwiftPM.git",
+        "state": {
+          "branch": null,
+          "revision": "fffc3c2729be5747390ad02d5100291a0d9ad26a",
+          "version": "0.20200225.4"
+        }
+      },
+      {
+        "package": "BoringSSL-GRPC",
+        "repositoryURL": "https://github.com/firebase/boringssl-SwiftPM.git",
+        "state": {
+          "branch": null,
+          "revision": "734a8247442fde37df4364c21f6a0085b6a36728",
+          "version": "0.7.2"
+        }
+      },
+      {
         "package": "combine-schedulers",
         "repositoryURL": "https://github.com/pointfreeco/combine-schedulers",
         "state": {
@@ -11,12 +29,84 @@
         }
       },
       {
+        "package": "Firebase",
+        "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
+        "state": {
+          "branch": null,
+          "revision": "91cf599d0b6bcd4b2e92eecc6f8e57754ab16480",
+          "version": "8.1.1"
+        }
+      },
+      {
         "package": "Gifu",
         "repositoryURL": "https://github.com/kaishin/Gifu",
         "state": {
           "branch": null,
           "revision": "51f2eab32903e336f590c013267cfa4d7f8b06c4",
           "version": "3.3.1"
+        }
+      },
+      {
+        "package": "GoogleAppMeasurement",
+        "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
+        "state": {
+          "branch": null,
+          "revision": "8f2945122bef809c963a619a598c3ac390c2163a",
+          "version": "8.1.1"
+        }
+      },
+      {
+        "package": "GoogleDataTransport",
+        "repositoryURL": "https://github.com/google/GoogleDataTransport.git",
+        "state": {
+          "branch": null,
+          "revision": "369716b8d7518a530ce3c3a251436d72546debd8",
+          "version": "8.4.0"
+        }
+      },
+      {
+        "package": "GoogleUtilities",
+        "repositoryURL": "https://github.com/google/GoogleUtilities.git",
+        "state": {
+          "branch": null,
+          "revision": "beb713a16b50a4df3162b3f3ecdeffa16b74b773",
+          "version": "7.5.0"
+        }
+      },
+      {
+        "package": "gRPC",
+        "repositoryURL": "https://github.com/firebase/grpc-SwiftPM.git",
+        "state": {
+          "branch": null,
+          "revision": "fb405dd2c7901485f7e158b24e3a0a47e4efd8b5",
+          "version": "1.28.4"
+        }
+      },
+      {
+        "package": "GTMSessionFetcher",
+        "repositoryURL": "https://github.com/google/gtm-session-fetcher.git",
+        "state": {
+          "branch": null,
+          "revision": "424886f9336a71891aa81852d0c2c08d807d21aa",
+          "version": "1.6.1"
+        }
+      },
+      {
+        "package": "leveldb",
+        "repositoryURL": "https://github.com/firebase/leveldb.git",
+        "state": {
+          "branch": null,
+          "revision": "0706abcc6b0bd9cedfbb015ba840e4a780b5159b",
+          "version": "1.22.2"
+        }
+      },
+      {
+        "package": "nanopb",
+        "repositoryURL": "https://github.com/firebase/nanopb.git",
+        "state": {
+          "branch": null,
+          "revision": "7ee9ef9f627d85cbe1b8c4f49a3ed26eed216c77",
+          "version": "2.30908.0"
         }
       },
       {
@@ -38,6 +128,15 @@
         }
       },
       {
+        "package": "Promises",
+        "repositoryURL": "https://github.com/google/promises.git",
+        "state": {
+          "branch": null,
+          "revision": "afa9a1ace74e116848d4f743599ab83e584ff8cb",
+          "version": "1.2.12"
+        }
+      },
+      {
         "package": "swift-case-paths",
         "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
         "state": {
@@ -53,6 +152,24 @@
           "branch": null,
           "revision": "e1c0a52897eb361d09f761b2bdb25f212926fb1c",
           "version": "0.19.0"
+        }
+      },
+      {
+        "package": "SwiftProtobuf",
+        "repositoryURL": "https://github.com/apple/swift-protobuf.git",
+        "state": {
+          "branch": null,
+          "revision": "1f62db409f2c9b0223a3f68567b4a01333aae778",
+          "version": "1.17.0"
+        }
+      },
+      {
+        "package": "SnapshotTesting",
+        "repositoryURL": "https://github.com/pointfreeco/swift-snapshot-testing.git",
+        "state": {
+          "branch": null,
+          "revision": "f8a9c997c3c1dab4e216a8ec9014e23144cbab37",
+          "version": "1.9.0"
         }
       },
       {

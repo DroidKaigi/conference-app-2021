@@ -3,49 +3,11 @@ import Introspect
 import SwiftUI
 import Styleguide
 
-private enum AboutDroidKaigiModel: CaseIterable {
-    case behaviorCode
-    case opensourceLicense
-    case privacyPolicy
-
-    var title: String {
-        switch self {
-        case .behaviorCode:
-            return L10n.AboutDroidKaigiScreen.behaviorCode
-        case .opensourceLicense:
-            return L10n.AboutDroidKaigiScreen.opensourceLincense
-        case .privacyPolicy:
-            return L10n.AboutDroidKaigiScreen.privacyPolicy
-        }
-    }
-
-    var image: Image {
-        switch self {
-        case .behaviorCode:
-            return Image(systemName: "book")
-        case .opensourceLicense:
-            return Image(systemName: "star")
-        case .privacyPolicy:
-            return Image(systemName: "magnifyingglass")
-        }
-    }
-
-    var action: AboutDroidKaigiAction {
-        switch self {
-        case .behaviorCode:
-            return .behaviorCode
-        case .opensourceLicense:
-            return .opensourceLicense
-        case .privacyPolicy:
-            return .privacyPolicy
-        }
-    }
-}
-
 public struct AboutDroidKaigiScreen: View {
     @Environment(\.presentationMode) var presentationMode
 
     private let store: Store<AboutDroidKaigiState, AboutDroidKaigiAction>
+
     public init(store: Store<AboutDroidKaigiState, AboutDroidKaigiAction>) {
         self.store = store
     }
@@ -77,7 +39,7 @@ public struct AboutDroidKaigiScreen: View {
                     ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
                         WithViewStore(store) { viewStore in
                             Button(action: {
-                                viewStore.send(model.action)
+                                viewStore.send(.tap(model))
                             }, label: {
                                 HStack {
                                     Text(model.title)
@@ -116,6 +78,30 @@ public struct AboutDroidKaigiScreen: View {
                         .foregroundColor(AssetColor.Base.primary.color)
                 })
             )
+        }
+    }
+}
+
+private extension AboutDroidKaigiModel {
+    var title: String {
+        switch self {
+        case .behaviorCode:
+            return L10n.AboutDroidKaigiScreen.behaviorCode
+        case .opensourceLicense:
+            return L10n.AboutDroidKaigiScreen.opensourceLincense
+        case .privacyPolicy:
+            return L10n.AboutDroidKaigiScreen.privacyPolicy
+        }
+    }
+
+    var image: Image {
+        switch self {
+        case .behaviorCode:
+            return Image(systemName: "book")
+        case .opensourceLicense:
+            return Image(systemName: "star")
+        case .privacyPolicy:
+            return Image(systemName: "magnifyingglass")
         }
     }
 }

@@ -107,11 +107,18 @@ public struct AppScreen: View {
                     send: .hideSetting
                 ),
                 content: {
-                    SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                    SettingScreen(
+                        store: .init(
+                            initialState: .init(items: [SettingModel.darkMode(true), SettingModel.language(false)]),
+                            reducer: settingReducer,
+                            environment: SettingEnvironment()
+                        )
+                    )
                 }
-            )
-            .accentColor(AssetColor.primary.color)
-            .background(AssetColor.Background.primary.color)
+            }
+        )
+        .accentColor(AssetColor.primary.color)
+        .background(AssetColor.Background.primary.color)
         }
     }
 }

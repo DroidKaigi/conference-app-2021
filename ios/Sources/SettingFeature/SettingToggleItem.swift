@@ -2,17 +2,17 @@ import Styleguide
 import SwiftUI
 
 public struct SettingToggleItem: View {
-    
+
     private let title: String
     @Binding private var isOn: Bool
-    
+
     public init(title: String, isOn: Binding<Bool>) {
         self.title = title
         self._isOn = isOn
     }
-    
+
     public var body: some View {
-        Toggle(isOn: $isOn, label: {
+        Toggle(isOn: $isOn.animation(), label: {
             Text(title)
         })
         .toggleStyle(SwitchToggleStyle(tint: AssetColor.primary.color))

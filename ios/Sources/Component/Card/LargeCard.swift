@@ -87,7 +87,6 @@ public struct LargeCard_Previews: PreviewProvider {
                     tapAction: {},
                     tapFavoriteAction: {}
                 )
-                .frame(width: 375, height: 319)
                 .background(AssetColor.Background.primary.color)
                 .previewDevice(.init(rawValue: "iPhone X"))
                 .environment(\.colorScheme, colorScheme)
