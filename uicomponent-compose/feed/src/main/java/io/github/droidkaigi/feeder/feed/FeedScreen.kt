@@ -300,9 +300,10 @@ private fun FeedList(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
     ) {
+        val lazyColumnRobotKey = "robot"
         val isLastItemVisible by remember {
             derivedStateOf {
-                listState.layoutInfo.visibleItemsInfo.any { it.key == "robot" }
+                listState.layoutInfo.visibleItemsInfo.any { it.key == lazyColumnRobotKey }
             }
         }
         val isListFinished by remember {
@@ -352,7 +353,7 @@ private fun FeedList(
                 }
             }
             if (isLastItemVisible) {
-                item(key = "robot") {
+                item(key = lazyColumnRobotKey) {
                     val robotAnimValue by animateFloatAsState(
                         targetValue = if (isListFinished) 0f else 10f,
                         animationSpec = spring(
