@@ -13,7 +13,7 @@ fun fakeFmPlayerViewModel(): FakeFmPlayerViewModel {
 class FakeFmPlayerViewModel : FmPlayerViewModel {
     private val effectSharedFlow = Channel<FmPlayerViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<FmPlayerViewModel.Effect>
-        get() =  effectSharedFlow.receiveAsFlow()
+        get() = effectSharedFlow.receiveAsFlow()
     override val state: StateFlow<FmPlayerViewModel.State>
         get() = MutableStateFlow(FmPlayerViewModel.State())
 
