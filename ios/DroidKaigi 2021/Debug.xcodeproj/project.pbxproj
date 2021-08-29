@@ -16,8 +16,8 @@
 
 /* Begin PBXFileReference section */
 		2B29CA0397EABB180818B44B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; path = Info.plist; sourceTree = "<group>"; };
-		50BC33E72674C9DF00EB7285 /* GoogleService-Info-Stating-Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Stating-Debug.plist"; sourceTree = "<group>"; };
 		4369C90D267A3922000631D6 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+		50BC33E72674C9DF00EB7285 /* GoogleService-Info-Stating-Debug.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info-Stating-Debug.plist"; sourceTree = "<group>"; };
 		7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DroidKaigi_2021App.swift; sourceTree = "<group>"; };
 		938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };

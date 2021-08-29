@@ -37,13 +37,24 @@ public struct LargeCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 16) {
-            ImageView(
-                imageURL: imageURL,
-                placeholder: .noImage,
-                placeholderSize: .large,
-                width: Const.imageViewWidth,
-                height: Const.imageViewWidth * 190/343
-            )
+            ZStack {
+                ImageView(
+                    imageURL: imageURL,
+                    placeholder: .noImage,
+                    placeholderSize: .large,
+                    width: Const.imageViewWidth,
+                    height: Const.imageViewWidth * 190/343
+                )
+                if case let .droidKaigiFm(isPlaying) = media {
+                    SwiftUI.Image(
+                        systemName: isPlaying ? "stop.fill" : "play.fill"
+                    )
+                    .foregroundColor(Color.white)
+                    .padding()
+                    .background(Color.black.opacity(0.4))
+                    .clipShape(Circle())
+                }
+            }
             Group {
                 Text(title)
                     .font(.headline)
@@ -81,7 +92,7 @@ public struct LargeCard_Previews: PreviewProvider {
                 LargeCard(
                     title: "タイトルタイトルタイトルタイトルタイタイトルタイトルタイトルタイトルタイト...",
                     imageURL: URL(string: ""),
-                    media: .droidKaigiFm,
+                    media: .droidKaigiFm(isPlaying: false),
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: false,
                     tapAction: {},

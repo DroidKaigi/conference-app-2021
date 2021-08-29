@@ -42,12 +42,23 @@ public struct ListItem: View {
 
             HStack(alignment: .top) {
                 VStack(spacing: 8) {
-                    ImageView(
-                        imageURL: imageURL,
-                        placeholderSize: .small,
-                        width: 100,
-                        height: 100
-                    )
+                    ZStack {
+                        ImageView(
+                            imageURL: imageURL,
+                            placeholderSize: .small,
+                            width: 100,
+                            height: 100
+                        )
+                        if case let .droidKaigiFm(isPlaying) = media {
+                            SwiftUI.Image(
+                                systemName: isPlaying ? "stop.fill" : "play.fill"
+                            )
+                            .foregroundColor(Color.white)
+                            .padding()
+                            .background(Color.black.opacity(0.4))
+                            .clipShape(Circle())
+                        }
+                    }
                 }
                 VStack(alignment: .leading) {
                     Text(title)
@@ -106,7 +117,7 @@ public struct ListItem_Previews: PreviewProvider {
         Group {
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                media: .droidKaigiFm,
+                media: .droidKaigiFm(isPlaying: false),
                 imageURL: nil,
                 speakers: [],
                 date: Date(timeIntervalSince1970: 0),
@@ -119,7 +130,7 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                media: .droidKaigiFm,
+                media: .droidKaigiFm(isPlaying: false),
                 imageURL: nil,
                 speakers: [],
                 date: Date(timeIntervalSince1970: 0),
@@ -131,7 +142,7 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .light)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                media: .droidKaigiFm,
+                media: .droidKaigiFm(isPlaying: false),
                 imageURL: nil,
                 speakers: Array(repeating: .mock(), count: 8),
                 date: Date(timeIntervalSince1970: 0),
@@ -144,7 +155,7 @@ public struct ListItem_Previews: PreviewProvider {
             .environment(\.colorScheme, .dark)
             ListItem(
                 title: "タイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイトルタイ...",
-                media: .droidKaigiFm,
+                media: .droidKaigiFm(isPlaying: false),
                 imageURL: nil,
                 speakers: Array(repeating: .mock(), count: 8),
                 date: Date(timeIntervalSince1970: 0),

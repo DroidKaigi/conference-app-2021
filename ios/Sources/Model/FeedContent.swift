@@ -51,7 +51,7 @@ public extension FeedContent {
                     id: id.uuidString,
                     image: .init(largeURLString: "", smallURLString: "", standardURLString: ""),
                     link: "",
-                    media: .droidKaigiFm,
+                    media: .droidKaigiFm(isPlaying: false),
                     podcastLink: "",
                     publishedAt: Date(timeIntervalSince1970: 0),
                     speakers: [],

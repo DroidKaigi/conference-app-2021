@@ -64,6 +64,7 @@ var package = Package(
         .package(name: "Introspect", url: "https://github.com/siteline/SwiftUI-Introspect.git", .upToNextMajor(from: "0.1.3")),
         .package(url: "https://github.com/kean/NukeUI.git", .exact("0.6.1")),
         .package(name: "Firebase", url: "https://github.com/firebase/firebase-ios-sdk.git", .exact("8.1.1")),
+        .package(url: "https://github.com/noreasonprojects/ModernAVPlayer.git", .exact("1.7.3")),
         .package(name: "SnapshotTesting", url: "https://github.com/pointfreeco/swift-snapshot-testing.git", .exact("1.9.0")),
     ],
     targets: [
@@ -84,6 +85,7 @@ var package = Package(
                 .target(name: "FavoritesFeature"),
                 .target(name: "HomeFeature"),
                 .target(name: "MediaFeature"),
+                .target(name: "Player"),
                 .target(name: "Repository"),
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
@@ -133,6 +135,12 @@ var package = Package(
             name: "Model",
             dependencies: [
                 .target(name: "DroidKaigiMPP"),
+            ]
+        ),
+        .target(
+            name: "Player",
+            dependencies: [
+                .product(name: "ModernAVPlayer", package: "ModernAVPlayer")
             ]
         ),
         .target(

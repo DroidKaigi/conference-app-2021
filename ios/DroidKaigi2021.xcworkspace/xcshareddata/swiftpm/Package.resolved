@@ -164,6 +164,15 @@
         }
       },
       {
+        "package": "ModernAVPlayer",
+        "repositoryURL": "https://github.com/noreasonprojects/ModernAVPlayer.git",
+        "state": {
+          "branch": null,
+          "revision": "ab16588b7b8e297255e2d8a7407eb89506af265b",
+          "version": "1.7.3"
+        }
+      },
+      {
         "package": "nanopb",
         "repositoryURL": "https://github.com/firebase/nanopb.git",
         "state": {
@@ -206,6 +215,15 @@
           "branch": null,
           "revision": "afa9a1ace74e116848d4f743599ab83e584ff8cb",
           "version": "1.2.12"
+        }
+      },
+      {
+        "package": "RxSwift",
+        "repositoryURL": "https://github.com/ReactiveX/RxSwift.git",
+        "state": {
+          "branch": null,
+          "revision": "254617dd7fae0c45319ba5fbea435bf4d0e15b5d",
+          "version": "5.1.2"
         }
       },
       {
