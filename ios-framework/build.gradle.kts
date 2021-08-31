@@ -21,8 +21,8 @@ kotlin {
         it.binaries {
             framework {
                 baseName = "DroidKaigiMPP"
-                export(project(":model"))
-                export(project(":data:repository"))
+                export(projects.model)
+                export(projects.data.repository)
                 export(Dep.datetime)
                 linkerOpts.add("-lsqlite3")
             }
@@ -32,10 +32,10 @@ kotlin {
     sourceSets {
         val commonMain by getting {
             dependencies {
-                api(project(":model"))
-                implementation(project(":data:api"))
-                implementation(project(":data:db"))
-                api(project(":data:repository"))
+                api(projects.model)
+                implementation(projects.data.api)
+                implementation(projects.data.db)
+                api(projects.data.repository)
 
                 implementation(Dep.Coroutines.bom)
                 implementation(Dep.Coroutines.core) {

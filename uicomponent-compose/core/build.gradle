@@ -37,7 +37,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 dependencies {
-    api project(":model")
+    api projects.model
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
