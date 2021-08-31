@@ -13,6 +13,7 @@
         android:theme="@style/Theme.ConferenceAppFeeder">
         <activity
             android:name="io.github.droidkaigi.feeder.MainActivity"
+            android:exported="true"
             android:label="@string/app_name"
             android:theme="@style/Theme.ConferenceAppFeeder.NoActionBar">
             <intent-filter>
