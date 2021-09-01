@@ -39,10 +39,10 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 dependencies {
-    api project(":uicomponent-compose:core")
-    api project(":uicomponent-compose:feed")
-    api project(":uicomponent-compose:other")
-    api project(":model")
+    api projects.uicomponentCompose.core
+    api projects.uicomponentCompose.feed
+    api projects.uicomponentCompose.other
+    api projects.model
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs

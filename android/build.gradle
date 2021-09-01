@@ -97,8 +97,8 @@ hilt {
 }
 
 dependencies {
-    implementation project(':data:repository')
-    implementation project(':uicomponent-compose:main')
+    implementation projects.data.repository
+    implementation projects.uicomponentCompose.main
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
