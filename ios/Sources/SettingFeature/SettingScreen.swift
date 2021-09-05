@@ -18,23 +18,35 @@ public struct SettingScreen: View {
             InlineTitleNavigationBarScrollView {
                 LazyVStack(spacing: 0) {
                     WithViewStore(store) { viewStore in
-                        ForEach(viewStore.items.indices) { index in
-                            ZStack(alignment: .bottom) {
-                                let item = viewStore.items[index]
-                                SettingToggleItem(
-                                    title: item.title,
-                                    isOn: Binding(get: {
-                                        item.isOn
-                                    }, set: { isOn in
-                                        viewStore.send(.toggle(item.update(isOn: isOn)))
-                                    })
-                                )
-                                .frame(minHeight: 44)
-                                Separator()
-                            }
-                            .padding(.horizontal, 16)
-                            .background(AssetColor.Background.contents.color)
+                        ZStack(alignment: .bottom) {
+                            SettingToggleItem(
+                                title: L10n.SettingScreen.ListItem.darkMode,
+                                isOn: Binding(get: {
+                                    viewStore.darkModeIsOn
+                                }, set: { isOn in
+                                    viewStore.send(.darkMode(isOn))
+                                })
+                            )
+                            .frame(minHeight: 44)
+                            Separator()
                         }
+                        .padding(.horizontal, 16)
+                        .background(AssetColor.Background.contents.color)
+
+                        ZStack(alignment: .bottom) {
+                            SettingToggleItem(
+                                title: L10n.SettingScreen.ListItem.language,
+                                isOn: Binding(get: {
+                                    viewStore.languageIsOn
+                                }, set: { isOn in
+                                    viewStore.send(.language(isOn))
+                                })
+                            )
+                            .frame(minHeight: 44)
+                            Separator()
+                        }
+                        .padding(.horizontal, 16)
+                        .background(AssetColor.Background.contents.color)
                     }
                 }
                 .padding(.top, 24)
@@ -56,39 +68,12 @@ public struct SettingScreen: View {
     }
 }
 
-private extension SettingModel {
-    var title: String {
-        switch self {
-        case .darkMode:
-            return L10n.SettingScreen.ListItem.darkMode
-        case .language:
-            return L10n.SettingScreen.ListItem.language
-        }
-    }
-
-    var isOn: Bool {
-        switch self {
-        case let .darkMode(isOn), let .language(isOn):
-            return isOn
-        }
-    }
-
-    func update(isOn: Bool) -> Self {
-        switch self {
-        case .darkMode:
-            return .darkMode(isOn)
-        case .language:
-            return .language(isOn)
-        }
-    }
-}
-
 #if DEBUG
 public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
             store: .init(
-                initialState: .init(items: [SettingModel.darkMode(true), SettingModel.language(false)]),
+                initialState: .init(darkModeIsOn: true, languageIsOn: false),
                 reducer: settingReducer,
                 environment: SettingEnvironment()
             )
@@ -96,7 +81,7 @@ public struct SettingScreen_Previews: PreviewProvider {
         .environment(\.colorScheme, .light)
         SettingScreen(
             store: .init(
-                initialState: .init(items: [SettingModel.darkMode(false), SettingModel.language(true)]),
+                initialState: .init(darkModeIsOn: true, languageIsOn: false),
                 reducer: settingReducer,
                 environment: SettingEnvironment()
             )

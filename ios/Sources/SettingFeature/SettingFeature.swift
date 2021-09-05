@@ -1,20 +1,18 @@
 import ComposableArchitecture
 
-public enum SettingModel: Hashable {
-    case darkMode(_ isOn: Bool)
-    case language(_ isOn: Bool)
-}
-
 public struct SettingState: Equatable {
-    var items: [SettingModel]
+    var darkModeIsOn: Bool
+    var languageIsOn: Bool
 
-    public init(items: [SettingModel]) {
-        self.items = items
+    public init(darkModeIsOn: Bool, languageIsOn: Bool) {
+        self.darkModeIsOn = darkModeIsOn
+        self.languageIsOn = languageIsOn
     }
 }
 
 public enum SettingAction {
-    case toggle(SettingModel)
+    case darkMode(Bool)
+    case language(Bool)
 }
 
 public struct SettingEnvironment {
@@ -23,14 +21,11 @@ public struct SettingEnvironment {
 
 public let settingReducer = Reducer<SettingState, SettingAction, SettingEnvironment> { state, action, _ in
     switch action {
-    case let .toggle(settingModel):
-        switch settingModel {
-        case let .darkMode(isOn):
-//            state.darkModeIsOn = true
-            state.items[0] = .darkMode(isOn)
-        case let .language(isOn):
-            state.items[1] = .language(isOn)
-        }
+    case .darkMode(let isOn):
+        state.darkModeIsOn = isOn
+        return .none
+    case .language(let isOn):
+        state.languageIsOn = isOn
         return .none
     }
 }

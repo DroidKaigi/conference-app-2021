@@ -66,7 +66,7 @@ public struct AppTabScreen: View {
                             case .setting:
                                 SettingScreen(
                                     store: .init(
-                                        initialState: .init(items: [SettingModel.darkMode(true), SettingModel.language(false)]),
+                                        initialState: .init(darkModeIsOn: false, languageIsOn: false),
                                         reducer: settingReducer,
                                         environment: SettingEnvironment()
                                     )
