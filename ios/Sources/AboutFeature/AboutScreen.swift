@@ -31,7 +31,55 @@ public struct AboutScreen: View {
                 WithViewStore(store) { viewStore in
                     ZStack {
                         VStack {
-                            scrollView(geometry: geometry, viewStore: viewStore)
+                            ScrollView(.vertical) {
+                                switch viewStore.selectedType {
+                                case .staff:
+                                    LazyVStack(alignment: .leading, spacing: 24) {
+                                        ForEach(viewStore.staffs) { staff in
+                                            StaffCell(staff: staff) { staff in
+                                                viewStore.send(.tapStaff(staff))
+                                            }
+                                        }
+                                    }
+                                    .padding(.top, 20)
+                                case .contributor:
+                                    LazyVGrid(
+                                        columns: Array(repeating: .init(), count: 3),
+                                        spacing: 40
+                                    ) {
+                                        ForEach(viewStore.contributors) { contributor in
+                                            ContributorCell(contributor: contributor) { contributor in
+                                                viewStore.send(.tapContributor(contributor))
+                                            }
+                                        }
+                                    }
+                                    .listStyle(PlainListStyle())
+                                    .padding(.top, 20)
+                                }
+                            }
+                            .toolbar {
+                                ToolbarItem(placement: .principal) {
+                                    Picker(
+                                        "",
+                                        selection:
+                                            viewStore.binding(
+                                                get: { $0.selectedType },
+                                                send: { .selectedPicker($0) }
+                                            )
+                                    ) {
+                                        ForEach(SelectedType.allCases, id: \.self) { (type) in
+                                            Text(type.title).tag(type)
+                                        }
+                                    }
+                                    .frame(width: geometry.size.width - 32, height: nil, alignment: .center)
+                                    .pickerStyle(SegmentedPickerStyle())
+                                }
+                            }
+                            .background(AssetColor.Background.primary.color.ignoresSafeArea())
+                            .navigationBarTitleDisplayMode(.inline)
+                            .onAppear {
+                                viewStore.send(.refresh)
+                            }
                         }
                         banner {
                             viewStore.send(.tapBanner)
@@ -67,58 +115,6 @@ public struct AboutScreen: View {
 }
 
 private extension AboutScreen {
-    func scrollView(geometry: GeometryProxy, viewStore: ViewStore<AboutState, AboutAction>) -> some View {
-        ScrollView(.vertical) {
-            switch viewStore.selectedType {
-            case .staff:
-                LazyVStack(alignment: .leading, spacing: 24) {
-                    ForEach(viewStore.staffs) { staff in
-                        StaffCell(staff: staff) { staff in
-                            viewStore.send(.tapStaff(staff))
-                        }
-                    }
-                }
-                .padding(.top, 20)
-            case .contributor:
-                LazyVGrid(
-                    columns: Array(repeating: .init(), count: 3),
-                    spacing: 40
-                ) {
-                    ForEach(viewStore.contributors) { contributor in
-                        ContributorCell(contributor: contributor) { contributor in
-                            viewStore.send(.tapContributor(contributor))
-                        }
-                    }
-                }
-                .listStyle(PlainListStyle())
-                .padding(.top, 20)
-            }
-        }
-        .toolbar {
-            ToolbarItem(placement: .principal) {
-                Picker(
-                    "",
-                    selection:
-                        viewStore.binding(
-                            get: { $0.selectedType },
-                            send: { .selectedPicker($0) }
-                        )
-                ) {
-                    ForEach(SelectedType.allCases, id: \.self) { (type) in
-                        Text(type.title).tag(type)
-                    }
-                }
-                .frame(width: geometry.size.width - 32, height: nil, alignment: .center)
-                .pickerStyle(SegmentedPickerStyle())
-            }
-        }
-        .background(AssetColor.Background.primary.color.ignoresSafeArea())
-        .navigationBarTitleDisplayMode(.inline)
-        .onAppear {
-            viewStore.send(.refresh)
-        }
-    }
-
     func banner(tap: @escaping () -> Void) -> some View {
         VStack {
             Spacer()
