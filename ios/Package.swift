@@ -155,7 +155,8 @@ var package = Package(
             name: "SettingFeature",
             dependencies: [
                 .target(name: "Component"),
-                .target(name: "Styleguide")
+                .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
         .target(

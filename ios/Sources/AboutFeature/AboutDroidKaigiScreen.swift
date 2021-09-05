@@ -1,39 +1,16 @@
+import ComposableArchitecture
 import Introspect
 import SwiftUI
 import Styleguide
 
-private enum AboutDroidKaigiModel: CaseIterable {
-    case behaviorCode
-    case opensourceLicense
-    case privacyPolicy
-
-    var title: String {
-        switch self {
-        case .behaviorCode:
-            return L10n.AboutDroidKaigiScreen.behaviorCode
-        case .opensourceLicense:
-            return L10n.AboutDroidKaigiScreen.opensourceLincense
-        case .privacyPolicy:
-            return L10n.AboutDroidKaigiScreen.privacyPolicy
-        }
-    }
-
-    var image: Image {
-        switch self {
-        case .behaviorCode:
-            return Image(systemName: "book")
-        case .opensourceLicense:
-            return Image(systemName: "star")
-        case .privacyPolicy:
-            return Image(systemName: "magnifyingglass")
-        }
-    }
-}
-
 public struct AboutDroidKaigiScreen: View {
     @Environment(\.presentationMode) var presentationMode
 
-    public init() {}
+    private let store: Store<AboutDroidKaigiState, AboutDroidKaigiAction>
+
+    public init(store: Store<AboutDroidKaigiState, AboutDroidKaigiAction>) {
+        self.store = store
+    }
 
     public var body: some View {
         NavigationView {
@@ -60,27 +37,20 @@ public struct AboutDroidKaigiScreen: View {
 
                 List {
                     ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
-                        Button(action: {
-                            switch model {
-                            case .behaviorCode:
-                                return // TODO: add navigation
-                            case .opensourceLicense:
-                                if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
-                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                        WithViewStore(store) { viewStore in
+                            Button(action: {
+                                viewStore.send(.tap(model))
+                            }, label: {
+                                HStack {
+                                    Text(model.title)
+                                        .font(.subheadline)
+                                        .foregroundColor(AssetColor.Base.primary.color)
+                                    Spacer()
+                                    model.image
+                                        .foregroundColor(AssetColor.Base.secondary.color)
                                 }
-                            case .privacyPolicy:
-                                break // TODO: add navigation
-                            }
-                        }, label: {
-                            HStack {
-                                Text(model.title)
-                                    .font(.subheadline)
-                                    .foregroundColor(AssetColor.Base.primary.color)
-                                Spacer()
-                                model.image
-                                    .foregroundColor(AssetColor.Base.secondary.color)
-                            }
-                        })
+                            })
+                        }
                     }
                     .listRowBackground(AssetColor.Background.contents.color)
                 }
@@ -90,12 +60,14 @@ public struct AboutDroidKaigiScreen: View {
                 }
                 .listStyle(InsetGroupedListStyle())
             }
-            .background(AssetColor.Background.primary.color.ignoresSafeArea())
             .navigationBarTitleDisplayMode(.inline)
             .introspectNavigationController { navigationController in
-                navigationController.navigationBar.barTintColor = AssetColor.Background.secondary.uiColor
                 navigationController.navigationBar.isTranslucent = false
+                navigationController.navigationBar.barTintColor = AssetColor.Background.secondary.uiColor
                 navigationController.navigationBar.shadowImage = UIImage()
+            }
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.secondary.uiColor
             }
             .navigationBarItems(
                 trailing: Button(action: {
@@ -110,15 +82,54 @@ public struct AboutDroidKaigiScreen: View {
     }
 }
 
-public struct AboutDroidKaigiScreen_Previews: PreviewProvider {
-    public static var previews: some View {
-        Group {
-            AboutDroidKaigiScreen()
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .dark)
-            AboutDroidKaigiScreen()
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .light)
+private extension AboutDroidKaigiModel {
+    var title: String {
+        switch self {
+        case .behaviorCode:
+            return L10n.AboutDroidKaigiScreen.behaviorCode
+        case .opensourceLicense:
+            return L10n.AboutDroidKaigiScreen.opensourceLincense
+        case .privacyPolicy:
+            return L10n.AboutDroidKaigiScreen.privacyPolicy
+        }
+    }
+
+    var image: Image {
+        switch self {
+        case .behaviorCode:
+            return Image(systemName: "book")
+        case .opensourceLicense:
+            return Image(systemName: "star")
+        case .privacyPolicy:
+            return Image(systemName: "magnifyingglass")
         }
     }
 }
+
+#if DEBUG
+public struct AboutDroidKaigiScreen_Previews: PreviewProvider {
+    public static var previews: some View {
+        Group {
+            AboutDroidKaigiScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .dark)
+
+            AboutDroidKaigiScreen(
+                store: .init(
+                    initialState: .init(),
+                    reducer: .empty,
+                    environment: {}
+                )
+            )
+            .previewDevice(.init(rawValue: "iPhone 12"))
+            .environment(\.colorScheme, .light)
+        }
+    }
+}
+#endif

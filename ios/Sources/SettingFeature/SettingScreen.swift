@@ -1,12 +1,62 @@
 import Component
+import ComposableArchitecture
 import Introspect
 import Styleguide
 import SwiftUI
 
-public enum SettingModel: Hashable {
-    case darkMode(isOn: Bool)
-    case language(isOn: Bool)
+public struct SettingScreen: View {
 
+    @Environment(\.presentationMode) var presentationMode
+    private let store: Store<SettingState, SettingAction>
+
+    public init(store: Store<SettingState, SettingAction>) {
+        self.store = store
+    }
+
+    public var body: some View {
+        NavigationView {
+            InlineTitleNavigationBarScrollView {
+                LazyVStack(spacing: 0) {
+                    WithViewStore(store) { viewStore in
+                        ForEach(viewStore.items.indices) { index in
+                            ZStack(alignment: .bottom) {
+                                let item = viewStore.items[index]
+                                SettingToggleItem(
+                                    title: item.title,
+                                    isOn: Binding(get: {
+                                        item.isOn
+                                    }, set: { isOn in
+                                        viewStore.send(.toggle(item.update(isOn: isOn)))
+                                    })
+                                )
+                                .frame(minHeight: 44)
+                                Separator()
+                            }
+                            .padding(.horizontal, 16)
+                            .background(AssetColor.Background.contents.color)
+                        }
+                    }
+                }
+                .padding(.top, 24)
+            }
+            .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
+            .navigationBarItems(
+                trailing: Button(action: {
+                    presentationMode.wrappedValue.dismiss()
+                }, label: {
+                    AssetImage.iconClose.image
+                        .renderingMode(.template)
+                        .foregroundColor(AssetColor.Base.primary.color)
+                })
+            )
+            .introspectViewController { viewController in
+                viewController.view.backgroundColor = AssetColor.Background.primary.uiColor
+            }
+        }
+    }
+}
+
+private extension SettingModel {
     var title: String {
         switch self {
         case .darkMode:
@@ -23,77 +73,35 @@ public enum SettingModel: Hashable {
         }
     }
 
-    mutating func update(isOn: Bool) {
+    func update(isOn: Bool) -> Self {
         switch self {
         case .darkMode:
-            self = .darkMode(isOn: isOn)
+            return .darkMode(isOn)
         case .language:
-            self = .language(isOn: isOn)
+            return .language(isOn)
         }
     }
 }
 
-public struct SettingScreen: View {
-
-    @State private var items: [SettingModel]
-
-    @Environment(\.presentationMode) var presentationMode
-
-    public init(isDarkModeOn: Bool, isLanguageOn: Bool) {
-        let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
-        let languageModel = SettingModel.language(isOn: isLanguageOn)
-        _items = State(initialValue: [darkModeModel, languageModel])
-    }
-
-    public var body: some View {
-        NavigationView {
-            InlineTitleNavigationBarScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(items.indices) { index in
-                        ZStack(alignment: .bottom) {
-                            SettingToggleItem(
-                                title: items[index].title,
-                                isOn: Binding(get: {
-                                    items[index].isOn
-                                }, set: { isOn in
-                                    items[index].update(isOn: isOn)
-                                })
-                            )
-                            .frame(minHeight: 44)
-                            Separator()
-                        }
-                        .padding(.horizontal, 16)
-                        .background(AssetColor.Background.contents.color)
-                    }
-                }
-                .padding(.top, 24)
-            }
-            .background(AssetColor.Background.primary.color.ignoresSafeArea())
-            .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
-            .navigationBarItems(
-                trailing: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    AssetImage.iconClose.image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                })
-            )
-        }
-    }
-}
-
+#if DEBUG
 public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
-            isDarkModeOn: true,
-            isLanguageOn: false
+            store: .init(
+                initialState: .init(items: [SettingModel.darkMode(true), SettingModel.language(false)]),
+                reducer: settingReducer,
+                environment: SettingEnvironment()
+            )
         )
         .environment(\.colorScheme, .light)
         SettingScreen(
-            isDarkModeOn: true,
-            isLanguageOn: false
+            store: .init(
+                initialState: .init(items: [SettingModel.darkMode(false), SettingModel.language(true)]),
+                reducer: settingReducer,
+                environment: SettingEnvironment()
+            )
         )
         .environment(\.colorScheme, .dark)
     }
 }
+#endif

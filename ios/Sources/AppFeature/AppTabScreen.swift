@@ -64,7 +64,13 @@ public struct AppTabScreen: View {
                             case .url(let url):
                                 WebView(url: url)
                             case .setting:
-                                SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                                SettingScreen(
+                                    store: .init(
+                                        initialState: .init(items: [SettingModel.darkMode(true), SettingModel.language(false)]),
+                                        reducer: settingReducer,
+                                        environment: SettingEnvironment()
+                                    )
+                                )
                             }
                         }
                     }
