@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.compositionLocalOf
+import androidx.compose.runtime.staticCompositionLocalOf
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -26,11 +26,17 @@ interface AppViewModel :
     override fun event(event: Event)
 }
 
-private val LocalAppViewModel = compositionLocalOf<AppViewModel> {
-    error("not LocalDroidKaigiAppViewModel provided")
-}
+private val LocalAppViewModelFactory =
+    staticCompositionLocalOf<@Composable () -> AppViewModel> {
+        {
+            error("not LocalDroidKaigiAppViewModel provided")
+        }
+    }
 
-fun appViewModelProviderValue(viewModel: AppViewModel) = LocalAppViewModel provides viewModel
+fun provideAppViewModelFactory(viewModelFactory: @Composable () -> AppViewModel) =
+    LocalAppViewModelFactory provides viewModelFactory
 
 @Composable
-fun appViewModel() = LocalAppViewModel.current
+fun appViewModel(): AppViewModel {
+    return LocalAppViewModelFactory.current()
+}
