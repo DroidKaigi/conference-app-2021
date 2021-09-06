@@ -101,10 +101,11 @@ public struct AboutScreen: View {
                         ),
                         content: {
                             AboutDroidKaigiScreen(
-                                store:
-                                    .init(initialState: .init(),
-                                          reducer: aboutDroidKaigiReducer,
-                                          environment: .init())
+                                store: .init(
+                                    initialState: .init(),
+                                    reducer: aboutDroidKaigiReducer,
+                                    environment: .init()
+                                )
                             )
                         }
                     )

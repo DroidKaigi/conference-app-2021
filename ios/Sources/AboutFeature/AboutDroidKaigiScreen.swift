@@ -36,8 +36,8 @@ public struct AboutDroidKaigiScreen: View {
                 .padding(.horizontal, 32)
 
                 List {
-                    ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
-                        WithViewStore(store) { viewStore in
+                    WithViewStore(store) { viewStore in
+                        ForEach(viewStore.aboutModels, id: \.self) { model in
                             Button(action: {
                                 viewStore.send(.tap(model))
                             }, label: {
@@ -51,8 +51,8 @@ public struct AboutDroidKaigiScreen: View {
                                 }
                             })
                         }
+                        .listRowBackground(AssetColor.Background.contents.color)
                     }
-                    .listRowBackground(AssetColor.Background.contents.color)
                 }
                 .introspectTableView { tableView in
                     tableView.isScrollEnabled = false
@@ -110,25 +110,17 @@ private extension AboutDroidKaigiModel {
 public struct AboutDroidKaigiScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
-            AboutDroidKaigiScreen(
-                store: .init(
-                    initialState: .init(),
-                    reducer: .empty,
-                    environment: {}
+            ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+                AboutDroidKaigiScreen(
+                    store: .init(
+                        initialState: .init(),
+                        reducer: .empty,
+                        environment: {}
+                    )
                 )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .dark)
-
-            AboutDroidKaigiScreen(
-                store: .init(
-                    initialState: .init(),
-                    reducer: .empty,
-                    environment: {}
-                )
-            )
-            .previewDevice(.init(rawValue: "iPhone 12"))
-            .environment(\.colorScheme, .light)
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
+            }
         }
     }
 }

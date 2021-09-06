@@ -4,7 +4,7 @@ public struct SettingState: Equatable {
     var darkModeIsOn: Bool
     var languageIsOn: Bool
 
-    public init(darkModeIsOn: Bool, languageIsOn: Bool) {
+    public init(darkModeIsOn: Bool = false, languageIsOn: Bool = false) {
         self.darkModeIsOn = darkModeIsOn
         self.languageIsOn = languageIsOn
     }

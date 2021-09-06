@@ -7,6 +7,7 @@ public enum AboutDroidKaigiModel: CaseIterable {
 }
 
 public struct AboutDroidKaigiState: Equatable {
+    let aboutModels: [AboutDroidKaigiModel] = AboutDroidKaigiModel.allCases
 }
 
 public enum AboutDroidKaigiAction {

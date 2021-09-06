@@ -71,22 +71,16 @@ public struct SettingScreen: View {
 #if DEBUG
 public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        SettingScreen(
-            store: .init(
-                initialState: .init(darkModeIsOn: true, languageIsOn: false),
-                reducer: settingReducer,
-                environment: SettingEnvironment()
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            SettingScreen(
+                store: .init(
+                    initialState: .init(darkModeIsOn: true, languageIsOn: false),
+                    reducer: settingReducer,
+                    environment: SettingEnvironment()
+                )
             )
-        )
-        .environment(\.colorScheme, .light)
-        SettingScreen(
-            store: .init(
-                initialState: .init(darkModeIsOn: true, languageIsOn: false),
-                reducer: settingReducer,
-                environment: SettingEnvironment()
-            )
-        )
-        .environment(\.colorScheme, .dark)
+            .environment(\.colorScheme, colorScheme)
+        }
     }
 }
 #endif
