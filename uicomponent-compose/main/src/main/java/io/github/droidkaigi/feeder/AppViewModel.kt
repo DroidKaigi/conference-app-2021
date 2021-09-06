@@ -33,7 +33,6 @@ private val LocalAppViewModelFactory =
         }
     }
 
-@Composable
 fun provideAppViewModelFactory(viewModelFactory: @Composable () -> AppViewModel) =
     LocalAppViewModelFactory provides viewModelFactory
 
