@@ -67,6 +67,7 @@ dependencies {
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
     implementation Dep.Compose.constraintLayout
     implementation Dep.Compose.navigation
+    implementation Dep.Compose.hiltNavigationCompose
     implementation Dep.Compose.runtime
     implementation Dep.Compose.livedata
     implementation Dep.Compose.foundation

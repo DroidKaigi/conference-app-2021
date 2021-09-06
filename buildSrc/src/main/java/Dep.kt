@@ -23,6 +23,7 @@ object Dep {
         const val iconsExtended =
             "androidx.compose.material:material-icons-extended:${Versions.compose}"
         const val animation = "androidx.compose.animation:animation:${Versions.compose}"
+        const val hiltNavigationCompose = "androidx.hilt:hilt-navigation-compose:1.0.0-alpha03"
     }
 
     object Jetpack {
