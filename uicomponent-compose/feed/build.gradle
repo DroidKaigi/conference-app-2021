@@ -45,8 +45,8 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 }
 
 dependencies {
-    api project(":uicomponent-compose:core")
-    api project(":model")
+    api projects.uicomponentCompose.core
+    api projects.model
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
@@ -67,6 +67,7 @@ dependencies {
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
     implementation Dep.Compose.constraintLayout
     implementation Dep.Compose.navigation
+    implementation Dep.Compose.hiltNavigationCompose
     implementation Dep.Compose.runtime
     implementation Dep.Compose.livedata
     implementation Dep.Compose.foundation

@@ -10,14 +10,38 @@ import Repository
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent]
     public var isSheetPresented: AppTabSheet?
-    public var homeState: HomeState
-    public var mediaState: MediaState
-    public var favoritesState: FavoritesState
     public var aboutState: AboutState
 
     public enum AppTabSheet: Equatable {
         case url(URL)
         case setting
+    }
+
+    public var homeState: HomeState {
+        get {
+            HomeState(feedContents: feedContents)
+        }
+        set {
+            feedContents = newValue.feedContents
+        }
+    }
+
+    public var mediaState: MediaState {
+        get {
+            MediaState(feedContents: feedContents)
+        }
+        set {
+            feedContents = newValue.feedContents
+        }
+    }
+
+    public var favoritesState: FavoritesState {
+        get {
+            FavoritesState(feedContents: feedContents.filter(\.isFavorited))
+        }
+        set {
+            feedContents = newValue.feedContents
+        }
     }
 
     public init(
@@ -26,9 +50,6 @@ public struct AppTabState: Equatable {
     ) {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
-        self.homeState = HomeState(feedContents: feedContents)
-        self.mediaState = MediaState(feedContents: feedContents)
-        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
         self.aboutState = AboutState()
     }
 }
@@ -104,7 +125,22 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .reload:
             return .none
         case .tap(let feedContent), .media(.tap(let feedContent)):
-            state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
+            if let podcast = feedContent.item.wrappedValue as? Podcast, let index = state.feedContents.map(\.id).firstIndex(of: feedContent.id) {
+                if environment.player.isPlaying {
+                    environment.player.stop()
+                    state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
+                } else {
+                    environment.player.setUpPlayer(url: URL(string: podcast.podcastLink)!)
+                    if let playingIndex = state.feedContents.firstIndex(where: {
+                        $0.item.media == .droidKaigiFm(isPlaying: true)
+                    }) {
+                        state.feedContents[playingIndex].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
+                    }
+                    state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: true)
+                }
+            } else {
+                state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
+            }
             return .none
         case .hideSheet:
             state.isSheetPresented = nil
@@ -123,14 +159,11 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             if let index = state.feedContents.map(\.id).firstIndex(of: id) {
                 state.feedContents[index].isFavorited.toggle()
             }
-            state.homeState.feedContents = state.feedContents
-            state.mediaState.feedContents = state.feedContents
             if var searchedFeedContents = state.mediaState.searchedFeedContents,
                 let index = searchedFeedContents.map(\.id).firstIndex(of: id) {
                 searchedFeedContents[index].isFavorited.toggle()
                 state.mediaState.searchedFeedContents = searchedFeedContents
             }
-            state.favoritesState.feedContents = state.feedContents.filter(\.isFavorited)
             return .none
         case let .favoriteResponse(.failure(error)):
             print(error.localizedDescription)

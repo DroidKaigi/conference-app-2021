@@ -60,7 +60,18 @@ public struct AboutDroidKaigiScreen: View {
 
                 List {
                     ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
-                        Button(action: {}, label: {
+                        Button(action: {
+                            switch model {
+                            case .behaviorCode:
+                                return // TODO: add navigation
+                            case .opensourceLicense:
+                                if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
+                                    UIApplication.shared.open(url, options: [:], completionHandler: nil)
+                                }
+                            case .privacyPolicy:
+                                break // TODO: add navigation
+                            }
+                        }, label: {
                             HStack {
                                 Text(model.title)
                                     .font(.subheadline)
