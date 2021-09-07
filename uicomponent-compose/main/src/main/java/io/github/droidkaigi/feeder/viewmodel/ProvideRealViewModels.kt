@@ -6,8 +6,8 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.viewmodel.compose.viewModel
 import io.github.droidkaigi.feeder.contributor.contributorViewModelProviderValue
 import io.github.droidkaigi.feeder.contributor.fakeContributorViewModel
-import io.github.droidkaigi.feeder.feed.feedViewModelProviderValue
 import io.github.droidkaigi.feeder.feed.fmPlayerViewModelProviderValue
+import io.github.droidkaigi.feeder.feed.provideFeedViewModelFactory
 import io.github.droidkaigi.feeder.provideAppViewModelFactory
 import io.github.droidkaigi.feeder.setting.settingViewModelProviderValue
 import io.github.droidkaigi.feeder.staff.staffViewModelProviderValue
@@ -18,7 +18,7 @@ fun ProvideViewModels(content: @Composable () -> Unit) {
         provideAppViewModelFactory {
             hiltViewModel<RealAppViewModel>()
         },
-        feedViewModelProviderValue(viewModel<RealFeedViewModel>()),
+        provideFeedViewModelFactory { hiltViewModel<RealFeedViewModel>() },
         settingViewModelProviderValue(viewModel<RealSettingViewModel>()),
         staffViewModelProviderValue(viewModel<RealStaffViewModel>()),
         contributorViewModelProviderValue(fakeContributorViewModel()),

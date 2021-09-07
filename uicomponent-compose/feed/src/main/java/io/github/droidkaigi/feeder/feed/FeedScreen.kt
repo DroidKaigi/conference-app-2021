@@ -452,7 +452,7 @@ fun FilterItemCountRow(count: String) {
 fun PreviewFeedScreen() {
     AppThemeWithBackground {
         CompositionLocalProvider(
-            feedViewModelProviderValue(fakeFeedViewModel()),
+            provideFeedViewModelFactory { fakeFeedViewModel() },
             fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
         ) {
             FeedScreen(
@@ -473,7 +473,7 @@ fun PreviewDarkFeedScreen() {
         theme = Theme.DARK
     ) {
         CompositionLocalProvider(
-            feedViewModelProviderValue(fakeFeedViewModel()),
+            provideFeedViewModelFactory { fakeFeedViewModel() },
             fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
         ) {
             FeedScreen(
@@ -492,7 +492,7 @@ fun PreviewDarkFeedScreen() {
 fun PreviewFeedScreenWithStartBlog() {
     AppThemeWithBackground {
         CompositionLocalProvider(
-            feedViewModelProviderValue(fakeFeedViewModel()),
+            provideFeedViewModelFactory { fakeFeedViewModel() },
             fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
         ) {
             FeedScreen(
