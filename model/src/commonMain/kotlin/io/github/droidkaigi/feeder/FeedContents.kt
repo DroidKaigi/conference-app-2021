@@ -11,7 +11,7 @@ data class PlayingPodcastState(
 
 data class FeedContents(
     val feedItemContents: List<FeedItem> = listOf(),
-    val favorites: Set<String> = setOf()
+    val favorites: Set<String> = setOf(),
 ) {
 
     val contents by lazy {
@@ -35,6 +35,7 @@ data class FeedContents(
     }
 
     val size get() = feedItemContents.size
+    val lastIndex get() = feedItemContents.lastIndex
 }
 
 fun FeedContents?.orEmptyContents(): FeedContents = this ?: FeedContents()

@@ -60,15 +60,15 @@ import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.Theme
-import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -300,12 +300,6 @@ private fun FeedList(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
     ) {
-        val lazyColumnRobotKey = "robot"
-        val isLastItemVisible by remember {
-            derivedStateOf {
-                listState.layoutInfo.visibleItemsInfo.any { it.key == lazyColumnRobotKey }
-            }
-        }
         val isListFinished by remember {
             derivedStateOf {
                 listState.firstVisibleItemIndex + listState.layoutInfo
@@ -351,9 +345,7 @@ private fun FeedList(
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
-            }
-            if (isLastItemVisible) {
-                item(key = lazyColumnRobotKey) {
+                if (index == feedContents.lastIndex) {
                     val robotAnimValue by animateFloatAsState(
                         targetValue = if (isListFinished) 0f else 10f,
                         animationSpec = spring(
