@@ -39,8 +39,8 @@ private val LocalFeedViewModelFactory = compositionLocalOf<@Composable () -> Fee
     }
 }
 
-fun provideFeedViewModelFactory(viewModel: @Composable () -> FeedViewModel) =
-    LocalFeedViewModelFactory provides viewModel
+fun provideFeedViewModelFactory(viewModelFactory: @Composable () -> FeedViewModel) =
+    LocalFeedViewModelFactory provides viewModelFactory
 
 @Composable
 fun feedViewModel() = LocalFeedViewModelFactory.current()

@@ -15,9 +15,7 @@ import io.github.droidkaigi.feeder.staff.staffViewModelProviderValue
 @Composable
 fun ProvideViewModels(content: @Composable () -> Unit) {
     CompositionLocalProvider(
-        provideAppViewModelFactory {
-            hiltViewModel<RealAppViewModel>()
-        },
+        provideAppViewModelFactory { hiltViewModel<RealAppViewModel>() },
         provideFeedViewModelFactory { hiltViewModel<RealFeedViewModel>() },
         settingViewModelProviderValue(viewModel<RealSettingViewModel>()),
         staffViewModelProviderValue(viewModel<RealStaffViewModel>()),
