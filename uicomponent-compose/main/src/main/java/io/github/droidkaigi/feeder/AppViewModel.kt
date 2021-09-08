@@ -29,7 +29,7 @@ interface AppViewModel :
 private val LocalAppViewModelFactory =
     compositionLocalOf<@Composable () -> AppViewModel> {
         {
-            error("not LocalDroidKaigiAppViewModel provided")
+            error("not LocalAppViewModelFactory provided")
         }
     }
 

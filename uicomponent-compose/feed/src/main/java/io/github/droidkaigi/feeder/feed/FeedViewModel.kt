@@ -35,7 +35,7 @@ interface FeedViewModel :
 
 private val LocalFeedViewModelFactory = compositionLocalOf<@Composable () -> FeedViewModel> {
     {
-        error("not LocalFeedViewModel provided")
+        error("not LocalFeedViewModelFactory provided")
     }
 }
 
