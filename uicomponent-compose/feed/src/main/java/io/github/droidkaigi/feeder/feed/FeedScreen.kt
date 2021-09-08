@@ -49,8 +49,8 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -300,19 +300,32 @@ private fun FeedList(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
     ) {
+        val isListFinished by remember {
+            derivedStateOf {
+                listState.firstVisibleItemIndex + listState.layoutInfo
+                    .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+            }
+        }
         LazyColumn(
-            contentPadding = LocalWindowInsets.current.systemBars
-                .toPaddingValues(top = false, start = false, end = false),
+            contentPadding = rememberInsetsPaddingValues(
+                insets = LocalWindowInsets.current.systemBars,
+                applyStart = false,
+                applyTop = false,
+                applyEnd = false
+            ),
             state = listState
         ) {
-            itemsIndexed(feedContents.contents) { index, content ->
+            itemsIndexed(
+                items = feedContents.contents,
+                key = { _, item -> item.first.id }
+            ) { index, (feedItem, favorited) ->
                 if (isHome && index == 0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
                     }
                     FirstFeedItem(
-                        feedItem = content.first,
-                        favorited = content.second,
+                        feedItem = feedItem,
+                        favorited = favorited,
                         onClick = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
@@ -320,27 +333,19 @@ private fun FeedList(
                     )
                 } else {
                     FeedItemRow(
-                        item = content.first,
-                        favorited = content.second,
+                        item = feedItem,
+                        favorited = favorited,
                         onClickFeed = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        isPlayingPodcast = (content.first as? FeedItem.Podcast)
+                        isPlayingPodcast = (feedItem as? FeedItem.Podcast)
                             ?.podcastLink == fmPlayerState?.url &&
                             fmPlayerState?.isPlaying() == true,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
-            }
-            if (listState.firstVisibleItemIndex != 0) {
-                item {
-                    val isListFinished by remember {
-                        derivedStateOf {
-                            listState.firstVisibleItemIndex + listState.layoutInfo
-                                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
-                        }
-                    }
+                if (index == feedContents.lastIndex) {
                     val robotAnimValue by animateFloatAsState(
                         targetValue = if (isListFinished) 0f else 10f,
                         animationSpec = spring(
