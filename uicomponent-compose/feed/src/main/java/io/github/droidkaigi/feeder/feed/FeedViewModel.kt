@@ -33,14 +33,14 @@ interface FeedViewModel :
     override fun event(event: Event)
 }
 
-private val LocalFeedViewModel = compositionLocalOf<@Composable () -> FeedViewModel> {
+private val LocalFeedViewModelFactory = compositionLocalOf<@Composable () -> FeedViewModel> {
     {
-        error("not LocalFeedViewModel provided")
+        error("not LocalFeedViewModelFactory provided")
     }
 }
 
-fun provideFeedViewModelFactory(viewModel: @Composable () -> FeedViewModel) =
-    LocalFeedViewModel provides viewModel
+fun provideFeedViewModelFactory(viewModelFactory: @Composable () -> FeedViewModel) =
+    LocalFeedViewModelFactory provides viewModelFactory
 
 @Composable
-fun feedViewModel() = LocalFeedViewModel.current()
+fun feedViewModel() = LocalFeedViewModelFactory.current()

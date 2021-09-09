@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,9 +27,9 @@ interface AppViewModel :
 }
 
 private val LocalAppViewModelFactory =
-    staticCompositionLocalOf<@Composable () -> AppViewModel> {
+    compositionLocalOf<@Composable () -> AppViewModel> {
         {
-            error("not LocalDroidKaigiAppViewModel provided")
+            error("not LocalAppViewModelFactory provided")
         }
     }
 
