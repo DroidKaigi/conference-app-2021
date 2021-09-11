@@ -7,7 +7,7 @@ import kotlin.test.assertEquals
 
 class SessionFakeTest {
     @Test
-    fun generate() = runBlocking {
+    fun assertSameSessionFakeAndApiFake() = runBlocking {
         val sessionContents = fakeSessionApi()
             .fetch()
         assertEquals(fakeSessionContents(), sessionContents)
