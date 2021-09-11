@@ -13,6 +13,3 @@ class SessionFakeTest {
         assertEquals(fakeSessionContents(), sessionContents)
     }
 }
-
-// SessionContents(timetableSlots=[Session(title=MultiLangText(jaTitle=ウェルカムトーク, enTitle=Welcome Talk), speakers=[]), Session(title=MultiLangText(jaTitle=DroidKaigiのアプリのアーキテクチャ, enTitle=DroidKaigi App Architecture), speakers=[Speaker(name=taka, iconUrl=https://github.com/takahirom.png), Speaker(name=ry, iconUrl=https://github.com/ry-itto.png)]), Session(title=MultiLangText(jaTitle=Closing, enTitle=Closing), speakers=[])])> but was:<
-// SessionContents(timetableSlots=[Special(title=MultiLangText(jaTitle=ウェルカムトーク, enTitle=Welcome Talk), speakers=[]), Session(title=MultiLangText(jaTitle=DroidKaigiのアプリのアーキテクチャ, enTitle=DroidKaigi App Architecture), speakers=[Speaker(name=taka, iconUrl=https://github.com/takahirom.png), Speaker(name=ry, iconUrl=https://github.com/ry-itto.png)]), Special(title=MultiLangText(jaTitle=Closing, enTitle=Closing), speakers=[])])
