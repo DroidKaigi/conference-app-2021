@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.IconToggleButton
@@ -209,16 +210,23 @@ private fun AudioControlButton(
     isPlayingPodcast: Boolean,
 ) {
     if (isVisible) {
+        val iconColor = Color.White
+        val iconModifier = modifier.background(
+            color = Color.Black.copy(alpha = 0.5f),
+            shape = CircleShape,
+        )
         if (isPlayingPodcast) {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_pause_24),
-                modifier = modifier,
+                tint = iconColor,
+                modifier = iconModifier,
                 contentDescription = "pause"
             )
         } else {
             Icon(
                 painter = painterResource(id = R.drawable.ic_baseline_play_arrow_24),
-                modifier = modifier,
+                tint = iconColor,
+                modifier = iconModifier,
                 contentDescription = "play"
             )
         }
