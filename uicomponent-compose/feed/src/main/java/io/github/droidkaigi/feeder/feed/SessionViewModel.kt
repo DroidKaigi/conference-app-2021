@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.StateFlow
 
 interface SessionViewModel :
     UnidirectionalViewModel<SessionViewModel.Event, SessionViewModel.Effect, SessionViewModel
-    .State> {
+        .State> {
     data class State(
         val showProgress: Boolean = false,
         val sessionContents: SessionContents = SessionContents(),

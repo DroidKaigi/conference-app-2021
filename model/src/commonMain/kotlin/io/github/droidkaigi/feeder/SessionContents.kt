@@ -1,8 +1,5 @@
 package io.github.droidkaigi.feeder
 
-class SessionContents {
-}
+class SessionContents
 
-fun fakeSessionContents(): SessionContents = SessionContents(
-
-)
+fun fakeSessionContents(): SessionContents = SessionContents()

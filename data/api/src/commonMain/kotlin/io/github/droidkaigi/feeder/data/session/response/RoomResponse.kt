@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.data.session.response
 
-
 import kotlinx.serialization.Serializable
 
 @Serializable

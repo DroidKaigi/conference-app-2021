@@ -1,5 +1,3 @@
 package io.github.droidkaigi.feeder
 
-class SessionItem {
-
-}
+class SessionItem
