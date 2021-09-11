@@ -2,7 +2,6 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.fakeSessionContents
 import kotlin.test.Test
-import kotlin.test.assertContentEquals
 import kotlin.test.assertEquals
 
 class SessionFakeTest {
