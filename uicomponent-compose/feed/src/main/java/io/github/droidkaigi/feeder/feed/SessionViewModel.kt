@@ -5,8 +5,9 @@ import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.SessionContents
-import io.github.droidkaigi.feeder.SessionItem
+import io.github.droidkaigi.feeder.TimetableSlot
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
+import io.github.droidkaigi.feeder.fakeSessionContents
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -15,7 +16,7 @@ interface SessionViewModel :
         .State> {
     data class State(
         val showProgress: Boolean = false,
-        val sessionContents: SessionContents = SessionContents(),
+        val sessionContents: SessionContents = fakeSessionContents(),
     )
 
     sealed class Effect {
@@ -24,7 +25,7 @@ interface SessionViewModel :
 
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
-        class ToggleFavorite(val feedItem: SessionItem) : Event()
+        class ToggleFavorite(val session: TimetableSlot.Session) : Event()
         object ReloadContent : Event()
     }
 
