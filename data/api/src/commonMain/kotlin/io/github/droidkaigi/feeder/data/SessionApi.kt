@@ -7,6 +7,10 @@ import io.github.droidkaigi.feeder.Speaker
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.SessionAllResponse
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
@@ -67,8 +71,8 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
         "en": "DroidKaigi App Architecture"
       },
       "description": "これはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。",
-      "startsAt": "2021-10-20T10:20:00+09:00",
-      "endsAt": "2021-10-20T11:00:00+09:00",
+      "startsAt": "2021-10-20T10:30:00+09:00",
+      "endsAt": "2021-10-20T10:50:00+09:00",
       "isServiceSession": false,
       "isPlenumSession": false,
       "speakers": [
@@ -425,6 +429,8 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,
                         ),
+                        startsAt = apiSession.startsAt!!.toInstant(),
+                        endsAt = apiSession.endsAt!!.toInstant(),
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
                     )
                 } else {
@@ -433,10 +439,17 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,
                         ),
+                        startsAt = apiSession.startsAt!!.toInstant(),
+                        endsAt = apiSession.endsAt!!.toInstant(),
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
                     )
                 }
             }
         )
+    }
+
+    private fun String.toInstant(): Instant {
+        val (date, _) = split("+")
+        return LocalDateTime.parse(date).toInstant(TimeZone.of("UTC+9"))
     }
 }
