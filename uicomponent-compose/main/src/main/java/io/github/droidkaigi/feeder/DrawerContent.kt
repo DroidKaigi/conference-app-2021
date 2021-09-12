@@ -185,7 +185,9 @@ fun DrawerContent(
                     }
                     DrawerContents.Group.TIMETABLE2021 -> {
                         val newsContents = DrawerContents.values()
-                            .filter { content -> content.group == DrawerContents.Group.TIMETABLE2021 }
+                            .filter { content ->
+                                content.group == DrawerContents.Group.TIMETABLE2021
+                            }
                         DrawerContentGroup(newsContents, currentRoute, onNavigate)
                         Spacer(modifier = Modifier.height(8.dp))
                         Divider()
