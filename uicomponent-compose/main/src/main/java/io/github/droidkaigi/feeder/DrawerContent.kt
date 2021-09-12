@@ -31,6 +31,7 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.main.R
 import io.github.droidkaigi.feeder.other.OtherTab
+import io.github.droidkaigi.feeder.timetable2021.TimetableTab
 
 enum class DrawerContents(
     val group: Group,
@@ -63,6 +64,12 @@ enum class DrawerContents(
         label = "PODCAST",
         route = "feed/${FeedTab.FilteredFeed.Podcast.routePath}"
     ),
+    TIMETABLE(
+        group = Group.TIMETABLE2021,
+        imageResId = R.drawable.ic_baseline_access_time_24,
+        label = "TIME TABLE",
+        route = "timetable/${OtherTab.AboutThisApp.routePath}"
+    ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
         imageResId = R.drawable.ic_baseline_android_24,
@@ -90,7 +97,7 @@ enum class DrawerContents(
     ;
 
     enum class Group {
-        NEWS, OTHER;
+        NEWS, TIMETABLE2021, OTHER;
     }
 }
 
@@ -111,6 +118,10 @@ class DrawerContentState(
 
     fun onSelectDrawerContent(feedTab: FeedTab) {
         selectDrawerContent("feed/${feedTab.routePath}")
+    }
+
+    fun onSelectDrawerContent(timetableTab: TimetableTab) {
+        selectDrawerContent("timetable/${timetableTab.routePath}")
     }
 
     fun onSelectDrawerContent(otherTab: OtherTab) {
@@ -168,6 +179,13 @@ fun DrawerContent(
                     DrawerContents.Group.NEWS -> {
                         val newsContents = DrawerContents.values()
                             .filter { content -> content.group == DrawerContents.Group.NEWS }
+                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                        Spacer(modifier = Modifier.height(8.dp))
+                        Divider()
+                    }
+                    DrawerContents.Group.TIMETABLE2021 -> {
+                        val newsContents = DrawerContents.values()
+                            .filter { content -> content.group == DrawerContents.Group.TIMETABLE2021 }
                         DrawerContentGroup(newsContents, currentRoute, onNavigate)
                         Spacer(modifier = Modifier.height(8.dp))
                         Divider()

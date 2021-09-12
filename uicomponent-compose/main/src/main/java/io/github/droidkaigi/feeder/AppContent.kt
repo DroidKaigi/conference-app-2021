@@ -31,10 +31,13 @@ import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTab
+import io.github.droidkaigi.feeder.timetable2021.TimetableScreen
+import io.github.droidkaigi.feeder.timetable2021.TimetableTab
 import kotlinx.coroutines.launch
 
 private const val FEED_PATH = "feed/"
 private const val OTHER_PATH = "other/"
+private const val TIMETABLE_PATH = "timetable/"
 
 private val drawerOpenedStatusBarColor = Color.Black.copy(alpha = 0.48f)
 
@@ -109,6 +112,31 @@ fun AppContent(
                     onDetailClick = { feedItem: FeedItem ->
                         actions.showChromeCustomTabs(feedItem.link)
                     }
+                )
+            }
+            composable(
+                route = "$TIMETABLE_PATH{timeTable}",
+                deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "$deepLinkUri/$TIMETABLE_PATH{timeTable}"
+                    }
+                ),
+                arguments = listOf(
+                    navArgument("timeTable") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val routePath = rememberRoutePath(
+                    backStackEntry.arguments?.getString("timeTable")
+                        ?: OtherTab.AboutThisApp.routePath
+                )
+                val selectedTab = TimetableTab.ofRoutePath(routePath.value)
+                drawerContentState.onSelectDrawerContent(selectedTab)
+                TimetableScreen(
+                    selectedTab = selectedTab,
+                    onNavigationIconClick = onNavigationIconClick,
+                    onSelectedTab = {}
                 )
             }
             composable(

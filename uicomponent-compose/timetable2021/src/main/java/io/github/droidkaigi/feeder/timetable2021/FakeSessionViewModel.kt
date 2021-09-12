@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.feed
+package io.github.droidkaigi.feeder.timetable2021
 
 import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
@@ -21,7 +21,7 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-fun fakeSessionViewModel(errorFetchData: Boolean = false): FakeSessionViewModel {
+fun fakeTimetableViewModel(errorFetchData: Boolean = false): FakeSessionViewModel {
     return FakeSessionViewModel(errorFetchData)
 }
 

@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.feed
+package io.github.droidkaigi.feeder.timetable2021
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
@@ -40,7 +40,7 @@ private val LocalSessionViewModel = compositionLocalOf<@Composable () -> Session
     }
 }
 
-fun provideSessionViewModelFactory(viewModel: @Composable () -> SessionViewModel) =
+fun provideTimetableViewModelFactory(viewModel: @Composable () -> SessionViewModel) =
     LocalSessionViewModel provides viewModel
 
 @Composable
