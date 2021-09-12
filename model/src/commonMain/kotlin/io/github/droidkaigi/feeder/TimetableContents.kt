@@ -4,11 +4,11 @@ import kotlinx.datetime.LocalDateTime
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 
-data class SessionContents(
+data class TimetableContents(
     val timetableItems: List<TimetableItem>,
 )
 
-fun fakeSessionContents(): SessionContents = SessionContents(
+fun fakeTimetableContents(): TimetableContents = TimetableContents(
     timetableItems = listOf(
         TimetableItem.Special(
             MultiLangText("ウェルカムトーク", "Welcome Talk"),

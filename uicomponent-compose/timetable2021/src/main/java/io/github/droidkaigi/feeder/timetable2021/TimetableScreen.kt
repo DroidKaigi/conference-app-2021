@@ -47,7 +47,7 @@ fun TimetableScreen(
     onNavigationIconClick: () -> Unit,
 ) {
     val (state, effectFlow, dispatch) = use(sessionViewModel())
-    Text(text = state.sessionContents.toString())
+    Text(text = state.timetableContents.toString())
 }
 
 @OptIn(ExperimentalPagerApi::class)

@@ -2,7 +2,7 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
-import io.github.droidkaigi.feeder.SessionContents
+import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.Speaker
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
@@ -17,20 +17,20 @@ import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
 interface SessionApi {
-    suspend fun fetch(): SessionContents
+    suspend fun fetch(): TimetableContents
 }
 
-fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
-    override suspend fun fetch(): SessionContents {
+fun fakeTimetableApi(error: AppError? = null): SessionApi = object : SessionApi {
+    override suspend fun fetch(): TimetableContents {
         if (error != null) {
             throw error
         }
-        return list
+        return LIST
     }
 
     // cache for fixing test issue
     @OptIn(ExperimentalStdlibApi::class)
-    val list: SessionContents = run {
+    val LIST: TimetableContents = run {
         val responseText = """{
   "sessions": [
     {
@@ -421,7 +421,7 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
                     Speaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture!!)
                 }.first()
             }
-        SessionContents(
+        TimetableContents(
             feedContents.sessions.map { apiSession ->
                 if (!apiSession.isServiceSession) {
                     TimetableItem.Session(

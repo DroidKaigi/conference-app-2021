@@ -3,8 +3,8 @@ package io.github.droidkaigi.feeder.timetable2021
 import app.cash.exhaustive.Exhaustive
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.SessionContents
-import io.github.droidkaigi.feeder.fakeSessionContents
+import io.github.droidkaigi.feeder.TimetableContents
+import io.github.droidkaigi.feeder.fakeTimetableContents
 import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
@@ -39,17 +39,17 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
         }
     )
     private val mutableSessionContents = MutableStateFlow(
-        fakeSessionContents()
+        fakeTimetableContents()
     )
-    private val errorSessionContents = flow<SessionContents> {
+    private val errorSessionContents = flow<TimetableContents> {
         throw AppError.ApiException.ServerException(null)
     }
         .catch { error ->
             effectChannel.send(SessionViewModel.Effect.ErrorMessage(error as AppError))
         }
-        .stateIn(coroutineScope, SharingStarted.Lazily, fakeSessionContents())
+        .stateIn(coroutineScope, SharingStarted.Lazily, fakeTimetableContents())
 
-    private val sessionContents: StateFlow<SessionContents> = if (errorFetchData) {
+    private val mTimetableContents: StateFlow<TimetableContents> = if (errorFetchData) {
         errorSessionContents
     } else {
         mutableSessionContents
@@ -58,9 +58,9 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<SessionViewModel.State> =
-        combine(sessionContents, filters) { feedContents, filters ->
+        combine(mTimetableContents, filters) { feedContents, filters ->
             SessionViewModel.State(
-                sessionContents = feedContents,
+                timetableContents = feedContents,
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, SessionViewModel.State())
@@ -73,7 +73,7 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
                     filters.value = event.filters
                 }
                 is SessionViewModel.Event.ToggleFavorite -> {
-                    val value = sessionContents.value
+                    val value = mTimetableContents.value
 //                    val newFavorites = if (!value.favorites.contains(event.feedItem.id)) {
 //                        value.favorites + event.feedItem.id
 //                    } else {
