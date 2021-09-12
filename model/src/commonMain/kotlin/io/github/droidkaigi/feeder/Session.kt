@@ -1,8 +1,7 @@
 package io.github.droidkaigi.feeder
 
-import kotlinx.datetime.Instant
-import kotlin.time.Duration
 import kotlin.time.ExperimentalTime
+import kotlinx.datetime.Instant
 
 @OptIn(ExperimentalTime::class)
 sealed class TimetableItem(
