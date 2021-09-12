@@ -4,7 +4,7 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.SessionContents
 import io.github.droidkaigi.feeder.Speaker
-import io.github.droidkaigi.feeder.TimetableSlot
+import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.SessionAllResponse
 import kotlinx.serialization.decodeFromString
@@ -420,7 +420,7 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
         SessionContents(
             feedContents.sessions.map { apiSession ->
                 if (!apiSession.isServiceSession) {
-                    TimetableSlot.Session(
+                    TimetableItem.Session(
                         title = MultiLangText(
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,
@@ -428,7 +428,7 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
                     )
                 } else {
-                    TimetableSlot.Special(
+                    TimetableItem.Special(
                         title = MultiLangText(
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,

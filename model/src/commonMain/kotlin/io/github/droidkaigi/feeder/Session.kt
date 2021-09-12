@@ -1,15 +1,15 @@
 package io.github.droidkaigi.feeder
 
-sealed class TimetableSlot(
+sealed class TimetableItem(
     open val title: MultiLangText,
 ) {
     data class Session(
         override val title: MultiLangText,
         val speakers: List<Speaker>,
-    ) : TimetableSlot(title)
+    ) : TimetableItem(title)
 
     data class Special(
         override val title: MultiLangText,
         val speakers: List<Speaker> = listOf(),
-    ) : TimetableSlot(title)
+    ) : TimetableItem(title)
 }
