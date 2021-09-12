@@ -2,8 +2,8 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
-import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.Speaker
+import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.SessionAllResponse
