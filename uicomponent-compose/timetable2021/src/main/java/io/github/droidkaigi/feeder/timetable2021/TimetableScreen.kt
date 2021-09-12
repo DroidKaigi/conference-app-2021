@@ -21,11 +21,11 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
+import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import kotlinx.coroutines.launch
-import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class TimetableTab(val name: String, val routePath: String) {
     object Day1 : TimetableTab("Day1", "day1")
