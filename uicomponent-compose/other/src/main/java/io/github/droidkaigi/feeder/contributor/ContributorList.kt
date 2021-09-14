@@ -46,7 +46,9 @@ fun ContributorList(onContributorClick: (Contributor) -> Unit) {
 @Composable
 fun PreviewContributorScreen() {
     ConferenceAppFeederTheme {
-        CompositionLocalProvider(provideContributorViewModelFactory { fakeContributorViewModel() }) {
+        CompositionLocalProvider(provideContributorViewModelFactory {
+            fakeContributorViewModel()
+        }) {
             ContributorList() {
             }
         }
