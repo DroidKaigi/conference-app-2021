@@ -10,7 +10,7 @@ import io.github.droidkaigi.feeder.feed.fmPlayerViewModelProviderValue
 import io.github.droidkaigi.feeder.feed.provideFeedViewModelFactory
 import io.github.droidkaigi.feeder.provideAppViewModelFactory
 import io.github.droidkaigi.feeder.setting.provideSettingViewModelFactory
-import io.github.droidkaigi.feeder.staff.staffViewModelProviderValue
+import io.github.droidkaigi.feeder.staff.provideStaffViewModelFactory
 
 @Composable
 fun ProvideViewModels(content: @Composable () -> Unit) {
@@ -18,7 +18,7 @@ fun ProvideViewModels(content: @Composable () -> Unit) {
         provideAppViewModelFactory { hiltViewModel<RealAppViewModel>() },
         provideFeedViewModelFactory { hiltViewModel<RealFeedViewModel>() },
         provideSettingViewModelFactory { hiltViewModel<RealSettingViewModel>() },
-        staffViewModelProviderValue(viewModel<RealStaffViewModel>()),
+        provideStaffViewModelFactory { (hiltViewModel<RealStaffViewModel>()) },
         contributorViewModelProviderValue(fakeContributorViewModel()),
         fmPlayerViewModelProviderValue(viewModel<RealFmPlayerViewModel>()),
         content = content

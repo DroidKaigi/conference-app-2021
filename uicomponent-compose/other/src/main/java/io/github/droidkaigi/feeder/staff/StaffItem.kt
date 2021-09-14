@@ -80,7 +80,7 @@ fun StaffItem(staff: Staff, onClickItem: (Staff) -> Unit) {
 fun PreviewStaffItem() {
     ConferenceAppFeederTheme {
         val staff = fakeStaffs().first()
-        CompositionLocalProvider(staffViewModelProviderValue(fakeStaffViewModel())) {
+        CompositionLocalProvider(provideStaffViewModelFactory { fakeStaffViewModel() }) {
             StaffItem(staff = staff) {
             }
         }
