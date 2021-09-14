@@ -458,7 +458,7 @@ fun PreviewFeedScreen() {
     AppThemeWithBackground {
         CompositionLocalProvider(
             provideFeedViewModelFactory { fakeFeedViewModel() },
-            fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
@@ -479,7 +479,7 @@ fun PreviewDarkFeedScreen() {
     ) {
         CompositionLocalProvider(
             provideFeedViewModelFactory { fakeFeedViewModel() },
-            fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
@@ -498,7 +498,7 @@ fun PreviewFeedScreenWithStartBlog() {
     AppThemeWithBackground {
         CompositionLocalProvider(
             provideFeedViewModelFactory { fakeFeedViewModel() },
-            fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
                 selectedTab = FeedTab.FilteredFeed.Blog,

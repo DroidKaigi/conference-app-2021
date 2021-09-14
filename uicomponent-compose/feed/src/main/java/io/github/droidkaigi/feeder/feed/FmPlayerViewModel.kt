@@ -30,12 +30,15 @@ interface FmPlayerViewModel : UnidirectionalViewModel<FmPlayerViewModel.Event,
     override fun event(event: Event)
 }
 
-private val LocalFmPlayerViewModel = compositionLocalOf<FmPlayerViewModel> {
-    error("not LocalFmPlayerViewModel provided")
-}
+private val LocalFmPlayerViewModelFactory =
+    compositionLocalOf<@Composable () -> FmPlayerViewModel> {
+        {
+            error("not LocalFmPlayerViewModel provided")
+        }
+    }
 
-fun fmPlayerViewModelProviderValue(viewModel: FmPlayerViewModel) =
-    LocalFmPlayerViewModel provides viewModel
+fun provideFmPlayerViewModelFactory(viewModelFactory: @Composable () -> FmPlayerViewModel) =
+    LocalFmPlayerViewModelFactory provides viewModelFactory
 
 @Composable
-fun fmPlayerViewModel() = LocalFmPlayerViewModel.current
+fun fmPlayerViewModel() = LocalFmPlayerViewModelFactory.current()
