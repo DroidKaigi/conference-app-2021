@@ -3,14 +3,13 @@ package io.github.droidkaigi.feeder.viewmodel
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
-import io.github.droidkaigi.feeder.contributor.contributorViewModelProviderValue
 import io.github.droidkaigi.feeder.contributor.fakeContributorViewModel
-import io.github.droidkaigi.feeder.feed.fmPlayerViewModelProviderValue
+import io.github.droidkaigi.feeder.contributor.provideContributorViewModelFactory
 import io.github.droidkaigi.feeder.feed.provideFeedViewModelFactory
+import io.github.droidkaigi.feeder.feed.provideFmPlayerViewModelFactory
 import io.github.droidkaigi.feeder.provideAppViewModelFactory
 import io.github.droidkaigi.feeder.setting.provideSettingViewModelFactory
-import io.github.droidkaigi.feeder.staff.staffViewModelProviderValue
+import io.github.droidkaigi.feeder.staff.provideStaffViewModelFactory
 import io.github.droidkaigi.feeder.timetable2021.fakeTimetableViewModel
 import io.github.droidkaigi.feeder.timetable2021.provideTimetableViewModelFactory
 
@@ -21,9 +20,9 @@ fun ProvideViewModels(content: @Composable () -> Unit) {
         provideFeedViewModelFactory { hiltViewModel<RealFeedViewModel>() },
         provideTimetableViewModelFactory { fakeTimetableViewModel() },
         provideSettingViewModelFactory { hiltViewModel<RealSettingViewModel>() },
-        staffViewModelProviderValue(viewModel<RealStaffViewModel>()),
-        contributorViewModelProviderValue(fakeContributorViewModel()),
-        fmPlayerViewModelProviderValue(viewModel<RealFmPlayerViewModel>()),
+        provideStaffViewModelFactory { (hiltViewModel<RealStaffViewModel>()) },
+        provideContributorViewModelFactory { fakeContributorViewModel() },
+        provideFmPlayerViewModelFactory { hiltViewModel<RealFmPlayerViewModel>() },
         content = content
     )
 }

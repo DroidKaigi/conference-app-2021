@@ -46,7 +46,7 @@ fun StaffList(onStaffClick: (Staff) -> Unit) {
 @Composable
 fun PreviewStaffScreen() {
     ConferenceAppFeederTheme {
-        CompositionLocalProvider(staffViewModelProviderValue(fakeStaffViewModel())) {
+        CompositionLocalProvider(provideStaffViewModelFactory { fakeStaffViewModel() }) {
             StaffList {}
         }
     }
