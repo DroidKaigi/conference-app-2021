@@ -66,7 +66,7 @@ fun ContributorItem(contributor: Contributor, onClickItem: (Contributor) -> Unit
 fun PreviewContributorItem() {
     ConferenceAppFeederTheme {
         val contributor = fakeContributors().first()
-        CompositionLocalProvider(contributorViewModelProviderValue(fakeContributorViewModel())) {
+        CompositionLocalProvider(provideContributorViewModelFactory { fakeContributorViewModel() }) {
             ContributorItem(contributor = contributor) {
             }
         }

@@ -30,12 +30,15 @@ interface ContributorViewModel :
     override fun event(event: Event)
 }
 
-private val LocalContributeViewModel = compositionLocalOf<ContributorViewModel> {
-    error("Not view model provided")
+private val LocalContributeViewModelFactory =
+    compositionLocalOf<@Composable () -> ContributorViewModel> {
+        {
+            error("Not view model provided")
+        }
 }
 
-fun contributorViewModelProviderValue(viewModel: ContributorViewModel) =
-    LocalContributeViewModel provides viewModel
+fun provideContributorViewModelFactory(viewModelFactory: @Composable () -> ContributorViewModel) =
+    LocalContributeViewModelFactory provides viewModelFactory
 
 @Composable
-fun contributeViewModel() = LocalContributeViewModel.current
+fun contributeViewModel() = LocalContributeViewModelFactory.current()
