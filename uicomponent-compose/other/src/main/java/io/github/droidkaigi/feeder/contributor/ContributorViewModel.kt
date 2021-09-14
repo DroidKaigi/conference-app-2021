@@ -35,7 +35,7 @@ private val LocalContributeViewModelFactory =
         {
             error("Not view model provided")
         }
-}
+    }
 
 fun provideContributorViewModelFactory(viewModelFactory: @Composable () -> ContributorViewModel) =
     LocalContributeViewModelFactory provides viewModelFactory

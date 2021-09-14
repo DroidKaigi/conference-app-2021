@@ -35,7 +35,7 @@ private val LocalFmPlayerViewModelFactory =
         {
             error("not LocalFmPlayerViewModel provided")
         }
-}
+    }
 
 fun provideFmPlayerViewModelFactory(viewModelFactory: @Composable () -> FmPlayerViewModel) =
     LocalFmPlayerViewModelFactory provides viewModelFactory
