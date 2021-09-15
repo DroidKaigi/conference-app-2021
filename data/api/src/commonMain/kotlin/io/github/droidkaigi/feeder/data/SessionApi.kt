@@ -2,31 +2,35 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
-import io.github.droidkaigi.feeder.SessionContents
 import io.github.droidkaigi.feeder.Speaker
-import io.github.droidkaigi.feeder.TimetableSlot
+import io.github.droidkaigi.feeder.TimetableContents
+import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.SessionAllResponse
+import kotlinx.datetime.Instant
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
 interface SessionApi {
-    suspend fun fetch(): SessionContents
+    suspend fun fetch(): TimetableContents
 }
 
-fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
-    override suspend fun fetch(): SessionContents {
+fun fakeTimetableApi(error: AppError? = null): SessionApi = object : SessionApi {
+    override suspend fun fetch(): TimetableContents {
         if (error != null) {
             throw error
         }
-        return list
+        return LIST
     }
 
     // cache for fixing test issue
     @OptIn(ExperimentalStdlibApi::class)
-    val list: SessionContents = run {
+    val LIST: TimetableContents = run {
         val responseText = """{
   "sessions": [
     {
@@ -67,8 +71,8 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
         "en": "DroidKaigi App Architecture"
       },
       "description": "これはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。",
-      "startsAt": "2021-10-20T10:20:00+09:00",
-      "endsAt": "2021-10-20T11:00:00+09:00",
+      "startsAt": "2021-10-20T10:30:00+09:00",
+      "endsAt": "2021-10-20T10:50:00+09:00",
       "isServiceSession": false,
       "isPlenumSession": false,
       "speakers": [
@@ -417,26 +421,35 @@ fun fakeSessionApi(error: AppError? = null): SessionApi = object : SessionApi {
                     Speaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture!!)
                 }.first()
             }
-        SessionContents(
+        TimetableContents(
             feedContents.sessions.map { apiSession ->
                 if (!apiSession.isServiceSession) {
-                    TimetableSlot.Session(
+                    TimetableItem.Session(
                         title = MultiLangText(
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,
                         ),
+                        startsAt = apiSession.startsAt!!.toInstant(),
+                        endsAt = apiSession.endsAt!!.toInstant(),
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
                     )
                 } else {
-                    TimetableSlot.Special(
+                    TimetableItem.Special(
                         title = MultiLangText(
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,
                         ),
+                        startsAt = apiSession.startsAt!!.toInstant(),
+                        endsAt = apiSession.endsAt!!.toInstant(),
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
                     )
                 }
             }
         )
+    }
+
+    private fun String.toInstant(): Instant {
+        val (date, _) = split("+")
+        return LocalDateTime.parse(date).toInstant(TimeZone.of("UTC+9"))
     }
 }

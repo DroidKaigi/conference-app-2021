@@ -41,6 +41,7 @@ tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
 dependencies {
     api projects.uicomponentCompose.core
     api projects.uicomponentCompose.feed
+    api projects.uicomponentCompose.timetable2021
     api projects.uicomponentCompose.other
     api projects.model
 
@@ -59,7 +60,7 @@ dependencies {
     testImplementation Dep.Dagger.hiltAndroidTesting
     kaptTest Dep.Dagger.hiltAndroidCompiler
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation Dep.Jetpack.appcompat
     implementation Dep.Accompanist.coil
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.systemuicontroller

@@ -1,15 +1,25 @@
 package io.github.droidkaigi.feeder
 
-sealed class TimetableSlot(
+import kotlin.time.ExperimentalTime
+import kotlinx.datetime.Instant
+
+@OptIn(ExperimentalTime::class)
+sealed class TimetableItem(
     open val title: MultiLangText,
+    open val startsAt: Instant,
+    open val endsAt: Instant,
 ) {
     data class Session(
         override val title: MultiLangText,
+        override val startsAt: Instant,
+        override val endsAt: Instant,
         val speakers: List<Speaker>,
-    ) : TimetableSlot(title)
+    ) : TimetableItem(title, startsAt, endsAt)
 
     data class Special(
         override val title: MultiLangText,
+        override val startsAt: Instant,
+        override val endsAt: Instant,
         val speakers: List<Speaker> = listOf(),
-    ) : TimetableSlot(title)
+    ) : TimetableItem(title, startsAt, endsAt)
 }

@@ -51,7 +51,7 @@ dependencies {
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation Dep.Jetpack.appcompat
     implementation Dep.Accompanist.coil
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.pager

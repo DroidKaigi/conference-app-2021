@@ -1,13 +1,13 @@
-package io.github.droidkaigi.feeder.feed
+package io.github.droidkaigi.feeder.timetable2021
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Filters
-import io.github.droidkaigi.feeder.SessionContents
-import io.github.droidkaigi.feeder.TimetableSlot
+import io.github.droidkaigi.feeder.TimetableContents
+import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
-import io.github.droidkaigi.feeder.fakeSessionContents
+import io.github.droidkaigi.feeder.fakeTimetableContents
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
@@ -16,7 +16,7 @@ interface SessionViewModel :
         .State> {
     data class State(
         val showProgress: Boolean = false,
-        val sessionContents: SessionContents = fakeSessionContents(),
+        val timetableContents: TimetableContents = fakeTimetableContents(),
     )
 
     sealed class Effect {
@@ -25,7 +25,7 @@ interface SessionViewModel :
 
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
-        class ToggleFavorite(val session: TimetableSlot.Session) : Event()
+        class ToggleFavorite(val session: TimetableItem.Session) : Event()
         object ReloadContent : Event()
     }
 
@@ -40,7 +40,7 @@ private val LocalSessionViewModel = compositionLocalOf<@Composable () -> Session
     }
 }
 
-fun provideSessionViewModelFactory(viewModel: @Composable () -> SessionViewModel) =
+fun provideTimetableViewModelFactory(viewModel: @Composable () -> SessionViewModel) =
     LocalSessionViewModel provides viewModel
 
 @Composable
