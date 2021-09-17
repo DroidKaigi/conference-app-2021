@@ -1,20 +1,28 @@
-//
-//  SwiftUIView.swift
-//  
-//
-//  Created by 伊藤凌也 on 2021/09/18.
-//
-
+import ComposableArchitecture
 import SwiftUI
 
-struct SwiftUIView: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
+public struct TimelineScreen: View {
+    private let store: Store<TimelineState, TimelineAction>
+
+    public init(store: Store<TimelineState, TimelineAction>) {
+        self.store = store
+    }
+
+    public var body: some View {
+        Text("TimelineScreen")
     }
 }
 
-struct SwiftUIView_Previews: PreviewProvider {
-    static var previews: some View {
-        SwiftUIView()
+#if DEBUG
+public struct TimelineScreen_Previews: PreviewProvider {
+    public static var previews: some View {
+        TimelineScreen(
+            store: .init(
+                initialState: TimelineState(),
+                reducer: .empty,
+                environment: TimelineEnvironment()
+            )
+        )
     }
 }
+#endif
