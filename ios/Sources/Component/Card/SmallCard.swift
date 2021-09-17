@@ -45,7 +45,6 @@ public struct SmallCard: View {
                     width: Const.imageViewWidth,
                     height: Const.imageViewWidth * 114/163
                 )
-                .clipShape(RoundedRectangle(cornerRadius: 20))
                 if case let .droidKaigiFm(isPlaying) = media {
                     SwiftUI.Image(
                         systemName: isPlaying ? "stop.fill" : "play.fill"
