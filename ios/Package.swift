@@ -167,6 +167,16 @@ var package = Package(
             ]
         ),
         .target(
+            name: "TimelineFeature",
+            dependencies: [
+                .target(name: "Component"),
+                .target(name: "Model"),
+                .target(name: "Repository"),
+                .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]
+        ),
+        .target(
             name: "Utility",
             dependencies: []
         ),
