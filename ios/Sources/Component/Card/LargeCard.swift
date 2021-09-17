@@ -45,6 +45,7 @@ public struct LargeCard: View {
                     width: Const.imageViewWidth,
                     height: Const.imageViewWidth * 190/343
                 )
+                .clipShape(RoundedRectangle(cornerRadius: 20))
                 if case let .droidKaigiFm(isPlaying) = media {
                     SwiftUI.Image(
                         systemName: isPlaying ? "stop.fill" : "play.fill"
