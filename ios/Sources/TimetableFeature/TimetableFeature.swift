@@ -1,7 +1,14 @@
 import ComposableArchitecture
+import Model
 
 public struct TimetableState: Equatable {
-    public init() {}
+    public var timetableItems: [TimetableItem]
+
+    public init(
+        timetableItems: [TimetableItem] = []
+    ) {
+        self.timetableItems = timetableItems
+    }
 }
 
 public enum TimetableAction {}

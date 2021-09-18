@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import Styleguide
 import SwiftUI
 
 public struct TimetableScreen: View {
@@ -9,16 +10,32 @@ public struct TimetableScreen: View {
     }
 
     public var body: some View {
-        Text("TimetableScreen")
+        NavigationView {
+            ZStack {
+                AssetColor.Background.primary.color.ignoresSafeArea()
+            }
+        }
     }
 }
 
 #if DEBUG
+import Model
+
 public struct TimetableScreen_Previews: PreviewProvider {
     public static var previews: some View {
         TimetableScreen(
             store: .init(
-                initialState: TimetableState(),
+                initialState: TimetableState(
+                    timetableItems: [
+                        .mock(),
+                        .mock(),
+                        .mock(),
+                        .mock(),
+                        .mock(),
+                        .mock(),
+                        .mock(),
+                    ]
+                ),
                 reducer: .empty,
                 environment: TimetableEnvironment()
             )
