@@ -6,12 +6,12 @@ import AboutFeature
 import SwiftUI
 import Model
 import Repository
-import TimelineFeature
+import TimetableFeature
 
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent]
     public var isSheetPresented: AppTabSheet?
-    public var timelineState: TimelineState
+    public var timetableState: TimetableState
     public var aboutState: AboutState
 
     public enum AppTabSheet: Equatable {
@@ -53,7 +53,7 @@ public struct AppTabState: Equatable {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
         self.aboutState = AboutState()
-        self.timelineState = TimelineState()
+        self.timetableState = TimetableState()
     }
 }
 
@@ -64,7 +64,7 @@ public enum AppTabAction {
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
-    case timeline(TimelineAction)
+    case timetable(TimetableAction)
     case media(MediaAction)
     case about(AboutAction)
     case showSetting
@@ -103,9 +103,9 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             .init()
         }
     ),
-    timelineReducer.pullback(
-        state: \.timelineState,
-        action: /AppTabAction.timeline,
+    timetableReducer.pullback(
+        state: \.timetableState,
+        action: /AppTabAction.timetable,
         environment: { _ in
             .init()
         }

@@ -3,8 +3,8 @@
 "HomeScreen.Questionnaire.Title" = "Please give us your feedback";
 "HomeScreen.Questionnaire.Answer" = "Answer";
 
-// MARK: Timeline
-"TimelineScreen.Title" = "Timeline";
+// MARK: Timetable
+"TimetableScreen.Title" = "Timetable";
 
 // MARK: Media
 "MediaScreen.Title" = "Media";

@@ -89,7 +89,7 @@ var package = Package(
                 .target(name: "Repository"),
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
-                .target(name: "TimelineFeature"),
+                .target(name: "TimetableFeature"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -168,7 +168,7 @@ var package = Package(
             ]
         ),
         .target(
-            name: "TimelineFeature",
+            name: "TimetableFeature",
             dependencies: [
                 .target(name: "Component"),
                 .target(name: "Model"),

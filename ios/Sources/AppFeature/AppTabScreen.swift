@@ -79,8 +79,8 @@ private extension AppTab {
         switch self {
         case .home:
             return L10n.HomeScreen.title
-        case .timeline:
-            return L10n.TimelineScreen.title
+        case .timetable:
+            return L10n.TimetableScreen.title
         case .media:
             return L10n.MediaScreen.title
         case .favorites:
@@ -94,7 +94,7 @@ private extension AppTab {
         switch self {
         case .home:
             return AssetImage.iconHome.image
-        case .timeline:
+        case .timetable:
             return AssetImage.iconTimetable.image
         case .media:
             return AssetImage.iconBlog.image
