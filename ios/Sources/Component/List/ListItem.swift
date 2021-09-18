@@ -49,6 +49,7 @@ public struct ListItem: View {
                             width: 100,
                             height: 100
                         )
+                        .clipShape(RoundedRectangle(cornerRadius: 20))
                         if case let .droidKaigiFm(isPlaying) = media {
                             SwiftUI.Image(
                                 systemName: isPlaying ? "stop.fill" : "play.fill"

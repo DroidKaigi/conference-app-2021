@@ -73,8 +73,9 @@ public struct ImageView: View {
             }
         }
         .frame(width: width, height: height)
+        .clipShape(RoundedRectangle(cornerRadius: 20))
         .overlay(
-            RoundedRectangle(cornerRadius: 2)
+            RoundedRectangle(cornerRadius: 20)
                 .stroke(
                     AssetColor.Separate.image.color,
                     lineWidth: Const.roundedLineWidth
