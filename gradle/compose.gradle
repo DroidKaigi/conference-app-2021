@@ -1,0 +1,50 @@
+import io.github.droidkaigi.feeder.Versions
+
+// FIXME: opt-on does not working in Android Studio
+
+//def compilerArgs = [
+//        "-Xopt-in=kotlin.contracts.ExperimentalContracts",
+//        "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi",
+//        "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+//        "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
+//        "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+//        "-Xopt-in=kotlin.RequiresOptIn",
+//]
+
+android {
+    buildFeatures {
+        compose true
+    }
+//    kotlinOptions {
+//        jvmTarget = '1.8'
+//        useIR = true
+//        freeCompilerArgs = freeCompilerArgs + compilerArgs
+//    }
+    composeOptions {
+        kotlinCompilerExtensionVersion "${Versions.compose}"
+    }
+}
+
+
+//kotlin.sourceSets.all{
+//    experimentals.forEach {
+//        languageSettings.useExperimentalAnnotation(it)
+//    }
+//}
+//
+//tasks.withType(project.buildscript.classLoader.loadClass("org.jetbrains.kotlin.gradle.tasks" +
+//        ".KotlinCompile")).configureEach {
+//    kotlinOptions {
+//        jvmTarget = "1.8"
+//        useIR = true
+//        freeCompilerArgs = freeCompilerArgs + compilerArgs
+//    }
+//}
+//
+//tasks.withType(project.buildscript.classLoader.loadClass("org.jetbrains.kotlin.gradle.tasks" +
+//        ".KotlinCompileCommon")).configureEach {
+//    kotlinOptions {
+//        useIR = true
+//        freeCompilerArgs = freeCompilerArgs + compilerArgs
+//    }
+//}

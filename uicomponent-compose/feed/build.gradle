@@ -8,6 +8,7 @@ plugins {
 }
 
 apply from: rootProject.file("gradle/android.gradle")
+apply from: rootProject.file("gradle/compose.gradle")
 
 android {
     defaultConfig {
@@ -20,27 +21,11 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
-        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion "${Versions.compose}"
     }
     packagingOptions {
         // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
         exclude 'META-INF/AL2.0'
         exclude 'META-INF/LGPL2.1'
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
-        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
     }
 }
 

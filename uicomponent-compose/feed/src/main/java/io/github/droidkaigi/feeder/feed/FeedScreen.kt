@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -17,6 +16,7 @@ import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -92,7 +92,7 @@ sealed class FeedTab(val name: String, val routePath: String) {
 /**
  * stateful
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun FeedScreen(
     selectedTab: FeedTab,
@@ -171,7 +171,7 @@ fun FeedScreen(
 /**
  * stateless
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 private fun FeedScreen(
     scaffoldState: BackdropScaffoldState,
@@ -187,49 +187,47 @@ private fun FeedScreen(
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
 ) {
-    Column {
-        val density = LocalDensity.current
-        BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
-            scaffoldState = scaffoldState,
-            backLayerContent = {
-                BackLayerContent(filters, onFavoriteFilterChanged)
-            },
-            frontLayerShape = MaterialTheme.shapes.large,
-            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
-            appBar = {
-                AppBar(onNavigationIconClick, pagerState, tabLazyListStates, onSelectTab)
-            },
-            frontLayerContent = {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.fillMaxSize()
-                ) { page ->
-                    val selectedTab = FeedTab.values()[page]
-                    FeedList(
-                        feedContents = if (selectedTab is FeedTab.FilteredFeed) {
-                            feedContents.filterFeedType(selectedTab.feedItemClass)
-                        } else {
-                            feedContents
-                        },
-                        fmPlayerState = fmPlayerState,
-                        feedTab = selectedTab,
-                        onClickFeed = onClickFeed,
-                        onFavoriteChange = onFavoriteChange,
-                        listState = tabLazyListStates.getValue(selectedTab),
-                        onClickPlayPodcastButton = onClickPlayPodcastButton,
-                        isFilterState = filters.filterFavorite,
-                    )
-                }
-            },
-            snackbarHost = {
-                SnackbarHost(
-                    hostState = it,
-                    modifier = Modifier.navigationBarsPadding()
+    val density = LocalDensity.current
+    BackdropScaffold(
+        backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
+        scaffoldState = scaffoldState,
+        backLayerContent = {
+            BackLayerContent(filters, onFavoriteFilterChanged)
+        },
+        frontLayerShape = MaterialTheme.shapes.large,
+        peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+        appBar = {
+            AppBar(onNavigationIconClick, pagerState, tabLazyListStates, onSelectTab)
+        },
+        frontLayerContent = {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { page ->
+                val selectedTab = FeedTab.values()[page]
+                FeedList(
+                    feedContents = if (selectedTab is FeedTab.FilteredFeed) {
+                        feedContents.filterFeedType(selectedTab.feedItemClass)
+                    } else {
+                        feedContents
+                    },
+                    fmPlayerState = fmPlayerState,
+                    feedTab = selectedTab,
+                    onClickFeed = onClickFeed,
+                    onFavoriteChange = onFavoriteChange,
+                    listState = tabLazyListStates.getValue(selectedTab),
+                    onClickPlayPodcastButton = onClickPlayPodcastButton,
+                    isFilterState = filters.filterFavorite,
                 )
             }
-        )
-    }
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = it,
+                modifier = Modifier.navigationBarsPadding()
+            )
+        }
+    )
 }
 
 @OptIn(ExperimentalPagerApi::class)

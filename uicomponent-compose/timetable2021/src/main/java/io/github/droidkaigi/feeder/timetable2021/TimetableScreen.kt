@@ -1,45 +1,56 @@
 package io.github.droidkaigi.feeder.timetable2021
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.lazy.LazyListState
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.ScrollableTabRow
-import androidx.compose.material.Tab
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material.BackdropScaffold
+import androidx.compose.material.BackdropScaffoldState
+import androidx.compose.material.BackdropValue
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.MaterialTheme
+import androidx.compose.material.SnackbarHost
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
+import androidx.compose.material.primarySurface
+import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.zIndex
-import com.google.accompanist.insets.statusBarsPadding
+import com.google.accompanist.insets.LocalWindowInsets
+import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
-import com.google.accompanist.pager.pagerTabIndicatorOffset
-import io.github.droidkaigi.feeder.core.R as CoreR
-import io.github.droidkaigi.feeder.core.TabIndicator
+import com.google.accompanist.pager.rememberPagerState
+import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
-import kotlinx.coroutines.launch
 
 sealed class TimetableTab(val name: String, val routePath: String) {
     object Day1 : TimetableTab("Day1", "day1")
+    object Day2 : TimetableTab("Day1", "day1")
+    object Day3 : TimetableTab("Day1", "day1")
 
     companion object {
-        fun values() = listOf(Day1)
+        fun values() = listOf(Day1, Day2, Day3)
         fun ofRoutePath(routePath: String) = values().find { it.routePath == routePath } ?: Day1
     }
 }
 
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
+@Stable
+data class TimetableScreenState(
+    val timeTableContents: TimetableContents,
+    val scaffoldState: BackdropScaffoldState,
+    val tabPagerState: PagerState,
+)
+
 /**
  * stateful
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun TimetableScreen(
     selectedTab: TimetableTab,
@@ -47,58 +58,73 @@ fun TimetableScreen(
     onNavigationIconClick: () -> Unit,
 ) {
     val (state, effectFlow, dispatch) = use(sessionViewModel())
-    Text(text = state.timetableContents.toString())
+    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
+    val pagerState = rememberPagerState(
+        pageCount = TimetableTab.values().size,
+        initialPage = TimetableTab.values().indexOf(selectedTab)
+    )
+
+    TimetableScreen(
+        state = TimetableScreenState(
+            timeTableContents = state.timetableContents,
+            scaffoldState = scaffoldState,
+            tabPagerState = pagerState
+        ),
+        onNavigationIconClick = onNavigationIconClick,
+        onSelectTab = onSelectedTab
+    )
 }
 
-@OptIn(ExperimentalPagerApi::class)
+/**
+ * Stateless
+ */
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
-private fun AppBar(
+private fun TimetableScreen(
+    state: TimetableScreenState,
     onNavigationIconClick: () -> Unit,
-    pagerState: PagerState,
-    tabLazyListStates: Map<TimetableTab, LazyListState>,
     onSelectTab: (TimetableTab) -> Unit,
 ) {
-    val coroutineScope = rememberCoroutineScope()
-    TopAppBar(
-        modifier = Modifier.statusBarsPadding(),
-        title = { Image(painterResource(CoreR.drawable.toolbar_droidkaigi_logo), "DroidKaigi") },
-        elevation = 0.dp,
-        navigationIcon = {
-            IconButton(onClick = onNavigationIconClick) {
-                Icon(painterResource(CoreR.drawable.ic_baseline_menu_24), "menu")
-            }
-        }
-    )
-    ScrollableTabRow(
-        selectedTabIndex = 0,
-        edgePadding = 0.dp,
-        indicator = { tabPositions ->
-            TabIndicator(
-                modifier = Modifier.pagerTabIndicatorOffset(pagerState, tabPositions)
-            )
-        },
-        divider = {}
-    ) {
-        TimetableTab.values().forEachIndexed { index, tab ->
-            Tab(
-                selected = index == pagerState.currentPage,
-                text = {
-                    Text(
-                        modifier = Modifier.padding(vertical = 4.dp, horizontal = 8.dp),
-                        text = tab.name,
-                    )
-                },
-                onClick = {
-                    onSelectTab(tab)
-                    coroutineScope.launch {
-                        pagerState.animateScrollToPage(index)
-                        tabLazyListStates.getValue(tab).animateScrollToItem(index = 0)
+    Conference2021Theme() {
+        val density = LocalDensity.current
+        BackdropScaffold(
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
+            scaffoldState = state.scaffoldState,
+            backLayerContent = {
+                // TODO
+                Text(text = "Implement me!!!!")
+            },
+            frontLayerShape = MaterialTheme.shapes.large,
+            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+            appBar = {
+                AppBar(
+                    appBarState = AppBarState(
+                        pagerState = state.tabPagerState,
+                    ),
+                    onNavigationIconClick = onNavigationIconClick,
+                    onSelectTab = onSelectTab
+                )
+            },
+            frontLayerContent = {
+                HorizontalPager(
+                    state = state.tabPagerState,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    val selectedTab = TimetableTab.values()[page]
+                    Column {
+                        state.timeTableContents.timetableItems.forEach {
+                            Text(it.title.currentLangTitle)
+                        }
                     }
-                },
-                // For tabs to draw in front of indicators
-                modifier = Modifier.zIndex(1f)
-            )
-        }
+                }
+            },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = it,
+                    modifier = Modifier.navigationBarsPadding()
+                )
+            }
+        )
     }
 }
 

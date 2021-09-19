@@ -71,6 +71,24 @@ allprojects {
                     .userData([android: "true", experimental: "true"])
         }
     }
+
+    // FIXME: opt-on does not working in Android Studio
+    def compilerArgs = [
+            "-Xopt-in=kotlin.contracts.ExperimentalContracts",
+            "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlin.RequiresOptIn",
+    ]
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            compilerArgs.forEach { compilerArg ->
+                freeCompilerArgs += compilerArg
+            }
+        }
+    }
 }
 
 apply from: file('gradle/dependencyGraph.gradle')
