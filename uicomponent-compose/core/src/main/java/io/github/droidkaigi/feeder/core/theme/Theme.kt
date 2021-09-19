@@ -33,7 +33,7 @@ fun ConferenceAppFeederTheme(
     content: @Composable
     () -> Unit,
 ) {
-    val filterMuskColor = filterMuskColor(theme = theme)
+    val filterMuskColor = theme.filterMuskColor()
     ProvideWindowInsets {
         CompositionLocalProvider(LocalFilterMuskColor provides filterMuskColor) {
             MaterialTheme(
@@ -66,8 +66,8 @@ private fun systemColorPalette(): Colors {
 }
 
 @Composable
-private fun filterMuskColor(theme: Theme?): Color {
-    return when (theme) {
+fun Theme?.filterMuskColor(): Color {
+    return when (this) {
         Theme.SYSTEM -> systemFilterMuskColor()
         Theme.DARK -> DarkFilterMuskColor
         Theme.LIGHT -> LightFilterMuskColor
