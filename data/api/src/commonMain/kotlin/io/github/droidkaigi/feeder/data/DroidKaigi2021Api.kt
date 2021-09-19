@@ -16,11 +16,11 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.modules.SerializersModule
 import kotlinx.serialization.modules.contextual
 
-interface SessionApi {
+interface DroidKaigi2021Api {
     suspend fun fetch(): TimetableContents
 }
 
-fun fakeTimetableApi(error: AppError? = null): SessionApi = object : SessionApi {
+fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object : DroidKaigi2021Api {
     override suspend fun fetch(): TimetableContents {
         if (error != null) {
             throw error
@@ -414,42 +414,47 @@ fun fakeTimetableApi(error: AppError? = null): SessionApi = object : SessionApi 
         }.decodeFromString<SessionAllResponse>(
             responseText
         )
-        val speakerIdToSpeaker: Map<String, Speaker> = feedContents.speakers!!
-            .groupBy { it.id!! }
-            .mapValues { (_, apiSpeakers) ->
-                apiSpeakers.map { apiSpeaker ->
-                    Speaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture!!)
-                }.first()
-            }
-        TimetableContents(
-            feedContents.sessions.map { apiSession ->
-                if (!apiSession.isServiceSession) {
-                    TimetableItem.Session(
-                        title = MultiLangText(
-                            jaTitle = apiSession.title!!.ja!!,
-                            enTitle = apiSession.title.en!!,
-                        ),
-                        startsAt = apiSession.startsAt!!.toInstant(),
-                        endsAt = apiSession.endsAt!!.toInstant(),
-                        speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
-                    )
-                } else {
-                    TimetableItem.Special(
-                        title = MultiLangText(
-                            jaTitle = apiSession.title!!.ja!!,
-                            enTitle = apiSession.title.en!!,
-                        ),
-                        startsAt = apiSession.startsAt!!.toInstant(),
-                        endsAt = apiSession.endsAt!!.toInstant(),
-                        speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
-                    )
-                }
-            }
-        )
+        feedContents.toTimetableContents()
     }
+}
 
-    private fun String.toInstant(): Instant {
-        val (date, _) = split("+")
-        return LocalDateTime.parse(date).toInstant(TimeZone.of("UTC+9"))
-    }
+private fun String.toInstantAsJST(): Instant {
+    val (date, _) = split("+")
+    return LocalDateTime.parse(date).toInstant(TimeZone.of("UTC+9"))
+}
+
+internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
+    val feedContents = this
+    val speakerIdToSpeaker: Map<String, Speaker> = feedContents.speakers!!
+        .groupBy { it.id!! }
+        .mapValues { (_, apiSpeakers) ->
+            apiSpeakers.map { apiSpeaker ->
+                Speaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture!!)
+            }.first()
+        }
+    return TimetableContents(
+        feedContents.sessions.map { apiSession ->
+            if (!apiSession.isServiceSession) {
+                TimetableItem.Session(
+                    title = MultiLangText(
+                        jaTitle = apiSession.title!!.ja!!,
+                        enTitle = apiSession.title.en!!,
+                    ),
+                    startsAt = apiSession.startsAt!!.toInstantAsJST(),
+                    endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                    speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
+                )
+            } else {
+                TimetableItem.Special(
+                    title = MultiLangText(
+                        jaTitle = apiSession.title!!.ja!!,
+                        enTitle = apiSession.title.en!!,
+                    ),
+                    startsAt = apiSession.startsAt!!.toInstantAsJST(),
+                    endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                    speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
+                )
+            }
+        }
+    )
 }

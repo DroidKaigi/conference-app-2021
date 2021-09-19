@@ -18,7 +18,7 @@ fun ProvideViewModels(content: @Composable () -> Unit) {
     CompositionLocalProvider(
         provideAppViewModelFactory { hiltViewModel<RealAppViewModel>() },
         provideFeedViewModelFactory { hiltViewModel<RealFeedViewModel>() },
-        provideTimetableViewModelFactory { fakeTimetableViewModel() },
+        provideTimetableViewModelFactory { hiltViewModel<RealTimetableViewModel>() },
         provideSettingViewModelFactory { hiltViewModel<RealSettingViewModel>() },
         provideStaffViewModelFactory { (hiltViewModel<RealStaffViewModel>()) },
         provideContributorViewModelFactory { fakeContributorViewModel() },

@@ -11,8 +11,8 @@ import io.github.droidkaigi.feeder.fakeTimetableContents
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
 
-interface SessionViewModel :
-    UnidirectionalViewModel<SessionViewModel.Event, SessionViewModel.Effect, SessionViewModel
+interface TimetableViewModel :
+    UnidirectionalViewModel<TimetableViewModel.Event, TimetableViewModel.Effect, TimetableViewModel
         .State> {
     data class State(
         val showProgress: Boolean = false,
@@ -34,13 +34,13 @@ interface SessionViewModel :
     override fun event(event: Event)
 }
 
-private val LocalSessionViewModel = compositionLocalOf<@Composable () -> SessionViewModel> {
+private val LocalSessionViewModel = compositionLocalOf<@Composable () -> TimetableViewModel> {
     {
         error("not LocalSessionViewModel provided")
     }
 }
 
-fun provideTimetableViewModelFactory(viewModel: @Composable () -> SessionViewModel) =
+fun provideTimetableViewModelFactory(viewModel: @Composable () -> TimetableViewModel) =
     LocalSessionViewModel provides viewModel
 
 @Composable

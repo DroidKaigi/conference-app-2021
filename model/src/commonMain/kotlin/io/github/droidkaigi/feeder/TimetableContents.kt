@@ -5,8 +5,10 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toInstant
 
 data class TimetableContents(
-    val timetableItems: List<TimetableItem>,
+    val timetableItems: List<TimetableItem> = listOf(),
 )
+
+fun TimetableContents?.orEmptyContents(): TimetableContents = this ?: TimetableContents()
 
 fun fakeTimetableContents(): TimetableContents = TimetableContents(
     timetableItems = listOf(
