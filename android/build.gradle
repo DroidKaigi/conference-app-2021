@@ -11,6 +11,8 @@ plugins {
     id 'com.google.android.gms.oss-licenses-plugin'
 }
 
+apply from: rootProject.file("gradle/compose.gradle")
+
 android {
     compileSdkVersion 30
     buildToolsVersion "30.0.2"
@@ -75,20 +77,7 @@ android {
         jvmTarget = '1.8'
     }
     buildFeatures {
-        compose true
         buildConfig false
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion "${Versions.compose}"
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
-        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
     }
 }
 

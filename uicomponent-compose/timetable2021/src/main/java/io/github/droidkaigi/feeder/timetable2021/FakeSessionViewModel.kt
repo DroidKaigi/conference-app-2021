@@ -58,7 +58,7 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<SessionViewModel.State> =
-        combine(mTimetableContents, filters) { feedContents, filters ->
+        combine(mTimetableContents, filters) { feedContents, _ ->
             SessionViewModel.State(
                 timetableContents = feedContents,
             )
