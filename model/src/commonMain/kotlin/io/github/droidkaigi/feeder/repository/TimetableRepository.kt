@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.repository
 
-import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.TimetableContents
 import kotlinx.coroutines.flow.Flow
 

@@ -12,6 +12,8 @@ import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.TimetableRepository
 import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel
 import io.github.droidkaigi.feeder.toLoadState
+import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -22,8 +24,6 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import javax.annotation.meta.Exhaustive
-import javax.inject.Inject
 
 @HiltViewModel
 class RealTimetableViewModel @Inject constructor(
