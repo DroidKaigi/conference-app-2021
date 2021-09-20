@@ -30,15 +30,18 @@ public struct TimetableCard: View {
             Text("#\(item.category)")
                 .font(.caption2)
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
-            HStack {
-                // TODO: Fix with multiple speakers pattern
-                AvatarView(
-                    avatarImageURL: URL(string: item.speakers.first?.iconURLString ?? ""),
-                    style: .small
-                )
-                Text(item.speakers.first?.name ?? "")
-                    .font(.caption)
-                    .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
+            VStack {
+                ForEach(item.speakers) { speaker in
+                    HStack {
+                        AvatarView(
+                            avatarImageURL: URL(string: speaker.iconURLString),
+                            style: .small
+                        )
+                        Text(speaker.name)
+                            .font(.caption)
+                            .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
+                    }
+                }
             }
         }
         .frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .leading)
@@ -81,6 +84,30 @@ public struct TimetableCard_Previews: PreviewProvider {
                 TimetableCard(
                     item: .mock(
                         type: .special
+                    )
+                )
+                .frame(width: 300, height: 250, alignment: .center)
+                .environment(\.colorScheme, colorScheme)
+                .previewLayout(.sizeThatFits)
+                TimetableCard(
+                    item: .mock(
+                        type: .session,
+                        speakers: [
+                            .mock(name: "Speaker 1"),
+                            .mock(name: "Speaker 2"),
+                        ]
+                    )
+                )
+                .frame(width: 300, height: 250, alignment: .center)
+                .environment(\.colorScheme, colorScheme)
+                .previewLayout(.sizeThatFits)
+                TimetableCard(
+                    item: .mock(
+                        type: .special,
+                        speakers: [
+                            .mock(name: "Speaker 1"),
+                            .mock(name: "Speaker 2"),
+                        ]
                     )
                 )
                 .frame(width: 300, height: 250, alignment: .center)
