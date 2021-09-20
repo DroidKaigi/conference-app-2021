@@ -68,6 +68,13 @@
         "identifier" : "SettingFeatureTests",
         "name" : "SettingFeatureTests"
       }
+    },
+    {
+      "target" : {
+        "containerPath" : "container:",
+        "identifier" : "TimetableFeatureTests",
+        "name" : "TimetableFeatureTests"
+      }
     }
   ],
   "version" : 1
