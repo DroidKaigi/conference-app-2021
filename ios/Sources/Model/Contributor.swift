@@ -1,13 +1,13 @@
 import DroidKaigiMPP
 
 public struct Contributor: Equatable, Identifiable {
-    public var id: String
+    public var id: Int
     public var imageURLString: String
     public var name: String
     public var urlString: String
 
     public init(
-        id: String,
+        id: Int,
         imageURLString: String,
         name: String,
         urlString: String
@@ -19,7 +19,7 @@ public struct Contributor: Equatable, Identifiable {
     }
 
     public init(from model: DroidKaigiMPP.Contributor) {
-        self.id = model.id
+        self.id = Int(model.id)
         self.imageURLString = model.image
         self.name = model.name
         self.urlString = model.url
@@ -29,7 +29,7 @@ public struct Contributor: Equatable, Identifiable {
 #if DEBUG
 public extension Contributor {
     static func mock(
-        id: String = UUID().uuidString,
+        id: Int = UUID().uuidString.hash,
         imageURLString: String = "https://example.com",
         name: String = "dummy name",
         urlString: String = "https://github.com"

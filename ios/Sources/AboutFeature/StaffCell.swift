@@ -19,7 +19,7 @@ public struct StaffCell: View {
     public var body: some View {
         HStack {
             ImageView(
-                imageURL: URL(string: staff.imageURLString),
+                imageURL: URL(string: staff.iconURLString),
                 placeholderSize: .medium,
                 width: Const.imageSize,
                 height: Const.imageSize
@@ -30,7 +30,7 @@ public struct StaffCell: View {
                     .stroke(AssetColor.Separate.image.color, lineWidth: 2)
             )
             VStack(alignment: .leading, spacing: 3) {
-                Text(staff.name)
+                Text(staff.username)
                     .font(.body)
                     .foregroundColor(AssetColor.Base.secondary.color)
                 // TODO: specify value
