@@ -246,6 +246,14 @@ package.targets.append(contentsOf: [
         ],
         exclude: ["__Snapshots__"]
     ),
+    .testTarget(
+        name: "TimetableFeatureTests",
+        dependencies: [
+            "TimetableFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
+    ),
     .target(
         name: "TestUtils",
         dependencies: [
