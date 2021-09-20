@@ -1,13 +1,13 @@
 import DroidKaigiMPP
 
 public struct Staff: Equatable, Identifiable {
-    public var id: String
+    public var id: Int
     public var imageURLString: String
     public var name: String
     public var urlString: String
 
     public init(
-        id: String,
+        id: Int,
         imageURLString: String,
         name: String,
         urlString: String
@@ -19,17 +19,17 @@ public struct Staff: Equatable, Identifiable {
     }
 
     public init(from model: DroidKaigiMPP.Staff) {
-        self.id = model.id
-        self.imageURLString = model.image
-        self.name = model.name
-        self.urlString = model.url
+        self.id = Int(model.id)
+        self.imageURLString = model.iconUrl
+        self.name = model.username
+        self.urlString = model.profileUrl
     }
 }
 
 #if DEBUG
 public extension Staff {
     static func mock(
-        id: String = UUID().uuidString,
+        id: Int = UUID().uuidString.hash,
         imageURLString: String = "https://example.com",
         name: String = "dummy name",
         urlString: String = "https://github.com"
