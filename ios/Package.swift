@@ -51,6 +51,10 @@ var package = Package(
             targets: ["Styleguide"]
         ),
         .library(
+            name: "TimetableFeature",
+            targets: ["TimetableFeature"]
+        ),
+        .library(
             name: "Utility",
             targets: ["Utility"]
         ),
@@ -89,6 +93,7 @@ var package = Package(
                 .target(name: "Repository"),
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
+                .target(name: "TimetableFeature"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
@@ -167,6 +172,16 @@ var package = Package(
             ]
         ),
         .target(
+            name: "TimetableFeature",
+            dependencies: [
+                .target(name: "Component"),
+                .target(name: "Model"),
+                .target(name: "Repository"),
+                .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
+            ]
+        ),
+        .target(
             name: "Utility",
             dependencies: []
         ),
@@ -227,6 +242,14 @@ package.targets.append(contentsOf: [
         name: "SettingFeatureTests",
         dependencies: [
             "SettingFeature",
+            "TestUtils",
+        ],
+        exclude: ["__Snapshots__"]
+    ),
+    .testTarget(
+        name: "TimetableFeatureTests",
+        dependencies: [
+            "TimetableFeature",
             "TestUtils",
         ],
         exclude: ["__Snapshots__"]

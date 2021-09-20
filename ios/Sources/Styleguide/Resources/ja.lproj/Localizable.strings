@@ -3,6 +3,9 @@
 "HomeScreen.Questionnaire.Title" = "アンケートにご協力をお願いします";
 "HomeScreen.Questionnaire.Answer" = "回答";
 
+// MARK: Timetable
+"TimetableScreen.Title" = "Timetable";
+
 // MARK: Media
 "MediaScreen.Title" = "Media";
 "MediaScreen.SearchBar.Placeholder" = "タイトルを検索";

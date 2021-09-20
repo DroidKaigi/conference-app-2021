@@ -6,10 +6,12 @@ import AboutFeature
 import SwiftUI
 import Model
 import Repository
+import TimetableFeature
 
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent]
     public var isSheetPresented: AppTabSheet?
+    public var timetableState: TimetableState
     public var aboutState: AboutState
 
     public enum AppTabSheet: Equatable {
@@ -51,6 +53,7 @@ public struct AppTabState: Equatable {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
         self.aboutState = AboutState()
+        self.timetableState = TimetableState()
     }
 }
 
@@ -61,6 +64,7 @@ public enum AppTabAction {
     case tapFavorite(isFavorited: Bool, id: String)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
+    case timetable(TimetableAction)
     case media(MediaAction)
     case about(AboutAction)
     case showSetting
@@ -95,6 +99,13 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     homeReducer.pullback(
         state: \.homeState,
         action: /AppTabAction.init(action:),
+        environment: { _ in
+            .init()
+        }
+    ),
+    timetableReducer.pullback(
+        state: \.timetableState,
+        action: /AppTabAction.timetable,
         environment: { _ in
             .init()
         }
@@ -176,6 +187,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .media:
             return .none
         case .about:
+            return .none
+        case .timetable:
             return .none
         }
     }

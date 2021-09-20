@@ -3,6 +3,9 @@
 "HomeScreen.Questionnaire.Title" = "Please give us your feedback";
 "HomeScreen.Questionnaire.Answer" = "Answer";
 
+// MARK: Timetable
+"TimetableScreen.Title" = "Timetable";
+
 // MARK: Media
 "MediaScreen.Title" = "Media";
 "MediaScreen.SearchBar.Placeholder" = "Search for Title";
