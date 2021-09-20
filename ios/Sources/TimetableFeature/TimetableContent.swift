@@ -35,7 +35,9 @@ public struct TimetableContent: View {
         WithViewStore(store) { viewStore in
             Text("Timetable Content")
                 .onTapGesture {
+                    #if DEBUG
                     viewStore.send(.tap(.mock()))
+                    #endif
                 }
         }
     }
