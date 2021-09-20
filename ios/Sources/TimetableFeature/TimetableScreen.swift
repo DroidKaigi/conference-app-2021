@@ -43,7 +43,6 @@ public struct TimetableScreen: View {
                         TimetableContent(
                             store: store.scope(
                                 state: { state in
-                                    // TODO: Use specified day contents
                                     return .init(items: state.selectedTypeItems)
                                 },
                                 action: TimetableAction.content

@@ -47,18 +47,16 @@ public struct TimetableContent: View {
                             Text(dateFormatter.string(from: item.startsAt))
                                 .font(.caption)
                                 .foregroundColor(AssetColor.Base.secondary.color)
-                                .frame(width: 44)
+                                .frame(width: 44, alignment: .trailing)
                             Divider()
                                 .frame(width: 2)
                                 .foregroundColor(AssetColor.Separate.contents.color)
                             TimetableCard(item: item)
                                 .padding(.bottom, 16)
+                                .onTapGesture {
+                                    viewStore.send(.tap(item))
+                                }
                         }
-                    }
-                    .onTapGesture {
-                        #if DEBUG
-                        viewStore.send(.tap(.mock()))
-                        #endif
                     }
                 }
                 .padding(.horizontal, 16)
