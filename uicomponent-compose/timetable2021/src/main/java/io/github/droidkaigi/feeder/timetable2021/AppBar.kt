@@ -37,7 +37,12 @@ fun AppBar(
 ) {
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
-        title = { Image(painterResource(R.drawable.toolbar_droidkaigi_2021_logo), "DroidKaigi") },
+        title = {
+            Image(
+                painterResource(R.drawable.toolbar_droidkaigi_2021_logo),
+                "DroidKaigi2021"
+            )
+        },
         elevation = 0.dp,
         navigationIcon = {
             IconButton(onClick = onNavigationIconClick) {
