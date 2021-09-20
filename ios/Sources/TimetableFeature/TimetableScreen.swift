@@ -80,7 +80,7 @@ public struct TimetableScreen: View {
 private extension TimetableDetailScreen.ViewState {
     init?(state: TimetableState) {
         guard let detail = state.detail else { return nil }
-        timeline = detail
+        timetable = detail
     }
 }
 

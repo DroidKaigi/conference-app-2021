@@ -5,6 +5,9 @@
 
 // MARK: Timetable
 "TimetableScreen.Title" = "Timetable";
+"TimetableScreen.Detail.IntendedAudience" = "受講対象者 / Intended Audience";
+"TimetableScreen.Detail.Description" = "説明 / Description";
+"TimetableScreen.Detail.WatchThisVideo" = "Watch this Video";
 
 // MARK: Media
 "MediaScreen.Title" = "Media";
