@@ -37,7 +37,7 @@ public struct AboutDroidKaigiScreen: View {
 
                 List {
                     WithViewStore(store) { viewStore in
-                        ForEach(viewStore.aboutModels, id: \.self) { model in
+                        ForEach(AboutDroidKaigiModel.allCases, id: \.self) { model in
                             Button(action: {
                                 viewStore.send(.tap(model))
                             }, label: {

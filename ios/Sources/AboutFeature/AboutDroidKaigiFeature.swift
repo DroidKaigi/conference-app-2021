@@ -1,4 +1,5 @@
 import ComposableArchitecture
+import SwiftUI
 
 public enum AboutDroidKaigiModel: CaseIterable {
     case behaviorCode
@@ -7,7 +8,6 @@ public enum AboutDroidKaigiModel: CaseIterable {
 }
 
 public struct AboutDroidKaigiState: Equatable {
-    let aboutModels: [AboutDroidKaigiModel] = AboutDroidKaigiModel.allCases
 }
 
 public enum AboutDroidKaigiAction {
@@ -20,7 +20,20 @@ public struct AboutDroidKaigiEnvironment {
 
 public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaigiAction, AboutDroidKaigiEnvironment> { _, action, _ in
     switch action {
-    case .tap(_):
-        return .none
+    case .tap(let model):
+        switch model {
+        case .behaviorCode:
+            // TODO: add navigation
+            break
+        case .opensourceLicense:
+            if let url = URL(string: UIApplication.openSettingsURLString), UIApplication.shared.canOpenURL(url) {
+                UIApplication.shared.open(url, options: [:], completionHandler: nil)
+            }
+            break
+        case .privacyPolicy:
+            // TODO: add navigation
+            break
+        }
     }
+    return .none
 }
