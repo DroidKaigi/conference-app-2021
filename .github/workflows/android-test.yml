@@ -11,10 +11,8 @@ jobs:
     timeout-minutes: 30
     strategy:
       matrix:
-        # Currently, API 21, 23 have a issue
-        # https://github.com/DroidKaigi/conference-app-2021/issues/552
         # Currently, no API 30 virtual image
-        api-level: [26, 29]
+        api-level: [21, 23, 26, 29]
       fail-fast: false
     steps:
       - uses: actions/checkout@v2
