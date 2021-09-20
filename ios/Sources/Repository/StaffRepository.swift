@@ -18,21 +18,12 @@ public struct StaffRepository: StaffRepositoryProtocol, KMMRepositoryProtocol {
     }
 
     public func staffContents() -> AnyPublisher<[Model.Staff], KotlinError> {
-        Future<NSArray, KotlinError> { promise in
-            repository.staffContents()
-                .subscribe(scope: scopeProvider.scope) {
-                    promise(.success($0))
-                } onComplete: {
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-        }
-        .flatMap { staffs -> AnyPublisher<[Model.Staff], Never> in
-            guard let staffs = staffs as? [DroidKaigiMPP.Staff] else {
-                return Empty().eraseToAnyPublisher()
-            }
-            return Just(staffs.map(Model.Staff.init(from:))).eraseToAnyPublisher()
-        }
+        FlowWrapperPublisher(
+            flowWrapper: repository.staffContents(),
+            scopeProvider: scopeProvider
+        )
+        .compactMap { $0 as? [DroidKaigiMPP.Staff] }
+        .map { $0.map(Model.Staff.init(from:)) }
         .eraseToAnyPublisher()
     }
 }
