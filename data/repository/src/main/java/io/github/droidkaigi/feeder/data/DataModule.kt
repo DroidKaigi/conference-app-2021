@@ -9,6 +9,7 @@ import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.repository.StaffRepository
 import io.github.droidkaigi.feeder.repository.ThemeRepository
+import io.github.droidkaigi.feeder.repository.TimetableRepository
 
 @InstallIn(SingletonComponent::class)
 @Module
@@ -17,6 +18,12 @@ class DataModule {
     internal fun provideFeedApi(daggerApi: DaggerKtorFeedApi): FeedApi {
         return daggerApi
     }
+
+    @Provides
+    internal fun provideDroidKaigi2021Api(daggerApi: DaggerKtorDroidKaigi2021Api):
+        DroidKaigi2021Api {
+            return daggerApi
+        }
 
     @Provides
     internal fun provideStaffApi(daggerApi: DaggerKtorStaffApi): StaffApi {
@@ -47,6 +54,12 @@ class DataModule {
     internal fun provideFeedRepository(daggerRepository: DaggerFeedRepositoryImpl): FeedRepository {
         return daggerRepository
     }
+
+    @Provides
+    internal fun provideTimetableRepository(daggerRepository: DaggerTimetableRepositoryImpl):
+        TimetableRepository {
+            return daggerRepository
+        }
 
     @Provides
     internal fun provideStaffRepository(

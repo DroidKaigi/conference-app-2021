@@ -21,14 +21,14 @@ import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-fun fakeTimetableViewModel(errorFetchData: Boolean = false): FakeSessionViewModel {
-    return FakeSessionViewModel(errorFetchData)
+fun fakeTimetableViewModel(errorFetchData: Boolean = false): FakeTimetableViewModel {
+    return FakeTimetableViewModel(errorFetchData)
 }
 
-class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
+class FakeTimetableViewModel(val errorFetchData: Boolean) : TimetableViewModel {
 
-    private val effectChannel = Channel<SessionViewModel.Effect>(Channel.UNLIMITED)
-    override val effect: Flow<SessionViewModel.Effect> = effectChannel.receiveAsFlow()
+    private val effectChannel = Channel<TimetableViewModel.Effect>(Channel.UNLIMITED)
+    override val effect: Flow<TimetableViewModel.Effect> = effectChannel.receiveAsFlow()
 
     private val coroutineScope = CoroutineScope(
         object : CoroutineDispatcher() {
@@ -45,7 +45,7 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
         throw AppError.ApiException.ServerException(null)
     }
         .catch { error ->
-            effectChannel.send(SessionViewModel.Effect.ErrorMessage(error as AppError))
+            effectChannel.send(TimetableViewModel.Effect.ErrorMessage(error as AppError))
         }
         .stateIn(coroutineScope, SharingStarted.Lazily, fakeTimetableContents())
 
@@ -57,22 +57,22 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
 
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
-    override val state: StateFlow<SessionViewModel.State> =
+    override val state: StateFlow<TimetableViewModel.State> =
         combine(mTimetableContents, filters) { feedContents, _ ->
-            SessionViewModel.State(
+            TimetableViewModel.State(
                 timetableContents = feedContents,
             )
         }
-            .stateIn(coroutineScope, SharingStarted.Eagerly, SessionViewModel.State())
+            .stateIn(coroutineScope, SharingStarted.Eagerly, TimetableViewModel.State())
 
-    override fun event(event: SessionViewModel.Event) {
+    override fun event(event: TimetableViewModel.Event) {
         coroutineScope.launch {
             @Exhaustive
             when (event) {
-                is SessionViewModel.Event.ChangeFavoriteFilter -> {
+                is TimetableViewModel.Event.ChangeFavoriteFilter -> {
                     filters.value = event.filters
                 }
-                is SessionViewModel.Event.ToggleFavorite -> {
+                is TimetableViewModel.Event.ToggleFavorite -> {
                     val value = mTimetableContents.value
 //                    val newFavorites = if (!value.favorites.contains(event.feedItem.id)) {
 //                        value.favorites + event.feedItem.id
@@ -83,7 +83,7 @@ class FakeSessionViewModel(val errorFetchData: Boolean) : SessionViewModel {
 //                        favorites = newFavorites
 //                    )
                 }
-                is SessionViewModel.Event.ReloadContent -> {
+                is TimetableViewModel.Event.ReloadContent -> {
                     // Sorry, Currently not implemented
                 }
             }
