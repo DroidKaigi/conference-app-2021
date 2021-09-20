@@ -11,6 +11,18 @@ public struct TimetableState: Equatable {
         detail != nil
     }
 
+    public var selectedTypeItems: [TimetableItem] {
+        let jaCalendar = Calendar(identifier: .japanese)
+        let selectedDateComponents = selectedType.dateComponents
+        return timetableItems
+            .filter {
+                let month = jaCalendar.component(.month, from: $0.startsAt)
+                let day = jaCalendar.component(.day, from: $0.startsAt)
+                return selectedDateComponents.month == month
+                    && selectedDateComponents.day == day
+            }
+    }
+
     public init(
         timetableItems: [TimetableItem] = [],
         selectedType: SelectedType = .day1,

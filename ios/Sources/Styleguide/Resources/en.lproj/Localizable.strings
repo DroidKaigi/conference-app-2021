@@ -5,6 +5,11 @@
 
 // MARK: Timetable
 "TimetableScreen.Title" = "Timetable";
+"TimetableScreen.Card.Lang.Japanese" = "Japanese";
+"TimetableScreen.Card.Lang.English" = "English";
+"TimetableScreen.SelectedType.Day1" = "Day1";
+"TimetableScreen.SelectedType.Day2" = "Day2";
+"TimetableScreen.SelectedType.Day3" = "Day3";
 
 // MARK: Media
 "MediaScreen.Title" = "Media";

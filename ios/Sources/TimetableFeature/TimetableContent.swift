@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Model
+import Styleguide
 import SwiftUI
 
 public struct TimetableContentState: Equatable {
@@ -31,14 +32,37 @@ public struct TimetableContent: View {
         self.store = store
     }
 
+    private let dateFormatter: DateFormatter = {
+       let formatter = DateFormatter()
+        formatter.setLocalizedDateFormatFromTemplate("HH:mm")
+        return formatter
+    }()
+
     public var body: some View {
         WithViewStore(store) { viewStore in
-            Text("Timetable Content")
-                .onTapGesture {
-                    #if DEBUG
-                    viewStore.send(.tap(.mock()))
-                    #endif
+            ScrollView {
+                LazyVStack(spacing: .zero) {
+                    ForEach(viewStore.items) { item in
+                        HStack(alignment: .top, spacing: 16) {
+                            Text(dateFormatter.string(from: item.startsAt))
+                                .font(.caption)
+                                .foregroundColor(AssetColor.Base.secondary.color)
+                                .frame(width: 44)
+                            Divider()
+                                .frame(width: 2)
+                                .foregroundColor(AssetColor.Separate.contents.color)
+                            TimetableCard(item: item)
+                                .padding(.bottom, 16)
+                        }
+                    }
+                    .onTapGesture {
+                        #if DEBUG
+                        viewStore.send(.tap(.mock()))
+                        #endif
+                    }
                 }
+                .padding(.horizontal, 16)
+            }
         }
     }
 }
@@ -49,7 +73,16 @@ public struct TimetableContent_Previews: PreviewProvider {
         TimetableContent(
             store: .init(
                 initialState: TimetableContentState(items: [
-                    .mock()
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
+                    .mock(),
                 ]),
                 reducer: .empty,
                 environment: TimetableContentEnvironment()

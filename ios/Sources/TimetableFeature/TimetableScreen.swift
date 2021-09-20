@@ -23,7 +23,7 @@ public struct TimetableScreen: View {
     public var body: some View {
         NavigationView {
             WithViewStore(store) { viewStore in
-                ZStack {
+                ZStack(alignment: .top) {
                     AssetColor.Background.primary.color.ignoresSafeArea()
                     VStack {
                         Picker(
@@ -44,7 +44,7 @@ public struct TimetableScreen: View {
                             store: store.scope(
                                 state: { state in
                                     // TODO: Use specified day contents
-                                    return .init(items: state.timetableItems)
+                                    return .init(items: state.selectedTypeItems)
                                 },
                                 action: TimetableAction.content
                             )
@@ -70,25 +70,84 @@ public struct TimetableScreen: View {
 }
 
 #if DEBUG
+import Model
+
 public struct TimetableScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        TimetableScreen(
-            store: .init(
-                initialState: TimetableState(
-                    timetableItems: [
-                        .mock(),
-                        .mock(),
-                        .mock(),
-                        .mock(),
-                        .mock(),
-                        .mock(),
-                        .mock(),
-                    ]
-                ),
-                reducer: .empty,
-                environment: TimetableEnvironment()
-            )
-        )
+        let calendar = Calendar(identifier: .japanese)
+        let items: [TimetableItem] = [
+            .mock(
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 19,
+                        hour: 11,
+                        minute: 00
+                    )
+                )!
+            ),
+            .mock(
+                type: .special,
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 19,
+                        hour: 12,
+                        minute: 30
+                    )
+                )!
+            ),
+            .mock(
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 19,
+                        hour: 14,
+                        minute: 00
+                    )
+                )!
+            ),
+            .mock(
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 19,
+                        hour: 16,
+                        minute: 00
+                    )
+                )!
+            ),
+            .mock(
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 19,
+                        hour: 18,
+                        minute: 00
+                    )
+                )!
+            ),
+        ]
+        return ForEach(ColorScheme.allCases, id: \.hashValue) { colorScheme in
+            Group {
+                TimetableScreen(
+                    store: Store<TimetableState, TimetableAction>(
+                        initialState: TimetableState(
+                            timetableItems: items,
+                            selectedType: .day1
+                        ),
+                        reducer: timetableReducer,
+                        environment: TimetableEnvironment()
+                    )
+                )
+                .environment(\.colorScheme, colorScheme)
+            }
+        }
     }
 }
 #endif
