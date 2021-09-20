@@ -188,6 +188,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             return .none
         case .about:
             return .none
+        case .timetable:
+            return .none
         }
     }
 )

@@ -51,6 +51,10 @@ var package = Package(
             targets: ["Styleguide"]
         ),
         .library(
+            name: "TimetableFeature",
+            targets: ["TimetableFeature"]
+        ),
+        .library(
             name: "Utility",
             targets: ["Utility"]
         ),
