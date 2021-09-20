@@ -13,7 +13,7 @@ public struct TimetableItem: Equatable, Identifiable {
     public var speakers: [Speaker]
     public var startsAt: Date
     public var endsAt: Date
-    
+
     public init(
         id: String,
         type: TimetableItemType,
@@ -31,7 +31,7 @@ public struct TimetableItem: Equatable, Identifiable {
         self.startsAt = startsAt
         self.endsAt = endsAt
     }
-    
+
     // TODO: Convert from KMM Model
 }
 
@@ -40,9 +40,12 @@ public extension TimetableItem {
     static func mock(
         id: String = UUID().uuidString,
         type: TimetableItemType = .session,
-        title: MultiLangText = .init(enTitle: "Timetable Item", jaTitle: "タイムテーブルアイテム"),
+        title: MultiLangText = .init(
+            enTitle: "AndroidのKotlin Coroutinesの登場からrepeatOnLifecycleまでを流れるように説明したい",
+            jaTitle: "AndroidのKotlin Coroutinesの登場からrepeatOnLifecycleまでを流れるように説明したい"
+        ),
         category: String = "Beginner",
-        speakers: [Speaker] = [.mock()],
+        speakers: [Speaker] = [.mock(), .mock()],
         startsAt: Date = Date(timeIntervalSince1970: 0),
         endsAt: Date = Date(timeIntervalSince1970: 100)
     ) -> Self {
