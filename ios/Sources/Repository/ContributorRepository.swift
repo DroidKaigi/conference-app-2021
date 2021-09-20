@@ -18,21 +18,12 @@ public struct ContributorRepository: ContributorRepositoryProtocol, KMMRepositor
     }
 
     public func contributorContents() -> AnyPublisher<[Model.Contributor], KotlinError> {
-        Future<NSArray, KotlinError> { promise in
-            repository.contributorContents()
-                .subscribe(scope: scopeProvider.scope) {
-                    promise(.success($0))
-                } onComplete: {
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-        }
-        .flatMap { contributors -> AnyPublisher<[Model.Contributor], Never> in
-            guard let contributors = contributors as? [DroidKaigiMPP.Contributor] else {
-                return Empty().eraseToAnyPublisher()
-            }
-            return Just(contributors.map(Model.Contributor.init(from:))).eraseToAnyPublisher()
-        }
+        FlowWrapperPublisher(
+            flowWrapper: repository.contributorContents(),
+            scopeProvider: scopeProvider
+        )
+        .compactMap { $0 as? [DroidKaigiMPP.Contributor] }
+        .map { $0.map(Model.Contributor.init(from:)) }
         .eraseToAnyPublisher()
     }
 }

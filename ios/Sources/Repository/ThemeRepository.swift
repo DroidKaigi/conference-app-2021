@@ -19,26 +19,19 @@ public struct ThemeRepository: ThemeRepositoryProtocol, KMMRepositoryProtocol {
     }
 
     public func changeTheme(theme: Model.Theme) -> AnyPublisher<Void, KotlinError> {
-        Future<Void, KotlinError> { promise in
-            repository.changeTheme(theme: theme.kmmTheme)
-                .subscribe(scope: scopeProvider.scope) { _ in
-                    promise(.success(()))
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-        }
+        SuspendWrapperPublisher(
+            suspendWrapper: repository.changeTheme(theme: theme.kmmTheme),
+            scopeProvider: scopeProvider
+        )
+        .map { _ in }
         .eraseToAnyPublisher()
     }
 
     public func currentTheme() -> AnyPublisher<Model.Theme?, KotlinError> {
-        Future<DroidKaigiMPP.Theme?, KotlinError> { promise in
-            repository.theme().subscribe(scope: scopeProvider.scope) {
-                promise(.success($0))
-            } onComplete: {
-            } onFailure: {
-                promise(.failure(KotlinError.fetchFailed($0.description())))
-            }
-        }
+        OptionalFlowWrapperPublisher(
+            flowWrapper: repository.theme(),
+            scopeProvider: scopeProvider
+        )
         .map { $0.map(Model.Theme.from(_:)) }
         .eraseToAnyPublisher()
     }

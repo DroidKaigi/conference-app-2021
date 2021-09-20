@@ -18,15 +18,11 @@ public struct DeviceRepository: DeviceRepositoryProtocol, KMMRepositoryProtocol 
     }
 
     public func updateDeviceToken(deviceToken: String?) -> AnyPublisher<Void, KotlinError> {
-        Future<Void, KotlinError> { promise in
-            repository.updateDeviceToken(deviceToken: deviceToken)
-                .subscribe(scope: scopeProvider.scope) { _ in
-                    promise(.success(()))
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-
-        }
+        SuspendWrapperPublisher(
+            suspendWrapper: repository.updateDeviceToken(deviceToken: deviceToken),
+            scopeProvider: scopeProvider
+        )
+        .map { _ in }
         .eraseToAnyPublisher()
     }
 }
