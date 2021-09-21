@@ -1,8 +1,6 @@
-package io.github.droidkaigi.timetableer.data
+package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.TimetableContents
-import io.github.droidkaigi.feeder.data.DroidKaigi2021Api
-import io.github.droidkaigi.feeder.data.UserDataStore
 import io.github.droidkaigi.feeder.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
