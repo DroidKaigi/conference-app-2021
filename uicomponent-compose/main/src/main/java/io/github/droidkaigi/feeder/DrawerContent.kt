@@ -3,7 +3,6 @@ package io.github.droidkaigi.feeder
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -150,69 +149,75 @@ fun DrawerContent(
     currentRoute: String = DrawerContents.HOME.route,
     onNavigate: (contents: DrawerContents) -> Unit,
 ) {
-    Column {
-        Spacer(modifier = Modifier.height(52.dp))
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = "logo"
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = "DroidKaigi",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth()
-            )
+    LazyColumn {
+        item {
+            Spacer(modifier = Modifier.height(52.dp))
         }
-        Spacer(modifier = Modifier.height(20.dp))
-        Divider()
-        Spacer(modifier = Modifier.height(12.dp))
-        LazyColumn {
-            items(DrawerContents.Group.values()) { group ->
-                when (group) {
-                    DrawerContents.Group.NEWS -> {
-                        val newsContents = DrawerContents.values()
-                            .filter { content -> content.group == DrawerContents.Group.NEWS }
-                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Divider()
-                    }
-                    DrawerContents.Group.TIMETABLE2021 -> {
-                        val newsContents = DrawerContents.values()
-                            .filter { content ->
-                                content.group == DrawerContents.Group.TIMETABLE2021
-                            }
-                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Divider()
-                    }
-                    DrawerContents.Group.OTHER -> {
-                        val otherContents = DrawerContents.values()
-                            .filter { content -> content.group == DrawerContents.Group.OTHER }
-                        DrawerContentGroup(otherContents, currentRoute, onNavigate)
-                    }
+        item {
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo),
+                    contentDescription = "logo"
+                )
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = "DroidKaigi",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(20.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(12.dp))
+        }
+        items(DrawerContents.Group.values()) { group ->
+            when (group) {
+                DrawerContents.Group.NEWS -> {
+                    val newsContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.NEWS }
+                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+                }
+                DrawerContents.Group.TIMETABLE2021 -> {
+                    val newsContents = DrawerContents.values()
+                        .filter { content ->
+                            content.group == DrawerContents.Group.TIMETABLE2021
+                        }
+                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+                }
+                DrawerContents.Group.OTHER -> {
+                    val otherContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.OTHER }
+                    DrawerContentGroup(otherContents, currentRoute, onNavigate)
                 }
             }
         }
-        Spacer(modifier = Modifier.height(12.dp))
-        Divider()
-        Row(
-            horizontalArrangement = Arrangement.Center,
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = 16.dp)
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.banner_droidkaigi_2021),
-                contentDescription = stringResource(id = R.string.banner_droidkaigi_2021)
-            )
+        item {
+            Spacer(modifier = Modifier.height(12.dp))
+            Divider()
+            Row(
+                horizontalArrangement = Arrangement.Center,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = 16.dp)
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.banner_droidkaigi_2021),
+                    contentDescription = stringResource(id = R.string.banner_droidkaigi_2021)
+                )
+            }
         }
     }
 }
