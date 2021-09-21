@@ -51,6 +51,10 @@ var package = Package(
             targets: ["Styleguide"]
         ),
         .library(
+            name: "UIApplicationClient",
+            targets: ["UIApplicationClient"]
+        ),
+        .library(
             name: "Utility",
             targets: ["Utility"]
         ),
@@ -73,6 +77,7 @@ var package = Package(
             dependencies: [
                 .target(name: "Component"),
                 .target(name: "Styleguide"),
+                .target(name: "UIApplicationClient"),
                 .product(name: "Introspect", package: "Introspect"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
@@ -166,6 +171,10 @@ var package = Package(
                 .process("Image.xcassets"),
                 .process("Resources"),
             ]
+        ),
+        .target(
+            name: "UIApplicationClient",
+            dependencies: []
         ),
         .target(
             name: "Utility",
