@@ -35,7 +35,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
         val responseText = """{
   "sessions": [
     {
-      "id": "274c1d32-b975-4b9c-8423-13d9175f6d2a",
+      "id": "1",
       "title": {
         "ja": "ウェルカムトーク",
         "en": "Welcome Talk"
@@ -66,7 +66,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
       "noShow": false
     },
     {
-      "id": "155510",
+      "id": "2",
       "title": {
         "ja": "DroidKaigiのアプリのアーキテクチャ",
         "en": "DroidKaigi App Architecture"
@@ -97,7 +97,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
       "noShow": false
     },
     {
-      "id": "4c7f2d64-9abe-4a40-8825-568c8bf4f4ac",
+      "id": "3",
       "title": {
         "ja": "Closing",
         "en": "Closing"
