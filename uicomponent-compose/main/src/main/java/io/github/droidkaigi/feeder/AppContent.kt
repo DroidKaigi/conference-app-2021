@@ -170,7 +170,7 @@ fun AppContent(
                         actions.showChromeCustomTabs(contributor.url)
                     },
                     onStaffClick = { staff ->
-                        actions.showChromeCustomTabs(staff.url)
+                        actions.showChromeCustomTabs(staff.profileUrl)
                     },
                     onPrivacyPolicyClick = {
                         actions.showChromeCustomTabs(it)

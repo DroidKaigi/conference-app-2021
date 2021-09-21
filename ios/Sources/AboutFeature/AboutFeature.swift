@@ -47,7 +47,7 @@ public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { s
         state.selectedType = selectedType
         return .none
     case let .tapStaff(staff):
-        state.showingURL = URL(string: staff.urlString)
+        state.showingURL = URL(string: staff.profileURLString)
         return .none
     case let .tapContributor(contributor):
         state.showingURL = URL(string: contributor.urlString)
