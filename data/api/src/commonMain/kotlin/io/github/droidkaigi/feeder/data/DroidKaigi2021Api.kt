@@ -2,9 +2,10 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
-import io.github.droidkaigi.feeder.Speaker
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemList
+import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.SessionAllResponse
 import kotlinx.datetime.Instant
@@ -34,7 +35,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
         val responseText = """{
   "sessions": [
     {
-      "id": "274c1d32-b975-4b9c-8423-13d9175f6d2a",
+      "id": "1",
       "title": {
         "ja": "ウェルカムトーク",
         "en": "Welcome Talk"
@@ -65,7 +66,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
       "noShow": false
     },
     {
-      "id": "155510",
+      "id": "2",
       "title": {
         "ja": "DroidKaigiのアプリのアーキテクチャ",
         "en": "DroidKaigi App Architecture"
@@ -96,7 +97,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
       "noShow": false
     },
     {
-      "id": "4c7f2d64-9abe-4a40-8825-568c8bf4f4ac",
+      "id": "3",
       "title": {
         "ja": "Closing",
         "en": "Closing"
@@ -425,36 +426,40 @@ private fun String.toInstantAsJST(): Instant {
 
 internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
     val feedContents = this
-    val speakerIdToSpeaker: Map<String, Speaker> = feedContents.speakers!!
+    val speakerIdToSpeaker: Map<String, TimetableSpeaker> = feedContents.speakers!!
         .groupBy { it.id!! }
         .mapValues { (_, apiSpeakers) ->
             apiSpeakers.map { apiSpeaker ->
-                Speaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture!!)
+                TimetableSpeaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture)
             }.first()
         }
     return TimetableContents(
-        feedContents.sessions.map { apiSession ->
-            if (!apiSession.isServiceSession) {
-                TimetableItem.Session(
-                    title = MultiLangText(
-                        jaTitle = apiSession.title!!.ja!!,
-                        enTitle = apiSession.title.en!!,
-                    ),
-                    startsAt = apiSession.startsAt!!.toInstantAsJST(),
-                    endsAt = apiSession.endsAt!!.toInstantAsJST(),
-                    speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
-                )
-            } else {
-                TimetableItem.Special(
-                    title = MultiLangText(
-                        jaTitle = apiSession.title!!.ja!!,
-                        enTitle = apiSession.title.en!!,
-                    ),
-                    startsAt = apiSession.startsAt!!.toInstantAsJST(),
-                    endsAt = apiSession.endsAt!!.toInstantAsJST(),
-                    speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
-                )
+        TimetableItemList(
+            feedContents.sessions.map { apiSession ->
+                if (!apiSession.isServiceSession) {
+                    TimetableItem.Session(
+                        id = apiSession.id,
+                        title = MultiLangText(
+                            jaTitle = apiSession.title!!.ja!!,
+                            enTitle = apiSession.title.en!!,
+                        ),
+                        startsAt = apiSession.startsAt!!.toInstantAsJST(),
+                        endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                        speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
+                    )
+                } else {
+                    TimetableItem.Special(
+                        id = apiSession.id,
+                        title = MultiLangText(
+                            jaTitle = apiSession.title!!.ja!!,
+                            enTitle = apiSession.title.en!!,
+                        ),
+                        startsAt = apiSession.startsAt!!.toInstantAsJST(),
+                        endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                        speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
+                    )
+                }
             }
-        }
+        )
     )
 }

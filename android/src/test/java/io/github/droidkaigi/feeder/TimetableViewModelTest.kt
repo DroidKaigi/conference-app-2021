@@ -36,7 +36,7 @@ class TimetableViewModelTest(
 
         val firstContent = timetableViewModel.state.value.timetableContents.timetableItems
 
-        firstContent.size shouldBeGreaterThan 1
+        firstContent.timetableItems.size shouldBeGreaterThan 1
     }
 
     @Test
