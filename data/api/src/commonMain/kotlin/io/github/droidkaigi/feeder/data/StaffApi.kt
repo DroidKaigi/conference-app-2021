@@ -28,21 +28,21 @@ fun fakeStaffApi(error: AppError? = null): StaffApi = object : StaffApi {
   "status": "OK",
   "staff": [
     {
-      "id": "dbb2517a-f5fd-05e9-5559-05f519e39098",
-      "name": "Aaa Bbb",
-      "githubUrl": "https://github.com/droidkaigi_dummay_01",
+      "id": 10,
+      "username": "Aaa Bbb",
+      "profileUrl": "https://github.com/droidkaigi_dummay_01",
       "iconUrl": "https://via.placeholder.com/200?text=aaa"
     },
     {
-      "id": "0129201b-8e62-a515-447b-ed9036956fb0",
-      "name": "Ccc Ddd",
-      "githubUrl": null,
+      "id": 11,
+      "username": "Ccc Ddd",
+      "profileUrl": null,
       "iconUrl": "https://via.placeholder.com/200?text=ccc"
     },
     {
-      "id": "87894d81-40d6-b089-d99e-ca80960b4d22",
-      "name": "Eee Fff",
-      "githubUrl": "https://github.com/droidkaigi_dummay_03",
+      "id": 12,
+      "username": "Eee Fff",
+      "profileUrl": "https://github.com/droidkaigi_dummay_03",
       "iconUrl": "https://via.placeholder.com/200?text=eee"
     }
   ]

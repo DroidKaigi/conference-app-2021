@@ -11,22 +11,22 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.TextButton
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Home
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
-import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
-import io.github.droidkaigi.feeder.main.R
 
 // from JetNews
 
 @Composable
 fun DrawerButton(
-    painter: Painter,
+    imageVector: ImageVector,
     label: String,
     isSelected: Boolean,
     action: () -> Unit,
@@ -68,7 +68,7 @@ fun DrawerButton(
                     .fillMaxWidth()
             ) {
                 Image(
-                    painter = painter,
+                    imageVector = imageVector,
                     contentDescription = label,
                     colorFilter = ColorFilter.tint(iconColor),
                     alpha = imageAlpha,
@@ -91,7 +91,7 @@ fun DrawerButton(
 private fun PreviewDrawerButton() {
     ConferenceAppFeederTheme {
         DrawerButton(
-            painter = painterResource(id = R.drawable.ic_baseline_home_24),
+            imageVector = Icons.Filled.Home,
             label = "HOME",
             isSelected = true,
             action = {}

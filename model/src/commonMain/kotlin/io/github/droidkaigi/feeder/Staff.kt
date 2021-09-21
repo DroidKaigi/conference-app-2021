@@ -1,23 +1,23 @@
 package io.github.droidkaigi.feeder
 
 class Staff(
-    val id: String,
-    val name: String,
-    val url: String,
-    val image: String,
+    val id: Int,
+    val username: String,
+    val profileUrl: String,
+    val iconUrl: String,
 )
 
 fun fakeStaffs() = listOf(
     Staff(
-        id = "1.5",
-        name = "Cupcake",
-        url = "https://developer.android.com/",
-        image = "https://via.placeholder.com/150",
+        id = 15,
+        username = "Cupcake",
+        profileUrl = "https://developer.android.com/",
+        iconUrl = "https://via.placeholder.com/150",
     ),
     Staff(
-        id = "1.6",
-        name = "Doughnut",
-        url = "https://developer.android.com/",
-        image = "https://via.placeholder.com/150",
+        id = 16,
+        username = "Doughnut",
+        profileUrl = "https://developer.android.com/",
+        iconUrl = "https://via.placeholder.com/150",
     )
 )
