@@ -13,7 +13,7 @@ jobs:
     steps:
       - id: set-xcode-path
         run: |
-          xcode_version='12.4' 
+          xcode_version='13.0'
           xcode_path="/Applications/Xcode_${xcode_version}.app"
           echo "::set-output name=xcodePath::$xcode_path"
       - id: set-java-version
