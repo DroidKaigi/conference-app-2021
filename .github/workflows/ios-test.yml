@@ -12,11 +12,13 @@ jobs:
       javaVersion: ${{ steps.set-java-version.outputs.javaVersion }}
     steps:
       - id: set-xcode-path
+        name: Set Xcode path
         run: |
-          xcode_version='13.0'
+          xcode_version='12.5'
           xcode_path="/Applications/Xcode_${xcode_version}.app"
           echo "::set-output name=xcodePath::$xcode_path"
       - id: set-java-version
+        name: Set Java version
         run: |
           java_version='11'
           echo "::set-output name=javaVersion::$java_version"
