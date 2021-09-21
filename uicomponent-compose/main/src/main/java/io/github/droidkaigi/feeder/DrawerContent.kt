@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,6 +14,16 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Divider
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.Android
+import androidx.compose.material.icons.filled.Face
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.MicNone
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.TextSnippet
+import androidx.compose.material.icons.filled.Videocam
+import androidx.compose.material.icons.outlined.People
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +32,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -35,62 +45,61 @@ import io.github.droidkaigi.feeder.timetable2021.TimetableTab
 
 enum class DrawerContents(
     val group: Group,
-    @DrawableRes
-    val imageResId: Int,
+    val imageVector: ImageVector,
     val label: String,
     val route: String,
 ) {
     HOME(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_home_24,
+        imageVector = Icons.Filled.Home,
         label = "HOME",
         route = "feed/${FeedTab.Home.routePath}"
     ),
     BLOG(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_text_snippet_24,
+        imageVector = Icons.Filled.TextSnippet,
         label = "BLOG",
         route = "feed/${FeedTab.FilteredFeed.Blog.routePath}"
     ),
     VIDEO(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_videocam_24,
+        imageVector = Icons.Filled.Videocam,
         label = "VIDEO",
         route = "feed/${FeedTab.FilteredFeed.Video.routePath}"
     ),
     PODCAST(
         group = Group.NEWS,
-        imageResId = R.drawable.ic_baseline_mic_none_24,
+        imageVector = Icons.Filled.MicNone,
         label = "PODCAST",
         route = "feed/${FeedTab.FilteredFeed.Podcast.routePath}"
     ),
     TIMETABLE(
         group = Group.TIMETABLE2021,
-        imageResId = R.drawable.ic_baseline_access_time_24,
+        imageVector = Icons.Filled.AccessTime,
         label = "TIME TABLE",
         route = "timetable/${OtherTab.AboutThisApp.routePath}"
     ),
     ABOUT_DROIDKAIGI(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_android_24,
+        imageVector = Icons.Filled.Android,
         label = "ABOUT",
         route = "other/${OtherTab.AboutThisApp.routePath}"
     ),
     CONTRIBUTOR(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_outline_people_24,
+        imageVector = Icons.Outlined.People,
         label = "CONTRIBUTOR",
         route = "other/${OtherTab.Contributor.routePath}"
     ),
     STAFF(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_face_24,
+        imageVector = Icons.Filled.Face,
         label = "STAFF",
         route = "other/${OtherTab.Staff.routePath}"
     ),
     SETTING(
         group = Group.OTHER,
-        imageResId = R.drawable.ic_baseline_settings_24,
+        imageVector = Icons.Filled.Settings,
         label = "SETTING",
         route = "other/${OtherTab.Settings.routePath}",
     ),
@@ -209,9 +218,10 @@ private fun DrawerContentGroup(
     currentRoute: String,
     onNavigate: (contents: DrawerContents) -> Unit,
 ) {
+
     for (content in groupContents) {
         DrawerButton(
-            painter = painterResource(id = content.imageResId),
+            imageVector = content.imageVector,
             label = content.label,
             isSelected = content.route == currentRoute,
             {
