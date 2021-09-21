@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 data class Contributor(
-    val id: String,
+    val id: Int,
     val name: String,
     val url: String,
     val image: String
@@ -9,13 +9,13 @@ data class Contributor(
 
 fun fakeContributors() = listOf(
     Contributor(
-        id = "1",
+        id = 1,
         name = "Pie",
         url = "https://developer.android.com/",
         image = "https://via.placeholder.com/150",
     ),
     Contributor(
-        id = "2",
+        id = 2,
         name = "Oreo",
         url = "https://developer.android.com/",
         image = "https://via.placeholder.com/150",
