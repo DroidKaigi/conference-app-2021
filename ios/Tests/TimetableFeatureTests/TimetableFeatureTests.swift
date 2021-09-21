@@ -18,4 +18,8 @@ final class TimetableFeatureTests: XCTestCase {
     func testTimetableDetailScreen() {
         assertPreviewScreenSnapshot(TimetableDetailScreen_Previews.self)
     }
+    
+    func testTimetableCard() {
+        assertPreviewSnapshot(TimetableCard_Previews.self)
+    }
 }

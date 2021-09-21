@@ -68,6 +68,19 @@ public struct TimetableScreen: View {
     }
 }
 
+private extension SelectedType {
+    var title: String {
+        switch self {
+        case .day1:
+            return L10n.TimetableScreen.SelectedType.day1
+        case .day2:
+            return L10n.TimetableScreen.SelectedType.day2
+        case .day3:
+            return L10n.TimetableScreen.SelectedType.day3
+        }
+    }
+}
+
 #if DEBUG
 import Model
 
@@ -126,6 +139,28 @@ public struct TimetableScreen_Previews: PreviewProvider {
                         year: 2021,
                         month: 10,
                         day: 19,
+                        hour: 18,
+                        minute: 00
+                    )
+                )!
+            ),
+            .mock(
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 20,
+                        hour: 16,
+                        minute: 00
+                    )
+                )!
+            ),
+            .mock(
+                startsAt: calendar.date(
+                    from: DateComponents(
+                        year: 2021,
+                        month: 10,
+                        day: 21,
                         hour: 18,
                         minute: 00
                     )

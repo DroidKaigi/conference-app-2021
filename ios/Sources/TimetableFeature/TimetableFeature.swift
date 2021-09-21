@@ -52,8 +52,6 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
     case let .content(.tap(item)):
         state.detail = item
         return .none
-    case .content:
-        return .none
     case .hideDetail:
         state.detail = nil
         return .none
