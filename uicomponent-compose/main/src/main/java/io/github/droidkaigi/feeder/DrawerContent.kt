@@ -216,9 +216,7 @@ fun DrawerContent(
             Divider()
             Row(
                 horizontalArrangement = Arrangement.Start,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(start = 24.dp, top = 17.dp, bottom = 26.dp)
+                modifier = Modifier.padding(start = 24.dp, top = 17.dp, bottom = 26.dp)
             ) {
                 Image(
                     modifier = Modifier.clickable {
