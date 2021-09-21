@@ -2,6 +2,7 @@ import Component
 import ComposableArchitecture
 import SwiftUI
 import Styleguide
+import UIApplicationClient
 
 public struct AboutScreen: View {
 
@@ -96,7 +97,15 @@ public struct AboutScreen: View {
                                     case .url(let url):
                                         WebView(url: url)
                                     case .aboutDroidKaigi:
-                                        AboutDroidKaigiScreen()
+                                        AboutDroidKaigiScreen(
+                                            store: .init(
+                                                initialState: .init(),
+                                                reducer: aboutDroidKaigiReducer,
+                                                environment: AboutDroidKaigiEnvironment(
+                                                    applicationClient: UIApplicationClient()
+                                                )
+                                            )
+                                        )
                                     }
                                 }
                             }

@@ -55,6 +55,10 @@ var package = Package(
             targets: ["TimetableFeature"]
         ),
         .library(
+            name: "UIApplicationClient",
+            targets: ["UIApplicationClient"]
+        ),
+        .library(
             name: "Utility",
             targets: ["Utility"]
         ),
@@ -78,6 +82,7 @@ var package = Package(
                 .target(name: "Component"),
                 .target(name: "Styleguide"),
                 .target(name: "Repository"),
+                .target(name: "UIApplicationClient"),
                 .product(name: "Introspect", package: "Introspect"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
@@ -181,6 +186,10 @@ var package = Package(
                 .target(name: "Styleguide"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
+        ),
+        .target(
+            name: "UIApplicationClient",
+            dependencies: []
         ),
         .target(
             name: "Utility",
