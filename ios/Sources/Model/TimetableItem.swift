@@ -45,7 +45,7 @@ public struct TimetableItem: Equatable, Identifiable {
                 lang: .ja,
                 title: MultiLangText(from: session.title),
                 category: "",
-                speakers: session.speakers.map(Speaker(from:)),
+                speakers: session.speakers.map(Speaker.init(from:)),
                 startsAt: session.startsAt.toNSDate(),
                 endsAt: session.endsAt.toNSDate()
             )
@@ -56,7 +56,7 @@ public struct TimetableItem: Equatable, Identifiable {
                 lang: .ja,
                 title: MultiLangText(from: special.title),
                 category: "",
-                speakers: special.speakers.map(Speaker(from:)),
+                speakers: special.speakers.map(Speaker.init(from:)),
                 startsAt: special.startsAt.toNSDate(),
                 endsAt: special.endsAt.toNSDate()
             )

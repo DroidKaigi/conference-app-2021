@@ -23,7 +23,7 @@ public struct Speaker: Equatable, Identifiable {
     
     public init(from model: DroidKaigiMPP.TimetableSpeaker) {
         self.name = model.name
-        self.iconURLString = model.iconUrl
+        self.iconURLString = model.iconUrl ?? ""
     }
 }
 
