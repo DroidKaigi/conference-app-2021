@@ -9,7 +9,6 @@ import io.github.droidkaigi.feeder.feed.provideFmPlayerViewModelFactory
 import io.github.droidkaigi.feeder.provideAppViewModelFactory
 import io.github.droidkaigi.feeder.setting.provideSettingViewModelFactory
 import io.github.droidkaigi.feeder.staff.provideStaffViewModelFactory
-import io.github.droidkaigi.feeder.timetable2021.fakeTimetableViewModel
 import io.github.droidkaigi.feeder.timetable2021.provideTimetableViewModelFactory
 
 @Composable

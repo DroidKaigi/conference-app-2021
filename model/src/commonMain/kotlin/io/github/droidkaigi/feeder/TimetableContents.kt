@@ -6,9 +6,7 @@ import kotlinx.datetime.toInstant
 
 data class TimetableContents(
     val timetableItems: TimetableItemList = TimetableItemList(),
-) {
-
-}
+)
 
 fun TimetableContents?.orEmptyContents(): TimetableContents = this ?: TimetableContents()
 
@@ -17,7 +15,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
         listOf(
             TimetableItem.Special(
                 id = "1",
-                title =MultiLangText("ウェルカムトーク", "Welcome Talk"),
+                title = MultiLangText("ウェルカムトーク", "Welcome Talk"),
                 startsAt = LocalDateTime.parse("2021-10-20T10:00:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 endsAt = LocalDateTime.parse("2021-10-20T10:20:00")

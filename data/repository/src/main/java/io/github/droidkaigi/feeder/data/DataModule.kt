@@ -59,8 +59,8 @@ class DataModule {
     @Provides
     internal fun provideTimetableRepository(daggerRepository: DaggerTimetableRepositoryImpl):
         TimetableRepository {
-        return daggerRepository
-    }
+            return daggerRepository
+        }
 
     @Provides
     internal fun provideStaffRepository(
