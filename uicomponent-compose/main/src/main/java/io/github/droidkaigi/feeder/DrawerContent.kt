@@ -182,8 +182,6 @@ fun DrawerContent(
                     modifier = Modifier.fillMaxWidth()
                 )
             }
-        }
-        item {
             Spacer(modifier = Modifier.height(20.dp))
             Divider()
             Spacer(modifier = Modifier.height(12.dp))
