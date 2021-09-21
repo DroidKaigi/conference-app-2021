@@ -43,20 +43,24 @@ public struct TimetableItem: Equatable, Identifiable {
                 id: UUID().uuidString,
                 type: .session,
                 lang: .ja,
-                title: MultiLangText(from: model.title),
+                title: MultiLangText(from: session.title),
                 category: "",
-                speakers: session.speakers.map(Speaker.init(from:)),
+                speakers: session.speakers.map {
+                    Model.Speaker(from: $0)
+                },
                 startsAt: session.startsAt.toNSDate(),
                 endsAt: session.endsAt.toNSDate()
             )
         case let special as DroidKaigiMPP.TimetableItem.Special:
             self.init(
                 id: UUID().uuidString,
-                type: .session,
+                type: .special,
                 lang: .ja,
-                title: MultiLangText(from: model.title),
+                title: MultiLangText(from: special.title),
                 category: "",
-                speakers: special.speakers.map(Speaker.init(from:)),
+                speakers: special.speakers.map {
+                    Model.Speaker(from: $0)
+                },
                 startsAt: special.startsAt.toNSDate(),
                 endsAt: special.endsAt.toNSDate()
             )
