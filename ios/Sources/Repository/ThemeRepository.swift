@@ -23,6 +23,7 @@ public struct ThemeRepository: ThemeRepositoryProtocol, KMMRepositoryProtocol {
             suspendWrapper: repository.changeTheme(theme: theme.kmmTheme),
             scopeProvider: scopeProvider
         )
+        .first()
         .map { _ in }
         .eraseToAnyPublisher()
     }
@@ -32,6 +33,7 @@ public struct ThemeRepository: ThemeRepositoryProtocol, KMMRepositoryProtocol {
             flowWrapper: repository.theme(),
             scopeProvider: scopeProvider
         )
+        .first()
         .map { $0.map(Model.Theme.from(_:)) }
         .eraseToAnyPublisher()
     }

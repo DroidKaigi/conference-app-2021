@@ -106,8 +106,10 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     timetableReducer.pullback(
         state: \.timetableState,
         action: /AppTabAction.timetable,
-        environment: { _ in
-            .init()
+        environment: { environment in
+            .init(
+                timetableRepository: environment.timetableRepository
+            )
         }
     ),
     mediaReducer.pullback(

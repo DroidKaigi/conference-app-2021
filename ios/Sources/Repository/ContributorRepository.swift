@@ -22,6 +22,7 @@ public struct ContributorRepository: ContributorRepositoryProtocol, KMMRepositor
             flowWrapper: repository.contributorContents(),
             scopeProvider: scopeProvider
         )
+        .first()
         .compactMap { $0 as? [DroidKaigiMPP.Contributor] }
         .map { $0.map(Model.Contributor.init(from:)) }
         .eraseToAnyPublisher()

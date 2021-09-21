@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import Model
+import Repository
 
 public struct TimetableState: Equatable {
     public var timetableItems: [TimetableItem]
@@ -35,17 +36,35 @@ public struct TimetableState: Equatable {
 }
 
 public enum TimetableAction {
+    case refresh
+    case refreshResponse(Result<[TimetableItem], KotlinError>)
     case selectedPicker(SelectedType)
     case content(TimetableContentAction)
     case hideDetail
 }
 
 public struct TimetableEnvironment {
-    public init() {}
+    public let timetableRepository: TimetableRepositoryProtocol
+
+    public init(
+        timetableRepository: TimetableRepositoryProtocol
+    ) {
+        self.timetableRepository = timetableRepository
+    }
 }
 
-public let timetableReducer = Reducer<TimetableState, TimetableAction, TimetableEnvironment> { state, action, _ in
+public let timetableReducer = Reducer<TimetableState, TimetableAction, TimetableEnvironment> { state, action, environment in
     switch action {
+    case .refresh:
+        return environment.timetableRepository.timetableContents()
+            .catchToEffect()
+            .map(TimetableAction.refreshResponse)
+    case let .refreshResponse(.success(items)):
+        state.timetableItems = items
+        return .none
+    case let .refreshResponse(.failure(error)):
+        print(error.localizedDescription)
+        return .none
     case let .selectedPicker(type):
         state.selectedType = type
         return .none

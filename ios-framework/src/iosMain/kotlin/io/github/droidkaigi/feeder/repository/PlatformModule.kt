@@ -19,6 +19,10 @@ val platformModule = module {
         IosStaffRepositoryImpl(get())
     }
 
+    single<IosTimetableRepository> {
+        IosTimetableRepositoryImpl(get())
+    }
+
     single<IosThemeRepository> {
         IosThemeRepositoryImpl(get())
     }

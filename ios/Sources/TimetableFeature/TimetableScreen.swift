@@ -63,6 +63,9 @@ public struct TimetableScreen: View {
                         EmptyView()
                     }
                 )
+                .onAppear {
+                    viewStore.send(.refresh)
+                }
             }
         }
     }
@@ -83,6 +86,7 @@ private extension SelectedType {
 
 #if DEBUG
 import Model
+import Repository
 
 public struct TimetableScreen_Previews: PreviewProvider {
     public static var previews: some View {
@@ -176,7 +180,9 @@ public struct TimetableScreen_Previews: PreviewProvider {
                             selectedType: .day1
                         ),
                         reducer: timetableReducer,
-                        environment: TimetableEnvironment()
+                        environment: TimetableEnvironment(
+                            timetableRepository: TimetableRepositoryMock()
+                        )
                     )
                 )
                 .environment(\.colorScheme, colorScheme)

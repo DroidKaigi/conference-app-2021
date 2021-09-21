@@ -14,7 +14,7 @@ public struct TimetableItem: Equatable, Identifiable {
     public var speakers: [Speaker]
     public var startsAt: Date
     public var endsAt: Date
-    
+
     public init(
         id: String,
         type: TimetableItemType,
@@ -34,8 +34,37 @@ public struct TimetableItem: Equatable, Identifiable {
         self.startsAt = startsAt
         self.endsAt = endsAt
     }
-    
-    // TODO: Convert from KMM Model
+
+    // lang and category parameter is needed in KMM Model
+    public init?(from model: DroidKaigiMPP.TimetableItem) {
+        switch model {
+        case let session as DroidKaigiMPP.TimetableItem.Session:
+            self.init(
+                id: UUID().uuidString,
+                type: .session,
+                lang: .ja,
+                title: MultiLangText(from: model.title),
+                category: "",
+                speakers: session.speakers.map(Speaker.init(from:)),
+                startsAt: session.startsAt.toNSDate(),
+                endsAt: session.endsAt.toNSDate()
+            )
+        case let special as DroidKaigiMPP.TimetableItem.Special:
+            self.init(
+                id: UUID().uuidString,
+                type: .session,
+                lang: .ja,
+                title: MultiLangText(from: model.title),
+                category: "",
+                speakers: special.speakers.map(Speaker.init(from:)),
+                startsAt: special.startsAt.toNSDate(),
+                endsAt: special.endsAt.toNSDate()
+            )
+        default:
+            break
+        }
+        return nil
+    }
 }
 
 #if DEBUG

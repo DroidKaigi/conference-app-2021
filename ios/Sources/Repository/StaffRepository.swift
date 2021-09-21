@@ -22,6 +22,7 @@ public struct StaffRepository: StaffRepositoryProtocol, KMMRepositoryProtocol {
             flowWrapper: repository.staffContents(),
             scopeProvider: scopeProvider
         )
+        .first()
         .compactMap { $0 as? [DroidKaigiMPP.Staff] }
         .map { $0.map(Model.Staff.init(from:)) }
         .eraseToAnyPublisher()

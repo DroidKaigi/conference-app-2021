@@ -36,6 +36,7 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
                     scopeProvider: scopeProvider
                 )
             }
+            .first()
             .map([FeedContent].init(from:))
             .eraseToAnyPublisher()
     }
@@ -45,6 +46,7 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
             suspendWrapper: repository.addFavorite(id: id),
             scopeProvider: scopeProvider
         )
+        .first()
         .map { _ in }
         .eraseToAnyPublisher()
     }
@@ -54,6 +56,7 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
             suspendWrapper: repository.removeFavorite(id: id),
             scopeProvider: scopeProvider
         )
+        .first()
         .map { _ in }
         .eraseToAnyPublisher()
     }
