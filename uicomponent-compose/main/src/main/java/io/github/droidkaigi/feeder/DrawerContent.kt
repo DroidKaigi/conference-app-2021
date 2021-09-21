@@ -163,8 +163,6 @@ fun DrawerContent(
     LazyColumn(modifier = Modifier.navigationBarsPadding()) {
         item {
             Spacer(modifier = Modifier.height(52.dp))
-        }
-        item {
             Row(
                 horizontalArrangement = Arrangement.Start,
                 verticalAlignment = Alignment.CenterVertically,
