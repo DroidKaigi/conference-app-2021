@@ -36,7 +36,6 @@ public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaig
                 .openSettings()
                 .catchToEffect()
                 .map(AboutDroidKaigiAction.resultNavigation)
-            
         case .privacyPolicy:
             // TODO: add navigation
             break

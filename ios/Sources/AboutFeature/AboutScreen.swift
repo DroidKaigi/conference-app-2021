@@ -2,6 +2,7 @@ import Component
 import ComposableArchitecture
 import SwiftUI
 import Styleguide
+import UIApplicationClient
 
 public struct AboutScreen: View {
 
@@ -104,7 +105,7 @@ public struct AboutScreen: View {
                                 store: .init(
                                     initialState: .init(),
                                     reducer: aboutDroidKaigiReducer,
-                                    environment: .init()
+                                    environment: .init(applicationClient: UIApplicationClient())
                                 )
                             )
                         }
