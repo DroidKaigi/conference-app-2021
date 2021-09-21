@@ -10,8 +10,7 @@ data class ContributorsResponse(
 
 @Serializable
 data class ContributorResponse(
-    val id: String,
-    val githubUsername: String,
-    val githubUserId: Long,
+    val id: Int,
+    val username: String,
     val iconUrl: String
 )

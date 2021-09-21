@@ -137,7 +137,7 @@ private extension AboutScreen {
                     .foregroundColor(.white)
             }
             .padding(16)
-            .background(AssetColor.primary.color)
+            .background(AssetColor.dark.color)
             .cornerRadius(6)
             .onTapGesture(perform: tap)
             .padding(16)

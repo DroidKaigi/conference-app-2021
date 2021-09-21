@@ -1,0 +1,70 @@
+import io.github.droidkaigi.feeder.Dep
+import io.github.droidkaigi.feeder.Versions
+// TODO: make this library Kotlin MPP
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            url 'https://jitpack.io'
+        }
+    }
+    dependencies {
+        classpath 'com.github.takahirom:decomposer:main-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'com.android.library'
+    id 'kotlin-android'
+    id 'app.cash.exhaustive'
+}
+apply plugin: 'com.github.takahirom.decomposer'
+
+apply from: rootProject.file("gradle/android.gradle")
+apply from: rootProject.file("gradle/compose.gradle")
+
+android {
+    compileOptions {
+        coreLibraryDesugaringEnabled true // need for test. https://github.com/DroidKaigi/conference-app-2021/issues/373
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+}
+
+dependencies {
+    api projects.uicomponentCompose.core
+    api projects.model
+
+    // Java 8+ API desugaring support
+    coreLibraryDesugaring Dep.desugarJdkLibs
+
+    implementation Dep.Jetpack.appcompat
+    implementation Dep.Accompanist.coil
+    implementation Dep.Accompanist.insets
+    implementation Dep.Accompanist.pager
+    implementation Dep.Accompanist.pagerIndicators
+
+    implementation (Dep.Coroutines.core) {
+        version {
+            strictly Versions.coroutines
+        }
+    }
+
+    // Write here to get from JetNews
+    // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
+    implementation Dep.Compose.navigation
+    implementation Dep.Compose.runtime
+    implementation Dep.Compose.livedata
+    implementation Dep.Compose.foundation
+    implementation Dep.Compose.layout
+    implementation Dep.Compose.ui
+    implementation Dep.Compose.tooling
+    implementation Dep.Compose.material
+    implementation Dep.Compose.iconsExtended
+    implementation Dep.Compose.animation
+    implementation Dep.Compose.constraintLayout
+
+    // Android
+    implementation Dep.Jetpack.browser
+    implementation Dep.playServicesOssLicenses
+}

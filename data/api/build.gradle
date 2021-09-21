@@ -52,6 +52,8 @@ kotlin {
             implementation Dep.Coroutines.core
 
             implementation Dep.Serialization.core
+
+            api Dep.datetime
         }
         commonTest.dependencies {
             implementation Dep.KotlinTest.common

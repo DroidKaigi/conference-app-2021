@@ -15,15 +15,9 @@ public struct HomeScreen: View {
     public var body: some View {
         NavigationView {
             InlineTitleNavigationBarScrollView {
-                ZStack(alignment: .top) {
-                    AssetColor.primary.color
-                        .frame(width: nil, height: 200)
-                        .clipShape(CutCornerRectangle(targetCorners: [.topLeft], radius: 42))
                     WithViewStore(store) { viewStore in
                         VStack(alignment: .trailing, spacing: 0) {
                             Spacer(minLength: 16)
-                            MessageBar(title: viewStore.message)
-                                .padding(.trailing, 16)
                             if let topic = viewStore.topic {
                                 LargeCard(
                                     content: topic,
@@ -53,7 +47,6 @@ public struct HomeScreen: View {
                             }
                         }
                         .separatorStyle(ThickSeparatorStyle())
-                    }
                 }
             }
             .background(AssetColor.Background.primary.color.ignoresSafeArea())

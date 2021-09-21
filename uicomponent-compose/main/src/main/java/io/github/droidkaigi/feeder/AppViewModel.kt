@@ -26,11 +26,17 @@ interface AppViewModel :
     override fun event(event: Event)
 }
 
-private val LocalAppViewModel = compositionLocalOf<AppViewModel> {
-    error("not LocalDroidKaigiAppViewModel provided")
-}
+private val LocalAppViewModelFactory =
+    compositionLocalOf<@Composable () -> AppViewModel> {
+        {
+            error("not LocalAppViewModelFactory provided")
+        }
+    }
 
-fun appViewModelProviderValue(viewModel: AppViewModel) = LocalAppViewModel provides viewModel
+fun provideAppViewModelFactory(viewModelFactory: @Composable () -> AppViewModel) =
+    LocalAppViewModelFactory provides viewModelFactory
 
 @Composable
-fun appViewModel() = LocalAppViewModel.current
+fun appViewModel(): AppViewModel {
+    return LocalAppViewModelFactory.current()
+}

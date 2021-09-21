@@ -15,7 +15,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:7.1.0-alpha05'
+        classpath 'com.android.tools.build:gradle:7.1.0-alpha12'
         classpath Dep.Kotlin.bom
         classpath Dep.Kotlin.plugin
         classpath Dep.Kotlin.stdlibJdk8
@@ -69,6 +69,24 @@ allprojects {
 
             ktlint("0.39.0")
                     .userData([android: "true", experimental: "true"])
+        }
+    }
+
+    // FIXME: opt-on does not working in Android Studio
+    def compilerArgs = [
+            "-Xopt-in=kotlin.contracts.ExperimentalContracts",
+            "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi",
+            "-Xopt-in=androidx.compose.foundation.ExperimentalFoundationApi",
+            "-Xopt-in=com.google.accompanist.pager.ExperimentalPagerApi",
+            "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi",
+            "-Xopt-in=kotlin.RequiresOptIn",
+    ]
+    tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
+        kotlinOptions {
+            jvmTarget = "1.8"
+            compilerArgs.forEach { compilerArg ->
+                freeCompilerArgs += compilerArg
+            }
         }
     }
 }

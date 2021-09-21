@@ -23,7 +23,7 @@ public struct AboutDroidKaigiScreen: View {
 
                         AssetImage.logoTitle.image
                             .resizable()
-                            .aspectRatio(262/44, contentMode: .fit)
+                            .frame(width: 196, height: 40)
                             .padding(.horizontal, 24)
                     }
 

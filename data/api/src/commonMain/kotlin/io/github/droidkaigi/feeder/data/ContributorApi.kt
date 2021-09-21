@@ -24,15 +24,13 @@ fun fakeContributorApi(error: AppError? = null): ContributorApi = object : Contr
                 "status" : "OK",
                 "contributors" : [
                     {
-                        "id" : "8e885b7b-6eaa-0c8f-0e1c-10cfa78c98fa",
-                        "githubUsername" : "takahirom",
-                        "githubUserId" : 1386930,
+                        "id" : 1,
+                        "username" : "takahirom",
                         "iconUrl" : "https://avatars2.githubusercontent.com/u/1386930?v=4"
                     },
                     {
-                        "id" : "fec7560f-1e43-4e25-bce9-a64fa00e01bd",
-                        "githubUsername" : "mhidaka",
-                        "githubUserId" : 322019,
+                        "id" : 2,
+                        "username" : "mhidaka",
                         "iconUrl" : "https://avatars2.githubusercontent.com/u/322019?v=4"
                     }
                 ]

@@ -30,12 +30,15 @@ interface SettingViewModel :
     override fun event(event: Event)
 }
 
-private val LocalSettingViewModel = compositionLocalOf<SettingViewModel> {
-    error("not LocalSettingViewModel provided")
-}
+private val LocalSettingViewModelFactory =
+    compositionLocalOf<@Composable () -> SettingViewModel> {
+        {
+            error("not LocalSettingViewModelFactory provided")
+        }
+    }
 
-fun settingViewModelProviderValue(viewModel: SettingViewModel) =
-    LocalSettingViewModel provides viewModel
+fun provideSettingViewModelFactory(viewModelFactory: @Composable () -> SettingViewModel) =
+    LocalSettingViewModelFactory provides viewModelFactory
 
 @Composable
-fun settingViewModel() = LocalSettingViewModel.current
+fun settingViewModel() = LocalSettingViewModelFactory.current()

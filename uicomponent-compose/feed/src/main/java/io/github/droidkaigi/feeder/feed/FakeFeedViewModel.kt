@@ -49,7 +49,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
         }
         .stateIn(coroutineScope, SharingStarted.Lazily, fakeFeedContents())
 
-    private val mFeedContents: StateFlow<FeedContents> = if (errorFetchData) {
+    private val feedContents: StateFlow<FeedContents> = if (errorFetchData) {
         errorFeedContents
     } else {
         mutableFeedContents
@@ -58,7 +58,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<FeedViewModel.State> =
-        combine(mFeedContents, filters) { feedContents, filters ->
+        combine(feedContents, filters) { feedContents, filters ->
             val filteredFeed = feedContents.filtered(filters)
             FeedViewModel.State(
                 filters = filters,
@@ -75,7 +75,7 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                     filters.value = event.filters
                 }
                 is FeedViewModel.Event.ToggleFavorite -> {
-                    val value = mFeedContents.value
+                    val value = feedContents.value
                     val newFavorites = if (!value.favorites.contains(event.feedItem.id)) {
                         value.favorites + event.feedItem.id
                     } else {

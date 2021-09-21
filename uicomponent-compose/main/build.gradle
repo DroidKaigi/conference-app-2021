@@ -10,6 +10,7 @@ plugins {
 }
 
 apply from: rootProject.file("gradle/android.gradle")
+apply from: rootProject.file("gradle/compose.gradle")
 
 android {
     compileOptions {
@@ -19,28 +20,13 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-        freeCompilerArgs += "-Xopt-in=androidx.compose.material.ExperimentalMaterialApi"
-        freeCompilerArgs += "-Xopt-in=kotlinx.coroutines.ExperimentalCoroutinesApi"
-    }
-    buildFeatures {
-        compose true
-    }
-    composeOptions {
-        kotlinCompilerExtensionVersion "${Versions.compose}"
-    }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).configureEach {
-    kotlinOptions {
-        jvmTarget = "1.8"
-        freeCompilerArgs += ["-Xallow-jvm-ir-dependencies"]
-        freeCompilerArgs += "-Xopt-in=kotlin.contracts.ExperimentalContracts"
     }
 }
 
 dependencies {
     api projects.uicomponentCompose.core
     api projects.uicomponentCompose.feed
+    api projects.uicomponentCompose.timetable2021
     api projects.uicomponentCompose.other
     api projects.model
 
@@ -59,7 +45,7 @@ dependencies {
     testImplementation Dep.Dagger.hiltAndroidTesting
     kaptTest Dep.Dagger.hiltAndroidCompiler
 
-    implementation 'androidx.appcompat:appcompat:1.2.0'
+    implementation Dep.Jetpack.appcompat
     implementation Dep.Accompanist.coil
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.systemuicontroller
@@ -74,6 +60,7 @@ dependencies {
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
     implementation Dep.Compose.activity
     implementation Dep.Compose.navigation
+    implementation Dep.Compose.hiltNavigationCompose
     implementation Dep.Compose.runtime
     implementation Dep.Compose.livedata
     implementation Dep.Compose.foundation

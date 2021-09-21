@@ -26,11 +26,14 @@ interface StaffViewModel :
     override fun event(event: Event)
 }
 
-private val LocalStaffViewModel = compositionLocalOf<StaffViewModel> {
-    error("Not view model provided")
+private val LocalStaffViewModelFactory = compositionLocalOf<@Composable () -> StaffViewModel> {
+    {
+        error("Not view model provided")
+    }
 }
 
-fun staffViewModelProviderValue(viewModel: StaffViewModel) = LocalStaffViewModel provides viewModel
+fun provideStaffViewModelFactory(viewModelFactory: @Composable () -> StaffViewModel) =
+    LocalStaffViewModelFactory provides viewModelFactory
 
 @Composable
-fun staffViewModel() = LocalStaffViewModel.current
+fun staffViewModel() = LocalStaffViewModelFactory.current()

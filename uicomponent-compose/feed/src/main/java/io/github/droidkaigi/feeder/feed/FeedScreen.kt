@@ -4,7 +4,6 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.offset
@@ -17,6 +16,7 @@ import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
 import androidx.compose.material.Divider
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
@@ -49,8 +49,8 @@ import androidx.compose.ui.zIndex
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.insets.statusBarsPadding
-import com.google.accompanist.insets.toPaddingValues
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -92,7 +92,7 @@ sealed class FeedTab(val name: String, val routePath: String) {
 /**
  * stateful
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun FeedScreen(
     selectedTab: FeedTab,
@@ -171,7 +171,7 @@ fun FeedScreen(
 /**
  * stateless
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 private fun FeedScreen(
     scaffoldState: BackdropScaffoldState,
@@ -187,49 +187,47 @@ private fun FeedScreen(
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
 ) {
-    Column {
-        val density = LocalDensity.current
-        BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
-            scaffoldState = scaffoldState,
-            backLayerContent = {
-                BackLayerContent(filters, onFavoriteFilterChanged)
-            },
-            frontLayerShape = MaterialTheme.shapes.large,
-            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
-            appBar = {
-                AppBar(onNavigationIconClick, pagerState, tabLazyListStates, onSelectTab)
-            },
-            frontLayerContent = {
-                HorizontalPager(
-                    state = pagerState,
-                    modifier = Modifier.fillMaxSize()
-                ) { page ->
-                    val selectedTab = FeedTab.values()[page]
-                    FeedList(
-                        feedContents = if (selectedTab is FeedTab.FilteredFeed) {
-                            feedContents.filterFeedType(selectedTab.feedItemClass)
-                        } else {
-                            feedContents
-                        },
-                        fmPlayerState = fmPlayerState,
-                        feedTab = selectedTab,
-                        onClickFeed = onClickFeed,
-                        onFavoriteChange = onFavoriteChange,
-                        listState = tabLazyListStates.getValue(selectedTab),
-                        onClickPlayPodcastButton = onClickPlayPodcastButton,
-                        isFilterState = filters.filterFavorite,
-                    )
-                }
-            },
-            snackbarHost = {
-                SnackbarHost(
-                    hostState = it,
-                    modifier = Modifier.navigationBarsPadding()
+    val density = LocalDensity.current
+    BackdropScaffold(
+        backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
+        scaffoldState = scaffoldState,
+        backLayerContent = {
+            BackLayerContent(filters, onFavoriteFilterChanged)
+        },
+        frontLayerShape = MaterialTheme.shapes.large,
+        peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+        appBar = {
+            AppBar(onNavigationIconClick, pagerState, tabLazyListStates, onSelectTab)
+        },
+        frontLayerContent = {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { page ->
+                val selectedTab = FeedTab.values()[page]
+                FeedList(
+                    feedContents = if (selectedTab is FeedTab.FilteredFeed) {
+                        feedContents.filterFeedType(selectedTab.feedItemClass)
+                    } else {
+                        feedContents
+                    },
+                    fmPlayerState = fmPlayerState,
+                    feedTab = selectedTab,
+                    onClickFeed = onClickFeed,
+                    onFavoriteChange = onFavoriteChange,
+                    listState = tabLazyListStates.getValue(selectedTab),
+                    onClickPlayPodcastButton = onClickPlayPodcastButton,
+                    isFilterState = filters.filterFavorite,
                 )
             }
-        )
-    }
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = it,
+                modifier = Modifier.navigationBarsPadding()
+            )
+        }
+    )
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -300,19 +298,32 @@ private fun FeedList(
         color = MaterialTheme.colors.background,
         modifier = Modifier.fillMaxSize()
     ) {
+        val isListFinished by remember {
+            derivedStateOf {
+                listState.firstVisibleItemIndex + listState.layoutInfo
+                    .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
+            }
+        }
         LazyColumn(
-            contentPadding = LocalWindowInsets.current.systemBars
-                .toPaddingValues(top = false, start = false, end = false),
+            contentPadding = rememberInsetsPaddingValues(
+                insets = LocalWindowInsets.current.systemBars,
+                applyStart = false,
+                applyTop = false,
+                applyEnd = false
+            ),
             state = listState
         ) {
-            itemsIndexed(feedContents.contents) { index, content ->
+            itemsIndexed(
+                items = feedContents.contents,
+                key = { _, item -> item.first.id }
+            ) { index, (feedItem, favorited) ->
                 if (isHome && index == 0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
                     }
                     FirstFeedItem(
-                        feedItem = content.first,
-                        favorited = content.second,
+                        feedItem = feedItem,
+                        favorited = favorited,
                         onClick = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
@@ -320,27 +331,19 @@ private fun FeedList(
                     )
                 } else {
                     FeedItemRow(
-                        item = content.first,
-                        favorited = content.second,
+                        item = feedItem,
+                        favorited = favorited,
                         onClickFeed = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
                         showDivider = index != 0,
-                        isPlayingPodcast = (content.first as? FeedItem.Podcast)
+                        isPlayingPodcast = (feedItem as? FeedItem.Podcast)
                             ?.podcastLink == fmPlayerState?.url &&
                             fmPlayerState?.isPlaying() == true,
                         onClickPlayPodcastButton = onClickPlayPodcastButton
                     )
                 }
-            }
-            if (listState.firstVisibleItemIndex != 0) {
-                item {
-                    val isListFinished by remember {
-                        derivedStateOf {
-                            listState.firstVisibleItemIndex + listState.layoutInfo
-                                .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
-                        }
-                    }
+                if (index == feedContents.lastIndex) {
                     val robotAnimValue by animateFloatAsState(
                         targetValue = if (isListFinished) 0f else 10f,
                         animationSpec = spring(
@@ -452,8 +455,8 @@ fun FilterItemCountRow(count: String) {
 fun PreviewFeedScreen() {
     AppThemeWithBackground {
         CompositionLocalProvider(
-            feedViewModelProviderValue(fakeFeedViewModel()),
-            fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
+            provideFeedViewModelFactory { fakeFeedViewModel() },
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
@@ -473,8 +476,8 @@ fun PreviewDarkFeedScreen() {
         theme = Theme.DARK
     ) {
         CompositionLocalProvider(
-            feedViewModelProviderValue(fakeFeedViewModel()),
-            fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
+            provideFeedViewModelFactory { fakeFeedViewModel() },
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
                 selectedTab = FeedTab.Home,
@@ -492,8 +495,8 @@ fun PreviewDarkFeedScreen() {
 fun PreviewFeedScreenWithStartBlog() {
     AppThemeWithBackground {
         CompositionLocalProvider(
-            feedViewModelProviderValue(fakeFeedViewModel()),
-            fmPlayerViewModelProviderValue(fakeFmPlayerViewModel())
+            provideFeedViewModelFactory { fakeFeedViewModel() },
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
                 selectedTab = FeedTab.FilteredFeed.Blog,
