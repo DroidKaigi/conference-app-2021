@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder
 
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
