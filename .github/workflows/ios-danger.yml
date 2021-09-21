@@ -1,0 +1,20 @@
+name: Danger for iOS
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - .github/workflows/ios-danger.yml
+      - 'ios/**'
+
+jobs:
+  Danger:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - name: Danger
+        uses: 417-72KI/danger-swiftlint@v4
+        with:
+          dangerfile: ios/Dangerfile.swift
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
