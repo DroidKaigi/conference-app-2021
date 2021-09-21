@@ -2,9 +2,10 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
-import io.github.droidkaigi.feeder.Speaker
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemList
+import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.SessionAllResponse
 import kotlinx.datetime.Instant
@@ -425,36 +426,40 @@ private fun String.toInstantAsJST(): Instant {
 
 internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
     val feedContents = this
-    val speakerIdToSpeaker: Map<String, Speaker> = feedContents.speakers!!
+    val speakerIdToSpeaker: Map<String, TimetableSpeaker> = feedContents.speakers!!
         .groupBy { it.id!! }
         .mapValues { (_, apiSpeakers) ->
             apiSpeakers.map { apiSpeaker ->
-                Speaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture!!)
+                TimetableSpeaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture)
             }.first()
         }
     return TimetableContents(
-        feedContents.sessions.map { apiSession ->
-            if (!apiSession.isServiceSession) {
-                TimetableItem.Session(
-                    title = MultiLangText(
-                        jaTitle = apiSession.title!!.ja!!,
-                        enTitle = apiSession.title.en!!,
-                    ),
-                    startsAt = apiSession.startsAt!!.toInstantAsJST(),
-                    endsAt = apiSession.endsAt!!.toInstantAsJST(),
-                    speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
-                )
-            } else {
-                TimetableItem.Special(
-                    title = MultiLangText(
-                        jaTitle = apiSession.title!!.ja!!,
-                        enTitle = apiSession.title.en!!,
-                    ),
-                    startsAt = apiSession.startsAt!!.toInstantAsJST(),
-                    endsAt = apiSession.endsAt!!.toInstantAsJST(),
-                    speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
-                )
+        TimetableItemList(
+            feedContents.sessions.map { apiSession ->
+                if (!apiSession.isServiceSession) {
+                    TimetableItem.Session(
+                        id = apiSession.id,
+                        title = MultiLangText(
+                            jaTitle = apiSession.title!!.ja!!,
+                            enTitle = apiSession.title.en!!,
+                        ),
+                        startsAt = apiSession.startsAt!!.toInstantAsJST(),
+                        endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                        speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
+                    )
+                } else {
+                    TimetableItem.Special(
+                        id = apiSession.id,
+                        title = MultiLangText(
+                            jaTitle = apiSession.title!!.ja!!,
+                            enTitle = apiSession.title.en!!,
+                        ),
+                        startsAt = apiSession.startsAt!!.toInstantAsJST(),
+                        endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                        speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! }
+                    )
+                }
             }
-        }
+        )
     )
 }

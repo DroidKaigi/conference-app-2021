@@ -20,10 +20,11 @@ class DataModule {
     }
 
     @Provides
-    internal fun provideDroidKaigi2021Api(daggerApi: DaggerKtorDroidKaigi2021Api):
-        DroidKaigi2021Api {
-            return daggerApi
-        }
+    internal fun provideDroidKaigi2021Api(
+        daggerApi: DaggerKtorDroidKaigi2021Api,
+    ): DroidKaigi2021Api {
+        return daggerApi
+    }
 
     @Provides
     internal fun provideStaffApi(daggerApi: DaggerKtorStaffApi): StaffApi {
@@ -58,19 +59,19 @@ class DataModule {
     @Provides
     internal fun provideTimetableRepository(daggerRepository: DaggerTimetableRepositoryImpl):
         TimetableRepository {
-            return daggerRepository
-        }
+        return daggerRepository
+    }
 
     @Provides
     internal fun provideStaffRepository(
-        daggerRepository: DaggerStaffRepositoryImpl
+        daggerRepository: DaggerStaffRepositoryImpl,
     ): StaffRepository {
         return daggerRepository
     }
 
     @Provides
     internal fun provideDeviceRepository(
-        daggerRepository: DaggerDeviceRepositoryImpl
+        daggerRepository: DaggerDeviceRepositoryImpl,
     ): DeviceRepository {
         return daggerRepository
     }
@@ -84,7 +85,7 @@ class DataModule {
 
     @Provides
     internal fun provideThemeRepository(
-        daggerRepository: DaggerThemeRepositoryImpl
+        daggerRepository: DaggerThemeRepositoryImpl,
     ): ThemeRepository {
         return daggerRepository
     }
