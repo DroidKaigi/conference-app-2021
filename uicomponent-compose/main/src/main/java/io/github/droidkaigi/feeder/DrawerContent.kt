@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.navigationBarsPadding
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.main.R
@@ -149,7 +150,7 @@ fun DrawerContent(
     currentRoute: String = DrawerContents.HOME.route,
     onNavigate: (contents: DrawerContents) -> Unit,
 ) {
-    LazyColumn {
+    LazyColumn(modifier = Modifier.navigationBarsPadding()) {
         item {
             Spacer(modifier = Modifier.height(52.dp))
         }
