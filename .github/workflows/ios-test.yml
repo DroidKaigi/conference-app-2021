@@ -6,7 +6,7 @@ on:
 
 jobs:
   setup-versions:
-    runs-on: macos-11
+    runs-on: ubuntu-latest
     outputs:
       xcodePath: ${{ steps.set-xcode-path.outputs.xcodePath }}
       javaVersion: ${{ steps.set-java-version.outputs.javaVersion }}
