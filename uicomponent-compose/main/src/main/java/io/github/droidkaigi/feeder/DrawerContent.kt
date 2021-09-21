@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -215,6 +216,9 @@ fun DrawerContent(
                     .padding(vertical = 16.dp)
             ) {
                 Image(
+                    modifier = Modifier.clickable {
+                        onNavigate(DrawerContents.TIMETABLE)
+                    },
                     painter = painterResource(id = R.drawable.banner_droidkaigi_2021),
                     contentDescription = stringResource(id = R.string.banner_droidkaigi_2021)
                 )
