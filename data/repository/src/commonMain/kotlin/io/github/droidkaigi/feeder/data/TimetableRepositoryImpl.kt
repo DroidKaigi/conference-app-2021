@@ -23,12 +23,12 @@ open class TimetableRepositoryImpl(
 //        timetableItemDao.deleteAll()
 //        timetableItemDao.insert(newtimetables)
     }
-//
-//    override suspend fun addFavorite(id: String) {
-//        dataStore.addFavorite(id)
-//    }
-//
-//    override suspend fun removeFavorite(id: String) {
-//        dataStore.removeFavorite(id)
-//    }
+
+    override suspend fun addFavorite(id: String) {
+        dataStore.addFavoriteTimetable(id)
+    }
+
+    override suspend fun removeFavorite(id: String) {
+        dataStore.removeFavoriteTimetable(id)
+    }
 }

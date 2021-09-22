@@ -32,6 +32,26 @@ abstract class UserDataStore {
         )
     }
 
+    fun favoritesTimetable(): Flow<Set<String>> {
+        return flowSettings
+            .getStringFlow(KEY_FAVORITES_TIMETABLE)
+            .map { favorites -> favorites.split(",").filter { it.isNotBlank() }.toSet() }
+    }
+
+    suspend fun addFavoriteTimetable(id: String) {
+        flowSettings.putString(
+            KEY_FAVORITES_TIMETABLE,
+            (favoritesTimetable().first() + id).toSet().joinToString(","),
+        )
+    }
+
+    suspend fun removeFavoriteTimetable(id: String) {
+        flowSettings.putString(
+            KEY_FAVORITES_TIMETABLE,
+            (favoritesTimetable().first() - id).toSet().joinToString(","),
+        )
+    }
+
     fun isAuthenticated(): Flow<Boolean?> {
         return flowSettings.getBooleanOrNullFlow(KEY_AUTHENTICATED)
     }
@@ -71,6 +91,7 @@ abstract class UserDataStore {
 
     companion object {
         private const val KEY_FAVORITES = "KEY_FAVORITES"
+        private const val KEY_FAVORITES_TIMETABLE = "KEY_FAVORITES_TIMETABLE"
         private const val KEY_AUTHENTICATED = "KEY_AUTHENTICATED"
         private const val KEY_DEVICE_ID = "KEY_DEVICE_ID"
         private const val KEY_THEME = "KEY_THEME"
