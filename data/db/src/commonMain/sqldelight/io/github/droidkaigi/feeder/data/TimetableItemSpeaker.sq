@@ -1,0 +1,15 @@
+CREATE TABLE timetableItemSpeaker (
+    timetablePrimaryId TEXT NOT NULL,
+    name TEXT NOT NULL,
+    iconUrl TEXT
+);
+
+insert:
+INSERT INTO timetableItemSpeaker(
+    timetablePrimaryId,
+    name,
+    iconUrl
+) VALUES ?;
+
+deleteAll:
+DELETE FROM timetableItemSpeaker;

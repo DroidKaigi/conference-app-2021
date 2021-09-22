@@ -1,0 +1,29 @@
+CREATE TABLE timetableItemSession (
+    id TEXT NOT NULL PRIMARY KEY,
+    jaTitle TEXT NOT NULL,
+    enTitle TEXT NOT NULL,
+    startsAt INTEGER NOT NULL,
+    endsAt INTEGER NOT NULL
+);
+
+CREATE INDEX timetableItemSession_id ON timetableItemSession(id);
+
+selectAllSession:
+SELECT
+    timetableItemSession.*,
+    timetableItemSpeaker.name speakerName,
+    timetableItemSpeaker.iconUrl speakerIconUrl
+FROM timetableItemSession
+JOIN timetableItemSpeaker ON timetableItemSession.id = timetableItemSpeaker.timetablePrimaryId;
+
+insert:
+INSERT INTO timetableItemSession(
+    id,
+    jaTitle,
+    enTitle,
+    startsAt,
+    endsAt
+) VALUES ?;
+
+deleteAll:
+DELETE FROM timetableItemSession;
