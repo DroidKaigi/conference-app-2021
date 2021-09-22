@@ -2,10 +2,13 @@ package io.github.droidkaigi.feeder.data
 
 import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
+import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableSpeaker
+import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.zip
 import kotlinx.datetime.Instant
@@ -152,4 +155,31 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
         }
         acc + mapOf(row.id to feedItem)
     }.values.toList()
+}
+
+fun fakeTimetableItemDao(error: AppError? = null): TimetableItemDao = object : TimetableItemDao {
+    private val channel = Channel<List<TimetableItem>>(Channel.CONFLATED).apply {
+        trySend(emptyList())
+    }
+
+    override fun selectAll(): Flow<List<TimetableItem>> = flow {
+        try {
+            if (error != null) {
+                throw error
+            }
+            for (item in channel) {
+                emit(item)
+            }
+        } finally {
+            channel.close()
+        }
+    }
+
+    override fun insert(items: List<TimetableItem>) {
+        channel.offer((channel.poll() ?: emptyList()) + items)
+    }
+
+    override fun deleteAll() {
+        channel.offer(emptyList())
+    }
 }

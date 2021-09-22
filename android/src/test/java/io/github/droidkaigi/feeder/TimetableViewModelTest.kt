@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder
 
 import io.github.droidkaigi.feeder.data.TimetableRepositoryImpl
 import io.github.droidkaigi.feeder.data.fakeDroidKaigi2021Api
+import io.github.droidkaigi.feeder.data.fakeTimetableItemDao
 import io.github.droidkaigi.feeder.data.fakeUserDataStore
 import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel
 import io.github.droidkaigi.feeder.timetable2021.fakeTimetableViewModel
@@ -74,13 +75,13 @@ class TimetableViewModelTest(
                                     null
                                 }
                             ),
-//                            timetableItemDao = fakeDroidKaigi2021Api(
-//                                if (errorFetchData) {
-//                                    AppError.UnknownException(Throwable("Database Exception"))
-//                                } else {
-//                                    null
-//                                }
-//                            ),
+                            timetableItemDao = fakeTimetableItemDao(
+                                if (errorFetchData) {
+                                    AppError.UnknownException(Throwable("Database Exception"))
+                                } else {
+                                    null
+                                }
+                            ),
                             dataStore = fakeUserDataStore()
                         )
                     )
