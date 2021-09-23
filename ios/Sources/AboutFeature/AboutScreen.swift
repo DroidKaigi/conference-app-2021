@@ -94,7 +94,7 @@ public struct AboutScreen: View {
                             WebView(url: viewStore.showingURL!)
                         }
                     )
-                    .fullScreenCover(
+                    .sheet(
                         isPresented: viewStore.binding(
                             get: \.isShowingAboutDroidKaigi,
                             send: AboutAction.hideAboutDroidKaigi
