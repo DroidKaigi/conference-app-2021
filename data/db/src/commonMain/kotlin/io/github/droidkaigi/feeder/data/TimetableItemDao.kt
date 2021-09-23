@@ -118,10 +118,12 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 ),
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
-                speakers = listOf(TimetableSpeaker(
-                    name = row.speakerName,
-                    iconUrl = row.speakerIconUrl,
-                )),
+                speakers = listOf(
+                    TimetableSpeaker(
+                        name = row.speakerName,
+                        iconUrl = row.speakerIconUrl,
+                    )
+                ),
             )
         }
         acc + mapOf(row.id to feedItem)
@@ -147,10 +149,12 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 ),
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
-                speakers = listOf(TimetableSpeaker(
-                    name = row.speakerName,
-                    iconUrl = row.speakerIconUrl,
-                )),
+                speakers = listOf(
+                    TimetableSpeaker(
+                        name = row.speakerName,
+                        iconUrl = row.speakerIconUrl,
+                    )
+                ),
             )
         }
         acc + mapOf(row.id to feedItem)

@@ -59,8 +59,8 @@ class DataModule {
     @Provides
     internal fun provideTimetableItemDao(timetableItemDao: DaggerSQLDelightTimetableItemDao):
         TimetableItemDao {
-        return timetableItemDao
-    }
+            return timetableItemDao
+        }
 
     @Provides
     internal fun provideTimetableRepository(daggerRepository: DaggerTimetableRepositoryImpl):
