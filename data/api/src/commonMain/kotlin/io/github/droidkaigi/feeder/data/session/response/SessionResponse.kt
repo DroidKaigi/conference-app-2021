@@ -19,7 +19,6 @@ internal data class SessionResponse(
     val isPlenumSession: Boolean,
     val targetAudience: String,
     val interpretationTarget: Boolean,
-    val videoUrl: String? = null,
-    val slideUrl: String? = null,
+    val asset: SessionAssetResponse,
     val levels: List<String>
 )

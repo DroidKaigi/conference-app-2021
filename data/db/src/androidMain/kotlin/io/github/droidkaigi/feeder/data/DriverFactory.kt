@@ -10,6 +10,6 @@ actual class DriverFactory @Inject constructor(
     @ApplicationContext private val appContext: Context,
 ) {
     actual fun createDriver(): SqlDriver {
-        return AndroidSqliteDriver(Database.Schema, appContext, "droidkaigi.db")
+        return AndroidSqliteDriver(DestructiveMigrationSchema, appContext, "droidkaigi.db")
     }
 }

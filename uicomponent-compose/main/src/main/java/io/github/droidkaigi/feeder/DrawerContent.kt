@@ -1,8 +1,9 @@
 package io.github.droidkaigi.feeder
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -34,9 +35,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import com.google.accompanist.insets.navigationBarsPadding
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.main.R
@@ -158,55 +161,70 @@ fun DrawerContent(
     currentRoute: String = DrawerContents.HOME.route,
     onNavigate: (contents: DrawerContents) -> Unit,
 ) {
-    Column {
-        Spacer(modifier = Modifier.height(52.dp))
-        Row(
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(horizontal = 24.dp)
-                .fillMaxWidth()
-        ) {
-            Image(
-                painter = painterResource(id = R.drawable.ic_logo),
-                contentDescription = "logo"
-            )
-            Spacer(Modifier.width(12.dp))
-            Text(
-                text = "DroidKaigi",
-                style = MaterialTheme.typography.h4,
-                fontWeight = FontWeight.Bold,
-                modifier = Modifier.fillMaxWidth()
-            )
+    LazyColumn(modifier = Modifier.navigationBarsPadding()) {
+        item {
+            Spacer(modifier = Modifier.height(52.dp))
+            Row(
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier
+                    .padding(horizontal = 24.dp)
+                    .fillMaxWidth()
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_logo),
+                    contentDescription = "logo"
+                )
+                Spacer(Modifier.width(12.dp))
+                Text(
+                    text = "DroidKaigi",
+                    style = MaterialTheme.typography.h4,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.fillMaxWidth()
+                )
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+            Divider()
+            Spacer(modifier = Modifier.height(12.dp))
         }
-        Spacer(modifier = Modifier.height(20.dp))
-        Divider()
-        Spacer(modifier = Modifier.height(12.dp))
-        LazyColumn {
-            items(DrawerContents.Group.values()) { group ->
-                when (group) {
-                    DrawerContents.Group.NEWS -> {
-                        val newsContents = DrawerContents.values()
-                            .filter { content -> content.group == DrawerContents.Group.NEWS }
-                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Divider()
-                    }
-                    DrawerContents.Group.TIMETABLE2021 -> {
-                        val newsContents = DrawerContents.values()
-                            .filter { content ->
-                                content.group == DrawerContents.Group.TIMETABLE2021
-                            }
-                        DrawerContentGroup(newsContents, currentRoute, onNavigate)
-                        Spacer(modifier = Modifier.height(8.dp))
-                        Divider()
-                    }
-                    DrawerContents.Group.OTHER -> {
-                        val otherContents = DrawerContents.values()
-                            .filter { content -> content.group == DrawerContents.Group.OTHER }
-                        DrawerContentGroup(otherContents, currentRoute, onNavigate)
-                    }
+        items(DrawerContents.Group.values()) { group ->
+            when (group) {
+                DrawerContents.Group.NEWS -> {
+                    val newsContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.NEWS }
+                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
                 }
+                DrawerContents.Group.TIMETABLE2021 -> {
+                    val newsContents = DrawerContents.values()
+                        .filter { content ->
+                            content.group == DrawerContents.Group.TIMETABLE2021
+                        }
+                    DrawerContentGroup(newsContents, currentRoute, onNavigate)
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Divider()
+                }
+                DrawerContents.Group.OTHER -> {
+                    val otherContents = DrawerContents.values()
+                        .filter { content -> content.group == DrawerContents.Group.OTHER }
+                    DrawerContentGroup(otherContents, currentRoute, onNavigate)
+                }
+            }
+        }
+        item {
+            Spacer(modifier = Modifier.height(12.dp))
+            Divider()
+            Box(
+                modifier = Modifier.padding(start = 24.dp, top = 17.dp, bottom = 26.dp)
+            ) {
+                Image(
+                    modifier = Modifier.clickable {
+                        onNavigate(DrawerContents.TIMETABLE)
+                    },
+                    painter = painterResource(id = R.drawable.banner_droidkaigi_2021),
+                    contentDescription = stringResource(id = R.string.banner_droidkaigi_2021)
+                )
             }
         }
     }

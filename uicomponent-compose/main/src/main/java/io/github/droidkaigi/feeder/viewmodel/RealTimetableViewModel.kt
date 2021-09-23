@@ -8,6 +8,7 @@ import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
+import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.TimetableRepository
 import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel
@@ -84,15 +85,15 @@ class RealTimetableViewModel @Inject constructor(
                     filters.value = event.filters
                 }
                 is TimetableViewModel.Event.ToggleFavorite -> {
-//                    val favorite = allTimetableContents.value
-//                        .getContents()
-//                        .favorites
-//                        .contains(event.feedItem.id)
-//                    if (favorite) {
-//                        repository.removeFavorite(event.feedItem.id)
-//                    } else {
-//                        repository.addFavorite(event.feedItem.id)
-//                    }
+                    val favorite = allTimetableContents.value
+                        .getContents()
+                        .favorites
+                        .contains(event.timetableItem.id)
+                    if (favorite) {
+                        repository.removeFavorite(event.timetableItem.id)
+                    } else {
+                        repository.addFavorite(event.timetableItem.id)
+                    }
                 }
                 is TimetableViewModel.Event.ReloadContent -> {
                     refreshRepository()

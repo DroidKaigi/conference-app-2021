@@ -5,16 +5,34 @@ on:
     types: [opened, synchronize, reopened]
 
 jobs:
+  setup-versions:
+    runs-on: ubuntu-latest
+    outputs:
+      xcodePath: ${{ steps.set-xcode-path.outputs.xcodePath }}
+      javaVersion: ${{ steps.set-java-version.outputs.javaVersion }}
+    steps:
+      - id: set-xcode-path
+        name: Set Xcode path
+        run: |
+          xcode_version='12.5.1'
+          xcode_path="/Applications/Xcode_${xcode_version}.app"
+          echo "::set-output name=xcodePath::$xcode_path"
+      - id: set-java-version
+        name: Set Java version
+        run: |
+          java_version='11'
+          echo "::set-output name=javaVersion::$java_version"
   build-modules:
     name: "iOS Buid Test for Modules"
-    runs-on: macos-latest
+    runs-on: macos-11
+    needs: setup-versions
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: '11'
+          java-version: ${{ needs.setup-versions.outputs.javaVersion }}
       - name: Select Xcode Version
-        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+        run: sudo xcode-select -s "${{ needs.setup-versions.outputs.xcodePath }}"
       - name: Show Xcode Version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
@@ -35,7 +53,8 @@ jobs:
 
   test-modules:
     name: "iOS Test for Modules"
-    runs-on: macos-latest
+    runs-on: macos-11
+    needs: setup-versions
     steps:
       - uses: actions/checkout@v2
       - name: Create LFS file list
@@ -50,9 +69,9 @@ jobs:
         run: git lfs pull
       - uses: actions/setup-java@v1
         with:
-          java-version: '11'
+          java-version: ${{ needs.setup-versions.outputs.javaVersion }}
       - name: Select Xcode Version
-        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+        run: sudo xcode-select -s "${{ needs.setup-versions.outputs.xcodePath }}"
       - name: Show Xcode Version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
@@ -73,14 +92,15 @@ jobs:
 
   build-app-debug:
     name: "iOS Buid Test on Debug Configuration"
-    runs-on: macos-latest
+    runs-on: macos-11
+    needs: setup-versions
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: '11'
+          java-version: ${{ needs.setup-versions.outputs.javaVersion }}
       - name: Select Xcode Version
-        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+        run: sudo xcode-select -s "${{ needs.setup-versions.outputs.xcodePath }}"
       - name: Show Xcode Version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
@@ -101,14 +121,15 @@ jobs:
 
   build-app-release:
     name: "iOS Buid Test on Release Configuration"
-    runs-on: macos-latest
+    runs-on: macos-11
+    needs: setup-versions
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-java@v1
         with:
-          java-version: '11'
+          java-version: ${{ needs.setup-versions.outputs.javaVersion }}
       - name: Select Xcode Version
-        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+        run: sudo xcode-select -s "${{ needs.setup-versions.outputs.xcodePath }}"
       - name: Show Xcode Version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1

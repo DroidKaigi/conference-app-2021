@@ -13,7 +13,7 @@ jobs:
       github.event_name == 'pull_request' &&
       !contains(github.event.pull_request.head.ref, 'main')
     name: "ios test on feature branches"
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - name: Get HEAD to fetch
         id: fetch-head
@@ -30,7 +30,7 @@ jobs:
         with:
           java-version: '11'
       - name: Select Xcode version
-        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+        run: sudo xcode-select -s '/Applications/Xcode_12.5.1.app'
       - name: Show Xcode version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1

@@ -1,13 +1,12 @@
-package io.github.droidkaigi.timetableer
+package io.github.droidkaigi.feeder
 
-import io.github.droidkaigi.feeder.AppError
-import io.github.droidkaigi.feeder.CoroutineTestRule
+import io.github.droidkaigi.feeder.data.TimetableRepositoryImpl
 import io.github.droidkaigi.feeder.data.fakeDroidKaigi2021Api
+import io.github.droidkaigi.feeder.data.fakeTimetableItemDao
 import io.github.droidkaigi.feeder.data.fakeUserDataStore
 import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel
 import io.github.droidkaigi.feeder.timetable2021.fakeTimetableViewModel
 import io.github.droidkaigi.feeder.viewmodel.RealTimetableViewModel
-import io.github.droidkaigi.timetableer.data.TimetableRepositoryImpl
 import io.kotest.matchers.comparables.shouldBeGreaterThan
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
@@ -76,13 +75,13 @@ class TimetableViewModelTest(
                                     null
                                 }
                             ),
-//                            timetableItemDao = fakeDroidKaigi2021Api(
-//                                if (errorFetchData) {
-//                                    AppError.UnknownException(Throwable("Database Exception"))
-//                                } else {
-//                                    null
-//                                }
-//                            ),
+                            timetableItemDao = fakeTimetableItemDao(
+                                if (errorFetchData) {
+                                    AppError.UnknownException(Throwable("Database Exception"))
+                                } else {
+                                    null
+                                }
+                            ),
                             dataStore = fakeUserDataStore()
                         )
                     )
