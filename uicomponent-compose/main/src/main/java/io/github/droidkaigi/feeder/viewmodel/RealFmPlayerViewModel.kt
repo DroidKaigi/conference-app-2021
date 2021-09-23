@@ -41,7 +41,9 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
 
     private fun pause() {
         fmPlayer.run {
-            pause()
+            if (isPlaying) {
+                pause()
+            }
             setOnPreparedListener(null)
         }
     }
