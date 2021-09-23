@@ -61,9 +61,8 @@ public struct TimetableItem: Equatable, Identifiable {
                 endsAt: special.endsAt.toNSDate()
             )
         default:
-            break
+            return nil
         }
-        return nil
     }
 }
 

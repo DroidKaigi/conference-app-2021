@@ -16,9 +16,9 @@ internal struct FlowWrapperPublisher<Output: AnyObject>: Publisher {
         self.scopeProvider = scopeProvider
     }
 
-    func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
+    func receive<S>(subscriber: S) where S: Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
         flowWrapper.subscribe(scope: scopeProvider.scope) {
-            let _ = subscriber.receive($0)
+            _ = subscriber.receive($0)
         } onComplete: {
             subscriber.receive(completion: .finished)
         } onFailure: {

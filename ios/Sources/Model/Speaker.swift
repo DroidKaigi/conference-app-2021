@@ -5,7 +5,7 @@ public struct Speaker: Equatable, Identifiable {
     public var iconURLString: String
 
     public var id: Int {
-        name.hashValue + iconURLString.hashValue
+        name.hashValue
     }
 
     public init(
@@ -20,7 +20,7 @@ public struct Speaker: Equatable, Identifiable {
         self.name = model.name
         self.iconURLString = model.iconUrl
     }
-    
+
     public init(from model: DroidKaigiMPP.TimetableSpeaker) {
         self.name = model.name
         self.iconURLString = model.iconUrl ?? ""

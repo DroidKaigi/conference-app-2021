@@ -57,10 +57,11 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
     switch action {
     case .refresh:
         return environment.timetableRepository.timetableContents()
+            .receive(on: DispatchQueue.main)
             .catchToEffect()
             .map(TimetableAction.refreshResponse)
     case let .refreshResponse(.success(items)):
-        state.timetableItems = items
+        state.timetableItems = items.sorted { $0.startsAt < $1.startsAt }
         return .none
     case let .refreshResponse(.failure(error)):
         print(error.localizedDescription)

@@ -22,8 +22,8 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
             flowWrapper: repository.timetableContents(),
             scopeProvider: scopeProvider
         )
-        .first()
         .map { $0.timetableItems.compactMap(Model.TimetableItem.init(from:)) }
+        .print("hoge: ")
         .eraseToAnyPublisher()
     }
 }
