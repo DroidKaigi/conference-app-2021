@@ -61,12 +61,13 @@ class RealTimetableViewModel @Inject constructor(
             allTimetableContents,
             filters,
             showProgressLatch.toggleState,
-        ) { feedContentsLoadState, _, showProgress ->
-            val timetableContents =
-                feedContentsLoadState.getValueOrNull().orEmptyContents()
+        ) { feedContentsLoadState, filters, showProgress ->
+            val filteredTimetableContents =
+                feedContentsLoadState.getValueOrNull().orEmptyContents().filtered(filters)
             TimetableViewModel.State(
                 showProgress = showProgress,
-                timetableContents = timetableContents
+                filters = filters,
+                filteredTimetableContents = filteredTimetableContents
 //                snackbarMessage = currentValue.snackbarMessage
             )
         }

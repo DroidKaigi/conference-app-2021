@@ -5,9 +5,12 @@ import io.github.droidkaigi.feeder.data.fakeDroidKaigi2021Api
 import io.github.droidkaigi.feeder.data.fakeTimetableItemDao
 import io.github.droidkaigi.feeder.data.fakeUserDataStore
 import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel
+import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel.Event.ChangeFavoriteFilter
+import io.github.droidkaigi.feeder.timetable2021.TimetableViewModel.Event.ToggleFavorite
 import io.github.droidkaigi.feeder.timetable2021.fakeTimetableViewModel
 import io.github.droidkaigi.feeder.viewmodel.RealTimetableViewModel
 import io.kotest.matchers.comparables.shouldBeGreaterThan
+import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import kotlinx.coroutines.InternalCoroutinesApi
 import kotlinx.coroutines.flow.first
@@ -33,7 +36,7 @@ class TimetableViewModelTest(
         // Replace when it fixed https://github.com/cashapp/turbine/issues/10
         val timetableViewModel = timetableViewModelFactory.create()
 
-        val firstContent = timetableViewModel.state.value.timetableContents.timetableItems
+        val firstContent = timetableViewModel.state.value.filteredTimetableContents.timetableItems
 
         firstContent.timetableItems.size shouldBeGreaterThan 1
     }
@@ -46,6 +49,45 @@ class TimetableViewModelTest(
         val firstEffect = timetableViewModel.effect.first()
 
         firstEffect.shouldBeInstanceOf<TimetableViewModel.Effect.ErrorMessage>()
+    }
+
+    @Test
+    fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val timetableViewModel = timetableViewModelFactory.create()
+        val firstContent = timetableViewModel.state.value.filteredTimetableContents
+        firstContent.favorites shouldBe setOf()
+
+        timetableViewModel.event(ToggleFavorite(firstContent.timetableItems[0]))
+
+        val secondContent = timetableViewModel.state.value.filteredTimetableContents
+        secondContent.favorites shouldBe setOf(firstContent.timetableItems[0].id)
+    }
+
+    @Test
+    fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val timetableViewModel = timetableViewModelFactory.create()
+        val firstContent = timetableViewModel.state.value.filteredTimetableContents
+        firstContent.favorites shouldBe setOf()
+
+        timetableViewModel.event(ToggleFavorite(firstContent.timetableItems[0]))
+        timetableViewModel.event(ToggleFavorite(firstContent.timetableItems[0]))
+
+        val secondContent = timetableViewModel.state.value.filteredTimetableContents
+        secondContent.favorites shouldBe setOf()
+    }
+
+    @Test
+    fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
+        val timetableViewModel = timetableViewModelFactory.create()
+        val firstContent = timetableViewModel.state.value.filteredTimetableContents
+        firstContent.favorites shouldBe setOf()
+        val favoriteContent = firstContent.timetableItems[1]
+
+        timetableViewModel.event(ToggleFavorite(favoriteContent))
+        timetableViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
+
+        val secondContent = timetableViewModel.state.value.filteredTimetableContents
+        secondContent.contents[0].first.id shouldBe favoriteContent.id
     }
 
     class TimetableViewModelFactory(

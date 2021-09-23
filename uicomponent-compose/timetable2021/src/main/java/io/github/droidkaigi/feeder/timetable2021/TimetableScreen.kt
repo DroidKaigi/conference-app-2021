@@ -71,7 +71,7 @@ fun TimetableScreen(
 
     TimetableScreen(
         state = TimetableScreenState(
-            timeTableContents = state.timetableContents,
+            timeTableContents = state.filteredTimetableContents.timetableItems,
             scaffoldState = scaffoldState,
             tabPagerState = pagerState
         ),

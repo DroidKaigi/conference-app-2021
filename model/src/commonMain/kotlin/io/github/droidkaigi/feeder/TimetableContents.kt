@@ -7,7 +7,23 @@ import kotlinx.datetime.toInstant
 data class TimetableContents(
     val timetableItems: TimetableItemList = TimetableItemList(),
     val favorites: Set<String> = setOf(),
-)
+) {
+    val contents by lazy {
+        timetableItems.map {
+            it to favorites.contains(it.id)
+        }
+    }
+
+    fun filtered(filters: Filters): TimetableContents {
+        var timetableItems = timetableItems.toList()
+        if (filters.filterFavorite) {
+            timetableItems = timetableItems.filter { timetableItem ->
+                favorites.contains(timetableItem.id)
+            }
+        }
+        return copy(timetableItems = TimetableItemList(timetableItems))
+    }
+}
 
 fun TimetableContents?.orEmptyContents(): TimetableContents = this ?: TimetableContents()
 fun LoadState<TimetableContents>.getContents() = getValueOrNull() ?: TimetableContents()
