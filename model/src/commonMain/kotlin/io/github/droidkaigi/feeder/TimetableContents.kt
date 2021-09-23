@@ -28,9 +28,6 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 targetAudience = "TBW",
                 language = "TBD",
                 asset = TimetableAsset(null, null),
-                room = TimetableRoom(
-                    name = MultiLangText("App bars", "App bars"),
-                ),
                 levels = listOf(
                     "BEGINNER",
                     "INTERMEDIATE",
@@ -53,7 +50,6 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 targetAudience = "For App developer アプリ開発者向け",
                 language = "JAPANESE",
                 asset = TimetableAsset(null, null),
-                room = TimetableRoom(MultiLangText("App bars", "App bars")),
                 speakers = listOf(
                     TimetableSpeaker("taka", "https://github.com/takahirom.png"),
                     TimetableSpeaker("ry", "https://github.com/ry-itto.png")
@@ -77,7 +73,6 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 ),
                 language = "TBD",
                 asset = TimetableAsset(null, null),
-                room = TimetableRoom(MultiLangText("App bars", "App bars")),
                 levels = listOf(
                     "BEGINNER",
                     "INTERMEDIATE",

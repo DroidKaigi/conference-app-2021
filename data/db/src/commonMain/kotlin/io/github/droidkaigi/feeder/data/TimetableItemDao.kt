@@ -7,7 +7,6 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
-import io.github.droidkaigi.feeder.TimetableRoom
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -84,8 +83,6 @@ private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
             language = session.language,
             assetSlideUrl = session.asset.slideUrl,
             assetVideoUrl = session.asset.videoUrl,
-            jaRoomName = session.room.name.jaTitle,
-            enRoomName = session.room.name.enTitle,
             levels = session.levels.joinToString(stringListDivider),
             description = session.description,
             jaMessage = session.message?.jaTitle,
@@ -108,8 +105,6 @@ private fun TimetableItemSpecialQueries.insert(session: TimetableItem.Special) {
             language = session.language,
             assetSlideUrl = session.asset.slideUrl,
             assetVideoUrl = session.asset.videoUrl,
-            jaRoomName = session.room.name.jaTitle,
-            enRoomName = session.room.name.enTitle,
             levels = session.levels.joinToString(stringListDivider),
         ),
     )
@@ -152,9 +147,6 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 asset = TimetableAsset(
                     slideUrl = row.assetSlideUrl,
                     videoUrl = row.assetVideoUrl,
-                ),
-                room = TimetableRoom(
-                    name = MultiLangText(row.jaRoomName, row.enRoomName),
                 ),
                 levels = row.levels.split(stringListDivider),
                 description = row.description,
@@ -202,9 +194,6 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 asset = TimetableAsset(
                     slideUrl = row.assetSlideUrl,
                     videoUrl = row.assetVideoUrl,
-                ),
-                room = TimetableRoom(
-                    name = MultiLangText(row.jaRoomName, row.enRoomName),
                 ),
                 levels = row.levels.split(stringListDivider),
                 speakers = listOf(

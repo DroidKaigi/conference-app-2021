@@ -7,7 +7,6 @@ import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemList
-import io.github.droidkaigi.feeder.TimetableRoom
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
 import io.github.droidkaigi.feeder.data.session.response.LocaledResponse
@@ -447,13 +446,6 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
                 TimetableCategory(apiCategory!!.name!!.toMultiLangText())
             }.first()
         }
-    val roomIdToRoom: Map<Int, TimetableRoom> = feedContents.rooms!!
-        .groupBy { it.id!! }
-        .mapValues { (_, apiRooms) ->
-            apiRooms.map { apiRoom ->
-                TimetableRoom(apiRoom.name!!.toMultiLangText())
-            }.first()
-        }
 
     return TimetableContents(
         TimetableItemList(
@@ -468,7 +460,6 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
                         targetAudience = apiSession.targetAudience,
                         language = apiSession.language!!,
                         asset = apiSession.asset.toTimetableAsset(),
-                        room = roomIdToRoom[apiSession.roomId]!!,
                         description = apiSession.description!!,
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! },
                         message = apiSession.message?.toMultiLangText(),
@@ -484,7 +475,6 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
                         targetAudience = apiSession.targetAudience,
                         language = apiSession.language!!,
                         asset = apiSession.asset.toTimetableAsset(),
-                        room = roomIdToRoom[apiSession.roomId]!!,
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! },
                         levels = apiSession.levels,
                     )

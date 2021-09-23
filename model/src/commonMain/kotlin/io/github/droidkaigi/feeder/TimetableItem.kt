@@ -13,7 +13,6 @@ sealed class TimetableItem(
     open val targetAudience: String,
     open val language: String,
     open val asset: TimetableAsset,
-    open val room: TimetableRoom,
     open val levels: List<String>,
 ) {
     data class Session(
@@ -25,7 +24,6 @@ sealed class TimetableItem(
         override val targetAudience: String,
         override val language: String,
         override val asset: TimetableAsset,
-        override val room: TimetableRoom,
         override val levels: List<String>,
         val description: String,
         val speakers: List<TimetableSpeaker>,
@@ -39,7 +37,6 @@ sealed class TimetableItem(
         targetAudience = targetAudience,
         language = language,
         asset = asset,
-        room = room,
         levels = levels,
     )
 
@@ -52,7 +49,6 @@ sealed class TimetableItem(
         override val targetAudience: String,
         override val language: String,
         override val asset: TimetableAsset,
-        override val room: TimetableRoom,
         override val levels: List<String>,
         val speakers: List<TimetableSpeaker> = listOf(),
     ) : TimetableItem(
@@ -64,7 +60,6 @@ sealed class TimetableItem(
         targetAudience = targetAudience,
         language = language,
         asset = asset,
-        room = room,
         levels = levels,
     )
 }

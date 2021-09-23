@@ -10,8 +10,6 @@ CREATE TABLE timetableItemSpecial (
     language TEXT NOT NULL,
     assetSlideUrl TEXT,
     assetVideoUrl TEXT,
-    jaRoomName TEXT NOT NULL,
-    enRoomName TEXT NOT NULL,
     levels TEXT NOT NULL
 );
 
@@ -39,8 +37,6 @@ INSERT INTO timetableItemSpecial(
     language,
     assetSlideUrl,
     assetVideoUrl,
-    jaRoomName,
-    enRoomName,
     levels
 ) VALUES ?;
 
