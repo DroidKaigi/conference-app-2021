@@ -68,7 +68,7 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
     }
 }
 
-private val stringListDivider = ","
+private const val stringListDivider = ","
 
 private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
     this.insert(
