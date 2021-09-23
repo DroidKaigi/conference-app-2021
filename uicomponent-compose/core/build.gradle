@@ -32,7 +32,7 @@ dependencies {
     implementation Dep.Kotlin.stdlibJdk8
 
     implementation Dep.Jetpack.appcompat
-    implementation Dep.Accompanist.coil
+    implementation Dep.coil
     implementation Dep.Accompanist.insets
 
     implementation (Dep.Coroutines.core) {
