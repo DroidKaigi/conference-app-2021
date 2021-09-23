@@ -88,11 +88,11 @@ class RealFeedViewModel @Inject constructor(
                     val favorite = allFeedContents.value
                         .getContents()
                         .favorites
-                        .contains(event.feedItem.id)
+                        .contains(event.feedItem.id.value)
                     if (favorite) {
-                        repository.removeFavorite(event.feedItem.id)
+                        repository.removeFavorite(event.feedItem.id.value)
                     } else {
-                        repository.addFavorite(event.feedItem.id)
+                        repository.addFavorite(event.feedItem.id.value)
                     }
                 }
                 is FeedViewModel.Event.ReloadContent -> {

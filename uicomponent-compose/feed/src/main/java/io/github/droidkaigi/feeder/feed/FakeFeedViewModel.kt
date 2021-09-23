@@ -76,10 +76,10 @@ class FakeFeedViewModel(val errorFetchData: Boolean) : FeedViewModel {
                 }
                 is FeedViewModel.Event.ToggleFavorite -> {
                     val value = feedContents.value
-                    val newFavorites = if (!value.favorites.contains(event.feedItem.id)) {
-                        value.favorites + event.feedItem.id
+                    val newFavorites = if (!value.favorites.contains(event.feedItem.id.value)) {
+                        value.favorites + event.feedItem.id.value
                     } else {
-                        value.favorites - event.feedItem.id
+                        value.favorites - event.feedItem.id.value
                     }
                     mutableFeedContents.value = value.copy(
                         favorites = newFavorites

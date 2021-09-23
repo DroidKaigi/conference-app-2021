@@ -6,7 +6,7 @@ import kotlinx.datetime.toLocalDateTime
 import kotlin.jvm.JvmInline
 
 sealed class FeedItem {
-    abstract val id: String
+    abstract val id: FeedItemId
     abstract val publishedAt: Instant
     abstract val image: Image
     abstract val media: Media
@@ -15,7 +15,7 @@ sealed class FeedItem {
     abstract val link: String
 
     data class Blog(
-        override val id: String,
+        override val id: FeedItemId,
         override val publishedAt: Instant,
         override val image: Image,
         override val media: Media,
@@ -27,7 +27,7 @@ sealed class FeedItem {
     ) : FeedItem()
 
     data class Video(
-        override val id: String,
+        override val id: FeedItemId,
         override val publishedAt: Instant,
         override val image: Image,
         override val media: Media,
@@ -37,7 +37,7 @@ sealed class FeedItem {
     ) : FeedItem()
 
     data class Podcast(
-        override val id: String,
+        override val id: FeedItemId,
         override val publishedAt: Instant,
         override val image: Image,
         override val media: Media,

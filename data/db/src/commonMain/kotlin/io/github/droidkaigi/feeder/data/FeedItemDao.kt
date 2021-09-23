@@ -5,6 +5,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.Author
 import io.github.droidkaigi.feeder.FeedItem
+import io.github.droidkaigi.feeder.FeedItemId
 import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.MultiLangText
@@ -50,7 +51,7 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
                     podcastQueries.insert(item)
                     item.speakers.forEach { speaker ->
                         podcastSpeakerQueries.insert(
-                            item.id,
+                            item.id.value,
                             speaker
                         )
                     }
@@ -85,7 +86,7 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
             authorLink: String,
             ->
             FeedItem.Blog(
-                id = id,
+                id = FeedItemId(id),
                 publishedAt = Instant.fromEpochMilliseconds(publishedAt),
                 image = Image(
                     smallUrl = imageSmallUrl, standardUrl = imageStandardUrl,
@@ -115,7 +116,7 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
             link: String,
             ->
             FeedItem.Video(
-                id = id,
+                id = FeedItemId(id),
                 publishedAt = Instant.fromEpochMilliseconds(publishedAt),
                 image = Image(
                     smallUrl = imageSmallUrl, standardUrl = imageStandardUrl,
@@ -134,7 +135,7 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
 private fun FeedItemBlogQueries.insert(blog: FeedItem.Blog) {
     this.insert(
         FeedItemBlog(
-            id = blog.id,
+            id = blog.id.value,
             publishedAt = blog.publishedAt.toEpochMilliseconds(),
             imageSmallUrl = blog.image.smallUrl,
             imageStandardUrl = blog.image.standardUrl,
@@ -155,7 +156,7 @@ private fun FeedItemBlogQueries.insert(blog: FeedItem.Blog) {
 private fun FeedItemPodcastQueries.insert(podcast: FeedItem.Podcast) {
     this.insert(
         FeedItemPodcast(
-            id = podcast.id,
+            id = podcast.id.value,
             publishedAt = podcast.publishedAt.toEpochMilliseconds(),
             imageSmallUrl = podcast.image.smallUrl,
             imageStandardUrl = podcast.image.standardUrl,
@@ -184,7 +185,7 @@ private fun FeedItemPodcastSpeakerQueries.insert(podcastId: String, speaker: Spe
 private fun FeedItemVideoQueries.insert(podcast: FeedItem.Video) {
     this.insert(
         FeedItemVideo(
-            id = podcast.id,
+            id = podcast.id.value,
             publishedAt = podcast.publishedAt.toEpochMilliseconds(),
             imageSmallUrl = podcast.image.smallUrl,
             imageStandardUrl = podcast.image.standardUrl,
@@ -211,7 +212,7 @@ private fun List<SelectAll>.toPodcastItems(): List<FeedItem.Podcast> {
             )
         } else {
             FeedItem.Podcast(
-                id = row.id,
+                id = FeedItemId(row.id),
                 publishedAt = Instant.fromEpochMilliseconds(row.publishedAt),
                 image = Image(
                     smallUrl = row.imageSmallUrl,

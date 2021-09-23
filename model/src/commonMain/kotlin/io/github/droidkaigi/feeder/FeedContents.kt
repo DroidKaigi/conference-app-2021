@@ -16,7 +16,7 @@ data class FeedContents(
 
     val contents by lazy {
         feedItemContents.map {
-            it to favorites.contains(it.id)
+            it to favorites.contains(it.id.value)
         }
     }
 
@@ -24,7 +24,7 @@ data class FeedContents(
         var feedItems = feedItemContents.toList()
         if (filters.filterFavorite) {
             feedItems = feedItems.filter { feedItem ->
-                favorites.contains(feedItem.id)
+                favorites.contains(feedItem.id.value)
             }
         }
         return copy(feedItemContents = feedItems)
