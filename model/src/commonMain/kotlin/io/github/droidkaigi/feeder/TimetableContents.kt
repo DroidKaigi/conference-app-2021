@@ -6,7 +6,7 @@ import kotlinx.datetime.toInstant
 
 data class TimetableContents(
     val timetableItems: TimetableItemList = TimetableItemList(),
-    val favorites: Set<String> = setOf(),
+    val favorites: Set<TimetableItemId> = setOf(),
 )
 
 fun TimetableContents?.orEmptyContents(): TimetableContents = this ?: TimetableContents()

@@ -11,12 +11,12 @@ data class PlayingPodcastState(
 
 data class FeedContents(
     val feedItemContents: List<FeedItem> = listOf(),
-    val favorites: Set<String> = setOf(),
+    val favorites: Set<FeedItemId> = setOf(),
 ) {
 
     val contents by lazy {
         feedItemContents.map {
-            it to favorites.contains(it.id.value)
+            it to favorites.contains(it.id)
         }
     }
 
@@ -24,7 +24,7 @@ data class FeedContents(
         var feedItems = feedItemContents.toList()
         if (filters.filterFavorite) {
             feedItems = feedItems.filter { feedItem ->
-                favorites.contains(feedItem.id.value)
+                favorites.contains(feedItem.id)
             }
         }
         return copy(feedItemContents = feedItems)

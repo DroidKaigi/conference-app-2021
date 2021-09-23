@@ -88,11 +88,11 @@ class RealTimetableViewModel @Inject constructor(
                     val favorite = allTimetableContents.value
                         .getContents()
                         .favorites
-                        .contains(event.timetableItem.id.value)
+                        .contains(event.timetableItem.id)
                     if (favorite) {
-                        repository.removeFavorite(event.timetableItem.id.value)
+                        repository.removeFavorite(event.timetableItem.id)
                     } else {
-                        repository.addFavorite(event.timetableItem.id.value)
+                        repository.addFavorite(event.timetableItem.id)
                     }
                 }
                 is TimetableViewModel.Event.ReloadContent -> {
