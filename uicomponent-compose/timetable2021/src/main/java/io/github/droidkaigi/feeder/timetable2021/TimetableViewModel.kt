@@ -25,7 +25,7 @@ interface TimetableViewModel :
 
     sealed class Event {
         class ChangeFavoriteFilter(val filters: Filters) : Event()
-        class ToggleFavorite(val session: TimetableItem.Session) : Event()
+        class ToggleFavorite(val timetableItem: TimetableItem) : Event()
         object ReloadContent : Event()
     }
 

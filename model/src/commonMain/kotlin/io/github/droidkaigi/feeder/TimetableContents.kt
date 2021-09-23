@@ -10,6 +10,7 @@ data class TimetableContents(
 )
 
 fun TimetableContents?.orEmptyContents(): TimetableContents = this ?: TimetableContents()
+fun LoadState<TimetableContents>.getContents() = getValueOrNull() ?: TimetableContents()
 
 fun fakeTimetableContents(): TimetableContents = TimetableContents(
     timetableItems = TimetableItemList(
@@ -43,5 +44,6 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
             ),
         )
-    )
+    ),
+    setOf()
 )
