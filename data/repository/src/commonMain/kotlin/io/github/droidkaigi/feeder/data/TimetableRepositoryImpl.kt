@@ -25,10 +25,10 @@ open class TimetableRepositoryImpl(
     }
 
     override suspend fun addFavorite(id: String) {
-        dataStore.addFavoriteTimetable(id)
+        dataStore.addFavoriteTimetableItemId(id)
     }
 
     override suspend fun removeFavorite(id: String) {
-        dataStore.removeFavoriteTimetable(id)
+        dataStore.removeFavoriteTimetableItemId(id)
     }
 }
