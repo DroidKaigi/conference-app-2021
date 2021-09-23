@@ -3,7 +3,17 @@ CREATE TABLE timetableItemSession (
     jaTitle TEXT NOT NULL,
     enTitle TEXT NOT NULL,
     startsAt INTEGER NOT NULL,
-    endsAt INTEGER NOT NULL
+    endsAt INTEGER NOT NULL,
+    jaCategory TEXT NOT NULL,
+    enCategory TEXT NOT NULL,
+    targetAudience TEXT NOT NULL,
+    language TEXT NOT NULL,
+    assetSlideUrl TEXT,
+    assetVideoUrl TEXT,
+    levels TEXT NOT NULL,
+    description TEXT NOT NULL,
+    jaMessage TEXT,
+    enMessage TEXT
 );
 
 CREATE INDEX timetableItemSession_id ON timetableItemSession(id);
@@ -22,7 +32,17 @@ INSERT INTO timetableItemSession(
     jaTitle,
     enTitle,
     startsAt,
-    endsAt
+    endsAt,
+    jaCategory,
+    enCategory,
+    targetAudience,
+    language,
+    assetSlideUrl,
+    assetVideoUrl,
+    levels,
+    description,
+    jaMessage,
+    enMessage
 ) VALUES ?;
 
 deleteAll:

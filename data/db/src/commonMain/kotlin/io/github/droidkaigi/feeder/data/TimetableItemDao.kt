@@ -4,6 +4,8 @@ import com.squareup.sqldelight.runtime.coroutines.asFlow
 import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
+import io.github.droidkaigi.feeder.TimetableAsset
+import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import kotlinx.coroutines.channels.Channel
@@ -65,6 +67,8 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
     }
 }
 
+private const val stringListDivider = ","
+
 private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
     this.insert(
         timetableItemSession = TimetableItemSession(
@@ -73,6 +77,16 @@ private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
             endsAt = session.endsAt.toEpochMilliseconds(),
+            jaCategory = session.category.title.jaTitle,
+            enCategory = session.category.title.enTitle,
+            targetAudience = session.targetAudience,
+            language = session.language,
+            assetSlideUrl = session.asset.slideUrl,
+            assetVideoUrl = session.asset.videoUrl,
+            levels = session.levels.joinToString(stringListDivider),
+            description = session.description,
+            jaMessage = session.message?.jaTitle,
+            enMessage = session.message?.enTitle,
         ),
     )
 }
@@ -85,6 +99,13 @@ private fun TimetableItemSpecialQueries.insert(session: TimetableItem.Special) {
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
             endsAt = session.endsAt.toEpochMilliseconds(),
+            jaCategory = session.category.title.jaTitle,
+            enCategory = session.category.title.enTitle,
+            targetAudience = session.targetAudience,
+            language = session.language,
+            assetSlideUrl = session.asset.slideUrl,
+            assetVideoUrl = session.asset.videoUrl,
+            levels = session.levels.joinToString(stringListDivider),
         ),
     )
 }
@@ -118,12 +139,28 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 ),
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
+                category = TimetableCategory(
+                    title = MultiLangText(row.jaCategory, row.enCategory),
+                ),
+                targetAudience = row.targetAudience,
+                language = row.language,
+                asset = TimetableAsset(
+                    slideUrl = row.assetSlideUrl,
+                    videoUrl = row.assetVideoUrl,
+                ),
+                levels = row.levels.split(stringListDivider),
+                description = row.description,
                 speakers = listOf(
                     TimetableSpeaker(
                         name = row.speakerName,
                         iconUrl = row.speakerIconUrl,
                     )
                 ),
+                message = if (row.jaMessage != null && row.enMessage != null) {
+                    MultiLangText(row.jaMessage, row.enMessage)
+                } else {
+                    null
+                },
             )
         }
         acc + mapOf(row.id to feedItem)
@@ -149,6 +186,16 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 ),
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
+                category = TimetableCategory(
+                    title = MultiLangText(row.jaCategory, row.enCategory),
+                ),
+                targetAudience = row.targetAudience,
+                language = row.language,
+                asset = TimetableAsset(
+                    slideUrl = row.assetSlideUrl,
+                    videoUrl = row.assetVideoUrl,
+                ),
+                levels = row.levels.split(stringListDivider),
                 speakers = listOf(
                     TimetableSpeaker(
                         name = row.speakerName,
