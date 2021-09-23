@@ -1,5 +1,7 @@
 package io.github.droidkaigi.feeder
 
+import android.os.Parcel
+import android.os.Parcelable
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
@@ -56,4 +58,24 @@ sealed class FeedItem {
 }
 
 @JvmInline
-value class FeedItemId(val value: String)
+value class FeedItemId(val value: String) : Parcelable {
+    constructor(parcel: Parcel) : this(parcel.readString() ?: "")
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(value)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
+
+    companion object CREATOR : Parcelable.Creator<FeedItemId> {
+        override fun createFromParcel(parcel: Parcel): FeedItemId {
+            return FeedItemId(parcel)
+        }
+
+        override fun newArray(size: Int): Array<FeedItemId?> {
+            return arrayOfNulls(size)
+        }
+    }
+}
