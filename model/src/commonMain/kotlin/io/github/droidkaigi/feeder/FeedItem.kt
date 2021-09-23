@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
+import kotlin.jvm.JvmInline
 
 sealed class FeedItem {
     abstract val id: String
@@ -53,3 +54,6 @@ sealed class FeedItem {
         return "${localDate.year}/${localDate.monthNumber}/${localDate.dayOfMonth}"
     }
 }
+
+@JvmInline
+value class FeedItemId(val value: String)
