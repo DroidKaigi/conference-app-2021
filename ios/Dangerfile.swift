@@ -12,6 +12,8 @@ func run(_ danger: DangerDSL) {
             danger.warn("PR is classed as Work in Progress")
         }
     }
+
+    danger.message("Hello Danger🚀")
 }
 
 // MARK: -
