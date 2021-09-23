@@ -20,56 +20,41 @@ public struct FeedRepository: FeedRepositoryProtocol, KMMRepositoryProtocol {
     }
 
     private func refresh() -> AnyPublisher<Void, KotlinError> {
-        Future<Void, KotlinError> { promise in
-            repository.refresh()
-                .subscribe(scope: scopeProvider.scope) { _ in
-                    promise(.success(()))
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-        }
+        SuspendWrapperPublisher(
+            suspendWrapper: repository.refresh(),
+            scopeProvider: scopeProvider
+        )
+        .map { _ in }
         .eraseToAnyPublisher()
     }
 
     public func feedContents() -> AnyPublisher<[FeedContent], KotlinError> {
         refresh()
             .flatMap {
-                Future<FeedContents, KotlinError> { promise in
-                    repository.feedContents()
-                        .subscribe(scope: scopeProvider.scope) {
-                            promise(.success($0))
-                        } onComplete: {
-                        } onFailure: {
-                            promise(.failure(KotlinError.fetchFailed($0.description())))
-                        }
-                }
-                .map([FeedContent].init(from:))
-                .eraseToAnyPublisher()
+                FlowWrapperPublisher(
+                    flowWrapper: repository.feedContents(),
+                    scopeProvider: scopeProvider
+                )
             }
+            .map([FeedContent].init(from:))
             .eraseToAnyPublisher()
     }
 
     public func addFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
-        Future<Void, KotlinError> { promise in
-            repository.addFavorite(id: id)
-                .subscribe(scope: scopeProvider.scope) { _ in
-                    promise(.success(()))
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-
-        }.eraseToAnyPublisher()
+        SuspendWrapperPublisher(
+            suspendWrapper: repository.addFavorite(id: id),
+            scopeProvider: scopeProvider
+        )
+        .map { _ in }
+        .eraseToAnyPublisher()
     }
 
     public func removeFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
-        Future<Void, KotlinError> { promise in
-            repository.removeFavorite(id: id)
-                .subscribe(scope: scopeProvider.scope) { _ in
-                    promise(.success(()))
-                } onFailure: {
-                    promise(.failure(KotlinError.fetchFailed($0.description())))
-                }
-
-        }.eraseToAnyPublisher()
+        SuspendWrapperPublisher(
+            suspendWrapper: repository.removeFavorite(id: id),
+            scopeProvider: scopeProvider
+        )
+        .map { _ in }
+        .eraseToAnyPublisher()
     }
 }

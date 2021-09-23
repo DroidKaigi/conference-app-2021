@@ -11,7 +11,7 @@ on:
 jobs:
   take-snapshots:
     name: "iOS Take and Commit Snapshots"
-    runs-on: macos-latest
+    runs-on: macos-11
     steps:
       - uses: actions/checkout@v2
       - name: Create LFS file list
@@ -28,7 +28,7 @@ jobs:
         with:
           java-version: '11'
       - name: Select Xcode Version
-        run: sudo xcode-select -s '/Applications/Xcode_12.4.app'
+        run: sudo xcode-select -s '/Applications/Xcode_12.5.1.app'
       - name: Show Xcode Version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
@@ -52,12 +52,12 @@ jobs:
       - name: Create Snapshots commit
         run: |
           git add -A
-          git commit -m "[iOS] Update iOS Snapshots"
+          git commit -m "[iOS] Update iOS Snapshots" | echo
       - name: Create Updated asset-id commit
         run: |
           git lfs ls-files -l | cut -d' ' -f1 | sort > .lfs-assets-id
           git add -A
-          git commit -m "Update asset-id"
+          git commit -m "Update asset-id" | echo
       - name: Create Update Snapshots PullRequest
         uses: peter-evans/create-pull-request@v3
         with:

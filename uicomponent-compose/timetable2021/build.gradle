@@ -1,24 +1,11 @@
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
 // TODO: make this library Kotlin MPP
-buildscript {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://jitpack.io'
-        }
-    }
-    dependencies {
-        classpath 'com.github.takahirom:decomposer:main-SNAPSHOT'
-    }
-}
-
 plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'app.cash.exhaustive'
 }
-apply plugin: 'com.github.takahirom.decomposer'
 
 apply from: rootProject.file("gradle/android.gradle")
 apply from: rootProject.file("gradle/compose.gradle")
@@ -39,7 +26,7 @@ dependencies {
     coreLibraryDesugaring Dep.desugarJdkLibs
 
     implementation Dep.Jetpack.appcompat
-    implementation Dep.Accompanist.coil
+    implementation Dep.coil
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.pager
     implementation Dep.Accompanist.pagerIndicators

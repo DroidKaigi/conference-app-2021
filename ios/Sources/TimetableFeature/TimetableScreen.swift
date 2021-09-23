@@ -12,12 +12,10 @@ public struct TimetableScreen: View {
         UISegmentedControl.appearance().backgroundColor = AssetColor.Background.secondary.uiColor
 
         UISegmentedControl.appearance().setTitleTextAttributes([
-            .font: font,
             .foregroundColor: AssetColor.Base.primary.uiColor
         ], for: .normal)
 
         UISegmentedControl.appearance().setTitleTextAttributes([
-            .font: font,
             .foregroundColor: AssetColor.Base.white.uiColor,
         ], for: .selected)
     }

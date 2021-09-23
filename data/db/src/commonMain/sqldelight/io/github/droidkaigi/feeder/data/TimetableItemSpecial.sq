@@ -1,0 +1,44 @@
+CREATE TABLE timetableItemSpecial (
+    id TEXT NOT NULL PRIMARY KEY,
+    jaTitle TEXT NOT NULL,
+    enTitle TEXT NOT NULL,
+    startsAt INTEGER NOT NULL,
+    endsAt INTEGER NOT NULL,
+    jaCategory TEXT NOT NULL,
+    enCategory TEXT NOT NULL,
+    targetAudience TEXT NOT NULL,
+    language TEXT NOT NULL,
+    assetSlideUrl TEXT,
+    assetVideoUrl TEXT,
+    levels TEXT NOT NULL
+);
+
+CREATE INDEX timetableItemSpecial_id ON timetableItemSpecial(id);
+
+selectAllSpecial:
+SELECT
+    timetableItemSpecial.*,
+    timetableItemSpeaker.name speakerName,
+    timetableItemSpeaker.iconUrl speakerIconUrl
+FROM timetableItemSpecial
+CROSS JOIN timetableItemSpeaker ON timetableItemSpecial.id = timetableItemSpeaker.timetablePrimaryId;
+
+insert:
+INSERT INTO timetableItemSpecial(
+    id,
+    jaTitle,
+    enTitle,
+    startsAt,
+    endsAt,
+    endsAt,
+    jaCategory,
+    enCategory,
+    targetAudience,
+    language,
+    assetSlideUrl,
+    assetVideoUrl,
+    levels
+) VALUES ?;
+
+deleteAll:
+DELETE FROM timetableItemSpecial;

@@ -7,4 +7,8 @@ interface TimetableRepository {
     fun timetableContents(): Flow<TimetableContents>
 
     suspend fun refresh()
+
+    suspend fun addFavorite(id: String)
+
+    suspend fun removeFavorite(id: String)
 }

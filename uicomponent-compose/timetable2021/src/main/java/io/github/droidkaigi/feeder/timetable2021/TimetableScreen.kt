@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder.timetable2021
 
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -24,14 +24,16 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
-import io.github.droidkaigi.feeder.TimetableContents
+import io.github.droidkaigi.feeder.DroidKaigi2021Day
+import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemList
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 
-sealed class TimetableTab(val name: String, val routePath: String) {
-    object Day1 : TimetableTab("Day1", "day1")
-    object Day2 : TimetableTab("Day1", "day1")
-    object Day3 : TimetableTab("Day1", "day1")
+sealed class TimetableTab(val name: String, val routePath: String, val day: DroidKaigi2021Day) {
+    object Day1 : TimetableTab("Day1", "day1", DroidKaigi2021Day.Day1)
+    object Day2 : TimetableTab("Day1", "day1", DroidKaigi2021Day.Day2)
+    object Day3 : TimetableTab("Day1", "day1", DroidKaigi2021Day.Day3)
 
     companion object {
         fun values() = listOf(Day1, Day2, Day3)
@@ -42,7 +44,7 @@ sealed class TimetableTab(val name: String, val routePath: String) {
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Stable
 data class TimetableScreenState(
-    val timeTableContents: TimetableContents,
+    val timeTableContents: TimetableItemList,
     val scaffoldState: BackdropScaffoldState,
     val tabPagerState: PagerState,
 )
@@ -66,7 +68,7 @@ fun TimetableScreen(
 
     TimetableScreen(
         state = TimetableScreenState(
-            timeTableContents = state.timetableContents,
+            timeTableContents = state.timetableContents.timetableItems,
             scaffoldState = scaffoldState,
             tabPagerState = pagerState
         ),
@@ -111,11 +113,11 @@ private fun TimetableScreen(
                     modifier = Modifier.fillMaxSize()
                 ) { page ->
                     val selectedTab = TimetableTab.values()[page]
-                    Column {
-                        state.timeTableContents.timetableItems.forEach {
-                            Text(it.title.currentLangTitle)
-                        }
-                    }
+                    TimetableList(
+                        TimetableListState(
+                            state.timeTableContents.getDayTimetableItems(selectedTab.day)
+                        )
+                    )
                 }
             },
             snackbarHost = {
@@ -126,6 +128,28 @@ private fun TimetableScreen(
             }
         )
     }
+}
+
+data class TimetableListState(val timetableItems: TimetableItemList)
+
+@Composable
+private fun TimetableList(state: TimetableListState) {
+    LazyColumn {
+        items(
+            count = state.timetableItems.size,
+            key = { state.timetableItems[it].id }
+        ) { index ->
+            val timetableItem = state.timetableItems.timetableItems[index]
+            TimetableItem(TimetableItemState(timetableItem))
+        }
+    }
+}
+
+data class TimetableItemState(val timetableItem: TimetableItem)
+
+@Composable
+private fun TimetableItem(timetableItemState: TimetableItemState) {
+    Text(timetableItemState.timetableItem.title.currentLangTitle)
 }
 
 @Preview(showBackground = true)

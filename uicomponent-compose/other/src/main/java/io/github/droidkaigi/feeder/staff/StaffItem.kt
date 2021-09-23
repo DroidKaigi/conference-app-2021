@@ -53,7 +53,7 @@ fun StaffItem(staff: Staff, onClickItem: (Staff) -> Unit) {
             shape = CircleShape
         ) {
             NetworkImage(
-                url = staff.image,
+                url = staff.iconUrl,
                 modifier = Modifier.fillMaxSize(),
                 contentScale = ContentScale.Fit,
                 contentDescription = "Staff Icon"
@@ -67,7 +67,7 @@ fun StaffItem(staff: Staff, onClickItem: (Staff) -> Unit) {
                 bottom.linkTo(parent.bottom, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = staff.name,
+            text = staff.username,
             style = TextStyle(fontWeight = FontWeight.Normal, fontSize = 16.sp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis

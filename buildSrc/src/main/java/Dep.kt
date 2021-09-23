@@ -1,13 +1,13 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.0.1"
+    const val compose = "1.1.0-alpha04"
     const val coroutines = "1.5.0-native-mt"
 }
 
 object Dep {
     object Compose {
-        const val activity = "androidx.activity:activity-compose:1.3.0"
+        const val activity = "androidx.activity:activity-compose:1.4.0-alpha02"
         const val constraintLayout =
             "androidx.constraintlayout:constraintlayout-compose:1.0.0-beta02"
         const val navigation = "androidx.navigation:navigation-compose:2.4.0-alpha06"
@@ -53,13 +53,13 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.21"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.30"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.21"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.21"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.30"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.21"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
@@ -105,18 +105,19 @@ object Dep {
     }
 
     object Accompanist {
-        const val insets = "com.google.accompanist:accompanist-insets:0.15.0"
-        const val coil = "com.google.accompanist:accompanist-coil:0.15.0"
-        const val pager = "com.google.accompanist:accompanist-pager:0.15.0"
-        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.15.0"
+        const val insets = "com.google.accompanist:accompanist-insets:0.18.0"
+        const val pager = "com.google.accompanist:accompanist-pager:0.18.0"
+        const val pagerIndicators = "com.google.accompanist:accompanist-pager-indicators:0.18.0"
         const val systemuicontroller =
-            "com.google.accompanist:accompanist-systemuicontroller:0.15.0"
+            "com.google.accompanist:accompanist-systemuicontroller:0.18.0"
     }
 
     object FirebaseCrashlytics {
         const val plugin = "com.google.firebase:firebase-crashlytics-gradle:2.5.2"
         const val android = "com.google.firebase:firebase-crashlytics:17.4.1"
     }
+
+    const val coil = "io.coil-kt:coil-compose:1.3.2"
 
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
