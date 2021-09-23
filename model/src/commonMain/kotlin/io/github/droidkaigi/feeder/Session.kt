@@ -6,13 +6,13 @@ import kotlin.jvm.JvmInline
 
 @OptIn(ExperimentalTime::class)
 sealed class TimetableItem(
-    open val id: String,
+    open val id: TimetableItemId,
     open val title: MultiLangText,
     open val startsAt: Instant,
     open val endsAt: Instant,
 ) {
     data class Session(
-        override val id: String,
+        override val id: TimetableItemId,
         override val title: MultiLangText,
         override val startsAt: Instant,
         override val endsAt: Instant,
@@ -20,7 +20,7 @@ sealed class TimetableItem(
     ) : TimetableItem(id, title, startsAt, endsAt)
 
     data class Special(
-        override val id: String,
+        override val id: TimetableItemId,
         override val title: MultiLangText,
         override val startsAt: Instant,
         override val endsAt: Instant,

@@ -4,6 +4,7 @@ import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableItemList
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.data.response.InstantSerializer
@@ -438,7 +439,7 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
             feedContents.sessions.map { apiSession ->
                 if (!apiSession.isServiceSession) {
                     TimetableItem.Session(
-                        id = apiSession.id,
+                        id = TimetableItemId(apiSession.id),
                         title = MultiLangText(
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,
@@ -449,7 +450,7 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
                     )
                 } else {
                     TimetableItem.Special(
-                        id = apiSession.id,
+                        id = TimetableItemId(apiSession.id),
                         title = MultiLangText(
                             jaTitle = apiSession.title!!.ja!!,
                             enTitle = apiSession.title.en!!,

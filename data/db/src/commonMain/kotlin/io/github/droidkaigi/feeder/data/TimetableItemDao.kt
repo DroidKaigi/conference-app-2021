@@ -5,6 +5,7 @@ import com.squareup.sqldelight.runtime.coroutines.mapToList
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +41,7 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
                     sessionQueries.insert(item)
                     item.speakers.forEach { speaker ->
                         speakerQueries.insert(
-                            id = item.id,
+                            id = item.id.value,
                             speaker = speaker,
                         )
                     }
@@ -49,7 +50,7 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
                     specialQueries.insert(item)
                     item.speakers.forEach { speaker ->
                         speakerQueries.insert(
-                            id = item.id,
+                            id = item.id.value,
                             speaker = speaker,
                         )
                     }
@@ -68,7 +69,7 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
 private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
     this.insert(
         timetableItemSession = TimetableItemSession(
-            id = session.id,
+            id = session.id.value,
             jaTitle = session.title.jaTitle,
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
@@ -80,7 +81,7 @@ private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
 private fun TimetableItemSpecialQueries.insert(session: TimetableItem.Special) {
     this.insert(
         timetableItemSpecial = TimetableItemSpecial(
-            id = session.id,
+            id = session.id.value,
             jaTitle = session.title.jaTitle,
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
@@ -111,7 +112,7 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
             )
         } else {
             TimetableItem.Session(
-                id = row.id,
+                id = TimetableItemId(row.id),
                 title = MultiLangText(
                     jaTitle = row.jaTitle,
                     enTitle = row.enTitle,
@@ -142,7 +143,7 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
             )
         } else {
             TimetableItem.Special(
-                id = row.id,
+                id = TimetableItemId(row.id),
                 title = MultiLangText(
                     jaTitle = row.jaTitle,
                     enTitle = row.enTitle,

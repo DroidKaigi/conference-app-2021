@@ -74,10 +74,10 @@ class FakeTimetableViewModel(val errorFetchData: Boolean) : TimetableViewModel {
                 }
                 is TimetableViewModel.Event.ToggleFavorite -> {
                     val value = mTimetableContents.value
-                    val newFavorites = if (!value.favorites.contains(event.timetableItem.id)) {
-                        value.favorites + event.timetableItem.id
+                    val newFavorites = if (!value.favorites.contains(event.timetableItem.id.value)) {
+                        value.favorites + event.timetableItem.id.value
                     } else {
-                        value.favorites - event.timetableItem.id
+                        value.favorites - event.timetableItem.id.value
                     }
                     mutableSessionContents.value = value.copy(
                         favorites = newFavorites
