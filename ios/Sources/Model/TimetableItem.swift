@@ -40,12 +40,9 @@ public extension TimetableItem {
     static func mock(
         id: String = UUID().uuidString,
         type: TimetableItemType = .session,
-        title: MultiLangText = .init(
-            enTitle: "AndroidのKotlin Coroutinesの登場からrepeatOnLifecycleまでを流れるように説明したい",
-            jaTitle: "AndroidのKotlin Coroutinesの登場からrepeatOnLifecycleまでを流れるように説明したい"
-        ),
+        title: MultiLangText = .init(enTitle: "Timetable Item", jaTitle: "タイムテーブルアイテム"),
         category: String = "Beginner",
-        speakers: [Speaker] = [.mock(), .mock()],
+        speakers: [Speaker] = [.mock()],
         startsAt: Date = Date(timeIntervalSince1970: 0),
         endsAt: Date = Date(timeIntervalSince1970: 100)
     ) -> Self {

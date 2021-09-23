@@ -78,9 +78,9 @@ private extension TimetableDetailScreen {
     }
 
     func descriptions(timetable: TimetableItem) -> some View {
-        VStack(alignment: .leading, spacing: 6) {
+        VStack(alignment: .leading, spacing: 4) {
             ForEach(DesciptionType.allCases, id: \.self) { type in
-                HStack(spacing: 11) {
+                HStack(spacing: 8) {
                     type.image
                         .foregroundColor(AssetColor.Base.primary.color)
                         .frame(width: Const.iconSize, height: Const.iconSize)
@@ -213,16 +213,18 @@ private enum DesciptionType: CaseIterable {
 }
 
 private extension Date {
+    enum Const {
+        static let formatter = DateFormatter()
+    }
+
     var formatToDate: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "yyyy-MM-dd"
-        return formatter.string(from: self)
+        Const.formatter.dateFormat = "yyyy-MM-dd"
+        return Const.formatter.string(from: self)
     }
 
     var formatToTime: String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: self)
+        Const.formatter.dateFormat = "HH:mm"
+        return Const.formatter.string(from: self)
     }
 }
 
