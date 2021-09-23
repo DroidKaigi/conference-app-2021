@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder
 
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Instant
+import kotlin.jvm.JvmInline
 
 @OptIn(ExperimentalTime::class)
 sealed class TimetableItem(
@@ -26,3 +27,6 @@ sealed class TimetableItem(
         val speakers: List<TimetableSpeaker> = listOf(),
     ) : TimetableItem(id, title, startsAt, endsAt)
 }
+
+@JvmInline
+value class TimetableItemId(val value: String)
