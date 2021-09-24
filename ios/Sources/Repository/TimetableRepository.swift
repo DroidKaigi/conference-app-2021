@@ -45,7 +45,6 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
             suspendWrapper: repository.addFavorite(id: id),
             scopeProvider: scopeProvider
         )
-        .first()
         .map { _ in }
         .eraseToAnyPublisher()
     }
@@ -55,7 +54,6 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
             suspendWrapper: repository.removeFavorite(id: id),
             scopeProvider: scopeProvider
         )
-        .first()
         .map { _ in }
         .eraseToAnyPublisher()
     }

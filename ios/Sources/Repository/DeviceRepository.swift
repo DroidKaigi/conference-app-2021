@@ -22,7 +22,6 @@ public struct DeviceRepository: DeviceRepositoryProtocol, KMMRepositoryProtocol 
             suspendWrapper: repository.updateDeviceToken(deviceToken: deviceToken),
             scopeProvider: scopeProvider
         )
-        .first()
         .map { _ in }
         .eraseToAnyPublisher()
     }

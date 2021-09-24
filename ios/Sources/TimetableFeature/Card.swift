@@ -31,7 +31,7 @@ public struct TimetableCard: View {
                 .font(.caption2)
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
             VStack {
-                ForEach(item.speakers) { speaker in
+                ForEach(item.speakers, id: \.self) { speaker in
                     HStack {
                         AvatarView(
                             avatarImageURL: URL(string: speaker.iconURLString),

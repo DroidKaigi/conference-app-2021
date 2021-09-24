@@ -1,12 +1,8 @@
 import DroidKaigiMPP
 
-public struct Speaker: Equatable, Hashable, Identifiable {
+public struct Speaker: Equatable, Hashable {
     public var name: String
     public var iconURLString: String
-
-    public var id: Int {
-        name.hashValue
-    }
 
     public init(
         name: String,
