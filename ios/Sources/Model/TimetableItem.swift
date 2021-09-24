@@ -8,9 +8,9 @@ public enum TimetableItemType {
 public struct TimetableItem: Equatable, Identifiable {
     public var id: String
     public var type: TimetableItemType
-    public var lang: Lang
+    public var lang: String
     public var title: MultiLangText
-    public var category: String
+    public var category: MultiLangText
     public var speakers: [Speaker]
     public var startsAt: Date
     public var endsAt: Date
@@ -18,9 +18,9 @@ public struct TimetableItem: Equatable, Identifiable {
     public init(
         id: String,
         type: TimetableItemType,
-        lang: Lang,
+        lang: String,
         title: MultiLangText,
-        category: String,
+        category: MultiLangText,
         speakers: [Speaker],
         startsAt: Date,
         endsAt: Date
@@ -37,14 +37,15 @@ public struct TimetableItem: Equatable, Identifiable {
 
     // lang and category parameter is needed in KMM Model
     public init?(from model: DroidKaigiMPP.TimetableItem) {
+        print(model)
         switch model {
         case let session as DroidKaigiMPP.TimetableItem.Session:
             self.init(
                 id: session.id,
                 type: .session,
-                lang: .ja,
+                lang: model.language,
                 title: MultiLangText(from: session.title),
-                category: "",
+                category: MultiLangText(from: model.category.title),
                 speakers: session.speakers.map(Speaker.init(from:)),
                 startsAt: session.startsAt.toNSDate(),
                 endsAt: session.endsAt.toNSDate()
@@ -53,9 +54,9 @@ public struct TimetableItem: Equatable, Identifiable {
             self.init(
                 id: special.id,
                 type: .special,
-                lang: .ja,
+                lang: model.language,
                 title: MultiLangText(from: special.title),
-                category: "",
+                category: MultiLangText(from: model.category.title),
                 speakers: special.speakers.map(Speaker.init(from:)),
                 startsAt: special.startsAt.toNSDate(),
                 endsAt: special.endsAt.toNSDate()
@@ -71,9 +72,9 @@ public extension TimetableItem {
     static func mock(
         id: String = UUID().uuidString,
         type: TimetableItemType = .session,
-        lang: Lang = .ja,
+        lang: String = "日本語",
         title: MultiLangText = .init(enTitle: "Timetable Item", jaTitle: "タイムテーブルアイテム"),
-        category: String = "Beginner",
+        category: MultiLangText = .init(enTitle: "Category", jaTitle: "カテゴリー"),
         speakers: [Speaker] = [.mock()],
         startsAt: Date = Date(timeIntervalSince1970: 0),
         endsAt: Date = Date(timeIntervalSince1970: 100.0)

@@ -5,8 +5,6 @@
 
 // MARK: Timetable
 "TimetableScreen.Title" = "Timetable";
-"TimetableScreen.Card.Lang.Japanese" = "日本語";
-"TimetableScreen.Card.Lang.English" = "英語";
 "TimetableScreen.SelectedType.Day1" = "Day1";
 "TimetableScreen.SelectedType.Day2" = "Day2";
 "TimetableScreen.SelectedType.Day3" = "Day3";

@@ -16,7 +16,7 @@ public struct TimetableCard: View {
 
     public var body: some View {
         VStack(alignment: .leading, spacing: 8) {
-            Text(item.lang.title)
+            Text(item.lang)
                 .font(.caption2)
                 .padding(.horizontal, 8)
                 .padding(.vertical, 4)
@@ -27,7 +27,7 @@ public struct TimetableCard: View {
                 .lineLimit(3)
                 .font(.subheadline)
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.primary.color)
-            Text("#\(item.category)")
+            Text("#\(item.category.jaTitle)")
                 .font(.caption2)
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
             VStack {
@@ -54,17 +54,6 @@ public struct TimetableCard: View {
             RoundedRectangle(cornerRadius: 16)
                 .stroke(Color.black, lineWidth: isSpecial ? 0 : 1)
         )
-    }
-}
-
-private extension Lang {
-    var title: String {
-        switch self {
-        case .ja:
-            return L10n.TimetableScreen.Card.Lang.japanese
-        case .en:
-            return L10n.TimetableScreen.Card.Lang.english
-        }
     }
 }
 
