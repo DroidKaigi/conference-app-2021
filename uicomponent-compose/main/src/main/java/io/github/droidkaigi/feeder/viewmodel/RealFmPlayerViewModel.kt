@@ -6,14 +6,12 @@ import android.media.MediaPlayer
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import io.github.droidkaigi.feeder.feed.FmPlayerViewModel
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
 
@@ -28,13 +26,12 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
         )
     }
 
-    @Suppress("BlockingMethodInNonBlockingContext")
-    private suspend fun play(url: String) = withContext(Dispatchers.IO) {
+    private fun play(url: String) {
         fmPlayer.run {
             reset()
             setDataSource(url)
-            prepare()
-            start()
+            prepareAsync()
+            setOnPreparedListener { mp -> mp?.start() }
         }
     }
 
@@ -43,7 +40,12 @@ class RealFmPlayerViewModel : FmPlayerViewModel, ViewModel() {
     }
 
     private fun pause() {
-        fmPlayer.pause()
+        fmPlayer.run {
+            if (isPlaying) {
+                pause()
+            }
+            setOnPreparedListener(null)
+        }
     }
 
     override val effect: Flow<FmPlayerViewModel.Effect> = effectSharedFlow.receiveAsFlow()
