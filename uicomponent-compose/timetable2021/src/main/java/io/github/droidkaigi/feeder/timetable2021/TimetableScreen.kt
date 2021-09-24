@@ -134,10 +134,11 @@ data class TimetableListState(val timetableItems: TimetableItemList)
 
 @Composable
 private fun TimetableList(state: TimetableListState) {
+    println(state.timetableItems)
     LazyColumn {
         items(
             count = state.timetableItems.size,
-            key = { state.timetableItems[it].id }
+            key = { state.timetableItems[it].id.value }
         ) { index ->
             val timetableItem = state.timetableItems.timetableItems[index]
             TimetableItem(TimetableItemState(timetableItem))
