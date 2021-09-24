@@ -68,7 +68,6 @@ private extension TimetableAction {
 }
 
 #if DEBUG
-import Model
 import Repository
 
 public struct TimetableScreen_Previews: PreviewProvider {
