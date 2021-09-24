@@ -315,7 +315,7 @@ private fun FeedList(
         ) {
             itemsIndexed(
                 items = feedContents.contents,
-                key = { _, item -> item.first.id }
+                key = { _, item -> item.first.id.value }
             ) { index, (feedItem, favorited) ->
                 if (isHome && index == 0) {
                     if (isFilterState) {

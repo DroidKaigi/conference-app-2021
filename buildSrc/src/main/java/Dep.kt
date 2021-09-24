@@ -95,7 +95,9 @@ object Dep {
     }
 
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
-    const val ktlint = "com.pinterest:ktlint:0.40.0"
+    object KtLint {
+        const val version = "0.42.1"
+    }
 
     object Dagger {
         const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.37"
