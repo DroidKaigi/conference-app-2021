@@ -1,11 +1,72 @@
 import ComposableArchitecture
+import Model
 import Styleguide
 import SwiftUI
 
-public struct TimetableScreen: View {
-    private let store: Store<TimetableState, TimetableAction>
+public struct TimetableLoadedState: Equatable {
+    public var timetableItems: [AnyTimetableItem]
+    public var selectedType: SelectedType
+    // TODO: Replace with detail state
+    public var detail: AnyTimetableItem?
 
-    public init(store: Store<TimetableState, TimetableAction>) {
+    var isShowingDetail: Bool {
+        detail != nil
+    }
+
+    public var selectedTypeItems: [AnyTimetableItem] {
+        let jaCalendar = Calendar(identifier: .japanese)
+        let selectedDateComponents = selectedType.dateComponents
+        return timetableItems
+            .filter {
+                let month = jaCalendar.component(.month, from: $0.startsAt)
+                let day = jaCalendar.component(.day, from: $0.startsAt)
+                return selectedDateComponents.month == month
+                    && selectedDateComponents.day == day
+            }
+    }
+
+    public init(
+        timetableItems: [AnyTimetableItem] = [],
+        selectedType: SelectedType = .day1,
+        detail: AnyTimetableItem? = nil
+    ) {
+        self.timetableItems = timetableItems
+        self.selectedType = selectedType
+        self.detail = detail
+    }
+}
+
+public enum TimetableLoadedAction {
+    case selectedPicker(SelectedType)
+    case content(TimetableContentAction)
+    case hideDetail
+    case none
+}
+
+public struct TimetableLoadedEnvironment {
+    public init() {}
+}
+
+public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoadedAction, TimetableLoadedEnvironment> { state, action, _ in
+    switch action {
+    case let .selectedPicker(type):
+        state.selectedType = type
+        return .none
+    case let .content(.tap(item)):
+        state.detail = item
+        return .none
+    case .hideDetail:
+        state.detail = nil
+        return .none
+    case .none:
+        return .none
+    }
+}
+
+public struct TimetableLoaded: View {
+    private let store: Store<TimetableLoadedState, TimetableLoadedAction>
+
+    public init(store: Store<TimetableLoadedState, TimetableLoadedAction>) {
         self.store = store
 
         UISegmentedControl.appearance().selectedSegmentTintColor = AssetColor.secondary.uiColor
@@ -45,7 +106,7 @@ public struct TimetableScreen: View {
                                 state: { state in
                                     return .init(items: state.selectedTypeItems)
                                 },
-                                action: TimetableAction.content
+                                action: TimetableLoadedAction.content
                             )
                         )
                     }
@@ -57,7 +118,7 @@ public struct TimetableScreen: View {
                         destination: IfLetStore(
                             store.scope(
                                 state: TimetableDetailScreen.ViewState.init(state:),
-                                action: TimetableAction.init(action:)
+                                action: TimetableLoadedAction.init(action:)
                             ),
                             then: TimetableDetailScreen.init(store:)
                         ),
@@ -69,9 +130,6 @@ public struct TimetableScreen: View {
                         EmptyView()
                     }
                 )
-                .onAppear {
-                    viewStore.send(.refresh)
-                }
             }
         }
     }
@@ -90,25 +148,22 @@ private extension SelectedType {
     }
 }
 private extension TimetableDetailScreen.ViewState {
-    init?(state: TimetableState) {
+    init?(state: TimetableLoadedState) {
         guard let detail = state.detail else { return nil }
         timetable = detail
     }
 }
 
-private extension TimetableAction {
+private extension TimetableLoadedAction {
     init(action: TimetableDetailScreen.ViewAction) {
         self = .none
     }
 }
 
 #if DEBUG
-import Model
-import Repository
-
-public struct TimetableScreen_Previews: PreviewProvider {
+public struct TimetableLoaded_Previews: PreviewProvider {
     public static var previews: some View {
-        let calendar = Calendar(identifier: .japanese)
+        let calendar = Calendar.init(identifier: .japanese)
         let items: [AnyTimetableItem] = [
             .sessionMock(
                 startsAt: calendar.date(
@@ -190,16 +245,13 @@ public struct TimetableScreen_Previews: PreviewProvider {
         ]
         return ForEach(ColorScheme.allCases, id: \.hashValue) { colorScheme in
             Group {
-                TimetableScreen(
-                    store: Store<TimetableState, TimetableAction>(
-                        initialState: TimetableState(
-                            timetableItems: items,
-                            selectedType: .day1
+                TimetableLoaded(
+                    store: .init(
+                        initialState: .init(
+                            timetableItems: items
                         ),
-                        reducer: timetableReducer,
-                        environment: TimetableEnvironment(
-                            timetableRepository: TimetableRepositoryMock()
-                        )
+                        reducer: timetableLoadedReducer,
+                        environment: TimetableLoadedEnvironment()
                     )
                 )
                 .environment(\.colorScheme, colorScheme)
