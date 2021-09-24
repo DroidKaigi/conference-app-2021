@@ -6,7 +6,6 @@ import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.repository.StaffRepository
 import io.github.droidkaigi.feeder.repository.ThemeRepository
 import io.github.droidkaigi.feeder.repository.TimetableRepository
-import io.github.droidkaigi.timetableer.data.TimetableRepositoryImpl
 import org.koin.dsl.module
 
 val repositoryModule = module {
@@ -32,6 +31,6 @@ val repositoryModule = module {
     }
 
     single<TimetableRepository> {
-        TimetableRepositoryImpl(get(), get())
+        TimetableRepositoryImpl(get(), get(), get())
     }
 }

@@ -16,4 +16,8 @@ val databaseModule = module {
     single<FeedItemDao> {
         FeedItemDaoImpl(get())
     }
+
+    single<TimetableItemDao> {
+        TimetableItemDaoImpl(get())
+    }
 }
