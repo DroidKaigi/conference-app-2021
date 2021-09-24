@@ -8,6 +8,9 @@
 "TimetableScreen.SelectedType.Day1" = "Day1";
 "TimetableScreen.SelectedType.Day2" = "Day2";
 "TimetableScreen.SelectedType.Day3" = "Day3";
+"TimetableScreen.Detail.IntendedAudience" = "受講対象者 / Intended Audience";
+"TimetableScreen.Detail.Description" = "説明 / Description";
+"TimetableScreen.Detail.WatchThisVideo" = "Watch this Video";
 
 // MARK: Media
 "MediaScreen.Title" = "Media";

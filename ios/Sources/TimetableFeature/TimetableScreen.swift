@@ -54,10 +54,16 @@ public struct TimetableScreen: View {
                 .navigationTitle(L10n.TimetableScreen.title)
                 .background(
                     NavigationLink(
-                        destination: TimetableDetailScreen(),
+                        destination: IfLetStore(
+                            store.scope(
+                                state: TimetableDetailScreen.ViewState.init(state:),
+                                action: TimetableAction.init(action:)
+                            ),
+                            then: TimetableDetailScreen.init(store:)
+                        ),
                         isActive: viewStore.binding(
                             get: \.isShowingDetail,
-                            send: TimetableAction.hideDetail
+                            send: { _ in .hideDetail }
                         )
                     ) {
                         EmptyView()
@@ -81,6 +87,18 @@ private extension SelectedType {
         case .day3:
             return L10n.TimetableScreen.SelectedType.day3
         }
+    }
+}
+private extension TimetableDetailScreen.ViewState {
+    init?(state: TimetableState) {
+        guard let detail = state.detail else { return nil }
+        timetable = detail
+    }
+}
+
+private extension TimetableAction {
+    init(action: TimetableDetailScreen.ViewAction) {
+        self = .none
     }
 }
 
