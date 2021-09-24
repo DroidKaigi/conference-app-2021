@@ -140,17 +140,12 @@ private fun TimetableList(state: TimetableListState) {
             key = { state.timetableItems[it].id }
         ) { index ->
             val timetableItem = state.timetableItems.timetableItems[index]
-            TimetableItem(TimetableItemState(timetableItem))
+            TimetableItem(TimetableItemState(timetableItem), index > 0)
         }
     }
 }
 
 data class TimetableItemState(val timetableItem: TimetableItem)
-
-@Composable
-private fun TimetableItem(timetableItemState: TimetableItemState) {
-    Text(timetableItemState.timetableItem.title.currentLangTitle)
-}
 
 @Preview(showBackground = true)
 @Composable
