@@ -91,8 +91,8 @@ import Repository
 public struct TimetableScreen_Previews: PreviewProvider {
     public static var previews: some View {
         let calendar = Calendar(identifier: .japanese)
-        let items: [TimetableItem] = [
-            .mock(
+        let items: [AnyTimetableItem] = [
+            .sessionMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,
@@ -103,8 +103,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
                     )
                 )!
             ),
-            .mock(
-                type: .special,
+            .specialMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,
@@ -115,7 +114,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
                     )
                 )!
             ),
-            .mock(
+            .sessionMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,
@@ -126,7 +125,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
                     )
                 )!
             ),
-            .mock(
+            .sessionMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,
@@ -137,7 +136,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
                     )
                 )!
             ),
-            .mock(
+            .sessionMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,
@@ -148,7 +147,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
                     )
                 )!
             ),
-            .mock(
+            .sessionMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,
@@ -159,7 +158,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
                     )
                 )!
             ),
-            .mock(
+            .sessionMock(
                 startsAt: calendar.date(
                     from: DateComponents(
                         year: 2021,

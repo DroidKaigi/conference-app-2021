@@ -3,7 +3,7 @@ import DroidKaigiMPP
 import Model
 
 public protocol TimetableRepositoryProtocol {
-    func timetableContents() -> AnyPublisher<[Model.TimetableItem], KotlinError>
+    func timetableContents() -> AnyPublisher<[AnyTimetableItem], KotlinError>
     func addFavorite(id: String) -> AnyPublisher<Void, KotlinError>
     func removeFavorite(id: String) -> AnyPublisher<Void, KotlinError>
 }
@@ -28,7 +28,7 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
         .eraseToAnyPublisher()
     }
 
-    public func timetableContents() -> AnyPublisher<[Model.TimetableItem], KotlinError> {
+    public func timetableContents() -> AnyPublisher<[AnyTimetableItem], KotlinError> {
         refresh()
             .flatMap {
                 FlowWrapperPublisher(
@@ -36,7 +36,7 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
                     scopeProvider: scopeProvider
                 )
             }
-            .map { $0.timetableItems.compactMap(Model.TimetableItem.init(from:)) }
+            .map { $0.timetableItems.compactMap(AnyTimetableItem.init(from:)) }
             .eraseToAnyPublisher()
     }
 

@@ -3,16 +3,16 @@ import Model
 import Repository
 
 public struct TimetableState: Equatable {
-    public var timetableItems: [TimetableItem]
+    public var timetableItems: [AnyTimetableItem]
     public var selectedType: SelectedType
     // TODO: Replace with detail state
-    public var detail: TimetableItem?
+    public var detail: AnyTimetableItem?
 
     var isShowingDetail: Bool {
         detail != nil
     }
 
-    public var selectedTypeItems: [TimetableItem] {
+    public var selectedTypeItems: [AnyTimetableItem] {
         let jaCalendar = Calendar(identifier: .japanese)
         let selectedDateComponents = selectedType.dateComponents
         return timetableItems
@@ -25,9 +25,9 @@ public struct TimetableState: Equatable {
     }
 
     public init(
-        timetableItems: [TimetableItem] = [],
+        timetableItems: [AnyTimetableItem] = [],
         selectedType: SelectedType = .day1,
-        detail: TimetableItem? = nil
+        detail: AnyTimetableItem? = nil
     ) {
         self.timetableItems = timetableItems
         self.selectedType = selectedType
@@ -37,7 +37,7 @@ public struct TimetableState: Equatable {
 
 public enum TimetableAction {
     case refresh
-    case refreshResponse(Result<[TimetableItem], KotlinError>)
+    case refreshResponse(Result<[AnyTimetableItem], KotlinError>)
     case selectedPicker(SelectedType)
     case content(TimetableContentAction)
     case hideDetail

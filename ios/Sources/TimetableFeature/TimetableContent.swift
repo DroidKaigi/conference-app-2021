@@ -4,17 +4,17 @@ import Styleguide
 import SwiftUI
 
 public struct TimetableContentState: Equatable {
-    public var items: [TimetableItem]
+    public var items: [AnyTimetableItem]
 
     public init(
-        items: [TimetableItem]
+        items: [AnyTimetableItem]
     ) {
         self.items = items
     }
 }
 
 public enum TimetableContentAction {
-    case tap(TimetableItem)
+    case tap(AnyTimetableItem)
 }
 
 public struct TimetableContentEnvironment {
@@ -71,16 +71,16 @@ public struct TimetableContent_Previews: PreviewProvider {
         TimetableContent(
             store: .init(
                 initialState: TimetableContentState(items: [
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
-                    .mock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
+                    .sessionMock(),
                 ]),
                 reducer: .empty,
                 environment: TimetableContentEnvironment()

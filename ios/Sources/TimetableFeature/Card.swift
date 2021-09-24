@@ -4,14 +4,14 @@ import Styleguide
 import SwiftUI
 
 public struct TimetableCard: View {
-    private let item: TimetableItem
+    private let item: AnyTimetableItem
 
-    public init(item: TimetableItem) {
+    public init(item: AnyTimetableItem) {
         self.item = item
     }
 
     private var isSpecial: Bool {
-        item.type == .special
+        item.wrappedValue is Special
     }
 
     public var body: some View {
@@ -63,24 +63,19 @@ public struct TimetableCard_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             Group {
                 TimetableCard(
-                    item: .mock(
-                        type: .session
-                    )
+                    item: .specialMock()
                 )
                 .frame(width: 300, height: 250, alignment: .center)
                 .environment(\.colorScheme, colorScheme)
                 .previewLayout(.sizeThatFits)
                 TimetableCard(
-                    item: .mock(
-                        type: .special
-                    )
+                    item: .specialMock()
                 )
                 .frame(width: 300, height: 250, alignment: .center)
                 .environment(\.colorScheme, colorScheme)
                 .previewLayout(.sizeThatFits)
                 TimetableCard(
-                    item: .mock(
-                        type: .session,
+                    item: .sessionMock(
                         speakers: [
                             .mock(name: "Speaker 1"),
                             .mock(name: "Speaker 2"),
@@ -91,8 +86,7 @@ public struct TimetableCard_Previews: PreviewProvider {
                 .environment(\.colorScheme, colorScheme)
                 .previewLayout(.sizeThatFits)
                 TimetableCard(
-                    item: .mock(
-                        type: .special,
+                    item: .specialMock(
                         speakers: [
                             .mock(name: "Speaker 1"),
                             .mock(name: "Speaker 2"),

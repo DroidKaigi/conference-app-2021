@@ -3,7 +3,7 @@ import Model
 
 public struct TimetableRepositoryMock: TimetableRepositoryProtocol {
     public init() {}
-    public func timetableContents() -> AnyPublisher<[TimetableItem], KotlinError> {
+    public func timetableContents() -> AnyPublisher<[AnyTimetableItem], KotlinError> {
         Empty().eraseToAnyPublisher()
     }
     public func addFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
