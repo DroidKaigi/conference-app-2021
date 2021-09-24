@@ -228,6 +228,7 @@ private extension Date {
     }
 }
 
+#if DEBUG
 public struct TimetableDetailScreen_Previews: PreviewProvider {
     public static var previews: some View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
@@ -245,3 +246,4 @@ public struct TimetableDetailScreen_Previews: PreviewProvider {
         }
     }
 }
+#endif
