@@ -50,7 +50,7 @@ public struct TimetableContent: View {
                                 .frame(width: 44, alignment: .trailing)
                             Divider()
                                 .frame(width: 2)
-                                .foregroundColor(AssetColor.Separate.contents.color)
+                                .background(AssetColor.Separate.contents.color)
                             TimetableCard(item: item)
                                 .padding(.bottom, 16)
                                 .onTapGesture {
@@ -60,6 +60,7 @@ public struct TimetableContent: View {
                     }
                 }
                 .padding(.horizontal, 16)
+                .padding(.top, 24)
             }
         }
     }
