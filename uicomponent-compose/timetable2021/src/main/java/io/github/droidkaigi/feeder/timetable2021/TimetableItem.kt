@@ -34,15 +34,27 @@ import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.fakeTimetableContents
 
 @Composable
-fun TimetableItem(timetableItemState: TimetableItemState, showDivider: Boolean) {
+fun TimetableListItem(
+    timetableItemState: TimetableItemState,
+    onFavoriteChange: (TimetableItem) -> Unit,
+    showDivider: Boolean
+) {
     Column() {
         if (showDivider) Divider()
-        TimetableItemContent(timetableItemState)
+        TimetableItemContent(
+            timetableItem = timetableItemState.timetableItem,
+            favorited = timetableItemState.favorited,
+            onFavoriteChange = onFavoriteChange
+        )
     }
 }
 
 @Composable
-private fun TimetableItemContent(timetableItemState: TimetableItemState) {
+private fun TimetableItemContent(
+    timetableItem: TimetableItem,
+    favorited: Boolean,
+    onFavoriteChange: (TimetableItem) -> Unit,
+) {
     ConstraintLayout(
         Modifier
             .padding(
@@ -54,7 +66,7 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
         val (startsAt, title, speakers, favoriteSpacer, favorite) = createRefs()
 
         Text(
-            timetableItemState.timetableItem.startsTimeString,
+            timetableItem.startsTimeString,
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp),
             modifier = Modifier.constrainAs(startsAt) {
                 start.linkTo(parent.start)
@@ -62,7 +74,7 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
             }
         )
         Text(
-            timetableItemState.timetableItem.title.currentLangTitle,
+            timetableItem.title.currentLangTitle,
             style = TextStyle(fontSize = 20.sp),
             modifier = Modifier.constrainAs(title) {
                 end.linkTo(parent.end, 48.dp)
@@ -72,7 +84,7 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
             }
         )
 
-        if (timetableItemState.timetableItem is TimetableItem.Session) {
+        if (timetableItem is TimetableItem.Session) {
             Column(
                 modifier = Modifier
                     .constrainAs(speakers) {
@@ -81,7 +93,7 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
                         top.linkTo(title.bottom, 8.dp)
                     }
             ) {
-                timetableItemState.timetableItem.speakers.forEachIndexed { index, speaker ->
+                timetableItem.speakers.forEachIndexed { index, speaker ->
                     if (index > 0) {
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -127,14 +139,14 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
         )
 
         IconToggleButton(
-            checked = false,
+            checked = favorited,
             modifier = Modifier.constrainAs(favorite) {
                 bottom.linkTo(parent.bottom)
                 end.linkTo(parent.end)
                 top.linkTo(favoriteSpacer.bottom)
             },
             content = {
-                if (false) {
+                if (favorited) {
                     Icon(
                         painter = painterResource(R.drawable.ic_baseline_favorite_24),
                         contentDescription = "favorite",
@@ -150,7 +162,7 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
                 }
             },
             onCheckedChange = {
-                
+                onFavoriteChange(timetableItem)
             }
         )
     }
@@ -161,7 +173,7 @@ private fun TimetableItemContent(timetableItemState: TimetableItemState) {
 fun PreviewTimetableItem() {
     Column() {
         fakeTimetableContents().timetableItems.timetableItems.forEachIndexed { index, item ->
-            TimetableItem(TimetableItemState(item), index > 0)
+            TimetableListItem(TimetableItemState(item, true), {}, index > 0)
         }
     }
 }

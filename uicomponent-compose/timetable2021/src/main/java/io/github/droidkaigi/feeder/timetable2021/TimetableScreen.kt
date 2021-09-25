@@ -73,7 +73,12 @@ fun TimetableScreen(
             tabPagerState = pagerState
         ),
         onNavigationIconClick = onNavigationIconClick,
-        onSelectTab = onSelectedTab
+        onSelectTab = onSelectedTab,
+        onFavoriteChange = { timetableItem ->
+            dispatch(
+                TimetableViewModel.Event.ToggleFavorite(timetableItem = timetableItem)
+            )
+        },
     )
 }
 
@@ -86,6 +91,7 @@ private fun TimetableScreen(
     state: TimetableScreenState,
     onNavigationIconClick: () -> Unit,
     onSelectTab: (TimetableTab) -> Unit,
+    onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     Conference2021Theme() {
         val density = LocalDensity.current
@@ -114,9 +120,10 @@ private fun TimetableScreen(
                 ) { page ->
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
-                        TimetableListState(
+                        state = TimetableListState(
                             state.timeTableContents.getDayTimetableItems(selectedTab.day)
-                        )
+                        ),
+                        onFavoriteChange = onFavoriteChange,
                     )
                 }
             },
@@ -133,19 +140,26 @@ private fun TimetableScreen(
 data class TimetableListState(val timetableItems: TimetableItemList)
 
 @Composable
-private fun TimetableList(state: TimetableListState) {
+private fun TimetableList(
+    state: TimetableListState,
+    onFavoriteChange: (TimetableItem) -> Unit,
+) {
     LazyColumn {
         items(
             count = state.timetableItems.size,
             key = { state.timetableItems[it].id }
         ) { index ->
             val timetableItem = state.timetableItems.timetableItems[index]
-            TimetableItem(TimetableItemState(timetableItem), index > 0)
+            TimetableListItem(
+                timetableItemState = TimetableItemState(timetableItem, true),
+                onFavoriteChange = onFavoriteChange,
+                showDivider = index > 0
+            )
         }
     }
 }
 
-data class TimetableItemState(val timetableItem: TimetableItem)
+data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
 
 @Preview(showBackground = true)
 @Composable
