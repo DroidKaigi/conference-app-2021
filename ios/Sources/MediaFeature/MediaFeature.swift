@@ -38,15 +38,15 @@ public struct MediaState: Equatable {
 // Only use to scope `Store`
 extension MediaState {
     var blogs: [FeedContent] {
-        feedContents.filter { ($0.item.wrappedValue as? Blog) != nil }
+        feedContents.filter { $0.item.wrappedValue is Blog }
     }
 
     var videos: [FeedContent] {
-        feedContents.filter { ($0.item.wrappedValue as? Video) != nil }
+        feedContents.filter { $0.item.wrappedValue is Video }
     }
 
     var podcasts: [FeedContent] {
-        feedContents.filter { ($0.item.wrappedValue as? Podcast) != nil }
+        feedContents.filter { $0.item.wrappedValue is Podcast }
     }
 }
 
