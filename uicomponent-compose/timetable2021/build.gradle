@@ -26,7 +26,7 @@ dependencies {
     coreLibraryDesugaring Dep.desugarJdkLibs
 
     implementation Dep.Jetpack.appcompat
-    implementation Dep.Accompanist.coil
+    implementation Dep.coil
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.pager
     implementation Dep.Accompanist.pagerIndicators

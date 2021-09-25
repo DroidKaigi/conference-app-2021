@@ -13,7 +13,7 @@ public struct TimetableItem: Equatable, Identifiable {
     public var speakers: [Speaker]
     public var startsAt: Date
     public var endsAt: Date
-    
+
     public init(
         id: String,
         type: TimetableItemType,
@@ -31,7 +31,7 @@ public struct TimetableItem: Equatable, Identifiable {
         self.startsAt = startsAt
         self.endsAt = endsAt
     }
-    
+
     // TODO: Convert from KMM Model
 }
 

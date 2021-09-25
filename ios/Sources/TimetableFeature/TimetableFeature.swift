@@ -26,6 +26,7 @@ public enum TimetableAction {
     case selectedPicker(SelectedType)
     case content(TimetableContentAction)
     case hideDetail
+    case none
 }
 
 public struct TimetableEnvironment {
@@ -44,6 +45,8 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
         return .none
     case .hideDetail:
         state.detail = nil
+        return .none
+    case .none:
         return .none
     }
 }

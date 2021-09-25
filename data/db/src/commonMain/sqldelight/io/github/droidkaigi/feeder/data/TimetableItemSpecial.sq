@@ -3,7 +3,14 @@ CREATE TABLE timetableItemSpecial (
     jaTitle TEXT NOT NULL,
     enTitle TEXT NOT NULL,
     startsAt INTEGER NOT NULL,
-    endsAt INTEGER NOT NULL
+    endsAt INTEGER NOT NULL,
+    jaCategory TEXT NOT NULL,
+    enCategory TEXT NOT NULL,
+    targetAudience TEXT NOT NULL,
+    language TEXT NOT NULL,
+    assetSlideUrl TEXT,
+    assetVideoUrl TEXT,
+    levels TEXT NOT NULL
 );
 
 CREATE INDEX timetableItemSpecial_id ON timetableItemSpecial(id);
@@ -22,7 +29,15 @@ INSERT INTO timetableItemSpecial(
     jaTitle,
     enTitle,
     startsAt,
-    endsAt
+    endsAt,
+    endsAt,
+    jaCategory,
+    enCategory,
+    targetAudience,
+    language,
+    assetSlideUrl,
+    assetVideoUrl,
+    levels
 ) VALUES ?;
 
 deleteAll:
