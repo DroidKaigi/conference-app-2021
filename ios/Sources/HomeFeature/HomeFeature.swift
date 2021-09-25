@@ -26,6 +26,7 @@ public struct HomeState: Equatable {
 public enum HomeAction {
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
+    case tapPlay(FeedContent)
     case answerQuestionnaire
     case showSetting
 }
@@ -39,6 +40,8 @@ public let homeReducer = Reducer<HomeState, HomeAction, HomeEnvironment> { _, ac
     case .tap:
         return .none
     case .tapFavorite(let isFavorited, let id):
+        return .none
+    case .tapPlay:
         return .none
     case .answerQuestionnaire:
         return .none

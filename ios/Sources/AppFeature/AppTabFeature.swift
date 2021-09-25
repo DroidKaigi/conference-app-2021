@@ -47,6 +47,7 @@ public enum AppTabAction {
     case tap(FeedContent)
     case hideSheet
     case tapFavorite(isFavorited: Bool, id: String)
+    case tapPlay(FeedContent)
     case favoriteResponse(Result<String, KotlinError>)
     case answerQuestionnaire
     case timetable(TimetableAction)
@@ -61,6 +62,8 @@ public enum AppTabAction {
             self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
+        case .tapPlay(let feedContent):
+            self = .tapPlay(feedContent)
         case .answerQuestionnaire:
             self = .none
         case .showSetting:
@@ -74,6 +77,8 @@ public enum AppTabAction {
             self = .tap(feedContent)
         case .tapFavorite(let isFavorited, let id):
             self = .tapFavorite(isFavorited: isFavorited, id: id)
+        case .tapPlay(let feedContent):
+            self = .tapPlay(feedContent)
         case .showSetting:
             self = .showSetting
         }
@@ -123,22 +128,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .reload:
             return .none
         case .tap(let feedContent), .media(.tap(let feedContent)):
-            if let podcast = feedContent.item.wrappedValue as? Podcast, let index = state.feedContents.map(\.id).firstIndex(of: feedContent.id) {
-                if environment.player.isPlaying {
-                    environment.player.stop()
-                    state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
-                } else {
-                    environment.player.setUpPlayer(url: URL(string: podcast.podcastLink)!)
-                    if let playingIndex = state.feedContents.firstIndex(where: {
-                        $0.item.media == .droidKaigiFm(isPlaying: true)
-                    }) {
-                        state.feedContents[playingIndex].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
-                    }
-                    state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: true)
-                }
-            } else {
-                state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
-            }
+            state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
             return .none
         case .hideSheet:
             state.isSheetPresented = nil
@@ -154,6 +144,22 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(AppTabAction.favoriteResponse)
+        case let .tapPlay(content):
+            if let podcast = content.item.wrappedValue as? Podcast, let index = state.feedContents.map(\.id).firstIndex(of: content.id) {
+                if environment.player.isPlaying {
+                    environment.player.stop()
+                    state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
+                } else {
+                    environment.player.setUpPlayer(url: URL(string: podcast.podcastLink)!)
+                    if let playingIndex = state.feedContents.firstIndex(where: {
+                        $0.item.media == .droidKaigiFm(isPlaying: true)
+                    }) {
+                        state.feedContents[playingIndex].item.wrappedValue.media = .droidKaigiFm(isPlaying: false)
+                    }
+                    state.feedContents[index].item.wrappedValue.media = .droidKaigiFm(isPlaying: true)
+                }
+            }
+            return .none
         case let .favoriteResponse(.success(id)):
             if let index = state.feedContents.map(\.id).firstIndex(of: id) {
                 state.feedContents[index].isFavorited.toggle()

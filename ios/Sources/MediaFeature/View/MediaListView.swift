@@ -95,6 +95,8 @@ private extension MediaAction {
             self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        case .tapPlay(let content):
+            self = .tapPlay(content)
         }
     }
 }

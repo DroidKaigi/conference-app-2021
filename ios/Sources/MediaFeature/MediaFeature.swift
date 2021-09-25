@@ -57,6 +57,7 @@ public enum MediaAction {
     case moreDismissed
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
+    case tapPlay(FeedContent)
     case showSetting
 }
 
@@ -81,6 +82,8 @@ public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { s
     case .tap:
         return .none
     case .tapFavorite(let isFavorited, let id):
+        return .none
+    case .tapPlay:
         return .none
     case .showSetting:
         return .none

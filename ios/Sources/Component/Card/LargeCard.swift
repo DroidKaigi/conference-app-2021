@@ -16,6 +16,7 @@ public struct LargeCard: View {
     private let isFavorited: Bool
     private let tapAction: () -> Void
     private let tapFavoriteAction: () -> Void
+    private let tapPlayAction: () -> Void
 
     public init(
         title: String,
@@ -24,7 +25,8 @@ public struct LargeCard: View {
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         self.title = title
         self.imageURL = imageURL
@@ -33,6 +35,7 @@ public struct LargeCard: View {
         self.isFavorited = isFavorited
         self.tapAction = tapAction
         self.tapFavoriteAction = tapFavoriteAction
+        self.tapPlayAction = tapPlayAction
     }
 
     public var body: some View {
@@ -53,6 +56,7 @@ public struct LargeCard: View {
                     .padding()
                     .background(Color.black.opacity(0.4))
                     .clipShape(Circle())
+                    .onTapGesture(perform: tapPlayAction)
                 }
             }
             Group {
@@ -96,7 +100,8 @@ public struct LargeCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: false,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlayAction: {}
                 )
                 .frame(width: 375, height: 319)
                 .background(AssetColor.Background.primary.color)
@@ -110,7 +115,8 @@ public struct LargeCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: true,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlayAction: {}
                 )
                 .frame(width: 375, height: 319)
                 .background(AssetColor.Background.primary.color)
@@ -124,7 +130,8 @@ public struct LargeCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: true,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlayAction: {}
                 )
                 .frame(width: 375, height: 319)
                 .background(AssetColor.Background.primary.color)
