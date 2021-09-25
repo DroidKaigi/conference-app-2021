@@ -1,4 +1,4 @@
-package io.github.droidkaigi.feeder.feed
+package io.github.droidkaigi.feeder.core.animation
 
 import android.graphics.Rect
 import android.graphics.drawable.Drawable
@@ -24,14 +24,22 @@ import androidx.compose.ui.graphics.drawscope.translate
 import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.drawable.DrawableCompat
+import io.github.droidkaigi.feeder.core.R
 import kotlin.random.Random
 
 private const val HEART_COUNT = 10
 private val moveInterpolator = FastOutSlowInEasing
 private val alphaInterpolator = FastOutLinearInEasing
 private val scaleInterpolator = LinearOutSlowInEasing
+
+@Composable
+fun painterFavorite() = painterResource(R.drawable.ic_baseline_favorite_24)
+
+@Composable
+fun painterFavoriteBorder() = painterResource(R.drawable.ic_baseline_favorite_border_24)
 
 @Composable
 fun FavoriteAnimation(
