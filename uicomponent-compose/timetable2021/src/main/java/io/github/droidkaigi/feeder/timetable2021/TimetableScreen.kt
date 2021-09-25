@@ -134,7 +134,6 @@ data class TimetableListState(val timetableItems: TimetableItemList)
 
 @Composable
 private fun TimetableList(state: TimetableListState) {
-    println(state.timetableItems)
     LazyColumn {
         items(
             count = state.timetableItems.size,
