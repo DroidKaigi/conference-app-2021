@@ -60,8 +60,8 @@
         "repositoryURL": "https://github.com/firebase/firebase-ios-sdk.git",
         "state": {
           "branch": null,
-          "revision": "91cf599d0b6bcd4b2e92eecc6f8e57754ab16480",
-          "version": "8.1.1"
+          "revision": "2f972249c520cbf87ac8856f176ebc994cb1c9a6",
+          "version": "8.7.0"
         }
       },
       {
@@ -78,8 +78,8 @@
         "repositoryURL": "https://github.com/google/GoogleAppMeasurement.git",
         "state": {
           "branch": null,
-          "revision": "8f2945122bef809c963a619a598c3ac390c2163a",
-          "version": "8.1.1"
+          "revision": "4901bde146b0269da35470d261f741f0e910d8df",
+          "version": "8.7.0"
         }
       },
       {
@@ -87,8 +87,8 @@
         "repositoryURL": "https://github.com/google/GoogleDataTransport.git",
         "state": {
           "branch": null,
-          "revision": "369716b8d7518a530ce3c3a251436d72546debd8",
-          "version": "8.4.0"
+          "revision": "7fb27ea49414b9c5483503cd06baa821c8654d1e",
+          "version": "9.1.1"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/mono0926/LicensePlist.git",
         "state": {
           "branch": null,
-          "revision": "38db6f435cc77513a528780d14b1b29daf042439",
-          "version": "3.13.0"
+          "revision": "b81d514123ca7a669c0d5d3f68109600573075c1",
+          "version": "3.14.2"
         }
       },
       {
@@ -195,8 +195,8 @@
         "repositoryURL": "https://github.com/kean/NukeUI.git",
         "state": {
           "branch": null,
-          "revision": "62b55e26eddc2ed59e63377ab877efac4f9e049c",
-          "version": "0.6.1"
+          "revision": "0130ce2c1d140a426ced903a9abd68b4b8bf9790",
+          "version": "0.6.8"
         }
       },
       {
@@ -276,8 +276,17 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-case-paths",
         "state": {
           "branch": null,
-          "revision": "a313f0cc10e07bb5ce7e2ff5da600cce7efa8e8a",
-          "version": "0.2.0"
+          "revision": "d226d167bd4a68b51e352af5655c92bce8ee0463",
+          "version": "0.7.0"
+        }
+      },
+      {
+        "package": "swift-collections",
+        "repositoryURL": "https://github.com/apple/swift-collections",
+        "state": {
+          "branch": null,
+          "revision": "2d33a0ea89c961dcb2b3da2157963d9c0370347e",
+          "version": "1.0.1"
         }
       },
       {
@@ -285,8 +294,17 @@
         "repositoryURL": "https://github.com/pointfreeco/swift-composable-architecture.git",
         "state": {
           "branch": null,
-          "revision": "e1c0a52897eb361d09f761b2bdb25f212926fb1c",
-          "version": "0.19.0"
+          "revision": "599a2398adaaa7a4e3f5420cde7728c39e33677e",
+          "version": "0.28.1"
+        }
+      },
+      {
+        "package": "swift-custom-dump",
+        "repositoryURL": "https://github.com/pointfreeco/swift-custom-dump",
+        "state": {
+          "branch": null,
+          "revision": "c2dd2c64b753dda592f5619303e02f741cd3e862",
+          "version": "0.2.0"
         }
       },
       {
@@ -296,6 +314,15 @@
           "branch": null,
           "revision": "2b14531d0c36dbb7c1c45a4d38db9c2e7898a307",
           "version": "3.0.200"
+        }
+      },
+      {
+        "package": "swift-identified-collections",
+        "repositoryURL": "https://github.com/pointfreeco/swift-identified-collections",
+        "state": {
+          "branch": null,
+          "revision": "c8e6a40209650ab619853cd4ce89a0aa51792754",
+          "version": "0.3.0"
         }
       },
       {
@@ -339,8 +366,8 @@
         "repositoryURL": "https://github.com/realm/SwiftLint.git",
         "state": {
           "branch": null,
-          "revision": "180d94132758dd183124ab1e63d6aa8e10023ec2",
-          "version": "0.43.1"
+          "revision": "e820e750b08bd67bc9d98f4817868e9bc3d5d865",
+          "version": "0.44.0"
         }
       },
       {
@@ -384,8 +411,8 @@
         "repositoryURL": "https://github.com/pointfreeco/xctest-dynamic-overlay",
         "state": {
           "branch": null,
-          "revision": "603974e3909ad4b48ba04aad7e0ceee4f077a518",
-          "version": "0.1.0"
+          "revision": "50a70a9d3583fe228ce672e8923010c8df2deddd",
+          "version": "0.2.1"
         }
       },
       {
