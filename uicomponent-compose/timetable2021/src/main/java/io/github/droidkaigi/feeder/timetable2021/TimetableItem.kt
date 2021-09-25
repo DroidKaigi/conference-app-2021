@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.timetable2021
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,6 +37,7 @@ import io.github.droidkaigi.feeder.fakeTimetableContents
 @Composable
 fun TimetableListItem(
     timetableItemState: TimetableItemState,
+    onClick: () -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
     showDivider: Boolean
 ) {
@@ -44,6 +46,7 @@ fun TimetableListItem(
         TimetableItemContent(
             timetableItem = timetableItemState.timetableItem,
             favorited = timetableItemState.favorited,
+            onClick = onClick,
             onFavoriteChange = onFavoriteChange
         )
     }
@@ -53,10 +56,14 @@ fun TimetableListItem(
 private fun TimetableItemContent(
     timetableItem: TimetableItem,
     favorited: Boolean,
+    onClick: () -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     ConstraintLayout(
         Modifier
+            .clickable(
+                onClick = { onClick() }
+            )
             .padding(
                 horizontal = 16.dp,
                 vertical = 16.dp
@@ -173,7 +180,7 @@ private fun TimetableItemContent(
 fun PreviewTimetableItem() {
     Column() {
         fakeTimetableContents().timetableItems.timetableItems.forEachIndexed { index, item ->
-            TimetableListItem(TimetableItemState(item, true), {}, index > 0)
+            TimetableListItem(TimetableItemState(item, true), {}, {}, index > 0)
         }
     }
 }
