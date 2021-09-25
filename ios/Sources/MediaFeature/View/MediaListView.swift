@@ -105,7 +105,16 @@ public struct MediaListView_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaListView(
                 store: .init(
-                    initialState: .init(feedContents: [.blogMock(), .blogMock(), .videoMock(), .videoMock(), .podcastMock(), .podcastMock()]),
+                    initialState: .init(
+                        feedContents: [
+                            .blogMock(),
+                            .blogMock(),
+                            .videoMock(),
+                            .videoMock(),
+                            .podcastMock(),
+                            .podcastMock()
+                        ]
+                    ),
                     reducer: .empty,
                     environment: {}
                 )

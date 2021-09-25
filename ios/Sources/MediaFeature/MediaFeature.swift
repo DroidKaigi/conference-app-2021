@@ -7,18 +7,29 @@ public struct MediaState: Equatable {
     // In order not to use any networks for searching feature,
     // `feedContents` is storage to search from & `searchedFeedContents` is searched result from `feedContents`
     public var feedContents: [FeedContent]
-    public var searchedFeedContents: [FeedContent]?
+    public var searchedFeedContents: [FeedContent]? {
+        guard isSearchTextEditing else { return nil }
+        let containsInSearchText = { (text: String) -> Bool in
+            text.contains(searchText.filterForSeaching)
+        }
+        return feedContents
+            .filter { content in
+                containsInSearchText(content.item.title.jaTitle.filterForSeaching)
+                || containsInSearchText(content.item.title.enTitle.filterForSeaching)
+            }
+    }
+    var searchText: String
     var isSearchTextEditing: Bool
     var moreActiveType: MediaType?
 
     public init(
         feedContents: [FeedContent],
-        searchedFeedContents: [FeedContent]? = nil,
+        searchText: String = "",
         isSearchTextEditing: Bool = false,
         moreActiveType: MediaType? = nil
     ) {
         self.feedContents = feedContents
-        self.searchedFeedContents = searchedFeedContents
+        self.searchText = searchText
         self.isSearchTextEditing = isSearchTextEditing
         self.moreActiveType = moreActiveType
     }
@@ -56,18 +67,7 @@ public struct MediaEnvironment {
 public let mediaReducer = Reducer<MediaState, MediaAction, MediaEnvironment> { state, action, _ in
     switch action {
     case let .searchTextDidChange(to: searchText):
-        guard searchText?.isEmpty == false else {
-            state.searchedFeedContents = nil
-            return .none
-        }
-        if let searchText = searchText {
-            state.searchedFeedContents = state.feedContents.filter { content in
-                content.item.title.jaTitle.filterForSeaching.contains(searchText.filterForSeaching)
-                    || content.item.title.enTitle.filterForSeaching.contains(searchText.filterForSeaching)
-            }
-        } else {
-            state.searchedFeedContents = []
-        }
+        state.searchText = searchText ?? ""
         return .none
     case let .isEditingDidChange(isEditing):
         state.isSearchTextEditing = isEditing

@@ -173,24 +173,27 @@ public struct MediaScreen_Previews: PreviewProvider {
                     store: .init(
                         initialState: .init(
                             feedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .videoMock(),
-                                .videoMock(),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .videoMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .videoMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
                                 .videoMock(),
                                 .podcastMock(),
                                 .podcastMock(),
                                 .podcastMock()
                             ],
-                            searchedFeedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock()
-                            ],
+                            searchText: "Search",
                             isSearchTextEditing: true
                         ),
                         reducer: .empty,

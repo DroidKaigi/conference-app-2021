@@ -9,41 +9,23 @@ import Repository
 import TimetableFeature
 
 public struct AppTabState: Equatable {
-    public var feedContents: [FeedContent]
+    public var feedContents: [FeedContent] {
+        didSet {
+            homeState.feedContents = feedContents
+            mediaState.feedContents = feedContents
+            favoritesState.feedContents = feedContents.filter(\.isFavorited)
+        }
+    }
     public var isSheetPresented: AppTabSheet?
+    public var homeState: HomeState
     public var timetableState: TimetableState
+    public var mediaState: MediaState
+    public var favoritesState: FavoritesState
     public var aboutState: AboutState
 
     public enum AppTabSheet: Equatable {
         case url(URL)
         case setting
-    }
-
-    public var homeState: HomeState {
-        get {
-            HomeState(feedContents: feedContents)
-        }
-        set {
-            feedContents = newValue.feedContents
-        }
-    }
-
-    public var mediaState: MediaState {
-        get {
-            MediaState(feedContents: feedContents)
-        }
-        set {
-            feedContents = newValue.feedContents
-        }
-    }
-
-    public var favoritesState: FavoritesState {
-        get {
-            FavoritesState(feedContents: feedContents.filter(\.isFavorited))
-        }
-        set {
-            feedContents = newValue.feedContents
-        }
     }
 
     public init(
@@ -52,6 +34,9 @@ public struct AppTabState: Equatable {
     ) {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
+        self.homeState = HomeState(feedContents: feedContents)
+        self.mediaState = MediaState(feedContents: feedContents)
+        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
         self.aboutState = AboutState()
         self.timetableState = TimetableState()
     }
@@ -166,16 +151,12 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
                 : environment.feedRepository.addFavorite(id: id)
             return publisher
                 .map { id }
+                .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(AppTabAction.favoriteResponse)
         case let .favoriteResponse(.success(id)):
             if let index = state.feedContents.map(\.id).firstIndex(of: id) {
                 state.feedContents[index].isFavorited.toggle()
-            }
-            if var searchedFeedContents = state.mediaState.searchedFeedContents,
-                let index = searchedFeedContents.map(\.id).firstIndex(of: id) {
-                searchedFeedContents[index].isFavorited.toggle()
-                state.mediaState.searchedFeedContents = searchedFeedContents
             }
             return .none
         case let .favoriteResponse(.failure(error)):
