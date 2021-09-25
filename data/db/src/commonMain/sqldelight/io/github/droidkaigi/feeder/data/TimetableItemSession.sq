@@ -22,7 +22,9 @@ selectAllSession:
 SELECT
     timetableItemSession.*,
     timetableItemSpeaker.name speakerName,
-    timetableItemSpeaker.iconUrl speakerIconUrl
+    timetableItemSpeaker.iconUrl speakerIconUrl,
+    timetableItemSpeaker.bio speakerBio,
+    timetableItemSpeaker.tagLine speakerTagLine
 FROM timetableItemSession
 JOIN timetableItemSpeaker ON timetableItemSession.id = timetableItemSpeaker.timetablePrimaryId;
 

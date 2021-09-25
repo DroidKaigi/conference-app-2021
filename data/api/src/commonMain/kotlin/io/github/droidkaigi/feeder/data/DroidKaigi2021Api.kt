@@ -435,7 +435,12 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
         .groupBy { it.id!! }
         .mapValues { (_, apiSpeakers) ->
             apiSpeakers.map { apiSpeaker ->
-                TimetableSpeaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture)
+                TimetableSpeaker(
+                    name = apiSpeaker.fullName!!,
+                    bio = apiSpeaker.bio ?: "",
+                    iconUrl = apiSpeaker.profilePicture ?: "",
+                    tagLine = apiSpeaker.tagLine ?: "",
+                )
             }.first()
         }
     val categoryIdToCategory: Map<Int, TimetableCategory> = feedContents.categories!!

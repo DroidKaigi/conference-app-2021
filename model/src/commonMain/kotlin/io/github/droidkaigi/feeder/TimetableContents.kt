@@ -51,8 +51,18 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 language = "JAPANESE",
                 asset = TimetableAsset(null, null),
                 speakers = listOf(
-                    TimetableSpeaker("taka", "https://github.com/takahirom.png"),
-                    TimetableSpeaker("ry", "https://github.com/ry-itto.png")
+                    TimetableSpeaker(
+                        name = "taka",
+                        iconUrl = "https://github.com/takahirom.png",
+                        bio = "taka's bio",
+                        tagLine = "taka's tag line"
+                    ),
+                    TimetableSpeaker(
+                        name = "ry",
+                        iconUrl = "https://github.com/ry-itto.png",
+                        bio = "ry's bio",
+                        tagLine = "ry's tag line",
+                    ),
                 ),
                 description = "これはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。",
                 message = null,

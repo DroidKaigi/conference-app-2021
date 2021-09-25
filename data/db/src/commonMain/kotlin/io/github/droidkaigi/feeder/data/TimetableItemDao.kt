@@ -116,6 +116,8 @@ private fun TimetableItemSpeakerQueries.insert(id: String, speaker: TimetableSpe
             timetablePrimaryId = id,
             name = speaker.name,
             iconUrl = speaker.iconUrl,
+            bio = speaker.bio,
+            tagLine = speaker.tagLine,
         ),
     )
 }
@@ -127,7 +129,9 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
             oldTimetableItem.copy(
                 speakers = oldTimetableItem.speakers + TimetableSpeaker(
                     name = row.speakerName,
+                    bio = row.speakerBio,
                     iconUrl = row.speakerIconUrl,
+                    tagLine = row.speakerTagLine,
                 ),
             )
         } else {
@@ -153,8 +157,10 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 speakers = listOf(
                     TimetableSpeaker(
                         name = row.speakerName,
+                        bio = row.speakerBio,
                         iconUrl = row.speakerIconUrl,
-                    )
+                        tagLine = row.speakerTagLine,
+                    ),
                 ),
                 message = if (row.jaMessage != null && row.enMessage != null) {
                     MultiLangText(row.jaMessage, row.enMessage)
@@ -174,7 +180,9 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
             oldTimetableItem.copy(
                 speakers = oldTimetableItem.speakers + TimetableSpeaker(
                     name = row.speakerName,
+                    bio = row.speakerBio,
                     iconUrl = row.speakerIconUrl,
+                    tagLine = row.speakerTagLine,
                 ),
             )
         } else {
@@ -199,8 +207,10 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 speakers = listOf(
                     TimetableSpeaker(
                         name = row.speakerName,
+                        bio = row.speakerBio,
                         iconUrl = row.speakerIconUrl,
-                    )
+                        tagLine = row.speakerTagLine,
+                    ),
                 ),
             )
         }

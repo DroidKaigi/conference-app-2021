@@ -19,7 +19,9 @@ selectAllSpecial:
 SELECT
     timetableItemSpecial.*,
     timetableItemSpeaker.name speakerName,
-    timetableItemSpeaker.iconUrl speakerIconUrl
+    timetableItemSpeaker.bio speakerBio,
+    timetableItemSpeaker.iconUrl speakerIconUrl,
+    timetableItemSpeaker.tagLine speakerTagLine
 FROM timetableItemSpecial
 CROSS JOIN timetableItemSpeaker ON timetableItemSpecial.id = timetableItemSpeaker.timetablePrimaryId;
 
