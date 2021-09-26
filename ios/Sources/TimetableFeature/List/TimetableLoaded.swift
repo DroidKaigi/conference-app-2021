@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import Model
 import Styleguide
@@ -6,11 +7,15 @@ import SwiftUI
 public struct TimetableLoadedState: Equatable {
     public var timetableItems: [AnyTimetableItem]
     public var selectedType: SelectedType
-    // TODO: Replace with detail state
-    public var detail: AnyTimetableItem?
+    public var selectedTimetable: AnyTimetableItem?
+    public var isSheetPresented: URL?
 
     var isShowingDetail: Bool {
-        detail != nil
+        selectedTimetable != nil
+    }
+
+    var isShowingSheet: Bool {
+        isSheetPresented != nil
     }
 
     public var selectedTypeItems: [AnyTimetableItem] {
@@ -28,11 +33,13 @@ public struct TimetableLoadedState: Equatable {
     public init(
         timetableItems: [AnyTimetableItem] = [],
         selectedType: SelectedType = .day1,
-        detail: AnyTimetableItem? = nil
+        selectedTimetable: AnyTimetableItem? = nil,
+        isSheetPresented: URL? = nil
     ) {
         self.timetableItems = timetableItems
         self.selectedType = selectedType
-        self.detail = detail
+        self.selectedTimetable = selectedTimetable
+        self.isSheetPresented = isSheetPresented
     }
 }
 
@@ -40,7 +47,8 @@ public enum TimetableLoadedAction {
     case selectedPicker(SelectedType)
     case content(TimetableContentAction)
     case hideDetail
-    case none
+    case tapLink(String)
+    case hideSheet
 }
 
 public struct TimetableLoadedEnvironment {
@@ -53,12 +61,16 @@ public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoade
         state.selectedType = type
         return .none
     case let .content(.tap(item)):
-        state.detail = item
+        state.selectedTimetable = item
         return .none
     case .hideDetail:
-        state.detail = nil
+        state.selectedTimetable = nil
         return .none
-    case .none:
+    case .tapLink(let link):
+        state.isSheetPresented = URL(string: link)!
+        return .none
+    case .hideSheet:
+        state.isSheetPresented = nil
         return .none
     }
 }
@@ -130,6 +142,16 @@ public struct TimetableLoaded: View {
                         EmptyView()
                     }
                 )
+                .sheet(
+                    isPresented: viewStore.binding(
+                        get: \.isShowingSheet,
+                        send: .hideSheet
+                    ), content: {
+                        IfLetStore(store.scope(state: \.isSheetPresented)) { _ in
+                            WebView(url: viewStore.isSheetPresented.unsafelyUnwrapped)
+                        }
+                    }
+                )
             }
         }
     }
@@ -149,14 +171,17 @@ private extension SelectedType {
 }
 private extension TimetableDetailScreen.ViewState {
     init?(state: TimetableLoadedState) {
-        guard let detail = state.detail else { return nil }
-        timetable = detail
+        guard let selectedTimetable = state.selectedTimetable else { return nil }
+        timetable = selectedTimetable
     }
 }
 
 private extension TimetableLoadedAction {
     init(action: TimetableDetailScreen.ViewAction) {
-        self = .none
+        switch action {
+        case .tapLink(let link):
+            self = .tapLink(link)
+        }
     }
 }
 
