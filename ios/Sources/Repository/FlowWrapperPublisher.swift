@@ -4,7 +4,7 @@ import DroidKaigiMPP
 internal struct FlowWrapperPublisher<Output: AnyObject>: Publisher {
     typealias Output = Output
     typealias Failure = KotlinError
-    
+
     private let flowWrapper: NonNullFlowWrapper<Output>
     private let scopeProvider: ScopeProvider
 
@@ -16,9 +16,9 @@ internal struct FlowWrapperPublisher<Output: AnyObject>: Publisher {
         self.scopeProvider = scopeProvider
     }
 
-    func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
+    func receive<S>(subscriber: S) where S: Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
         flowWrapper.subscribe(scope: scopeProvider.scope) {
-            let _ = subscriber.receive($0)
+            _ = subscriber.receive($0)
         } onComplete: {
             subscriber.receive(completion: .finished)
         } onFailure: {
@@ -30,7 +30,7 @@ internal struct FlowWrapperPublisher<Output: AnyObject>: Publisher {
 internal struct OptionalFlowWrapperPublisher<Output: AnyObject>: Publisher {
     typealias Output = Output?
     typealias Failure = KotlinError
-    
+
     private let flowWrapper: NullableFlowWrapper<Output>
     private let scopeProvider: ScopeProvider
 
@@ -42,9 +42,9 @@ internal struct OptionalFlowWrapperPublisher<Output: AnyObject>: Publisher {
         self.scopeProvider = scopeProvider
     }
 
-    func receive<S>(subscriber: S) where S : Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
+    func receive<S>(subscriber: S) where S: Subscriber, Self.Failure == S.Failure, Self.Output == S.Input {
         flowWrapper.subscribe(scope: scopeProvider.scope) {
-            let _ = subscriber.receive($0)
+            _ = subscriber.receive($0)
         } onComplete: {
             subscriber.receive(completion: .finished)
         } onFailure: {
@@ -52,5 +52,3 @@ internal struct OptionalFlowWrapperPublisher<Output: AnyObject>: Publisher {
         }
     }
 }
-
-

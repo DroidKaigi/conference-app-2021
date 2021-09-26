@@ -32,6 +32,10 @@ val apiModule = module {
         KtorFeedApi(get())
     }
 
+    single<DroidKaigi2021Api> {
+        KtorDroidKaigi2021Api(get())
+    }
+
     single<StaffApi> {
         KtorStaffApi(get())
     }
