@@ -25,6 +25,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -96,8 +97,10 @@ private fun TimetableItemContent(
                 modifier = Modifier
                     .constrainAs(speakers) {
                         bottom.linkTo(parent.bottom)
+                        end.linkTo(title.end)
                         start.linkTo(title.start)
                         top.linkTo(title.bottom, 8.dp)
+                        width = Dimension.fillToConstraints
                     }
             ) {
                 timetableItem.speakers.forEachIndexed { index, speaker ->
@@ -130,6 +133,8 @@ private fun TimetableItemContent(
                         Text(
                             speaker.name,
                             style = TextStyle(fontSize = 12.sp),
+                            maxLines = 1,
+                            overflow = TextOverflow.Ellipsis
                         )
                     }
                 }
