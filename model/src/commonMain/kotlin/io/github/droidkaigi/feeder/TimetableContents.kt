@@ -49,7 +49,10 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 ),
                 targetAudience = "For App developer アプリ開発者向け",
                 language = "JAPANESE",
-                asset = TimetableAsset(null, null),
+                asset = TimetableAsset(
+                    videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+                    slideUrl = "https://droidkaigi.jp/2021/",
+                ),
                 speakers = listOf(
                     TimetableSpeaker(
                         name = "taka",
