@@ -12,7 +12,7 @@ open class TimetableRepositoryImpl(
     private val dataStore: UserDataStore,
 ) : TimetableRepository {
     override fun timetableContents(): Flow<TimetableContents> {
-        return dataStore.favorites()
+        return dataStore.favoriteTimetableItemIds()
             .combine(timetableItemDao.selectAll()) { favorites, dbtimetable ->
                 TimetableContents(
                     timetableItems = TimetableItemList(

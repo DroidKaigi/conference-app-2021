@@ -163,7 +163,9 @@ fun AppContent(
                 val id = routePath.value
                 TimetableDetailScreen(
                     id = id,
-                    onNavigationIconClick = onNavigationIconClick,
+                    onNavigationIconClick = {
+                        actions.onBackFromTimetableDetail()
+                    },
                 )
             }
             composable(
@@ -232,6 +234,10 @@ private class AppActions(navController: NavHostController) {
 
     val onSelectTimetableDetail: (String) -> Unit = { id ->
         navController.navigate(TIMETABLE_DETAIL_PATH + id)
+    }
+
+    val onBackFromTimetableDetail: () -> Unit = {
+        navController.popBackStack()
     }
 
     val showChromeCustomTabs: (String) -> Unit = { link ->

@@ -19,7 +19,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -120,7 +119,8 @@ private fun TimetableScreen(
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
                         TimetableListState(
-                            timetableItems = state.timeTableContents.getDayTimetableItems(selectedTab.day),
+                            timetableItems = state
+                                .timeTableContents.getDayTimetableItems(selectedTab.day),
                             onDetailClick = onDetailClick,
                         )
                     )
@@ -164,9 +164,11 @@ private fun TimetableItem(
     timetableItemState: TimetableItemState,
     onDetailClick: (String) -> Unit,
 ) {
-    Button(onClick = {
-        onDetailClick(timetableItemState.timetableItem.id)
-    }) {
+    Button(
+        onClick = {
+            onDetailClick(timetableItemState.timetableItem.id)
+        }
+    ) {
         Text(timetableItemState.timetableItem.title.currentLangTitle)
     }
 }

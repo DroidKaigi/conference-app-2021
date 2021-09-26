@@ -16,8 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults.buttonColors
 import androidx.compose.material.Divider
@@ -52,6 +54,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
+import com.google.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
@@ -65,7 +68,6 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import io.github.droidkaigi.feeder.currentLangTitle
-import java.lang.IllegalArgumentException
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
@@ -108,6 +110,9 @@ fun TimetableDetailScreen(
     }
 
     val contents = state.timetableContents
+    if (contents.timetableItems.isEmpty()) {
+        return
+    }
     val item = contents.timetableItems.first { it.id == id }
     val isFavorite = contents.favorites.contains(id)
 
@@ -140,6 +145,7 @@ fun TimetableDetailScreen(
         Scaffold(
             topBar = {
                 TopAppBar(
+                    modifier = Modifier.statusBarsPadding(),
                     title = {
                         // empty
                     },
@@ -157,8 +163,8 @@ fun TimetableDetailScreen(
                     backgroundColor = MaterialTheme.colors.surface,
                     elevation = 0.dp
                 )
-            }
-        ) {
+            },
+        ) { innerPadding ->
             BoxWithConstraints {
                 /**
                  * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
@@ -171,8 +177,13 @@ fun TimetableDetailScreen(
                     else -> (maxHeight - 1040.dp) / 2
                 } + 8.dp
 
-                Column(modifier = Modifier.padding(horizontal = margin)) {
+                Column(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .verticalScroll(rememberScrollState()),
+                ) {
                     TimetableDetailSessionInfo(
+                        modifier = Modifier.padding(horizontal = margin),
                         title = item.title.currentLangTitle,
                         dateTime = createSessionDate(
                             startsAt = item.startsAt,
@@ -183,22 +194,25 @@ fun TimetableDetailScreen(
                     )
 
                     if (item is TimetableItem.Session) {
-                        TimetableDetailDescription(description = item.description)
+                        TimetableDetailDescription(
+                            modifier = Modifier.padding(horizontal = margin),
+                            description = item.description,
+                        )
                     }
-                    TimetableDetailTargetAudience(targetAudience = item.targetAudience)
-                    Divider(
-                        modifier = Modifier.padding(
-                            top = 36.dp,
-                            bottom = 24.dp,
-                        ),
-                        color = MaterialTheme.colors.onSurface,
+                    TimetableDetailTargetAudience(
+                        modifier = Modifier.padding(horizontal = margin),
+                        targetAudience = item.targetAudience,
                     )
                     TimetableDetailAsset(
+                        modifier = Modifier.padding(horizontal = margin),
                         asset = item.asset,
                         onOpenUrl = onOpenUrl,
                     )
                     if (item is TimetableItem.Session) {
-                        TimetableDetailSpeakers(speakers = item.speakers)
+                        TimetableDetailSpeakers(
+                            modifier = Modifier.padding(horizontal = margin),
+                            speakers = item.speakers,
+                        )
                     }
                 }
             }
@@ -258,24 +272,31 @@ private fun FavoriteIcon(
 
 @Composable
 private fun TimetableDetailSessionInfo(
+    modifier: Modifier = Modifier,
     title: String,
     dateTime: String,
     language: String,
     category: TimetableCategory,
 ) {
     Text(
+        modifier = modifier,
         text = title,
         style = MaterialTheme.typography.h5,
     )
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(
+        modifier = modifier.height(24.dp),
+    )
     Text(
+        modifier = modifier,
         text = dateTime,
         style = MaterialTheme.typography.body1,
     )
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(
+        modifier = modifier.height(24.dp),
+    )
     Row(
+        modifier = modifier.wrapContentHeight(),
         verticalAlignment = Alignment.CenterVertically,
-        modifier = Modifier.wrapContentHeight(),
     ) {
         Box(
             modifier = Modifier
@@ -350,29 +371,38 @@ private fun TimetableDetailSessionInfo(
 }
 
 @Composable
-private fun TimetableDetailDescription(description: String) {
+private fun TimetableDetailDescription(
+    modifier: Modifier = Modifier,
+    description: String,
+) {
     Divider(
-        modifier = Modifier.padding(vertical = 24.dp),
+        modifier = modifier.padding(vertical = 24.dp),
         color = MaterialTheme.colors.onSurface,
     )
     Text(
+        modifier = modifier,
         text = description,
         style = MaterialTheme.typography.body1,
     )
 }
 
 @Composable
-private fun TimetableDetailTargetAudience(targetAudience: String) {
+private fun TimetableDetailTargetAudience(
+    modifier: Modifier = Modifier,
+    targetAudience: String,
+) {
     Divider(
-        modifier = Modifier.padding(vertical = 24.dp),
+        modifier = modifier.padding(vertical = 24.dp),
         color = MaterialTheme.colors.onSurface,
     )
     Text(
+        modifier = modifier,
         text = "対象者",
         style = MaterialTheme.typography.subtitle2,
     )
-    Spacer(modifier = Modifier.height(8.dp))
+    Spacer(modifier = modifier.height(8.dp))
     Text(
+        modifier = modifier,
         text = targetAudience,
         style = MaterialTheme.typography.body2,
     )
@@ -380,16 +410,27 @@ private fun TimetableDetailTargetAudience(targetAudience: String) {
 
 @Composable
 private fun TimetableDetailAsset(
+    modifier: Modifier = Modifier,
     asset: TimetableAsset,
     onOpenUrl: (Uri) -> Unit,
 ) {
+    Divider(
+        modifier = modifier.padding(
+            top = 36.dp,
+            bottom = 24.dp,
+        ),
+        color = MaterialTheme.colors.onSurface,
+    )
+
     val showVideoButton = !asset.videoUrl.isNullOrBlank()
     val showSlidesButton = !asset.slideUrl.isNullOrBlank()
     if (!showVideoButton && !showSlidesButton) {
         return
     }
 
-    Row {
+    Row(
+        modifier = modifier,
+    ) {
         if (showVideoButton) {
             Button(
                 modifier = Modifier.width(144.dp),
@@ -424,52 +465,60 @@ private fun TimetableDetailAsset(
             }
         }
     }
-    Spacer(modifier = Modifier.height(24.dp))
+    Spacer(modifier = modifier.height(24.dp))
 }
 
 @Composable
 private fun TimetableDetailSpeakers(
+    modifier: Modifier = Modifier,
     speakers: List<TimetableSpeaker>,
 ) {
     Text(
+        modifier = modifier,
         text = "Speaker",
         style = MaterialTheme.typography.subtitle2,
     )
-    Spacer(modifier = Modifier.padding(16.dp))
+    Spacer(modifier = modifier.padding(16.dp))
 
     speakers.forEach { speaker ->
-        Column {
-            if (speaker.iconUrl.isNotEmpty()) {
-                Surface(
-                    modifier = Modifier.size(60.dp),
-                    shape = CircleShape
-                ) {
-                    NetworkImage(
-                        url = speaker.iconUrl,
-                        modifier = Modifier.fillMaxSize(),
-                        contentScale = ContentScale.Fit,
-                        contentDescription = "Contributor Icon"
-                    )
-                }
-                Spacer(modifier = Modifier.padding(16.dp))
-            }
-
-            Text(
-                text = speaker.name,
-                style = MaterialTheme.typography.subtitle1,
-
+        if (speaker.iconUrl.isNotEmpty()) {
+            Surface(
+                modifier = modifier.size(60.dp),
+                shape = CircleShape
+            ) {
+                NetworkImage(
+                    url = speaker.iconUrl,
+                    modifier = Modifier.fillMaxSize(),
+                    contentScale = ContentScale.Fit,
+                    contentDescription = "Contributor Icon"
                 )
-            Text(
-                text = speaker.tagLine,
-                style = MaterialTheme.typography.subtitle2,
+            }
+            Spacer(
+                modifier = modifier.padding(16.dp),
             )
-            Spacer(Modifier.padding(vertical = 16.dp))
-            Text(
-                text = speaker.bio,
-                style = MaterialTheme.typography.body1,
-            )
-            Spacer(Modifier.padding(vertical = 16.dp))
         }
+
+        Text(
+            modifier = modifier,
+            text = speaker.name,
+            style = MaterialTheme.typography.subtitle1,
+        )
+        Text(
+            modifier = modifier,
+            text = speaker.tagLine,
+            style = MaterialTheme.typography.subtitle2,
+        )
+        Spacer(
+            modifier = modifier.padding(vertical = 16.dp),
+        )
+        Text(
+            modifier = modifier,
+            text = speaker.bio,
+            style = MaterialTheme.typography.body1,
+        )
+        Spacer(
+            modifier = modifier.padding(vertical = 16.dp),
+        )
     }
 }
 
@@ -502,7 +551,7 @@ private fun createCategoryIcon(
     89449 -> R.drawable.tools
     89450 -> R.drawable.cross_platform
     89451 -> R.drawable.other
-    else -> throw IllegalArgumentException()
+    else -> R.drawable.other
 }
 
 // region default preview
