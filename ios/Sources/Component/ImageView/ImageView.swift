@@ -81,6 +81,7 @@ public struct ImageView: View {
                     lineWidth: Const.roundedLineWidth
                 )
         )
+        .allowsHitTesting(false)
     }
 }
 

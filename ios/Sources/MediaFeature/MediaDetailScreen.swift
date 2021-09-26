@@ -15,6 +15,7 @@ public struct MediaDetailScreen: View {
     enum ViewAction {
         case tap(FeedContent)
         case tapFavorite(isFavorited: Bool, id: String)
+        case tapPlay(FeedContent)
     }
 
     public var body: some View {
@@ -27,6 +28,9 @@ public struct MediaDetailScreen: View {
                     },
                     tapFavorite: { isFavorited, contentId in
                         viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                    },
+                    tapPlay: { content in
+                        viewStore.send(.tapPlay(content))
                     }
                 )
             }

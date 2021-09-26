@@ -26,6 +26,9 @@ public struct HomeScreen: View {
                                     },
                                     tapFavoriteAction: {
                                         viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
+                                    },
+                                    tapPlayAction: {
+                                        viewStore.send(.tapPlay(topic))
                                     }
                                 )
                             }
@@ -42,6 +45,9 @@ public struct HomeScreen: View {
                                     },
                                     tapFavoriteAction: {
                                         viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))
+                                    },
+                                    tapPlayAction: {
+                                        viewStore.send(.tapPlay(feedContent))
                                     }
                                 )
                             }
@@ -73,7 +79,8 @@ private extension LargeCard {
     init(
         content: FeedContent,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         self.init(
             title: content.item.title.jaTitle,
@@ -82,7 +89,8 @@ private extension LargeCard {
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
-            tapFavoriteAction: tapFavoriteAction
+            tapFavoriteAction: tapFavoriteAction,
+            tapPlayAction: tapPlayAction
         )
     }
 }
@@ -91,7 +99,8 @@ private extension ListItem {
     init(
         content: FeedContent,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         let speakers = (content.item.wrappedValue as? Podcast)?.speakers ?? []
         self.init(
@@ -102,7 +111,8 @@ private extension ListItem {
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapFavoriteAction: tapFavoriteAction,
-            tapAction: tapAction
+            tapAction: tapAction,
+            tapPlayAction: tapPlayAction
         )
     }
 }

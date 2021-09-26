@@ -15,6 +15,7 @@ public struct ListItem: View {
     private let isFavorited: Bool
     private let tapFavoriteAction: () -> Void
     private let tapAction: () -> Void
+    private let tapPlayAction: () -> Void
 
     public init(
         title: String,
@@ -24,7 +25,8 @@ public struct ListItem: View {
         date: Date,
         isFavorited: Bool,
         tapFavoriteAction: @escaping () -> Void,
-        tapAction: @escaping () -> Void
+        tapAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         self.title = title
         self.media = media
@@ -34,6 +36,7 @@ public struct ListItem: View {
         self.isFavorited = isFavorited
         self.tapFavoriteAction = tapFavoriteAction
         self.tapAction = tapAction
+        self.tapPlayAction = tapPlayAction
     }
 
     public var body: some View {
@@ -58,6 +61,7 @@ public struct ListItem: View {
                             .padding()
                             .background(Color.black.opacity(0.4))
                             .clipShape(Circle())
+                            .onTapGesture(perform: tapPlayAction)
                         }
                     }
                 }
@@ -124,7 +128,8 @@ public struct ListItem_Previews: PreviewProvider {
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
-                tapAction: {}
+                tapAction: {},
+                tapPlayAction: {}
             )
             .frame(width: 343, height: 132)
             .background(AssetColor.Background.primary.color)
@@ -137,7 +142,8 @@ public struct ListItem_Previews: PreviewProvider {
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
-                tapAction: {}
+                tapAction: {},
+                tapPlayAction: {}
             )
             .frame(width: 343, height: 132)
             .environment(\.colorScheme, .light)
@@ -149,7 +155,8 @@ public struct ListItem_Previews: PreviewProvider {
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
-                tapAction: {}
+                tapAction: {},
+                tapPlayAction: {}
             )
             .frame(width: 343, height: 132)
             .background(AssetColor.Background.primary.color)
@@ -162,7 +169,8 @@ public struct ListItem_Previews: PreviewProvider {
                 date: Date(timeIntervalSince1970: 0),
                 isFavorited: true,
                 tapFavoriteAction: {},
-                tapAction: {}
+                tapAction: {},
+                tapPlayAction: {}
             )
             .frame(width: 343, height: 132)
             .environment(\.colorScheme, .light)

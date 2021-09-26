@@ -29,6 +29,9 @@ public struct FavoritesScreen: View {
                                 },
                                 tapFavorite: { isFavorited, contentId in
                                     viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                                },
+                                tapPlay: { content in
+                                    viewStore.send(.tapPlay(content))
                                 }
                             )
                         }

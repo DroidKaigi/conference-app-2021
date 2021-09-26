@@ -16,6 +16,7 @@ public struct SmallCard: View {
     private let isFavorited: Bool
     private let tapAction: () -> Void
     private let tapFavoriteAction: () -> Void
+    private let tapPlay: () -> Void
 
     public init(
         title: String,
@@ -24,7 +25,8 @@ public struct SmallCard: View {
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlay: @escaping () -> Void
     ) {
         self.title = title
         self.imageURL = imageURL
@@ -33,6 +35,7 @@ public struct SmallCard: View {
         self.isFavorited = isFavorited
         self.tapAction = tapAction
         self.tapFavoriteAction = tapFavoriteAction
+        self.tapPlay = tapPlay
     }
 
     public var body: some View {
@@ -53,6 +56,7 @@ public struct SmallCard: View {
                     .padding()
                     .background(Color.black.opacity(0.4))
                     .clipShape(Circle())
+                    .onTapGesture(perform: tapPlay)
                 }
             }
 
@@ -102,7 +106,8 @@ public struct SmallCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: false,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlay: {}
                 )
                 .frame(width: 179, height: 278)
                 .background(AssetColor.Background.primary.color)
@@ -116,7 +121,8 @@ public struct SmallCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: true,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlay: {}
                 )
                 .frame(width: 179, height: 278)
                 .background(AssetColor.Background.primary.color)
@@ -130,7 +136,8 @@ public struct SmallCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: true,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlay: {}
                 )
                 .frame(width: 179, height: 278)
                 .background(AssetColor.Background.primary.color)
