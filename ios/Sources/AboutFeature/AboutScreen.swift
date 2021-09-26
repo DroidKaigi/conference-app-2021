@@ -87,20 +87,19 @@ public struct AboutScreen: View {
                     }
                     .sheet(
                         isPresented: viewStore.binding(
-                            get: \.isShowingWebView,
-                            send: AboutAction.hideWebView
-                        ),
-                        content: {
-                            WebView(url: viewStore.showingURL!)
-                        }
-                    )
-                    .fullScreenCover(
-                        isPresented: viewStore.binding(
-                            get: \.isShowingAboutDroidKaigi,
-                            send: AboutAction.hideAboutDroidKaigi
-                        ),
-                        content: {
-                            AboutDroidKaigiScreen()
+                            get: \.isShowingSheet,
+                            send: .hideSheet
+                        ), content: {
+                            IfLetStore(store.scope(state: \.isSheetPresented)) { store in
+                                WithViewStore(store) { viewStore in
+                                    switch viewStore.state {
+                                    case .url(let url):
+                                        WebView(url: url)
+                                    case .aboutDroidKaigi:
+                                        AboutDroidKaigiScreen()
+                                    }
+                                }
+                            }
                         }
                     )
                 }
