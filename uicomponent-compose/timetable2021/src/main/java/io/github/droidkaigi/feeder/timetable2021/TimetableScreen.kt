@@ -5,6 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
+import androidx.compose.material.Button
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHost
@@ -18,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.rememberNavController
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -58,6 +60,7 @@ fun TimetableScreen(
     selectedTab: TimetableTab,
     onSelectedTab: (TimetableTab) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onDetailClick: (String) -> Unit,
 ) {
     val (state, effectFlow, dispatch) = use(sessionViewModel())
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -73,7 +76,8 @@ fun TimetableScreen(
             tabPagerState = pagerState
         ),
         onNavigationIconClick = onNavigationIconClick,
-        onSelectTab = onSelectedTab
+        onSelectTab = onSelectedTab,
+        onDetailClick = onDetailClick
     )
 }
 
@@ -86,6 +90,7 @@ private fun TimetableScreen(
     state: TimetableScreenState,
     onNavigationIconClick: () -> Unit,
     onSelectTab: (TimetableTab) -> Unit,
+    onDetailClick: (String) -> Unit,
 ) {
     Conference2021Theme() {
         val density = LocalDensity.current
@@ -115,7 +120,8 @@ private fun TimetableScreen(
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
                         TimetableListState(
-                            state.timeTableContents.getDayTimetableItems(selectedTab.day)
+                            timetableItems = state.timeTableContents.getDayTimetableItems(selectedTab.day),
+                            onDetailClick = onDetailClick,
                         )
                     )
                 }
@@ -130,7 +136,10 @@ private fun TimetableScreen(
     }
 }
 
-data class TimetableListState(val timetableItems: TimetableItemList)
+data class TimetableListState(
+    val timetableItems: TimetableItemList,
+    val onDetailClick: (String) -> Unit,
+)
 
 @Composable
 private fun TimetableList(state: TimetableListState) {
@@ -140,7 +149,10 @@ private fun TimetableList(state: TimetableListState) {
             key = { state.timetableItems[it].id }
         ) { index ->
             val timetableItem = state.timetableItems.timetableItems[index]
-            TimetableItem(TimetableItemState(timetableItem))
+            TimetableItem(
+                timetableItemState = TimetableItemState(timetableItem),
+                onDetailClick = state.onDetailClick,
+            )
         }
     }
 }
@@ -148,8 +160,15 @@ private fun TimetableList(state: TimetableListState) {
 data class TimetableItemState(val timetableItem: TimetableItem)
 
 @Composable
-private fun TimetableItem(timetableItemState: TimetableItemState) {
-    Text(timetableItemState.timetableItem.title.currentLangTitle)
+private fun TimetableItem(
+    timetableItemState: TimetableItemState,
+    onDetailClick: (String) -> Unit,
+) {
+    Button(onClick = {
+        onDetailClick(timetableItemState.timetableItem.id)
+    }) {
+        Text(timetableItemState.timetableItem.title.currentLangTitle)
+    }
 }
 
 @Preview(showBackground = true)
@@ -162,8 +181,8 @@ fun PreviewTimetableScreen() {
             TimetableScreen(
                 selectedTab = TimetableTab.Day1,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDetailClick = {},
             )
         }
     }

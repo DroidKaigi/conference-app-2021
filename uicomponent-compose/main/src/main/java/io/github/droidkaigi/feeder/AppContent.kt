@@ -31,6 +31,7 @@ import io.github.droidkaigi.feeder.feed.FeedScreen
 import io.github.droidkaigi.feeder.feed.FeedTab
 import io.github.droidkaigi.feeder.other.OtherScreen
 import io.github.droidkaigi.feeder.other.OtherTab
+import io.github.droidkaigi.feeder.timetable2021.TimetableDetailScreen
 import io.github.droidkaigi.feeder.timetable2021.TimetableScreen
 import io.github.droidkaigi.feeder.timetable2021.TimetableTab
 import kotlinx.coroutines.launch
@@ -38,6 +39,7 @@ import kotlinx.coroutines.launch
 private const val FEED_PATH = "feed/"
 private const val OTHER_PATH = "other/"
 private const val TIMETABLE_PATH = "timetable/"
+private const val TIMETABLE_DETAIL_PATH = "timetable/detail/"
 
 private val drawerOpenedStatusBarColor = Color.Black.copy(alpha = 0.48f)
 
@@ -136,7 +138,32 @@ fun AppContent(
                 TimetableScreen(
                     selectedTab = selectedTab,
                     onNavigationIconClick = onNavigationIconClick,
-                    onSelectedTab = {}
+                    onSelectedTab = {},
+                    onDetailClick = { id ->
+                        actions.onSelectTimetableDetail(id)
+                    },
+                )
+            }
+            composable(
+                route = "$TIMETABLE_DETAIL_PATH{id}",
+                deepLinks = listOf(
+                    navDeepLink {
+                        uriPattern = "$deepLinkUri/$TIMETABLE_DETAIL_PATH/{id}"
+                    }
+                ),
+                arguments = listOf(
+                    navArgument("id") {
+                        type = NavType.StringType
+                    }
+                )
+            ) { backStackEntry ->
+                val routePath = rememberRoutePath(
+                    backStackEntry.arguments?.getString("id") ?: ""
+                )
+                val id = routePath.value
+                TimetableDetailScreen(
+                    id = id,
+                    onNavigationIconClick = onNavigationIconClick,
                 )
             }
             composable(
@@ -201,6 +228,10 @@ private class AppActions(navController: NavHostController) {
                 }
             }
         }
+    }
+
+    val onSelectTimetableDetail: (String) -> Unit = { id ->
+        navController.navigate(TIMETABLE_DETAIL_PATH + id)
     }
 
     val showChromeCustomTabs: (String) -> Unit = { link ->
