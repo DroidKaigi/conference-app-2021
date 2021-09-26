@@ -23,7 +23,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 endsAt = LocalDateTime.parse("2021-10-20T10:20:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 category = TimetableCategory(
-                    id = 89451,
+                    id = 28657,
                     title = MultiLangText("その他", "Other"),
                 ),
                 targetAudience = "TBW",
@@ -43,7 +43,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 endsAt = LocalDateTime.parse("2021-10-20T10:50:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 category = TimetableCategory(
-                    id = 89447,
+                    id = 28654,
                     title = MultiLangText(
                         "Android FrameworkとJetpack",
                         "Android Framework and Jetpack",
@@ -59,14 +59,14 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     TimetableSpeaker(
                         name = "taka",
                         iconUrl = "https://github.com/takahirom.png",
-                        bio = "taka's bio",
-                        tagLine = "taka's tag line"
+                        bio = "Likes Android",
+                        tagLine = "Android Engineer"
                     ),
                     TimetableSpeaker(
                         name = "ry",
                         iconUrl = "https://github.com/ry-itto.png",
-                        bio = "ry's bio",
-                        tagLine = "ry's tag line",
+                        bio = "Likes iOS",
+                        tagLine = "iOS Engineer",
                     ),
                 ),
                 description = "これはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。",
@@ -84,7 +84,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
                 targetAudience = "TBW",
                 category = TimetableCategory(
-                    id = 89451,
+                    id = 28657,
                     title = MultiLangText("その他", "Other"),
                 ),
                 language = "TBD",

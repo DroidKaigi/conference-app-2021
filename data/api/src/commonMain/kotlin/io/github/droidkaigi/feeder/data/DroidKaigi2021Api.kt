@@ -91,8 +91,8 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
       "sessionCategoryItemId": 28654,
       "interpretationTarget": true,
       "asset": {
-        "videoUrl": null,
-        "slideUrl": null
+        "videoUrl": "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+        "slideUrl": "https://droidkaigi.jp/2021/"
       },
       "message": null,
       "sessionType": "NORMAL",
