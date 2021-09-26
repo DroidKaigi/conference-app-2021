@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.timetable2021
 import android.content.Intent
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
@@ -43,6 +44,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -51,6 +53,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import io.github.droidkaigi.feeder.TimetableAsset
+import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.core.NetworkImage
@@ -62,6 +65,7 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import io.github.droidkaigi.feeder.currentLangTitle
+import java.lang.IllegalArgumentException
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
@@ -175,7 +179,7 @@ fun TimetableDetailScreen(
                             endsAt = item.endsAt,
                         ),
                         language = item.language.currentLangTitle(),
-                        category = item.category.title.currentLangTitle,
+                        category = item.category,
                     )
 
                     if (item is TimetableItem.Session) {
@@ -257,7 +261,7 @@ private fun TimetableDetailSessionInfo(
     title: String,
     dateTime: String,
     language: String,
-    category: String,
+    category: TimetableCategory,
 ) {
     Text(
         text = title,
@@ -327,8 +331,17 @@ private fun TimetableDetailSessionInfo(
                 verticalAlignment = Alignment.CenterVertically,
                 modifier = Modifier.wrapContentHeight(),
             ) {
+                Image(
+                    painter = painterResource(createCategoryIcon(category)),
+                    contentDescription = "Category icon",
+                    modifier = Modifier
+                        .height(18.dp)
+                        .width(18.dp)
+                        .align(Alignment.CenterVertically),
+                )
+                Spacer(modifier = Modifier.width(2.dp))
                 Text(
-                    text = category,
+                    text = category.title.currentLangTitle,
                     style = MaterialTheme.typography.body1,
                 )
             }
@@ -471,6 +484,25 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
+}
+
+private fun createCategoryIcon(
+    category: TimetableCategory,
+): Int = when (category.id) {
+    89439 -> R.drawable.kotlin
+    90050 -> R.drawable.security
+    89441 -> R.drawable.ui_ux
+    89442 -> R.drawable.architecture
+    89443 -> R.drawable.hardware
+    89444 -> R.drawable.platform
+    89445 -> R.drawable.testing
+    89446 -> R.drawable.process
+    89447 -> R.drawable.android_framework
+    89448 -> R.drawable.jetpack
+    89449 -> R.drawable.tools
+    89450 -> R.drawable.cross_platform
+    89451 -> R.drawable.other
+    else -> throw IllegalArgumentException()
 }
 
 // region default preview

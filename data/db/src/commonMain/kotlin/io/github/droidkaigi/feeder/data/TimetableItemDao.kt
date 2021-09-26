@@ -77,6 +77,7 @@ private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
             endsAt = session.endsAt.toEpochMilliseconds(),
+            idCategory = session.category.id.toLong(),
             jaCategory = session.category.title.jaTitle,
             enCategory = session.category.title.enTitle,
             targetAudience = session.targetAudience,
@@ -99,6 +100,7 @@ private fun TimetableItemSpecialQueries.insert(session: TimetableItem.Special) {
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
             endsAt = session.endsAt.toEpochMilliseconds(),
+            idCategory = session.category.id.toLong(),
             jaCategory = session.category.title.jaTitle,
             enCategory = session.category.title.enTitle,
             targetAudience = session.targetAudience,
@@ -144,6 +146,7 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
                 category = TimetableCategory(
+                    id = row.idCategory.toInt(),
                     title = MultiLangText(row.jaCategory, row.enCategory),
                 ),
                 targetAudience = row.targetAudience,
@@ -195,6 +198,7 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
                 category = TimetableCategory(
+                    id = row.idCategory.toInt(),
                     title = MultiLangText(row.jaCategory, row.enCategory),
                 ),
                 targetAudience = row.targetAudience,

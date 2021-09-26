@@ -23,6 +23,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 endsAt = LocalDateTime.parse("2021-10-20T10:20:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 category = TimetableCategory(
+                    id = 89451,
                     title = MultiLangText("その他", "Other"),
                 ),
                 targetAudience = "TBW",
@@ -42,6 +43,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 endsAt = LocalDateTime.parse("2021-10-20T10:50:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 category = TimetableCategory(
+                    id = 89447,
                     title = MultiLangText(
                         "Android FrameworkとJetpack",
                         "Android Framework and Jetpack",
@@ -82,6 +84,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
                 targetAudience = "TBW",
                 category = TimetableCategory(
+                    id = 89451,
                     title = MultiLangText("その他", "Other"),
                 ),
                 language = "TBD",

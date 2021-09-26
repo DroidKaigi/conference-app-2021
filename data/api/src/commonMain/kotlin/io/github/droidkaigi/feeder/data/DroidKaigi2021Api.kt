@@ -448,7 +448,10 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
         .groupBy { it!!.id!! }
         .mapValues { (_, apiCategories) ->
             apiCategories.map { apiCategory ->
-                TimetableCategory(apiCategory!!.name!!.toMultiLangText())
+                TimetableCategory(
+                    id = apiCategory!!.id!!,
+                    title = apiCategory.name!!.toMultiLangText()
+                )
             }.first()
         }
 
