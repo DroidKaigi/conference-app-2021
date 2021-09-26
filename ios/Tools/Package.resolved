@@ -42,8 +42,8 @@
         "repositoryURL": "https://github.com/tid-kijyun/Kanna.git",
         "state": {
           "branch": null,
-          "revision": "c657fb9f5827ef138068215c76ad0bb62bbc92da",
-          "version": "5.2.4"
+          "revision": "f9e4922223dd0d3dfbf02ca70812cf5531fc0593",
+          "version": "5.2.7"
         }
       },
       {
@@ -51,8 +51,8 @@
         "repositoryURL": "https://github.com/mono0926/LicensePlist.git",
         "state": {
           "branch": null,
-          "revision": "38db6f435cc77513a528780d14b1b29daf042439",
-          "version": "3.13.0"
+          "revision": "b81d514123ca7a669c0d5d3f68109600573075c1",
+          "version": "3.14.2"
         }
       },
       {
@@ -150,8 +150,8 @@
         "repositoryURL": "https://github.com/realm/SwiftLint.git",
         "state": {
           "branch": null,
-          "revision": "180d94132758dd183124ab1e63d6aa8e10023ec2",
-          "version": "0.43.1"
+          "revision": "e820e750b08bd67bc9d98f4817868e9bc3d5d865",
+          "version": "0.44.0"
         }
       },
       {

@@ -122,10 +122,10 @@ private fun TimetableItemSpeakerQueries.insert(id: String, speaker: TimetableSpe
 
 private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session> {
     return this.foldRight(mapOf<String, TimetableItem.Session>()) { row, acc ->
-        val feedItem = if (acc.containsKey(row.id)) {
-            val oldFeedItem = acc.getValue(row.id)
-            oldFeedItem.copy(
-                speakers = oldFeedItem.speakers + TimetableSpeaker(
+        val timetableItem = if (acc.containsKey(row.id)) {
+            val oldTimetableItem = acc.getValue(row.id)
+            oldTimetableItem.copy(
+                speakers = oldTimetableItem.speakers + TimetableSpeaker(
                     name = row.speakerName,
                     iconUrl = row.speakerIconUrl,
                 ),
@@ -163,16 +163,16 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 },
             )
         }
-        acc + mapOf(row.id to feedItem)
+        acc + mapOf(row.id to timetableItem)
     }.values.toList()
 }
 
 private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special> {
     return this.foldRight(mapOf<String, TimetableItem.Special>()) { row, acc ->
-        val feedItem = if (acc.containsKey(row.id)) {
-            val oldFeedItem = acc.getValue(row.id)
-            oldFeedItem.copy(
-                speakers = oldFeedItem.speakers + TimetableSpeaker(
+        val timetableItem = if (acc.containsKey(row.id)) {
+            val oldTimetableItem = acc.getValue(row.id)
+            oldTimetableItem.copy(
+                speakers = oldTimetableItem.speakers + TimetableSpeaker(
                     name = row.speakerName,
                     iconUrl = row.speakerIconUrl,
                 ),
@@ -204,7 +204,7 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 ),
             )
         }
-        acc + mapOf(row.id to feedItem)
+        acc + mapOf(row.id to timetableItem)
     }.values.toList()
 }
 
