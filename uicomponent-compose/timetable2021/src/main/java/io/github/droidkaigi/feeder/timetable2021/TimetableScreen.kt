@@ -126,10 +126,10 @@ private fun TimetableScreen(
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
                         state = TimetableListState(
-                            state.timeTableContents
+                            timetableItems = state.timeTableContents
                                 .timetableItems
                                 .getDayTimetableItems(selectedTab.day),
-                            state.timeTableContents.favorites,
+                            favorites = state.timeTableContents.favorites,
                             onDetailClick = onDetailClick,
                             onFavoriteChange = onFavoriteChange,
                         ),
