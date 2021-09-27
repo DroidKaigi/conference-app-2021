@@ -51,7 +51,7 @@ public struct ListItem: View {
                             placeholderSize: .small,
                             width: 100,
                             height: 100,
-                            allowsHitTesting: media.isPodcast
+                            allowsHitTesting: !media.isPodcast
                         )
                         .clipShape(RoundedRectangle(cornerRadius: 20))
                         if case let .droidKaigiFm(isPlaying) = media {
