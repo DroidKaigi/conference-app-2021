@@ -72,6 +72,7 @@ private fun TimetableItemContent(
                 vertical = 16.dp
             )
             .fillMaxWidth()
+            .testTag("TimetableItem")
     ) {
         val (startsAt, title, speakers, favoriteSpacer, favorite) = createRefs()
 
@@ -104,6 +105,7 @@ private fun TimetableItemContent(
                         top.linkTo(title.bottom, 8.dp)
                         width = Dimension.fillToConstraints
                     }
+                    .testTag("Speakers")
             ) {
                 timetableItem.speakers.forEachIndexed { index, speaker ->
                     if (index > 0) {
@@ -115,7 +117,8 @@ private fun TimetableItemContent(
                                 url = speaker.iconUrl!!,
                                 modifier = Modifier
                                     .size(32.dp)
-                                    .clip(CircleShape),
+                                    .clip(CircleShape)
+                                    .testTag("Speakers icon"),
                                 contentScale = ContentScale.Fit,
                                 contentDescription = "speakers icon"
                             )

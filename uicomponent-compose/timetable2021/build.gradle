@@ -11,16 +11,25 @@ apply from: rootProject.file("gradle/android.gradle")
 apply from: rootProject.file("gradle/compose.gradle")
 
 android {
+    defaultConfig {
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    }
     compileOptions {
         coreLibraryDesugaringEnabled true // need for test. https://github.com/DroidKaigi/conference-app-2021/issues/373
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
+    }
+    packagingOptions {
+        // https://github.com/Kotlin/kotlinx.coroutines/issues/2023
+        exclude 'META-INF/AL2.0'
+        exclude 'META-INF/LGPL2.1'
     }
 }
 
 dependencies {
     api projects.uicomponentCompose.core
     api projects.model
+    implementation 'androidx.test.ext:junit-ktx:1.1.3'
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
@@ -50,6 +59,7 @@ dependencies {
     implementation Dep.Compose.iconsExtended
     implementation Dep.Compose.animation
     implementation Dep.Compose.constraintLayout
+    androidTestImplementation Dep.Compose.test
 
     // Android
     implementation Dep.Jetpack.browser
