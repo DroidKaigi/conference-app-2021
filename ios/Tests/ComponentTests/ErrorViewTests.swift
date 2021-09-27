@@ -2,12 +2,12 @@ import Component
 import TestUtils
 import XCTest
 
-final class FeedContentListViewTests: XCTestCase {
+final class ErrorViewTests: XCTestCase {
     override func setUp() {
         initSnapshotTesting()
     }
 
-    func testFeedContentListView() {
+    func testErrorView() {
         assertPreviewSnapshot(ErrorView_Previews.self)
     }
 }
