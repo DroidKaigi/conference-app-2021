@@ -38,7 +38,7 @@ import io.github.droidkaigi.feeder.fakeTimetableContents
 data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
 
 @Composable
-fun TimetableListItem(
+fun TimetableItem(
     timetableItemState: TimetableItemState,
     onClick: () -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
@@ -187,7 +187,7 @@ private fun TimetableItemContent(
 fun PreviewTimetableItem() {
     Column() {
         fakeTimetableContents().timetableItems.timetableItems.forEachIndexed { index, item ->
-            TimetableListItem(TimetableItemState(item, true), {}, {}, index > 0)
+            TimetableItem(TimetableItemState(item, true), {}, {}, index > 0)
         }
     }
 }

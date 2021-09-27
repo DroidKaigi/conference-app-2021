@@ -154,7 +154,7 @@ private fun TimetableList(
             key = { state.timetableItems[it].id }
         ) { index ->
             val timetableItem = state.timetableItems.timetableItems[index]
-            TimetableListItem(
+            TimetableItem(
                 timetableItemState = TimetableItemState(timetableItem, true),
                 onClick = onClickTimetableItem,
                 onFavoriteChange = onFavoriteChange,
