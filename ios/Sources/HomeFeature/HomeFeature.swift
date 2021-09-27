@@ -6,10 +6,6 @@ import Repository
 public struct HomeState: Equatable {
     public var feedContents: [FeedContent]
 
-    var message: String {
-        "Finished! 🤖"
-    }
-
     var topic: FeedContent? {
         feedContents.first
     }
