@@ -44,19 +44,22 @@ public struct ImageView: View {
     private let placeholderSize: PlaceHolder.Size
     private let width: CGFloat
     private let height: CGFloat
+    private let allowsHitTesting: Bool
 
     public init(
         imageURL: URL?,
         placeholder: PlaceHolder = .noImage,
         placeholderSize: PlaceHolder.Size,
         width: CGFloat,
-        height: CGFloat
+        height: CGFloat,
+        allowsHitTesting: Bool = true
     ) {
         self.imageURL = imageURL
         self.placeholder = placeholder
         self.placeholderSize = placeholderSize
         self.width = width
         self.height = height
+        self.allowsHitTesting = allowsHitTesting
     }
 
     public var body: some View {
@@ -81,7 +84,7 @@ public struct ImageView: View {
                     lineWidth: Const.roundedLineWidth
                 )
         )
-        .allowsHitTesting(false)
+        .allowsHitTesting(allowsHitTesting)
     }
 }
 

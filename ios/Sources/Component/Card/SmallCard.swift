@@ -46,7 +46,8 @@ public struct SmallCard: View {
                     placeholder: .noImage,
                     placeholderSize: .small,
                     width: Const.imageViewWidth,
-                    height: Const.imageViewWidth * 114/163
+                    height: Const.imageViewWidth * 114/163,
+                    allowsHitTesting: media.isPodcast
                 )
                 if case let .droidKaigiFm(isPlaying) = media {
                     SwiftUI.Image(
