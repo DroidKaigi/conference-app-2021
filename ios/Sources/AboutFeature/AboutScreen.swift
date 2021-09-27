@@ -91,22 +91,18 @@ public struct AboutScreen: View {
                             get: \.isShowingSheet,
                             send: .hideSheet
                         ), content: {
-                            IfLetStore(store.scope(state: \.isSheetPresented)) { store in
+                            IfLetStore(
+                                store.scope(
+                                    state: \.aboutDroidKaigiState,
+                                    action: AboutAction.aboutDroidKaigi
+                                ),
+                                then: AboutDroidKaigiScreen.init(store:)
+                            )
+                            IfLetStore(
+                                store.actionless.scope(state: \.showingURL)
+                            ) { store in
                                 WithViewStore(store) { viewStore in
-                                    switch viewStore.state {
-                                    case .url(let url):
-                                        WebView(url: url)
-                                    case .aboutDroidKaigi:
-                                        AboutDroidKaigiScreen(
-                                            store: .init(
-                                                initialState: .init(),
-                                                reducer: aboutDroidKaigiReducer,
-                                                environment: AboutDroidKaigiEnvironment(
-                                                    applicationClient: UIApplicationClient()
-                                                )
-                                            )
-                                        )
-                                    }
+                                    WebView(url: viewStore.state)
                                 }
                             }
                         }

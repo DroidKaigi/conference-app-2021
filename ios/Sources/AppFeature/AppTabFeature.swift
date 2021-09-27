@@ -121,6 +121,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         action: /AppTabAction.about,
         environment: { environment in
             .init(
+                applicationClient: environment.applicationClient,
                 contributorRepository: environment.contributorRepository,
                 staffRepository: environment.staffRepository
             )

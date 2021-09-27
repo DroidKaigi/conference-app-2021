@@ -100,6 +100,7 @@ var package = Package(
                 .target(name: "SettingFeature"),
                 .target(name: "Styleguide"),
                 .target(name: "TimetableFeature"),
+                .target(name: "UIApplicationClient"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
