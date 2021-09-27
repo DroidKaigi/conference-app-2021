@@ -55,6 +55,7 @@ import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import com.google.accompanist.insets.statusBarsPadding
+import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
@@ -67,7 +68,7 @@ import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import io.github.droidkaigi.feeder.currentLangTitle
+import io.github.droidkaigi.feeder.defaultLang
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
@@ -186,7 +187,7 @@ fun TimetableDetailScreen(
                             startsAt = item.startsAt,
                             endsAt = item.endsAt,
                         ),
-                        language = item.language.currentLangTitle(),
+                        language = createLangText(item.language),
                         category = item.category,
                     )
 
@@ -530,6 +531,15 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
+}
+
+private fun createLangText(language: String) = when (defaultLang()) {
+    Lang.JA -> when (language) {
+        "JAPANESE" -> "日本語"
+        "ENGLISH" -> "英語"
+        else -> "未定"
+    }
+    Lang.EN -> language
 }
 
 private fun createCategoryIcon(

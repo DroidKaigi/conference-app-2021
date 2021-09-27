@@ -11,7 +11,7 @@ sealed class TimetableItem(
     open val endsAt: Instant,
     open val category: TimetableCategory,
     open val targetAudience: String,
-    open val language: TimetableLanguage,
+    open val language: String,
     open val asset: TimetableAsset,
     open val levels: List<String>,
 ) {
