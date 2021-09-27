@@ -40,7 +40,7 @@ data class TimetableItemState(val timetableItem: TimetableItem, val favorited: B
 @Composable
 fun TimetableItem(
     timetableItemState: TimetableItemState,
-    onClick: () -> Unit,
+    onDetailClick: (String) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
     showDivider: Boolean
 ) {
@@ -49,7 +49,7 @@ fun TimetableItem(
         TimetableItemContent(
             timetableItem = timetableItemState.timetableItem,
             favorited = timetableItemState.favorited,
-            onClick = onClick,
+            onDetailClick = onDetailClick,
             onFavoriteChange = onFavoriteChange
         )
     }
@@ -59,13 +59,15 @@ fun TimetableItem(
 private fun TimetableItemContent(
     timetableItem: TimetableItem,
     favorited: Boolean,
-    onClick: () -> Unit,
+    onDetailClick: (String) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     ConstraintLayout(
         Modifier
             .clickable(
-                onClick = { onClick() }
+                onClick = {
+                    onDetailClick(timetableItem.id)
+                }
             )
             .padding(
                 horizontal = 16.dp,

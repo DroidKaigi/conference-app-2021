@@ -60,6 +60,7 @@ fun TimetableScreen(
     selectedTab: TimetableTab,
     onSelectedTab: (TimetableTab) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onDetailClick: (String) -> Unit,
 ) {
     val (state, effectFlow, dispatch) = use(sessionViewModel())
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -76,7 +77,7 @@ fun TimetableScreen(
         ),
         onNavigationIconClick = onNavigationIconClick,
         onSelectTab = onSelectedTab,
-        onClickTimetableItem = { },
+        onDetailClick = onDetailClick,
         onFavoriteChange = { timetableItem ->
             dispatch(
                 TimetableViewModel.Event.ToggleFavorite(timetableItem = timetableItem)
@@ -94,7 +95,7 @@ private fun TimetableScreen(
     state: TimetableScreenState,
     onNavigationIconClick: () -> Unit,
     onSelectTab: (TimetableTab) -> Unit,
-    onClickTimetableItem: () -> Unit,
+    onDetailClick: (String) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     Conference2021Theme() {
@@ -128,10 +129,10 @@ private fun TimetableScreen(
                             state.timeTableContents
                                 .timetableItems
                                 .getDayTimetableItems(selectedTab.day),
-                            state.timeTableContents.favorites
+                            state.timeTableContents.favorites,
+                            onDetailClick = onDetailClick,
+                            onFavoriteChange = onFavoriteChange,
                         ),
-                        onClickTimetableItem = onClickTimetableItem,
-                        onFavoriteChange = onFavoriteChange,
                     )
                 }
             },
@@ -145,13 +146,16 @@ private fun TimetableScreen(
     }
 }
 
-data class TimetableListState(val timetableItems: TimetableItemList, val favorites: Set<String>)
+data class TimetableListState(
+    val timetableItems: TimetableItemList,
+    val favorites: Set<String>,
+    val onDetailClick: (String) -> Unit,
+    val onFavoriteChange: (TimetableItem) -> Unit,
+)
 
 @Composable
 private fun TimetableList(
     state: TimetableListState,
-    onClickTimetableItem: () -> Unit,
-    onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     LazyColumn {
         itemsIndexed(
@@ -163,8 +167,8 @@ private fun TimetableList(
                     timetableItem,
                     state.favorites.contains(timetableItem.id)
                 ),
-                onClick = onClickTimetableItem,
-                onFavoriteChange = onFavoriteChange,
+                onDetailClick = state.onDetailClick,
+                onFavoriteChange = state.onFavoriteChange,
                 showDivider = index > 0
             )
         }
@@ -181,8 +185,8 @@ fun PreviewTimetableScreen() {
             TimetableScreen(
                 selectedTab = TimetableTab.Day1,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDetailClick = {},
             )
         }
     }

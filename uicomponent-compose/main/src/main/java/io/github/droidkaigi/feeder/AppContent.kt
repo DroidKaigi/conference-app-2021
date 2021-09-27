@@ -136,7 +136,8 @@ fun AppContent(
                 TimetableScreen(
                     selectedTab = selectedTab,
                     onNavigationIconClick = onNavigationIconClick,
-                    onSelectedTab = {}
+                    onSelectedTab = { },
+                    onDetailClick = { },
                 )
             }
             composable(
