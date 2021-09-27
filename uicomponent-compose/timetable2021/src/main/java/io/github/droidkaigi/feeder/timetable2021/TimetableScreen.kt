@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.timetable2021
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -25,6 +26,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.DroidKaigi2021Day
+import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemList
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
@@ -44,7 +46,7 @@ sealed class TimetableTab(val name: String, val routePath: String, val day: Droi
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Stable
 data class TimetableScreenState(
-    val timeTableContents: TimetableItemList,
+    val timeTableContents: TimetableContents,
     val scaffoldState: BackdropScaffoldState,
     val tabPagerState: PagerState,
 )
@@ -68,7 +70,7 @@ fun TimetableScreen(
 
     TimetableScreen(
         state = TimetableScreenState(
-            timeTableContents = state.timetableContents.timetableItems,
+            timeTableContents = state.timetableContents,
             scaffoldState = scaffoldState,
             tabPagerState = pagerState
         ),
@@ -123,7 +125,10 @@ private fun TimetableScreen(
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
                         state = TimetableListState(
-                            state.timeTableContents.getDayTimetableItems(selectedTab.day)
+                            state.timeTableContents
+                                .timetableItems
+                                .getDayTimetableItems(selectedTab.day),
+                            state.timeTableContents.favorites
                         ),
                         onClickTimetableItem = onClickTimetableItem,
                         onFavoriteChange = onFavoriteChange,
@@ -140,7 +145,7 @@ private fun TimetableScreen(
     }
 }
 
-data class TimetableListState(val timetableItems: TimetableItemList)
+data class TimetableListState(val timetableItems: TimetableItemList, val favorites: Set<String>)
 
 @Composable
 private fun TimetableList(
@@ -149,13 +154,15 @@ private fun TimetableList(
     onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     LazyColumn {
-        items(
-            count = state.timetableItems.size,
-            key = { state.timetableItems[it].id }
-        ) { index ->
-            val timetableItem = state.timetableItems.timetableItems[index]
+        itemsIndexed(
+            items = state.timetableItems,
+            key = { _, item -> item.id }
+        ) { index, timetableItem ->
             TimetableItem(
-                timetableItemState = TimetableItemState(timetableItem, true),
+                timetableItemState = TimetableItemState(
+                    timetableItem,
+                    state.favorites.contains(timetableItem.id)
+                ),
                 onClick = onClickTimetableItem,
                 onFavoriteChange = onFavoriteChange,
                 showDivider = index > 0
