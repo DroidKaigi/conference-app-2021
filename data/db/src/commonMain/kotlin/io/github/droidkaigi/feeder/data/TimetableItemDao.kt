@@ -17,11 +17,12 @@ import kotlinx.datetime.Instant
 
 interface TimetableItemDao {
     fun selectAll(): Flow<List<TimetableItem>>
+    fun replace(items: List<TimetableItem>)
     fun insert(items: List<TimetableItem>)
     fun deleteAll()
 }
 
-internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
+internal class TimetableItemDaoImpl(private val database: Database) : TimetableItemDao {
     private val sessionQueries: TimetableItemSessionQueries = database.timetableItemSessionQueries
     private val specialQueries: TimetableItemSpecialQueries = database.timetableItemSpecialQueries
     private val speakerQueries: TimetableItemSpeakerQueries = database.timetableItemSpeakerQueries
@@ -33,6 +34,13 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
             specialQueries.selectAllSpecial().asFlow().mapToList().map { it.toSpecialItems() }
 
         return allSession.zip(allSpecial) { sessions, specials -> sessions + specials }
+    }
+
+    override fun replace(items: List<TimetableItem>) {
+        database.transaction {
+            deleteAll()
+            insert(items = items)
+        }
     }
 
     override fun insert(items: List<TimetableItem>) {
@@ -238,6 +246,10 @@ fun fakeTimetableItemDao(error: AppError? = null): TimetableItemDao = object : T
         } finally {
             channel.close()
         }
+    }
+
+    override fun replace(items: List<TimetableItem>) {
+        channel.offer((channel.poll() ?: emptyList()) + items)
     }
 
     override fun insert(items: List<TimetableItem>) {

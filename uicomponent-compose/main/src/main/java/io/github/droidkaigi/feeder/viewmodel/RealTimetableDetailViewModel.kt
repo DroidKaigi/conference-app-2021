@@ -27,6 +27,7 @@ class RealTimetableDetailViewModel @Inject constructor(
     override val effect: Flow<TimetableDetailViewModel.Effect> = effectChannel.receiveAsFlow()
 
     init {
+        // For cases where the screen is opened directly by deeplink or for testing.
         viewModelScope.launch {
             refreshRepository()
         }

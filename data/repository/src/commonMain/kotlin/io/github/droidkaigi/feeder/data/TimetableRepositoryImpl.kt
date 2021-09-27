@@ -25,8 +25,7 @@ open class TimetableRepositoryImpl(
 
     override suspend fun refresh() {
         val newtimetables = droidKaigi2021Api.fetch().timetableItems
-        timetableItemDao.deleteAll()
-        timetableItemDao.insert(newtimetables)
+        timetableItemDao.replace(newtimetables)
     }
 
     override suspend fun addFavorite(id: String) {

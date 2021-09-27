@@ -110,10 +110,7 @@ fun TimetableDetailScreen(
     }
 
     val contents = state.timetableContents
-    if (contents.timetableItems.isEmpty()) {
-        return
-    }
-    val item = contents.timetableItems.first { it.id == id }
+    val item = contents.timetableItems.firstOrNull { it.id == id } ?: return
     val isFavorite = contents.favorites.contains(id)
 
     TimetableDetailScreen(
