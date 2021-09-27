@@ -24,7 +24,7 @@ public struct TimetableDetailScreen: View {
     }
 
     enum ViewAction {
-        case tapLink(String)
+        case tapLink(URL)
     }
 
     public var body: some View {
@@ -48,15 +48,8 @@ public struct TimetableDetailScreen: View {
 
             fixedFooter(
                 timetable: viewStore.timetable,
-                tapSlide: {
-                    if let link = viewStore.timetable.asset.slideURLString {
-                        viewStore.send(.tapLink(link))
-                    }
-                },
-                tapVideo: {
-                    if let link = viewStore.timetable.asset.videoURLString {
-                        viewStore.send(.tapLink(link))
-                    }
+                tapLink: { url in
+                    viewStore.send(.tapLink(url))
                 }
             )
         }
@@ -142,21 +135,21 @@ private extension TimetableDetailScreen {
         .padding(.bottom, 84)
     }
 
-    func fixedFooter(timetable: AnyTimetableItem, tapSlide: @escaping () -> Void, tapVideo: @escaping () -> Void) -> some View {
+    func fixedFooter(timetable: AnyTimetableItem, tapLink: @escaping (URL) -> Void) -> some View {
         VStack {
             Spacer()
 
             HStack {
-                if timetable.asset.slideURLString != nil {
-                    VStack {
-                        AssetImage.iconClip.image
-                            .foregroundColor(AssetColor.primary.color)
-                            .frame(width: Const.footerIconSize, height: Const.footerIconSize)
-                    }
-                    .padding()
-                    .background(AssetColor.primaryPale.color)
-                    .cornerRadius(6)
-                    .onTapGesture(perform: tapSlide)
+                if let slideUrlString = timetable.asset.slideURLString, let url = URL(string: slideUrlString) {
+                    AssetImage.iconClip.image
+                        .foregroundColor(AssetColor.primary.color)
+                        .frame(width: Const.footerIconSize, height: Const.footerIconSize)
+                        .padding()
+                        .background(AssetColor.primaryPale.color)
+                        .cornerRadius(6)
+                        .onTapGesture {
+                            tapLink(url)
+                        }
                 }
 
                 HStack(spacing: 10) {
@@ -179,7 +172,11 @@ private extension TimetableDetailScreen {
                 .padding()
                 .background(AssetColor.primary.color)
                 .cornerRadius(6)
-                .onTapGesture(perform: tapVideo)
+                .onTapGesture {
+                    if let videoURL = timetable.asset.videoURLString, let url = URL(string: videoURL) {
+                        tapLink(url)
+                    }
+                }
             }
             .padding(8)
             .background(AssetColor.Background.primary.color)

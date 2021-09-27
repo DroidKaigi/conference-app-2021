@@ -47,7 +47,7 @@ public enum TimetableLoadedAction {
     case selectedPicker(SelectedType)
     case content(TimetableContentAction)
     case hideDetail
-    case tapLink(String)
+    case tapLink(URL)
     case hideSheet
 }
 
@@ -67,7 +67,7 @@ public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoade
         state.selectedTimetable = nil
         return .none
     case .tapLink(let link):
-        state.isSheetPresented = URL(string: link)!
+        state.isSheetPresented = link
         return .none
     case .hideSheet:
         state.isSheetPresented = nil
