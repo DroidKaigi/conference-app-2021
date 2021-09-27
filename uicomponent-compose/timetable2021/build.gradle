@@ -29,7 +29,6 @@ android {
 dependencies {
     api projects.uicomponentCompose.core
     api projects.model
-    implementation 'androidx.test.ext:junit-ktx:1.1.3'
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
