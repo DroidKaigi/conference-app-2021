@@ -47,7 +47,8 @@ public struct MediumCard: View {
                     placeholder: .noImage,
                     placeholderSize: .medium,
                     width: Const.imageViewWidth,
-                    height: Const.imageViewWidth * 114/225
+                    height: Const.imageViewWidth * 114/225,
+                    allowsHitTesting: media.isPodcast
                 )
                 if case let .droidKaigiFm(isPlaying) = media {
                     SwiftUI.Image(
