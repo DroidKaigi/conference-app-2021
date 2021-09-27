@@ -8,7 +8,7 @@ public struct TimetableScreen: View {
     public init(store: Store<TimetableState, TimetableAction>) {
         self.store = store
     }
-    
+
     internal enum ViewAction {
         case progressViewAppeared
         case reload
@@ -31,7 +31,7 @@ public struct TimetableScreen: View {
                 state: /TimetableState.initialized,
                 action: TimetableAction.loaded,
                 then: { store in
-                    TimetableLoaded(store: store)
+                    TimetableLoadedView(store: store)
                 }
             )
             CaseLet(

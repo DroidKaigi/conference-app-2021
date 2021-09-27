@@ -11,20 +11,12 @@ public struct TimetableDetailScreen: View {
         static let footerIconSize: CGFloat = 24
     }
 
-    let store: Store<ViewState, ViewAction>
-    let viewStore: ViewStore<ViewState, ViewAction>
+    let store: Store<TimetableDetailState, TimetableDetailAction>
+    let viewStore: ViewStore<TimetableDetailState, TimetableDetailAction>
 
-    init(store: Store<ViewState, ViewAction>) {
+    init(store: Store<TimetableDetailState, TimetableDetailAction>) {
         self.store = store
         self.viewStore = ViewStore(store)
-    }
-
-    struct ViewState: Equatable {
-        var timetable: AnyTimetableItem
-    }
-
-    enum ViewAction {
-        case tapLink(URL)
     }
 
     public var body: some View {
@@ -54,6 +46,16 @@ public struct TimetableDetailScreen: View {
             )
         }
         .background(AssetColor.Background.primary.color.ignoresSafeArea())
+        .sheet(
+            isPresented: viewStore.binding(
+                get: \.isShowingSheet,
+                send: .hideSheet
+            ), content: {
+                IfLetStore(store.scope(state: \.isSheetPresented)) { _ in
+                    WebView(url: viewStore.isSheetPresented.unsafelyUnwrapped)
+                }
+            }
+        )
     }
 }
 
