@@ -1,5 +1,6 @@
 import Component
 import ComposableArchitecture
+import Model
 import SwiftUI
 import Styleguide
 import UIApplicationClient
@@ -31,32 +32,17 @@ public struct AboutScreen: View {
             NavigationView {
                 WithViewStore(store) { viewStore in
                     ZStack {
-                        ScrollView(.vertical) {
-                            switch viewStore.selectedType {
-                            case .staff:
-                                LazyVStack(alignment: .leading, spacing: 24) {
-                                    ForEach(viewStore.staffs) { staff in
-                                        StaffCell(staff: staff) { staff in
-                                            viewStore.send(.tapStaff(staff))
-                                        }
-                                    }
-                                }
-                                .padding(.top, 20)
-                            case .contributor:
-                                LazyVGrid(
-                                    columns: Array(repeating: .init(), count: 3),
-                                    spacing: 40
-                                ) {
-                                    ForEach(viewStore.contributors) { contributor in
-                                        ContributorCell(contributor: contributor) { contributor in
-                                            viewStore.send(.tapContributor(contributor))
-                                        }
-                                    }
-                                }
-                                .listStyle(PlainListStyle())
-                                .padding(.top, 20)
+                        content(
+                            selectedType: viewStore.selectedType,
+                            staffs: viewStore.staffs,
+                            contributors: viewStore.contributors,
+                            tapStaffAction: {
+                                viewStore.send(.tapStaff($0))
+                            },
+                            tapContributorAction: {
+                                viewStore.send(.tapContributor($0))
                             }
-                        }
+                        )
                         .toolbar {
                             ToolbarItem(placement: .principal) {
                                 Picker(
@@ -112,6 +98,36 @@ public struct AboutScreen: View {
 }
 
 private extension AboutScreen {
+    func content(
+        selectedType: SelectedType,
+        staffs: [Staff],
+        contributors: [Contributor],
+        tapStaffAction: @escaping (Staff) -> Void,
+        tapContributorAction: @escaping (Contributor) -> Void
+    ) -> some View {
+        ScrollView(.vertical) {
+            switch selectedType {
+            case .staff:
+                LazyVStack(alignment: .leading, spacing: 24) {
+                    ForEach(staffs) { staff in
+                        StaffCell(staff: staff, tapAction: tapStaffAction)
+                    }
+                }
+                .padding(.top, 20)
+            case .contributor:
+                LazyVGrid(
+                    columns: Array(repeating: .init(), count: 3),
+                    spacing: 40
+                ) {
+                    ForEach(contributors) { contributor in
+                        ContributorCell(contributor: contributor, tapAction: tapContributorAction)
+                    }
+                }
+                .listStyle(PlainListStyle())
+                .padding(.top, 20)
+            }
+        }
+    }
     func banner(tap: @escaping () -> Void) -> some View {
         VStack {
             Spacer()
