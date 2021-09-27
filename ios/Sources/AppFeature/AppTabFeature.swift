@@ -119,8 +119,11 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     aboutReducer.pullback(
         state: \.aboutState,
         action: /AppTabAction.about,
-        environment: { _ -> AboutEnvironment in
-            .init()
+        environment: { environment in
+            .init(
+                contributorRepository: environment.contributorRepository,
+                staffRepository: environment.staffRepository
+            )
         }
     ),
     .init { state, action, environment in

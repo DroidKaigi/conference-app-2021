@@ -77,6 +77,7 @@ var package = Package(
             dependencies: [
                 .target(name: "Component"),
                 .target(name: "Styleguide"),
+                .target(name: "Repository"),
                 .product(name: "Introspect", package: "Introspect"),
                 .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
