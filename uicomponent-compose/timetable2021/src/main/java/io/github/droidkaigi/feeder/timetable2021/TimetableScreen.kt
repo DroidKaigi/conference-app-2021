@@ -164,8 +164,6 @@ private fun TimetableList(
     }
 }
 
-data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewTimetableScreen() {

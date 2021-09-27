@@ -35,6 +35,8 @@ import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.fakeTimetableContents
 
+data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
+
 @Composable
 fun TimetableListItem(
     timetableItemState: TimetableItemState,
