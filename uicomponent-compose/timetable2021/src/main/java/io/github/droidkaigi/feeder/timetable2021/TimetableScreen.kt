@@ -34,8 +34,8 @@ import io.github.droidkaigi.feeder.core.use
 
 sealed class TimetableTab(val name: String, val routePath: String, val day: DroidKaigi2021Day) {
     object Day1 : TimetableTab("Day1", "day1", DroidKaigi2021Day.Day1)
-    object Day2 : TimetableTab("Day1", "day1", DroidKaigi2021Day.Day2)
-    object Day3 : TimetableTab("Day1", "day1", DroidKaigi2021Day.Day3)
+    object Day2 : TimetableTab("Day2", "day2", DroidKaigi2021Day.Day2)
+    object Day3 : TimetableTab("Day3", "day3", DroidKaigi2021Day.Day3)
 
     companion object {
         fun values() = listOf(Day1, Day2, Day3)
