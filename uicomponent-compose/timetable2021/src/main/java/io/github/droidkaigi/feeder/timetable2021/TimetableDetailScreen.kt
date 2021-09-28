@@ -2,7 +2,6 @@ package io.github.droidkaigi.feeder.timetable2021
 
 import android.content.Intent
 import android.net.Uri
-import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -57,6 +56,7 @@ import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
 import com.google.accompanist.insets.statusBarsPadding
 import io.github.droidkaigi.feeder.Lang
+import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
@@ -183,13 +183,13 @@ fun TimetableDetailScreen(
                 ) {
                     TimetableDetailSessionInfo(
                         modifier = Modifier.padding(horizontal = margin),
-                        title = item.title.currentLangTitle,
-                        dateTime = createSessionDate(
+                        state = TimetableDetailSessionInfoState(
+                            title = item.title,
                             startsAt = item.startsAt,
                             endsAt = item.endsAt,
+                            language = item.language,
+                            category = item.category,
                         ),
-                        language = createLangText(item.language),
-                        category = item.category,
                     )
 
                     if (item is TimetableItem.Session) {
@@ -269,17 +269,38 @@ private fun FavoriteIcon(
     }
 }
 
+private data class TimetableDetailSessionInfoState(
+    val title: MultiLangText,
+    val startsAt: Instant,
+    val endsAt: Instant,
+    val language: String,
+    val category: TimetableCategory,
+) {
+    val currentLangTitle: String = title.currentLangTitle
+
+    val dateTime: String = createSessionDate(
+        startsAt = startsAt,
+        endsAt = endsAt,
+    )
+
+    val currentLangLanguage: String = when (defaultLang()) {
+        Lang.JA -> when (language) {
+            "JAPANESE" -> "日本語"
+            "ENGLISH" -> "英語"
+            else -> "未定"
+        }
+        Lang.EN -> language
+    }
+}
+
 @Composable
 private fun TimetableDetailSessionInfo(
     modifier: Modifier = Modifier,
-    title: String,
-    dateTime: String,
-    language: String,
-    category: TimetableCategory,
+    state: TimetableDetailSessionInfoState,
 ) {
     Text(
         modifier = modifier,
-        text = title,
+        text = state.currentLangTitle,
         style = MaterialTheme.typography.h5,
     )
     Spacer(
@@ -287,7 +308,7 @@ private fun TimetableDetailSessionInfo(
     )
     Text(
         modifier = modifier,
-        text = dateTime,
+        text = state.dateTime,
         style = MaterialTheme.typography.body1,
     )
     Spacer(
@@ -326,7 +347,7 @@ private fun TimetableDetailSessionInfo(
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
-                    text = language,
+                    text = state.currentLangLanguage,
                     style = MaterialTheme.typography.body1,
                 )
             }
@@ -352,7 +373,7 @@ private fun TimetableDetailSessionInfo(
                 modifier = Modifier.wrapContentHeight(),
             ) {
                 Image(
-                    painter = painterResource(category.iconResId),
+                    painter = painterResource(state.category.iconResId),
                     contentDescription = "Category icon",
                     modifier = Modifier
                         .height(18.dp)
@@ -361,7 +382,7 @@ private fun TimetableDetailSessionInfo(
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
-                    text = category.title.currentLangTitle,
+                    text = state.category.title.currentLangTitle,
                     style = MaterialTheme.typography.body1,
                 )
             }
@@ -532,15 +553,6 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
-}
-
-private fun createLangText(language: String) = when (defaultLang()) {
-    Lang.JA -> when (language) {
-        "JAPANESE" -> "日本語"
-        "ENGLISH" -> "英語"
-        else -> "未定"
-    }
-    Lang.EN -> language
 }
 
 private val TimetableCategory.iconResId: Int
