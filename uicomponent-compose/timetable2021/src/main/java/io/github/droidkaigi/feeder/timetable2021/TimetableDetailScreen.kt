@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.timetable2021
 
 import android.content.Intent
 import android.net.Uri
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
@@ -351,7 +352,7 @@ private fun TimetableDetailSessionInfo(
                 modifier = Modifier.wrapContentHeight(),
             ) {
                 Image(
-                    painter = painterResource(createCategoryIcon(category)),
+                    painter = painterResource(category.iconResId),
                     contentDescription = "Category icon",
                     modifier = Modifier
                         .height(18.dp)
@@ -542,24 +543,23 @@ private fun createLangText(language: String) = when (defaultLang()) {
     Lang.EN -> language
 }
 
-private fun createCategoryIcon(
-    category: TimetableCategory,
-): Int = when (category.id) {
-    89439 -> R.drawable.kotlin
-    90050 -> R.drawable.security
-    89441 -> R.drawable.ui_ux
-    89442 -> R.drawable.architecture
-    89443 -> R.drawable.hardware
-    89444 -> R.drawable.platform
-    89445 -> R.drawable.testing
-    89446 -> R.drawable.process
-    89447 -> R.drawable.android_framework
-    89448 -> R.drawable.jetpack
-    89449 -> R.drawable.tools
-    89450 -> R.drawable.cross_platform
-    89451 -> R.drawable.other
-    else -> R.drawable.other
-}
+private val TimetableCategory.iconResId: Int
+    get() = when (id) {
+        89439 -> R.drawable.kotlin
+        90050 -> R.drawable.security
+        89441 -> R.drawable.ui_ux
+        89442 -> R.drawable.architecture
+        89443 -> R.drawable.hardware
+        89444 -> R.drawable.platform
+        89445 -> R.drawable.testing
+        89446 -> R.drawable.process
+        89447 -> R.drawable.android_framework
+        89448 -> R.drawable.jetpack
+        89449 -> R.drawable.tools
+        89450 -> R.drawable.cross_platform
+        89451 -> R.drawable.other
+        else -> R.drawable.other
+    }
 
 // region default preview
 
