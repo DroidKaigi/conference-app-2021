@@ -8,6 +8,7 @@ public protocol UIApplicationClientProtocol {
 public struct UIApplicationClient: UIApplicationClientProtocol {
 
     public init() {}
+
     public func openSettings() -> AnyPublisher<Bool, Never> {
         return open(urlString: UIApplication.openSettingsURLString, options: [:])
     }

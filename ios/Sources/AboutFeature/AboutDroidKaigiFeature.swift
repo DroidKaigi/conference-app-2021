@@ -12,7 +12,7 @@ public struct AboutDroidKaigiState: Equatable {
 
 public enum AboutDroidKaigiAction {
     case tap(AboutDroidKaigiModel)
-    case resultNavigation(Result<Bool, Never>)
+    case openApplicationSettings(Result<Bool, Never>)
 }
 
 public struct AboutDroidKaigiEnvironment {
@@ -34,15 +34,13 @@ public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaig
         case .opensourceLicense:
             return environment.applicationClient
                 .openSettings()
-                .catchToEffect()
-                .map(AboutDroidKaigiAction.resultNavigation)
-            
+                .catchToEffect(AboutDroidKaigiAction.openApplicationSettings)
         case .privacyPolicy:
             // TODO: add navigation
             break
         }
         return .none
-    case .resultNavigation(_):
+    case .openApplicationSettings(_):
         return .none
     }
 }
