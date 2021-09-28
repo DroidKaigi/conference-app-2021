@@ -1,11 +1,11 @@
-import org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
+import org.jetbrains.kotlin.gradle.plugin.mpp.apple.XCFramework
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
+import java.io.File
 
 plugins {
     kotlin("multiplatform")
     id("com.android.library")
-    id("com.chromaticnoise.multiplatform-swiftpackage") version "2.0.3"
 }
 
 apply(rootProject.file("gradle/android.gradle"))
@@ -13,6 +13,7 @@ apply(rootProject.file("gradle/android.gradle"))
 kotlin {
     android()
 
+    val xcf = XCFramework("DroidKaigiMPP")
     val iosTargets = listOf(
         iosArm64(),
         iosX64("ios")
@@ -25,6 +26,7 @@ kotlin {
                 export(projects.data.repository)
                 export(Dep.datetime)
                 linkerOpts.add("-lsqlite3")
+                xcf.add(this)
             }
         }
     }
@@ -66,17 +68,12 @@ kotlin {
 // Workaround for issues where types defined in iOS native code cannot be referenced in Android Studio
 tasks.getByName("preBuild").dependsOn(tasks.getByName("compileKotlinIos"))
 
-multiplatformSwiftPackage {
-    swiftToolsVersion("5.3")
-    targetPlatforms {
-        iOS { v("14") }
-    }
-    outputDirectory(File(projectDir, "../ios/build/xcframeworks"))
-    buildConfiguration {
-        if (System.getenv("CONFIGURATION") != "Release") {
-            debug()
-        } else {
-            release()
-        }
+task("createXCFramework") {
+    this.dependsOn(tasks.getByName("assembleDroidKaigiMPPXCFramework"))
+    this.doLast {
+        val buildDir = tasks.getByName("assembleDroidKaigiMPPXCFramework").project.buildDir.absolutePath
+        val outputFile = File("$buildDir/XCFrameworks/debug/DroidKaigiMPP.xcframework")
+        val targetFile = File("$buildDir/../../ios/build/xcframeworks/DroidKaigiMPP.xcframework")
+        outputFile.copyRecursively(target = targetFile)
     }
 }
