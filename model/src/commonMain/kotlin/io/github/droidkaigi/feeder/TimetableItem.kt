@@ -2,6 +2,8 @@ package io.github.droidkaigi.feeder
 
 import kotlin.time.ExperimentalTime
 import kotlinx.datetime.Instant
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalTime::class)
 sealed class TimetableItem(
@@ -62,4 +64,9 @@ sealed class TimetableItem(
         asset = asset,
         levels = levels,
     )
+
+    val startsTimeString: String by lazy {
+        val localDate = startsAt.toLocalDateTime(TimeZone.currentSystemDefault())
+        "${localDate.hour}".padStart(2, '0') + ":" + "${localDate.minute}".padStart(2, '0')
+    }
 }
