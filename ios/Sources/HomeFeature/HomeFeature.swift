@@ -5,6 +5,7 @@ import Repository
 
 public struct HomeState: Equatable {
     public var feedContents: [FeedContent]
+    public var language: Lang
 
     var topic: FeedContent? {
         feedContents.first
@@ -14,8 +15,9 @@ public struct HomeState: Equatable {
         Array(feedContents.dropFirst())
     }
 
-    public init(feedContents: [FeedContent]) {
+    public init(feedContents: [FeedContent], language: Lang) {
         self.feedContents = feedContents
+        self.language = language
     }
 }
 

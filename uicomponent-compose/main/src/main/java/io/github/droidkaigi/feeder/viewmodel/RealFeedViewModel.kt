@@ -28,7 +28,7 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
-    private val repository: FeedRepository,
+    private val feedRepository: FeedRepository,
 ) : ViewModel(), FeedViewModel {
 
     private val effectChannel = Channel<FeedViewModel.Effect>(Channel.UNLIMITED)
@@ -41,7 +41,7 @@ class RealFeedViewModel @Inject constructor(
         }
     }
 
-    private val allFeedContents: StateFlow<LoadState<FeedContents>> = repository.feedContents()
+    private val allFeedContents: StateFlow<LoadState<FeedContents>> = feedRepository.feedContents()
         .toLoadState()
         .onEach { loadState ->
             if (loadState.isError()) {
@@ -90,9 +90,9 @@ class RealFeedViewModel @Inject constructor(
                         .favorites
                         .contains(event.feedItem.id)
                     if (favorite) {
-                        repository.removeFavorite(event.feedItem.id)
+                        feedRepository.removeFavorite(event.feedItem.id)
                     } else {
-                        repository.addFavorite(event.feedItem.id)
+                        feedRepository.addFavorite(event.feedItem.id)
                     }
                 }
                 is FeedViewModel.Event.ReloadContent -> {
@@ -104,7 +104,7 @@ class RealFeedViewModel @Inject constructor(
 
     private suspend fun refreshRepository() {
         try {
-            repository.refresh()
+            feedRepository.refresh()
         } catch (e: AppError) {
             effectChannel.send(FeedViewModel.Effect.ErrorMessage(e))
         }

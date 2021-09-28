@@ -1,7 +1,9 @@
+import Combine
 import ComposableArchitecture
 import HomeFeature
 import MediaFeature
 import FavoritesFeature
+import SettingFeature
 import AboutFeature
 import SwiftUI
 import Model
@@ -22,6 +24,7 @@ public struct AppTabState: Equatable {
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
+    public var language: Lang
 
     public enum AppTabSheet: Equatable {
         case url(URL)
@@ -34,11 +37,21 @@ public struct AppTabState: Equatable {
     ) {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
-        self.homeState = HomeState(feedContents: feedContents)
-        self.mediaState = MediaState(feedContents: feedContents)
-        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
+        self.language = .system
+        self.homeState = HomeState(feedContents: feedContents, language: language)
+        self.mediaState = MediaState(feedContents: feedContents, language: language)
+        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited), language: language)
         self.aboutState = AboutState()
         self.timetableState = TimetableState()
+    }
+    
+    public var settingState: SettingState {
+        get {
+            SettingState(language: language)
+        }
+        set {
+            language = newValue.language
+        }
     }
 }
 
@@ -54,6 +67,9 @@ public enum AppTabAction {
     case media(MediaAction)
     case about(AboutAction)
     case showSetting
+    case changeLanguage(Lang)
+    case onChangeLanguage(Result<Lang, KotlinError>)
+    case setting(SettingAction)
     case none
 
     init(action: HomeAction) {
@@ -68,6 +84,15 @@ public enum AppTabAction {
             self = .none
         case .showSetting:
             self = .showSetting
+        }
+    }
+
+    init(action: SettingAction) {
+        switch action {
+        case let .changeLanguage(language):
+            self = .changeLanguage(language)
+        default:
+            self = .none
         }
     }
 
@@ -112,6 +137,13 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     favoritesReducer.pullback(
         state: \.favoritesState,
         action: /AppTabAction.init(action:),
+        environment: { _ in
+            .init()
+        }
+    ),
+    settingReducer.pullback(
+        state: \.settingState,
+        action: /AppTabAction.setting,
         environment: { _ in
             .init()
         }
@@ -181,6 +213,21 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .about:
             return .none
         case .timetable:
+            return .none
+        case .setting:
+            return .none
+        case let .changeLanguage(language):
+            state.language = language
+            return environment
+                .languageRepository
+                .changeLanguage(language: language)
+                .map { language }
+                .receive(on: environment.mainQueue)
+                .catchToEffect()
+                .map(AppTabAction.onChangeLanguage)
+        case let .onChangeLanguage(.success(language)):
+            return .none
+        case let .onChangeLanguage(.failure(error)):
             return .none
         }
     }

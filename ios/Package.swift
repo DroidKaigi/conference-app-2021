@@ -161,6 +161,8 @@ var package = Package(
             name: "SettingFeature",
             dependencies: [
                 .target(name: "Component"),
+                .target(name: "Model"),
+                .target(name: "Repository"),
                 .target(name: "Styleguide")
             ]
         ),

@@ -115,7 +115,7 @@ public struct MediaListView_Previews: PreviewProvider {
                             .videoMock(),
                             .podcastMock(),
                             .podcastMock()
-                        ]
+                        ], language: .ja
                     ),
                     reducer: .empty,
                     environment: {}

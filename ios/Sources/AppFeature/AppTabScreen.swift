@@ -58,13 +58,15 @@ public struct AppTabScreen: View {
                     get: \.isShowingSheet,
                     send: .hideSheet
                 ), content: {
-                    IfLetStore(store.scope(state: \.isSheetPresented)) { store in
-                        WithViewStore(store) { viewStore in
+                    IfLetStore(store.scope(state: \.isSheetPresented)) { sheetStore in
+                        WithViewStore(sheetStore) { viewStore in
                             switch viewStore.state {
                             case .url(let url):
                                 WebView(url: url)
                             case .setting:
-                                SettingScreen(isDarkModeOn: true, isLanguageOn: true)
+                                SettingScreen(store: store.scope(state: \.settingState, action: { (action: SettingAction) in
+                                    AppTabAction.init(action: action)
+                                }))
                             }
                         }
                     }

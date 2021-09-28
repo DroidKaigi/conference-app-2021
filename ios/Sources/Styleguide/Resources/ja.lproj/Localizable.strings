@@ -39,7 +39,10 @@
 // MARK: Setting
 "SettingScreen.Title" = "Setting";
 "SettingScreen.ListItem.DarkMode" = "ダークモード";
-"SettingScreen.ListItem.Language" = "言語設定";
+"SettingScreen.ListItem.LanguageTitle" = "言語設定";
+"SettingScreen.ListItem.LanguageType.System" = "端末設定に従う";
+"SettingScreen.ListItem.LanguageType.Japanese" = "日本語";
+"SettingScreen.ListItem.LanguageType.English" = "English";
 
 // MARK: Component
 "Component.Tag.DroidKaigiFm" = "DroidKaigi.fm";

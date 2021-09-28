@@ -1,3 +1,5 @@
+import ComposableArchitecture
+import Dispatch
 import Player
 import Repository
 
@@ -8,6 +10,8 @@ public struct AppEnvironment {
     public let staffRepository: StaffRepositoryProtocol
     public let themeRepository: ThemeRepositoryProtocol
     public let timetableRepository: TimetableRepositoryProtocol
+    public let languageRepository: LanguageRepositoryProtocol
+    public let mainQueue: AnySchedulerOf<DispatchQueue>
     public let player: PlayerProtocol
 
     public init(
@@ -17,6 +21,7 @@ public struct AppEnvironment {
         staffRepository: StaffRepositoryProtocol,
         themeRepository: ThemeRepositoryProtocol,
         timetableRepository: TimetableRepositoryProtocol,
+        languageRepository: LanguageRepositoryProtocol,
         player: PlayerProtocol
     ) {
         self.contributorRepository = contributorRepository
@@ -25,6 +30,8 @@ public struct AppEnvironment {
         self.staffRepository = staffRepository
         self.themeRepository = themeRepository
         self.timetableRepository = timetableRepository
+        self.languageRepository = languageRepository
+        self.mainQueue = .main
         self.player = player
     }
 }
@@ -41,6 +48,7 @@ public extension AppEnvironment {
             staffRepository: StaffRepository(container: container),
             themeRepository: ThemeRepository(container: container),
             timetableRepository: TimetableRepository(container: container),
+            languageRepository: LanguageRepository(container: container),
             player: Player()
         )
     }()
@@ -53,6 +61,7 @@ public extension AppEnvironment {
             staffRepository: StaffRepositoryMock(),
             themeRepository: ThemeRepositoryMock(),
             timetableRepository: TimetableRepositoryMock(),
+            languageRepository: LanguageRepositoryMock(),
             player: PlayerMock()
         )
     }()

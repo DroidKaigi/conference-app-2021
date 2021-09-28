@@ -6,10 +6,15 @@ import SwiftUI
 
 public struct SearchResultScreen: View {
 
-    private let store: Store<[FeedContent], ViewAction>
+    private let store: Store<ViewState, ViewAction>
 
-    init(store: Store<[FeedContent], ViewAction>) {
+    init(store: Store<ViewState, ViewAction>) {
         self.store = store
+    }
+
+    struct ViewState: Equatable {
+        var contents: [FeedContent]
+        var language: Lang
     }
 
     enum ViewAction: Equatable {
@@ -22,12 +27,13 @@ public struct SearchResultScreen: View {
         WithViewStore(store) { viewStore in
             ZStack {
                 AssetColor.Background.primary.color
-                if viewStore.state.isEmpty {
+                if viewStore.contents.isEmpty {
                     empty
                 } else {
                     ScrollView {
                         FeedContentListView(
-                            feedContents: viewStore.state,
+                            feedContents: viewStore.contents,
+                            language: viewStore.language,
                             tapContent: { viewStore.send(.tap($0)) },
                             tapFavorite: { viewStore.send(.tapFavorite(isFavorited: $0, id: $1)) },
                             tapPlay: { viewStore.send(.tapPlay($0)) }
@@ -72,7 +78,7 @@ public struct SearchResultScreen_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             SearchResultScreen(
                 store: .init(
-                    initialState: [],
+                    initialState: .init(contents: [], language: .ja),
                     reducer: .empty,
                     environment: ()
                 )
@@ -82,14 +88,14 @@ public struct SearchResultScreen_Previews: PreviewProvider {
 
             SearchResultScreen(
                 store: .init(
-                    initialState: [
+                    initialState: .init(contents: [
                         .blogMock(),
                         .blogMock(),
                         .blogMock(),
                         .blogMock(),
                         .blogMock(),
                         .blogMock()
-                    ],
+                    ], language: .ja),
                     reducer: .empty,
                     environment: ()
                 )

@@ -24,6 +24,7 @@ public struct FavoritesScreen: View {
                         ScrollView {
                             FeedContentListView(
                                 feedContents: viewStore.feedContents,
+                                language: viewStore.language,
                                 tapContent: { content in
                                     viewStore.send(.tap(content))
                                 },
@@ -59,7 +60,8 @@ public struct FavoritesScreen: View {
             FavoritesScreen(
                 store: .init(
                     initialState: .init(
-                        feedContents: []
+                        feedContents: [],
+                        language: .ja
                     ),
                     reducer: .empty,
                     environment: {}
@@ -78,7 +80,8 @@ public struct FavoritesScreen: View {
                             .blogMock(),
                             .blogMock(),
                             .blogMock()
-                        ]
+                        ],
+                        language: .ja
                     ),
                     reducer: .empty,
                     environment: {}

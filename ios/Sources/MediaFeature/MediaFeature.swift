@@ -19,16 +19,19 @@ public struct MediaState: Equatable {
             }
     }
     var searchText: String
+    public var language: Lang
     var isSearchTextEditing: Bool
     var moreActiveType: MediaType?
 
     public init(
         feedContents: [FeedContent],
         searchText: String = "",
+        language: Lang,
         isSearchTextEditing: Bool = false,
         moreActiveType: MediaType? = nil
     ) {
         self.feedContents = feedContents
+        self.language = language
         self.searchText = searchText
         self.isSearchTextEditing = isSearchTextEditing
         self.moreActiveType = moreActiveType

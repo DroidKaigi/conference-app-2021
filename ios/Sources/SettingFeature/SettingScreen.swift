@@ -1,62 +1,33 @@
+import ComposableArchitecture
 import Component
 import Introspect
-import Styleguide
+import Repository
+import Model
 import SwiftUI
-
-public enum SettingModel: Hashable {
-    case darkMode(isOn: Bool)
-    case language(isOn: Bool)
-
-    var title: String {
-        switch self {
-        case .darkMode:
-            return L10n.SettingScreen.ListItem.darkMode
-        case .language:
-            return L10n.SettingScreen.ListItem.language
-        }
-    }
-
-    var isOn: Bool {
-        switch self {
-        case let .darkMode(isOn), let .language(isOn):
-            return isOn
-        }
-    }
-
-    mutating func update(isOn: Bool) {
-        switch self {
-        case .darkMode:
-            self = .darkMode(isOn: isOn)
-        case .language:
-            self = .language(isOn: isOn)
-        }
-    }
-}
+import Styleguide
 
 public struct SettingScreen: View {
-
-    @State private var items: [SettingModel]
-
     @Environment(\.presentationMode) var presentationMode
+    @State private var showingActionSheet = false
 
-    public init(isDarkModeOn: Bool, isLanguageOn: Bool) {
-        let darkModeModel = SettingModel.darkMode(isOn: isDarkModeOn)
-        let languageModel = SettingModel.language(isOn: isLanguageOn)
-        _items = State(initialValue: [darkModeModel, languageModel])
+    private let store: Store<SettingState, SettingAction>
+
+    public init(store: Store<SettingState, SettingAction>) {
+        self.store = store
     }
 
     public var body: some View {
-        NavigationView {
-            InlineTitleNavigationBarScrollView {
-                LazyVStack(spacing: 0) {
-                    ForEach(items.indices) { index in
+        WithViewStore(store) { viewStore in
+            NavigationView {
+                InlineTitleNavigationBarScrollView {
+                    LazyVStack(spacing: 0) {
                         ZStack(alignment: .bottom) {
                             SettingToggleItem(
-                                title: items[index].title,
+                                title: L10n.SettingScreen.ListItem.darkMode,
                                 isOn: Binding(get: {
-                                    items[index].isOn
+                                    true
                                 }, set: { isOn in
-                                    items[index].update(isOn: isOn)
+                                    print(isOn)
                                 })
                             )
                             .frame(minHeight: 44)
@@ -64,21 +35,53 @@ public struct SettingScreen: View {
                         }
                         .padding(.horizontal, 16)
                         .background(AssetColor.Background.contents.color)
+
+                        Button {
+                            showingActionSheet = true
+                        } label: {
+                            ZStack(alignment: .bottom) {
+                                HStack {
+                                    Text(L10n.SettingScreen.ListItem.languageTitle)
+                                    Spacer()
+                                    Text(viewStore.languageType).font(.caption)
+                                }
+                                .frame(minHeight: 44)
+                                Separator()
+                            }
+                            .padding(.horizontal, 16)
+                            .background(AssetColor.Background.contents.color)
+                        }
+                        .actionSheet(isPresented: $showingActionSheet) {
+                            ActionSheet(title: Text(L10n.SettingScreen.ListItem.languageTitle), buttons:
+                                            [
+                                                .default(Text(L10n.SettingScreen.ListItem.LanguageType.system)) {
+                                                    viewStore.send(.changeLanguage(.system))
+                                                },
+                                                .default(Text(L10n.SettingScreen.ListItem.LanguageType.japanese)) {
+                                                    viewStore.send(.changeLanguage(.ja))
+                                                },
+                                                .default(Text(L10n.SettingScreen.ListItem.LanguageType.english)) {
+                                                    viewStore.send(.changeLanguage(.en))
+                                                },
+                                                .cancel()
+                                            ]
+                            )
+                        }
                     }
+                    .padding(.top, 24)
                 }
-                .padding(.top, 24)
+                .background(AssetColor.Background.primary.color.ignoresSafeArea())
+                .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        presentationMode.wrappedValue.dismiss()
+                    }, label: {
+                        AssetImage.iconClose.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    })
+                )
             }
-            .background(AssetColor.Background.primary.color.ignoresSafeArea())
-            .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
-            .navigationBarItems(
-                trailing: Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                }, label: {
-                    AssetImage.iconClose.image
-                        .renderingMode(.template)
-                        .foregroundColor(AssetColor.Base.primary.color)
-                })
-            )
         }
     }
 }
@@ -86,13 +89,11 @@ public struct SettingScreen: View {
 public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
-            isDarkModeOn: true,
-            isLanguageOn: false
-        )
-        .environment(\.colorScheme, .light)
-        SettingScreen(
-            isDarkModeOn: true,
-            isLanguageOn: false
+            store: .init(
+                initialState: .init(language: .system),
+                reducer: .empty,
+                environment: {}
+            )
         )
         .environment(\.colorScheme, .dark)
     }

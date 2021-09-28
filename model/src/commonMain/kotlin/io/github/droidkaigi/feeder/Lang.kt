@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder
 
 enum class Lang {
+    SYSTEM,
     JA,
     EN;
 }
