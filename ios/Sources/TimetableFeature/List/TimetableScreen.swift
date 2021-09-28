@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import Styleguide
 import SwiftUI
@@ -8,7 +9,7 @@ public struct TimetableScreen: View {
     public init(store: Store<TimetableState, TimetableAction>) {
         self.store = store
     }
-    
+
     internal enum ViewAction {
         case progressViewAppeared
         case reload
@@ -41,16 +42,9 @@ public struct TimetableScreen: View {
                 },
                 then: { store in
                     WithViewStore(store) { viewStore in
-                        VStack(spacing: 16) {
-                            Text("エラーが発生しました")
-
-                            Button(action: {
-                                viewStore.send(.reload)
-                            }, label: {
-                                Text("再度読み込み")
-                                    .foregroundColor(AssetColor.primary.color)
-                            })
-                        }
+                        ErrorView(tapReload: {
+                            viewStore.send(.reload)
+                        })
                     }
                 }
             )

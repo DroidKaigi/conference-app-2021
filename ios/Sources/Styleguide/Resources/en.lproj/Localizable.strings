@@ -46,3 +46,5 @@
 "Component.Tag.Medium" = "Medium";
 "Component.Tag.Youtube" = "Youtube";
 "Component.Tag.Other" = "Other";
+"Component.ErrorView.Title" = "Error Occurred!";
+"Component.ErrorView.Reload" = "Reload";
