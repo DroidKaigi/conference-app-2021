@@ -96,7 +96,7 @@ abstract class UserDataStore {
 
     suspend fun changeLanguage(language: Lang) {
         flowSettings.putString(
-            KEY_THEME,
+            KEY_LANGUAGE,
             language.name
         )
     }

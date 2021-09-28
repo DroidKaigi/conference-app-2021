@@ -108,7 +108,6 @@ private fun ThemeSetting(
     }
 }
 
-
 @Composable
 private fun LanguageSetting(
     context: Context,
