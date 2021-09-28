@@ -56,7 +56,12 @@ public struct MediaScreen: View {
                 IfLetStore(
                     store.scope(
                         state: { state in
-                            return SearchResultScreen.ViewState(contents: state.searchedFeedContents ?? [], language: state.language)
+                            state.searchedFeedContents.map {
+                                SearchResultScreen.ViewState(
+                                    contents: $0,
+                                    language: state.language
+                                )
+                            }
                         },
                         action: MediaAction.init(action:)
                     ),

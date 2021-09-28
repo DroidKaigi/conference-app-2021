@@ -12,6 +12,8 @@ public enum Lang: Equatable {
             return .ja
         case .en:
             return .en
+        case .system:
+            return .system
         default:
             return .system
         }

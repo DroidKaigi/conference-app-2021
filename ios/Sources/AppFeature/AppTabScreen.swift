@@ -65,7 +65,7 @@ public struct AppTabScreen: View {
                                 WebView(url: url)
                             case .setting:
                                 SettingScreen(store: store.scope(state: \.settingState, action: { (action: SettingAction) in
-                                    AppTabAction.init(action: action)
+                                    AppTabAction(action: action)
                                 }))
                             }
                         }

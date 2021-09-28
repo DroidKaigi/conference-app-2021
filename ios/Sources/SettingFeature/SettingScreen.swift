@@ -28,6 +28,7 @@ public struct SettingScreen: View {
                                     true
                                 }, set: { isOn in
                                     print(isOn)
+                                    // TODO: add darkMode setting implementation
                                 })
                             )
                             .frame(minHeight: 44)
@@ -41,9 +42,9 @@ public struct SettingScreen: View {
                         } label: {
                             ZStack(alignment: .bottom) {
                                 HStack {
-                                    Text(L10n.SettingScreen.ListItem.languageTitle)
+                                    Text(L10n.SettingScreen.ListItem.language)
                                     Spacer()
-                                    Text(viewStore.languageType).font(.caption)
+                                    Text(viewStore.language.type).font(.caption)
                                 }
                                 .frame(minHeight: 44)
                                 Separator()
@@ -52,19 +53,20 @@ public struct SettingScreen: View {
                             .background(AssetColor.Background.contents.color)
                         }
                         .actionSheet(isPresented: $showingActionSheet) {
-                            ActionSheet(title: Text(L10n.SettingScreen.ListItem.languageTitle), buttons:
-                                            [
-                                                .default(Text(L10n.SettingScreen.ListItem.LanguageType.system)) {
-                                                    viewStore.send(.changeLanguage(.system))
-                                                },
-                                                .default(Text(L10n.SettingScreen.ListItem.LanguageType.japanese)) {
-                                                    viewStore.send(.changeLanguage(.ja))
-                                                },
-                                                .default(Text(L10n.SettingScreen.ListItem.LanguageType.english)) {
-                                                    viewStore.send(.changeLanguage(.en))
-                                                },
-                                                .cancel()
-                                            ]
+                            ActionSheet(
+                                title: Text(L10n.SettingScreen.ListItem.language),
+                                buttons: [
+                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.system)) {
+                                        viewStore.send(.changeLanguage(.system))
+                                    },
+                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.japanese)) {
+                                        viewStore.send(.changeLanguage(.ja))
+                                    },
+                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.english)) {
+                                        viewStore.send(.changeLanguage(.en))
+                                    },
+                                    .cancel()
+                                ]
                             )
                         }
                     }
@@ -96,5 +98,15 @@ public struct SettingScreen_Previews: PreviewProvider {
             )
         )
         .environment(\.colorScheme, .dark)
+    }
+}
+
+private extension Lang {
+    var type: String {
+        switch self {
+        case .system: return L10n.SettingScreen.ListItem.LanguageType.system
+        case .ja: return L10n.SettingScreen.ListItem.LanguageType.japanese
+        case .en: return L10n.SettingScreen.ListItem.LanguageType.english
+        }
     }
 }

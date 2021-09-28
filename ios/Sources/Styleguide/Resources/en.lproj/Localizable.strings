@@ -39,7 +39,7 @@
 // MARK: Setting
 "SettingScreen.Title" = "Setting";
 "SettingScreen.ListItem.DarkMode" = "Dark Mode";
-"SettingScreen.ListItem.LanguageTitle" = "Language";
+"SettingScreen.ListItem.Language" = "Language";
 "SettingScreen.ListItem.LanguageType.System" = "according to system setting";
 "SettingScreen.ListItem.LanguageType.Japanese" = "日本語";
 "SettingScreen.ListItem.LanguageType.English" = "English";
