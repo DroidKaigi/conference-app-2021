@@ -42,9 +42,9 @@ public struct AppTabState: Equatable {
         self.mediaState = MediaState(feedContents: feedContents, language: language)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited), language: language)
         self.aboutState = AboutState()
-        self.timetableState = TimetableState()
+        self.timetableState = TimetableState(language: language)
     }
-    
+
     public var settingState: SettingState {
         get {
             SettingState(language: language)

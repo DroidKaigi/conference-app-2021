@@ -8,6 +8,7 @@ public struct TimetableLoadedState: Equatable {
     public var selectedType: SelectedType
     // TODO: Replace with detail state
     public var detail: AnyTimetableItem?
+    public var language: Lang
 
     var isShowingDetail: Bool {
         detail != nil
@@ -28,11 +29,13 @@ public struct TimetableLoadedState: Equatable {
     public init(
         timetableItems: [AnyTimetableItem] = [],
         selectedType: SelectedType = .day1,
-        detail: AnyTimetableItem? = nil
+        detail: AnyTimetableItem? = nil,
+        language: Lang
     ) {
         self.timetableItems = timetableItems
         self.selectedType = selectedType
         self.detail = detail
+        self.language = language
     }
 }
 
@@ -151,6 +154,7 @@ private extension TimetableDetailScreen.ViewState {
     init?(state: TimetableLoadedState) {
         guard let detail = state.detail else { return nil }
         timetable = detail
+        language = state.language
     }
 }
 
@@ -248,7 +252,8 @@ public struct TimetableLoaded_Previews: PreviewProvider {
                 TimetableLoaded(
                     store: .init(
                         initialState: .init(
-                            timetableItems: items
+                            timetableItems: items,
+                            language: .en
                         ),
                         reducer: timetableLoadedReducer,
                         environment: TimetableLoadedEnvironment()

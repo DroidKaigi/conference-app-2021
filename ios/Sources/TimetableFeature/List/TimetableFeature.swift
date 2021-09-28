@@ -2,14 +2,22 @@ import ComposableArchitecture
 import Model
 import Repository
 
-public enum TimetableState: Equatable {
-    case needToInitialize
-    case initialized(TimetableLoadedState)
-    case errorOccurred
+public struct TimetableState: Equatable {
+    public var type: TimetableStateType = .needToInitialize
+    public var loadedState: TimetableLoadedState
+    public var language: Lang
 
-    public init() {
-        self = .needToInitialize
+    public init(language: Lang) {
+        self.type = .needToInitialize
+        self.loadedState = TimetableLoadedState(language: language)
+        self.language = language
     }
+}
+
+public enum TimetableStateType {
+    case needToInitialize
+    case initialized
+    case errorOccurred
 }
 
 public enum TimetableAction {
@@ -30,7 +38,7 @@ public struct TimetableEnvironment {
 
 public let timetableReducer = Reducer<TimetableState, TimetableAction, TimetableEnvironment>.combine(
     timetableLoadedReducer.pullback(
-        state: /TimetableState.initialized,
+        state: \.loadedState,
         action: /TimetableAction.loaded,
         environment: {_ in
             .init()
@@ -44,14 +52,14 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
                 .catchToEffect()
                 .map(TimetableAction.refreshResponse)
         case let .refreshResponse(.success(items)):
-            state = .initialized(
-                TimetableLoadedState(
-                    timetableItems: items.sorted { $0.startsAt < $1.startsAt }
-                )
+            state.type = .initialized
+            state.loadedState = TimetableLoadedState(
+                timetableItems: items.sorted { $0.startsAt < $1.startsAt },
+                language: state.language
             )
             return .none
         case let .refreshResponse(.failure(error)):
-            state = .errorOccurred
+            state.type = .errorOccurred
             return .none
         case .loaded:
             return .none

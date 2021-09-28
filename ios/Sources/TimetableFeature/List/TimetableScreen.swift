@@ -16,38 +16,24 @@ public struct TimetableScreen: View {
     }
 
     public var body: some View {
-        SwitchStore(store) {
-            CaseLet(
-                state: /TimetableState.needToInitialize,
-                action: TimetableAction.init(action:)
-            ) { store in
-                WithViewStore(store) { viewStore in
+        WithViewStore(store) { viewStore in
+            VStack(alignment: .center, spacing: 0) {
+                switch viewStore.type {
+                case .needToInitialize:
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                         .background(AssetColor.Background.primary.color.ignoresSafeArea())
-                        .onAppear { viewStore.send(.progressViewAppeared) }
+                        .onAppear { viewStore.send(.refresh) }
+                case .initialized:
+                    TimetableLoaded(store: store.scope(state: \.loadedState, action: { (action: TimetableLoadedAction) in
+                        TimetableAction.loaded(action)
+                    }))
+                case .errorOccurred:
+                    ErrorView(tapReload: {
+                        viewStore.send(.refresh)
+                    })
                 }
             }
-            CaseLet(
-                state: /TimetableState.initialized,
-                action: TimetableAction.loaded,
-                then: { store in
-                    TimetableLoaded(store: store)
-                }
-            )
-            CaseLet(
-                state: /TimetableState.errorOccurred,
-                action: { (action: TimetableScreen.ViewAction) in
-                    TimetableAction(action: action)
-                },
-                then: { store in
-                    WithViewStore(store) { viewStore in
-                        ErrorView(tapReload: {
-                            viewStore.send(.reload)
-                        })
-                    }
-                }
-            )
         }
     }
 }
@@ -68,7 +54,7 @@ public struct TimetableScreen_Previews: PreviewProvider {
     public static var previews: some View {
         TimetableScreen(
             store: Store<TimetableState, TimetableAction>(
-                initialState: .initialized(.init()),
+                initialState: .init(language: .en),
                 reducer: timetableReducer,
                 environment: TimetableEnvironment(
                     timetableRepository: TimetableRepositoryMock()
