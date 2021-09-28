@@ -5,11 +5,14 @@ import SwiftUI
 
 public struct TimetableContentState: Equatable {
     public var items: [AnyTimetableItem]
+    public var language: Lang
 
     public init(
-        items: [AnyTimetableItem]
+        items: [AnyTimetableItem],
+        language: Lang
     ) {
         self.items = items
+        self.language = language
     }
 }
 
@@ -51,7 +54,7 @@ public struct TimetableContent: View {
                             Divider()
                                 .frame(width: 2)
                                 .background(AssetColor.Separate.contents.color)
-                            TimetableCard(item: item)
+                            TimetableCard(item: item, language: viewStore.language)
                                 .padding(.bottom, 16)
                                 .onTapGesture {
                                     viewStore.send(.tap(item))
@@ -82,7 +85,7 @@ public struct TimetableContent_Previews: PreviewProvider {
                     .sessionMock(),
                     .sessionMock(),
                     .sessionMock(),
-                ]),
+                ], language: .ja),
                 reducer: .empty,
                 environment: TimetableContentEnvironment()
             )

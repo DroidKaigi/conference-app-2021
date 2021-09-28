@@ -107,7 +107,7 @@ public struct TimetableLoaded: View {
                         TimetableContent(
                             store: store.scope(
                                 state: { state in
-                                    return .init(items: state.selectedTypeItems)
+                                    return .init(items: state.selectedTypeItems, language: state.language)
                                 },
                                 action: TimetableLoadedAction.content
                             )
