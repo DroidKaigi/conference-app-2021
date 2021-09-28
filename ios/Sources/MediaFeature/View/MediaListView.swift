@@ -38,7 +38,7 @@ struct MediaListView: View {
                 MediaSectionView(
                     type: .blog,
                     store: store.scope(
-                        state: \.blogs,
+                        state: { .init(contents: $0.blogs, language: $0.language) },
                         action: { .init(action: $0, for: .blog) }
                     )
                 )
@@ -48,7 +48,7 @@ struct MediaListView: View {
                 MediaSectionView(
                     type: .video,
                     store: store.scope(
-                        state: \.videos,
+                        state: { .init(contents: $0.videos, language: $0.language) },
                         action: { .init(action: $0, for: .video) }
                     )
                 )
@@ -58,7 +58,7 @@ struct MediaListView: View {
                 MediaSectionView(
                     type: .podcast,
                     store: store.scope(
-                        state: \.podcasts,
+                        state: { .init(contents: $0.podcasts, language: $0.language) },
                         action: { .init(action: $0, for: .podcast) }
                     )
                 )
