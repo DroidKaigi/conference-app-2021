@@ -112,6 +112,8 @@ private extension MediaAction {
             self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        case .tapPlay(let content):
+            self = .tapPlay(content)
         }
     }
 
@@ -121,6 +123,8 @@ private extension MediaAction {
             self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        case .tapPlay(let content):
+            self = .tapPlay(content)
         }
     }
 }
@@ -173,24 +177,27 @@ public struct MediaScreen_Previews: PreviewProvider {
                     store: .init(
                         initialState: .init(
                             feedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .videoMock(),
-                                .videoMock(),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .videoMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .videoMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
                                 .videoMock(),
                                 .podcastMock(),
                                 .podcastMock(),
                                 .podcastMock()
                             ],
-                            searchedFeedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock()
-                            ],
+                            searchText: "Search",
                             isSearchTextEditing: true
                         ),
                         reducer: .empty,

@@ -28,4 +28,13 @@ public enum Media: Hashable, Equatable, CaseIterable {
             return .other
         }
     }
+
+    public var isPodcast: Bool {
+        switch self {
+        case .droidKaigiFm:
+            return true
+        case .medium, .youtube, .other:
+            return false
+        }
+    }
 }

@@ -14,7 +14,7 @@ public struct TimetableDetailScreen: View {
     let store: Store<ViewState, ViewAction>
 
     struct ViewState: Equatable {
-        var timetable: TimetableItem
+        var timetable: AnyTimetableItem
     }
 
     enum ViewAction {}
@@ -77,7 +77,7 @@ private extension TimetableDetailScreen {
         .padding(.bottom, 24)
     }
 
-    func descriptions(timetable: TimetableItem) -> some View {
+    func descriptions(timetable: AnyTimetableItem) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(DesciptionType.allCases, id: \.self) { type in
                 HStack(spacing: 8) {
@@ -99,28 +99,30 @@ private extension TimetableDetailScreen {
         .padding(.bottom, 32)
     }
 
-    func body(timetable: TimetableItem) -> some View {
+    func body(timetable: AnyTimetableItem) -> some View {
         VStack(alignment: .leading, spacing: 32) {
             VStack(alignment: .leading, spacing: 8) {
                 Text(L10n.TimetableScreen.Detail.intendedAudience)
                     .font(.body)
                     .bold()
                     .foregroundColor(AssetColor.Base.primary.color)
-                Text("ViewModel、LiveDataぐらいはわかるが、StateFlow辺りから少し混乱している方") // TODO: FIXME
+                Text(timetable.targetAudience)
                     .font(.body)
                     .foregroundColor(AssetColor.Base.secondary.color)
                     .lineLimit(nil)
             }
 
-            VStack(alignment: .leading, spacing: 8) {
-                Text(L10n.TimetableScreen.Detail.description)
-                    .font(.body)
-                    .bold()
-                    .foregroundColor(AssetColor.Base.primary.color)
-                Text("みなさんは、AndroidのUIの関連の状態管理や非同期処理について、CoroutiensのrepeatOnLifecycleまでそのメリット、デメリットまで含めて追えていますか？以下のQiitaではAndroidのライフサイクルの基礎からKotlin Coroutinesでのsuspend functionによる処理までは紹介しました。https://qiita.com/takahirom/items/3f012d46e15a1666fa33しかし、現在はKotlin Coroutines Flow、StateFlow、今はさらにlaunchWhenStarted、repeatOnLifecycleが登場して、少し混乱しているのではないでしょうか？ここまでの流れをまとめて紹介していきたいです。") // TODO: FIXME
-                    .font(.body)
-                    .foregroundColor(AssetColor.Base.secondary.color)
-                    .lineLimit(nil)
+            if let session = timetable.wrappedValue as? Session {
+                VStack(alignment: .leading, spacing: 8) {
+                    Text(L10n.TimetableScreen.Detail.description)
+                        .font(.body)
+                        .bold()
+                        .foregroundColor(AssetColor.Base.primary.color)
+                    Text(session.description)
+                        .font(.body)
+                        .foregroundColor(AssetColor.Base.secondary.color)
+                        .lineLimit(nil)
+                }
             }
         }
         .padding(.bottom, 84)
@@ -172,7 +174,6 @@ private enum DesciptionType: CaseIterable {
     case length
     case category
     case language
-    case difficulty
 
     var image: SwiftUI.Image {
         switch self {
@@ -184,23 +185,19 @@ private enum DesciptionType: CaseIterable {
             return AssetImage.iconCategory.image
         case .language:
             return AssetImage.iconLanguage.image
-        case .difficulty:
-            return AssetImage.iconDifficulty.image
         }
     }
 
-    func value(timetable: TimetableItem) -> String {
+    func value(timetable: AnyTimetableItem) -> String {
         switch self {
         case .schedule:
             return "\(timetable.startsAt.formatToDate) \(timetable.startsAt.formatToTime) ~ \(timetable.endsAt.formatToTime)"
         case .length:
             return "\(getMinDiffFrom(startAt: timetable.startsAt, endAt: timetable.endsAt))min"
         case .category:
-            return timetable.category
+            return timetable.category.jaTitle
         case .language:
-            return "日本語" // TODO: FIXME
-        case .difficulty:
-            return "(Difficulty of the session)" // TODO: FIXME
+            return timetable.lang
         }
     }
 
@@ -235,7 +232,7 @@ public struct TimetableDetailScreen_Previews: PreviewProvider {
             TimetableDetailScreen(
                 store: .init(
                     initialState: .init(
-                        timetable: .mock()
+                        timetable: .sessionMock()
                     ),
                     reducer: .empty,
                     environment: {}

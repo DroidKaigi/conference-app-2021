@@ -17,6 +17,7 @@ public struct MediumCard: View {
     private let isFavorited: Bool
     private let tapAction: () -> Void
     private let tapFavoriteAction: () -> Void
+    private let tapPlayAction: () -> Void
 
     public init(
         title: String,
@@ -25,7 +26,8 @@ public struct MediumCard: View {
         date: Date,
         isFavorited: Bool,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         self.title = title
         self.imageURL = imageURL
@@ -34,6 +36,7 @@ public struct MediumCard: View {
         self.isFavorited = isFavorited
         self.tapAction = tapAction
         self.tapFavoriteAction = tapFavoriteAction
+        self.tapPlayAction = tapPlayAction
     }
 
     public var body: some View {
@@ -44,7 +47,8 @@ public struct MediumCard: View {
                     placeholder: .noImage,
                     placeholderSize: .medium,
                     width: Const.imageViewWidth,
-                    height: Const.imageViewWidth * 114/225
+                    height: Const.imageViewWidth * 114/225,
+                    allowsHitTesting: !media.isPodcast
                 )
                 if case let .droidKaigiFm(isPlaying) = media {
                     SwiftUI.Image(
@@ -54,6 +58,7 @@ public struct MediumCard: View {
                     .padding()
                     .background(Color.black.opacity(0.4))
                     .clipShape(Circle())
+                    .onTapGesture(perform: tapPlayAction)
                 }
             }
 
@@ -105,7 +110,8 @@ public struct MediumCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: false,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlayAction: {}
                 )
                 .background(AssetColor.Background.primary.color)
                 .previewDevice(.init(rawValue: "iPhone X"))
@@ -118,7 +124,8 @@ public struct MediumCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: true,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlayAction: {}
                 )
                 .background(AssetColor.Background.primary.color)
                 .previewDevice(.init(rawValue: "iPhone X"))
@@ -131,7 +138,8 @@ public struct MediumCard_Previews: PreviewProvider {
                     date: Date(timeIntervalSince1970: 0),
                     isFavorited: true,
                     tapAction: {},
-                    tapFavoriteAction: {}
+                    tapFavoriteAction: {},
+                    tapPlayAction: {}
                 )
                 .background(AssetColor.Background.primary.color)
                 .previewDevice(.init(rawValue: "iPhone X"))

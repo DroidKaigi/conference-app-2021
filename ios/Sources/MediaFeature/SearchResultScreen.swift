@@ -15,6 +15,7 @@ public struct SearchResultScreen: View {
     enum ViewAction: Equatable {
         case tap(FeedContent)
         case tapFavorite(isFavorited: Bool, id: String)
+        case tapPlay(FeedContent)
     }
 
     public var body: some View {
@@ -28,7 +29,8 @@ public struct SearchResultScreen: View {
                         FeedContentListView(
                             feedContents: viewStore.state,
                             tapContent: { viewStore.send(.tap($0)) },
-                            tapFavorite: { viewStore.send(.tapFavorite(isFavorited: $0, id: $1)) }
+                            tapFavorite: { viewStore.send(.tapFavorite(isFavorited: $0, id: $1)) },
+                            tapPlay: { viewStore.send(.tapPlay($0)) }
                         )
                     }
                 }

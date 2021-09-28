@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.timetable2021
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
 import androidx.compose.material.BackdropValue
@@ -26,6 +27,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.DroidKaigi2021Day
+import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemList
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
@@ -45,7 +47,7 @@ sealed class TimetableTab(val name: String, val routePath: String, val day: Droi
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Stable
 data class TimetableScreenState(
-    val timeTableContents: TimetableItemList,
+    val timeTableContents: TimetableContents,
     val scaffoldState: BackdropScaffoldState,
     val tabPagerState: PagerState,
 )
@@ -70,13 +72,18 @@ fun TimetableScreen(
 
     TimetableScreen(
         state = TimetableScreenState(
-            timeTableContents = state.timetableContents.timetableItems,
+            timeTableContents = state.timetableContents,
             scaffoldState = scaffoldState,
             tabPagerState = pagerState
         ),
         onNavigationIconClick = onNavigationIconClick,
         onSelectTab = onSelectedTab,
-        onDetailClick = onDetailClick
+        onDetailClick = onDetailClick,
+        onFavoriteChange = { timetableItem ->
+            dispatch(
+                TimetableViewModel.Event.ToggleFavorite(timetableItem = timetableItem)
+            )
+        },
     )
 }
 
@@ -90,6 +97,7 @@ private fun TimetableScreen(
     onNavigationIconClick: () -> Unit,
     onSelectTab: (TimetableTab) -> Unit,
     onDetailClick: (String) -> Unit,
+    onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     Conference2021Theme() {
         val density = LocalDensity.current
@@ -118,11 +126,14 @@ private fun TimetableScreen(
                 ) { page ->
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
-                        TimetableListState(
-                            timetableItems = state
-                                .timeTableContents.getDayTimetableItems(selectedTab.day),
+                        state = TimetableListState(
+                            timetableItems = state.timeTableContents
+                                .timetableItems
+                                .getDayTimetableItems(selectedTab.day),
+                            favorites = state.timeTableContents.favorites,
                             onDetailClick = onDetailClick,
-                        )
+                            onFavoriteChange = onFavoriteChange,
+                        ),
                     )
                 }
             },
@@ -139,37 +150,29 @@ private fun TimetableScreen(
 data class TimetableListState(
     val timetableItems: TimetableItemList,
     val onDetailClick: (String) -> Unit,
+    val favorites: Set<String>,
+    val onFavoriteChange: (TimetableItem) -> Unit,
 )
 
 @Composable
-private fun TimetableList(state: TimetableListState) {
+private fun TimetableList(
+    state: TimetableListState,
+) {
     LazyColumn {
-        items(
-            count = state.timetableItems.size,
-            key = { state.timetableItems[it].id }
-        ) { index ->
-            val timetableItem = state.timetableItems.timetableItems[index]
+        itemsIndexed(
+            items = state.timetableItems,
+            key = { _, item -> item.id }
+        ) { index, timetableItem ->
             TimetableItem(
-                timetableItemState = TimetableItemState(timetableItem),
+                timetableItemState = TimetableItemState(
+                    timetableItem,
+                    state.favorites.contains(timetableItem.id)
+                ),
                 onDetailClick = state.onDetailClick,
+                onFavoriteChange = state.onFavoriteChange,
+                showDivider = index > 0
             )
         }
-    }
-}
-
-data class TimetableItemState(val timetableItem: TimetableItem)
-
-@Composable
-private fun TimetableItem(
-    timetableItemState: TimetableItemState,
-    onDetailClick: (String) -> Unit,
-) {
-    Button(
-        onClick = {
-            onDetailClick(timetableItemState.timetableItem.id)
-        }
-    ) {
-        Text(timetableItemState.timetableItem.title.currentLangTitle)
     }
 }
 

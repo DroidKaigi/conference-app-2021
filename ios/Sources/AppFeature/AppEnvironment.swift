@@ -7,6 +7,7 @@ public struct AppEnvironment {
     public let feedRepository: FeedRepositoryProtocol
     public let staffRepository: StaffRepositoryProtocol
     public let themeRepository: ThemeRepositoryProtocol
+    public let timetableRepository: TimetableRepositoryProtocol
     public let player: PlayerProtocol
 
     public init(
@@ -15,6 +16,7 @@ public struct AppEnvironment {
         feedRepository: FeedRepositoryProtocol,
         staffRepository: StaffRepositoryProtocol,
         themeRepository: ThemeRepositoryProtocol,
+        timetableRepository: TimetableRepositoryProtocol,
         player: PlayerProtocol
     ) {
         self.contributorRepository = contributorRepository
@@ -22,6 +24,7 @@ public struct AppEnvironment {
         self.feedRepository = feedRepository
         self.staffRepository = staffRepository
         self.themeRepository = themeRepository
+        self.timetableRepository = timetableRepository
         self.player = player
     }
 }
@@ -37,6 +40,7 @@ public extension AppEnvironment {
             feedRepository: FeedRepository(container: container),
             staffRepository: StaffRepository(container: container),
             themeRepository: ThemeRepository(container: container),
+            timetableRepository: TimetableRepository(container: container),
             player: Player()
         )
     }()
@@ -48,6 +52,7 @@ public extension AppEnvironment {
             feedRepository: FeedRepositoryMock(),
             staffRepository: StaffRepositoryMock(),
             themeRepository: ThemeRepositoryMock(),
+            timetableRepository: TimetableRepositoryMock(),
             player: PlayerMock()
         )
     }()

@@ -14,6 +14,7 @@ public struct FavoritesState: Equatable {
 public enum FavoritesAction {
     case tap(FeedContent)
     case tapFavorite(isFavorited: Bool, id: String)
+    case tapPlay(FeedContent)
     case showSetting
 }
 
@@ -26,6 +27,8 @@ public let favoritesReducer = Reducer<FavoritesState, FavoritesAction, Favorites
     case .tap:
         return .none
     case .tapFavorite(isFavorited: let isFavorited, id: let id):
+        return .none
+    case .tapPlay:
         return .none
     case .showSetting:
         return .none

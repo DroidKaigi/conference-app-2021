@@ -1,65 +1,90 @@
+import Combine
 import ComposableArchitecture
 import Model
+import Repository
 
 public struct AboutState: Equatable {
     public var staffs: [Staff]
     public var contributors: [Contributor]
     public var selectedType: SelectedType
-    public var showingURL: URL?
-    public var isShowingAboutDroidKaigi: Bool
+    public var isSheetPresented: SheetType?
 
-    public var isShowingWebView: Bool {
-        showingURL != nil
+    public var isShowingSheet: Bool {
+        isSheetPresented != nil
+    }
+
+    public enum SheetType: Equatable {
+        case url(URL)
+        case aboutDroidKaigi
     }
 
     public init(
         staffs: [Staff] = [],
         contributors: [Contributor] = [],
         selectedType: SelectedType = .staff,
-        isShowingAboutDroidKaigi: Bool = false
+        isSheetPresented: SheetType? = nil
     ) {
         self.staffs = staffs
         self.contributors = contributors
         self.selectedType = selectedType
-        self.isShowingAboutDroidKaigi = isShowingAboutDroidKaigi
+        self.isSheetPresented = isSheetPresented
     }
 }
 
 public enum AboutAction {
     case refresh
+    case refreshResponse(Result<([Contributor], [Staff]), KotlinError>)
     case selectedPicker(SelectedType)
     case tapStaff(Staff)
     case tapContributor(Contributor)
     case tapBanner
-    case hideAboutDroidKaigi
-    case hideWebView
+    case hideSheet
 }
 
 public struct AboutEnvironment {
-    public init() {}
+    public let contributorRepository: ContributorRepositoryProtocol
+    public let staffRepository: StaffRepositoryProtocol
+
+    public init(
+        contributorRepository: ContributorRepositoryProtocol,
+        staffRepository: StaffRepositoryProtocol
+    ) {
+        self.contributorRepository = contributorRepository
+        self.staffRepository = staffRepository
+    }
 }
 
-public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, _ in
+public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment> { state, action, environment in
     switch action {
     case .refresh:
+        return Publishers.CombineLatest(
+            environment.contributorRepository.contributorContents(),
+            environment.staffRepository.staffContents()
+        )
+        .catchToEffect()
+        .map(AboutAction.refreshResponse)
+    case .refreshResponse(.success((let contributors, let staffs))):
+        state.contributors = contributors
+        state.staffs = staffs
+        return .none
+    case .refreshResponse(.failure):
         return .none
     case .selectedPicker(let selectedType):
         state.selectedType = selectedType
         return .none
     case let .tapStaff(staff):
-        state.showingURL = URL(string: staff.profileURLString)
+        guard let url = URL(string: staff.profileURLString) else { return .none }
+        state.isSheetPresented = .url(url)
         return .none
     case let .tapContributor(contributor):
-        state.showingURL = URL(string: contributor.urlString)
+        guard let url = URL(string: contributor.urlString) else { return .none }
+        state.isSheetPresented = .url(url)
         return .none
     case .tapBanner:
-        state.isShowingAboutDroidKaigi = true
+        state.isSheetPresented = .aboutDroidKaigi
         return .none
-    case .hideAboutDroidKaigi:
-        state.isShowingAboutDroidKaigi = false
-        return .none
-    case .hideWebView:
-        state.showingURL = nil
+    case .hideSheet:
+        state.isSheetPresented = nil
         return .none
     }
 }

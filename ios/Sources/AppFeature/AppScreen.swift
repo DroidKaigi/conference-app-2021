@@ -1,4 +1,5 @@
 import AboutFeature
+import Component
 import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
@@ -60,16 +61,9 @@ public struct AppScreen: View {
                     AppAction.init(action: action)
                 },
                 then: { _ in
-                    VStack(spacing: 16) {
-                        Text("エラーが発生しました")
-
-                        Button(action: {
-                            viewStore.send(.reload)
-                        }, label: {
-                            Text("再度読み込み")
-                                .foregroundColor(AssetColor.primary.color)
-                        })
-                    }
+                    ErrorView(tapReload: {
+                        viewStore.send(.reload)
+                    })
                 }
             )
         }

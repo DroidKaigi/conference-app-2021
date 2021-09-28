@@ -95,6 +95,8 @@ private extension MediaAction {
             self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        case .tapPlay(let content):
+            self = .tapPlay(content)
         }
     }
 }
@@ -105,7 +107,16 @@ public struct MediaListView_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             MediaListView(
                 store: .init(
-                    initialState: .init(feedContents: [.blogMock(), .blogMock(), .videoMock(), .videoMock(), .podcastMock(), .podcastMock()]),
+                    initialState: .init(
+                        feedContents: [
+                            .blogMock(),
+                            .blogMock(),
+                            .videoMock(),
+                            .videoMock(),
+                            .podcastMock(),
+                            .podcastMock()
+                        ]
+                    ),
                     reducer: .empty,
                     environment: {}
                 )
