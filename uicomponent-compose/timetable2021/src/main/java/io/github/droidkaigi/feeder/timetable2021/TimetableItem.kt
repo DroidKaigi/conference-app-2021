@@ -33,6 +33,8 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.core.NetworkImage
+import io.github.droidkaigi.feeder.core.animation.painterFavorite
+import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.fakeTimetableContents
 
 data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
@@ -167,14 +169,14 @@ private fun TimetableItemContent(
             content = {
                 if (favorited) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_baseline_favorite_24),
+                        painter = painterFavorite(),
                         contentDescription = "favorite",
                         modifier = Modifier.testTag("Favorite"),
                         tint = Color.Red
                     )
                 } else {
                     Icon(
-                        painter = painterResource(R.drawable.ic_baseline_favorite_border_24),
+                        painter = painterFavoriteBorder(),
                         contentDescription = "favorite",
                         modifier = Modifier.testTag("NotFavorite")
                     )
