@@ -117,28 +117,15 @@ private fun TimetableItemContent(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (speaker.iconUrl != null) {
-                            NetworkImage(
-                                url = speaker.iconUrl!!,
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .testTag("Speakers icon"),
-                                contentScale = ContentScale.Fit,
-                                contentDescription = "speakers icon"
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(
-                                    io.github.droidkaigi.feeder.core.R.drawable.droid_placeholder
-                                ),
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.Fit,
-                                contentDescription = "speakers icon"
-                            )
-                        }
+                        NetworkImage(
+                            url = speaker.iconUrl,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clip(CircleShape)
+                                .testTag("Speakers icon"),
+                            contentScale = ContentScale.Fit,
+                            contentDescription = "speakers icon"
+                        )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             speaker.name,
