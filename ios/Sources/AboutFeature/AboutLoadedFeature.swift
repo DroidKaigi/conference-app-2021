@@ -8,11 +8,11 @@ public struct AboutLoadedState: Equatable {
     public var selectedType: SelectedType
     public var aboutDroidKaigiState: AboutDroidKaigiState?
     public var showingURL: URL?
-
+    
     public var isShowingSheet: Bool {
         showingURL != nil || aboutDroidKaigiState != nil
     }
-
+    
     public init(
         staffs: [Staff] = [],
         contributors: [Contributor] = [],
@@ -35,10 +35,10 @@ public enum AboutLoadedAction {
 
 public struct AboutLoadedEnvironment {
     public let applicationClient: UIApplicationClientProtocol
-
+    
     public init(
         applicationClient: UIApplicationClientProtocol
-        ) {
+    ) {
         self.applicationClient = applicationClient
     }
 }
@@ -77,5 +77,5 @@ public let aboutLoadedReducer = Reducer<AboutLoadedState, AboutLoadedAction, Abo
             return .none
         }
     }
-
+    
 )
