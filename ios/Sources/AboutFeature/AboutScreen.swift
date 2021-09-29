@@ -6,18 +6,18 @@ import Styleguide
 import UIApplicationClient
 
 public struct AboutScreen: View {
-
+    
     private let store: Store<AboutState, AboutAction>
-
+    
     public init(store: Store<AboutState, AboutAction>) {
         self.store = store
     }
-
+    
     internal enum ViewAction {
         case progressViewAppeared
         case reload
     }
-
+    
     public var body: some View {
         SwitchStore(store) {
             CaseLet(
@@ -35,7 +35,7 @@ public struct AboutScreen: View {
                 state: /AboutState.initialized,
                 action: AboutAction.loaded,
                 then: { store in
-                    AboutLoadedScreen(store: store)
+                    AboutLoadedView(store: store)
                 }
             )
             CaseLet(
@@ -70,26 +70,60 @@ import Repository
 public struct AboutScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
-            aboutScreen
+            // needToInitialize
+            aboutScreen(state: .needToInitialize)
                 .previewDevice(.init(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, .dark)
-            aboutScreen
+            aboutScreen(state: .needToInitialize)
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, .light)
+            
+            // errorOccured
+            aboutScreen(state: .errorOccurred)
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, .dark)
+            aboutScreen(state: .errorOccurred)
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, .light)
+            
+            // initialized with empty staffs
+            aboutScreen(state: .initialized(aboutLoadedState(staffs: [])))
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, .dark)
+            aboutScreen(state: .initialized(aboutLoadedState(staffs: [])))
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, .light)
+            
+            // initalized with some staffs
+            aboutScreen(state: .initialized(
+                            aboutLoadedState(staffs: [.mock(), .mock(), .mock()])))
+                .previewDevice(.init(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, .dark)
+            aboutScreen(state: .initialized(
+                            aboutLoadedState(staffs: [.mock(), .mock(), .mock()])))
                 .previewDevice(.init(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, .light)
         }
     }
-
-    static var aboutScreen: some View {
+    
+    private static func aboutScreen(state: AboutState) -> some View {
         AboutScreen(
             store: Store<AboutState, AboutAction>(
-                initialState: .initialized(.init()),
-                reducer: aboutReducer,
+                initialState: state,
+                reducer: .empty,
                 environment: AboutEnvironment(
                     applicationClient: UIApplicationClientMock(),
                     contributorRepository: ContributorRepositoryMock(),
                     staffRepository: StaffRepositoryMock()
                 )
             )
+        )
+    }
+    
+    private static func aboutLoadedState(staffs: [Staff]) -> AboutLoadedState {
+        return AboutLoadedState(
+            staffs: staffs,
+            contributors: []
         )
     }
 }
