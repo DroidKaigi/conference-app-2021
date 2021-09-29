@@ -48,9 +48,7 @@ public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoade
     timetableDetailReducer.optional().pullback(
         state: \.detailState,
         action: /TimetableLoadedAction.detail,
-        environment: { _ in
-            .init()
-        }
+        environment: { _ in }
     ),
     .init { state, action, _ in
         switch action {

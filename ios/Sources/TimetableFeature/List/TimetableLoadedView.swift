@@ -58,7 +58,7 @@ public struct TimetableLoadedView: View {
                         destination: IfLetStore(
                             store.scope(
                                 state: \.detailState,
-                                action: TimetableLoadedAction.init(action:)
+                                action: TimetableLoadedAction.detail
                             ),
                             then: TimetableDetailScreen.init(store:)
                         ),
@@ -72,12 +72,6 @@ public struct TimetableLoadedView: View {
                 )
             }
         }
-    }
-}
-
-private extension TimetableLoadedAction {
-    init(action: TimetableDetailAction) {
-        self = .detail(action)
     }
 }
 

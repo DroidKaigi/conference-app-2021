@@ -4,18 +4,18 @@ import Model
 
 public struct TimetableDetailState: Equatable {
     public var timetable: AnyTimetableItem
-    public var isSheetPresented: URL?
+    public var showingURL: URL?
 
-    var isShowingSheet: Bool {
-        isSheetPresented != nil
+    var isSheetPresented: Bool {
+        showingURL != nil
     }
 
     public init(
         timetable: AnyTimetableItem,
-        isSheetPresented: URL? = nil
+        showingURL: URL? = nil
     ) {
         self.timetable = timetable
-        self.isSheetPresented = isSheetPresented
+        self.showingURL = showingURL
     }
 }
 
@@ -24,13 +24,13 @@ public enum TimetableDetailAction {
     case hideSheet
 }
 
-public let timetableDetailReducer = Reducer<TimetableDetailState, TimetableDetailAction, TimetableLoadedEnvironment> { state, action, _ in
+public let timetableDetailReducer = Reducer<TimetableDetailState, TimetableDetailAction, Void> { state, action, _ in
     switch action {
     case .tapLink(let link):
-        state.isSheetPresented = link
+        state.showingURL = link
         return .none
     case .hideSheet:
-        state.isSheetPresented = nil
+        state.showingURL = nil
         return .none
     }
 }

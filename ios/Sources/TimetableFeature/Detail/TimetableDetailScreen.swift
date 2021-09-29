@@ -48,11 +48,11 @@ public struct TimetableDetailScreen: View {
         .background(AssetColor.Background.primary.color.ignoresSafeArea())
         .sheet(
             isPresented: viewStore.binding(
-                get: \.isShowingSheet,
+                get: \.isSheetPresented,
                 send: .hideSheet
             ), content: {
-                IfLetStore(store.scope(state: \.isSheetPresented)) { _ in
-                    WebView(url: viewStore.isSheetPresented.unsafelyUnwrapped)
+                IfLetStore(store.scope(state: \.showingURL)) { _ in
+                    WebView(url: viewStore.showingURL.unsafelyUnwrapped)
                 }
             }
         )
