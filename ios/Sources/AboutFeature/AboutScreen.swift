@@ -69,40 +69,29 @@ import Repository
 
 public struct AboutScreen_Previews: PreviewProvider {
     public static var previews: some View {
-        Group {
-            // needToInitialize
-            aboutScreen(state: .needToInitialize)
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .dark)
-            aboutScreen(state: .needToInitialize)
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .light)
-            
-            // errorOccured
-            aboutScreen(state: .errorOccurred)
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .dark)
-            aboutScreen(state: .errorOccurred)
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .light)
-            
-            // initialized with empty staffs
-            aboutScreen(state: .initialized(aboutLoadedState(staffs: [])))
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .dark)
-            aboutScreen(state: .initialized(aboutLoadedState(staffs: [])))
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .light)
-            
-            // initalized with some staffs
-            aboutScreen(state: .initialized(
-                            aboutLoadedState(staffs: [.mock(), .mock(), .mock()])))
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .dark)
-            aboutScreen(state: .initialized(
-                            aboutLoadedState(staffs: [.mock(), .mock(), .mock()])))
-                .previewDevice(.init(rawValue: "iPhone 12"))
-                .environment(\.colorScheme, .light)
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            Group {
+                // needToInitialize
+                aboutScreen(state: .needToInitialize)
+                    .previewDevice(.init(rawValue: "iPhone 12"))
+                    .environment(\.colorScheme, colorScheme)
+                
+                // errorOccured
+                aboutScreen(state: .errorOccurred)
+                    .previewDevice(.init(rawValue: "iPhone 12"))
+                    .environment(\.colorScheme, colorScheme)
+                
+                // initialized with empty staffs
+                aboutScreen(state: .initialized(aboutLoadedState(staffs: [])))
+                    .previewDevice(.init(rawValue: "iPhone 12"))
+                    .environment(\.colorScheme, colorScheme)
+                
+                // initalized with some staffs
+                aboutScreen(state: .initialized(
+                                aboutLoadedState(staffs: [.mock(), .mock(), .mock()])))
+                    .previewDevice(.init(rawValue: "iPhone 12"))
+                    .environment(\.colorScheme, colorScheme)
+            }
         }
     }
     
