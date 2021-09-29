@@ -64,9 +64,7 @@ public struct AppTabScreen: View {
                             case .url(let url):
                                 WebView(url: url)
                             case .setting:
-                                SettingScreen(store: store.scope(state: \.settingState, action: { (action: SettingAction) in
-                                    AppTabAction(action: action)
-                                }))
+                                SettingScreen(store: store.scope(state: \.settingState, action: AppTabAction.setting))
                             }
                         }
                     }
@@ -128,7 +126,7 @@ private extension AppTabState {
                             .blogMock(),
                             .blogMock(),
                             .blogMock()
-                        ]
+                        ], language: .en
                     ),
                     reducer: .empty,
                     environment: {}

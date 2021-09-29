@@ -7,7 +7,7 @@ struct DroidKaigiApp: App {
         WindowGroup {
             AppScreen(
                 store: .init(
-                    initialState: .init(),
+                    initialState: .init(type: .needToInitialize, language: .system),
                     reducer: appReducer,
                     environment: .shared
                 )

@@ -33,11 +33,12 @@ public struct AppTabState: Equatable {
 
     public init(
         feedContents: [FeedContent],
+        language: Lang,
         isSheetPresented: AppTabSheet? = nil
     ) {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
-        self.language = .system
+        self.language = language
         self.homeState = HomeState(feedContents: feedContents, language: language)
         self.mediaState = MediaState(feedContents: feedContents, language: language)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited), language: language)
@@ -67,8 +68,6 @@ public enum AppTabAction {
     case media(MediaAction)
     case about(AboutAction)
     case showSetting
-    case changeLanguage(Lang)
-    case onChangeLanguage(Result<Lang, KotlinError>)
     case setting(SettingAction)
     case none
 
@@ -84,15 +83,6 @@ public enum AppTabAction {
             self = .none
         case .showSetting:
             self = .showSetting
-        }
-    }
-
-    init(action: SettingAction) {
-        switch action {
-        case let .changeLanguage(language):
-            self = .changeLanguage(language)
-        default:
-            self = .none
         }
     }
 
@@ -144,8 +134,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     settingReducer.pullback(
         state: \.settingState,
         action: /AppTabAction.setting,
-        environment: { _ in
-            .init()
+        environment: { environment in
+            .init(languageRepository: environment.languageRepository)
         }
     ),
     aboutReducer.pullback(
@@ -215,19 +205,6 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .timetable:
             return .none
         case .setting:
-            return .none
-        case let .changeLanguage(language):
-            state.language = language
-            return environment
-                .languageRepository
-                .changeLanguage(language: language)
-                .map { language }
-                .receive(on: environment.mainQueue)
-                .catchToEffect()
-                .map(AppTabAction.onChangeLanguage)
-        case let .onChangeLanguage(.success(language)):
-            return .none
-        case let .onChangeLanguage(.failure(error)):
             return .none
         }
     }
