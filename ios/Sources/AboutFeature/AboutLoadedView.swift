@@ -4,7 +4,7 @@ import Model
 import SwiftUI
 import Styleguide
 
-public struct AboutLoadedScreen: View {
+public struct AboutLoadedView: View {
 
     private let store: Store<AboutLoadedState, AboutLoadedAction>
 
@@ -93,7 +93,7 @@ public struct AboutLoadedScreen: View {
     }
 }
 
-private extension AboutLoadedScreen {
+private extension AboutLoadedView {
     func content(
         selectedType: SelectedType,
         staffs: [Staff],
@@ -167,17 +167,17 @@ private extension SelectedType {
 public struct AboutLoadedScreen_Previews: PreviewProvider {
     public static var previews: some View {
         Group {
-            aboutLoadedScreen
+            aboutLoadedView
             .previewDevice(.init(rawValue: "iPhone 12"))
             .environment(\.colorScheme, .dark)
-            aboutLoadedScreen
+            aboutLoadedView
             .previewDevice(.init(rawValue: "iPhone 12"))
             .environment(\.colorScheme, .light)
         }
     }
 
-    static var aboutLoadedScreen: some View {
-        AboutLoadedScreen(
+    static var aboutLoadedView: some View {
+        AboutLoadedView(
             store: .init(
                 initialState: .init(
                     staffs: [.mock(), .mock(), .mock()],
