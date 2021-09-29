@@ -33,6 +33,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.core.NetworkImage
+import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
 import io.github.droidkaigi.feeder.core.animation.painterFavorite
 import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.fakeTimetableContents
@@ -78,7 +79,7 @@ private fun TimetableItemContent(
             .fillMaxWidth()
             .testTag("TimetableItem")
     ) {
-        val (startsAt, title, speakers, favoriteSpacer, favorite) = createRefs()
+        val (startsAt, title, speakers, favoriteSpacer, favorite, favoriteAnim) = createRefs()
 
         Text(
             timetableItem.startsTimeString,
@@ -157,6 +158,18 @@ private fun TimetableItemContent(
                 end.linkTo(parent.end)
                 height = Dimension.fillToConstraints
             }
+        )
+
+        FavoriteAnimation(
+            visible = favorited,
+            modifier = Modifier
+                .constrainAs(favoriteAnim) {
+                    width = Dimension.value(80.dp)
+                    height = Dimension.value(80.dp)
+                    start.linkTo(favorite.start)
+                    end.linkTo(favorite.end)
+                    bottom.linkTo(favorite.bottom)
+                }
         )
 
         IconToggleButton(
