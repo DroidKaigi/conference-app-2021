@@ -1,7 +1,9 @@
 import Player
 import Repository
+import UIApplicationClient
 
 public struct AppEnvironment {
+    public let applicationClient: UIApplicationClientProtocol
     public let contributorRepository: ContributorRepositoryProtocol
     public let deviceRepository: DeviceRepositoryProtocol
     public let feedRepository: FeedRepositoryProtocol
@@ -11,6 +13,7 @@ public struct AppEnvironment {
     public let player: PlayerProtocol
 
     public init(
+        applicationClient: UIApplicationClientProtocol,
         contributorRepository: ContributorRepositoryProtocol,
         deviceRepository: DeviceRepositoryProtocol,
         feedRepository: FeedRepositoryProtocol,
@@ -19,6 +22,7 @@ public struct AppEnvironment {
         timetableRepository: TimetableRepositoryProtocol,
         player: PlayerProtocol
     ) {
+        self.applicationClient = applicationClient
         self.contributorRepository = contributorRepository
         self.deviceRepository = deviceRepository
         self.feedRepository = feedRepository
@@ -35,6 +39,7 @@ public extension AppEnvironment {
         let container = DIContainer(authenticator: authenticator)
 
         return .init(
+            applicationClient: UIApplicationClient(),
             contributorRepository: ContributorRepository(container: container),
             deviceRepository: DeviceRepository(container: container),
             feedRepository: FeedRepository(container: container),
@@ -47,6 +52,7 @@ public extension AppEnvironment {
 
     static let noop: Self = {
         .init(
+            applicationClient: UIApplicationClientMock(),
             contributorRepository: ContributorRepositoryMock(),
             deviceRepository: DeviceRepositoryMock(),
             feedRepository: FeedRepositoryMock(),
