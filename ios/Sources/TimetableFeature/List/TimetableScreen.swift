@@ -32,7 +32,7 @@ public struct TimetableScreen: View {
                 state: /TimetableState.initialized,
                 action: TimetableAction.loaded,
                 then: { store in
-                    TimetableLoaded(store: store)
+                    TimetableLoadedView(store: store)
                 }
             )
             CaseLet(

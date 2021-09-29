@@ -11,13 +11,13 @@ public struct TimetableDetailScreen: View {
         static let footerIconSize: CGFloat = 24
     }
 
-    let store: Store<ViewState, ViewAction>
+    let store: Store<TimetableDetailState, TimetableDetailAction>
+    let viewStore: ViewStore<TimetableDetailState, TimetableDetailAction>
 
-    struct ViewState: Equatable {
-        var timetable: AnyTimetableItem
+    init(store: Store<TimetableDetailState, TimetableDetailAction>) {
+        self.store = store
+        self.viewStore = ViewStore(store)
     }
-
-    enum ViewAction {}
 
     public var body: some View {
         ZStack {
@@ -39,14 +39,23 @@ public struct TimetableDetailScreen: View {
             }
 
             fixedFooter(
-                tapSlide: {
-                    // TODO: FIXME
-                },
-                tapVideo: {
-                    // TODO: FIXME
+                timetable: viewStore.timetable,
+                tapLink: { url in
+                    viewStore.send(.tapLink(url))
                 }
             )
         }
+        .background(AssetColor.Background.primary.color.ignoresSafeArea())
+        .sheet(
+            isPresented: viewStore.binding(
+                get: \.isSheetPresented,
+                send: .hideSheet
+            ), content: {
+                IfLetStore(store.scope(state: \.showingURL)) { _ in
+                    WebView(url: viewStore.showingURL.unsafelyUnwrapped)
+                }
+            }
+        )
     }
 }
 
@@ -128,19 +137,22 @@ private extension TimetableDetailScreen {
         .padding(.bottom, 84)
     }
 
-    func fixedFooter(tapSlide: @escaping () -> Void, tapVideo: @escaping () -> Void) -> some View {
+    func fixedFooter(timetable: AnyTimetableItem, tapLink: @escaping (URL) -> Void) -> some View {
         VStack {
             Spacer()
 
             HStack {
-                VStack {
+                if let slideUrlString = timetable.asset.slideURLString, let url = URL(string: slideUrlString) {
                     AssetImage.iconClip.image
                         .foregroundColor(AssetColor.primary.color)
                         .frame(width: Const.footerIconSize, height: Const.footerIconSize)
+                        .padding()
+                        .background(AssetColor.primaryPale.color)
+                        .cornerRadius(6)
+                        .onTapGesture {
+                            tapLink(url)
+                        }
                 }
-                .padding()
-                .background(AssetColor.primaryPale.color)
-                .cornerRadius(6)
 
                 HStack(spacing: 10) {
                     AssetImage.iconPlayCircleFilled.image
@@ -162,6 +174,11 @@ private extension TimetableDetailScreen {
                 .padding()
                 .background(AssetColor.primary.color)
                 .cornerRadius(6)
+                .onTapGesture {
+                    if let videoURL = timetable.asset.videoURLString, let url = URL(string: videoURL) {
+                        tapLink(url)
+                    }
+                }
             }
             .padding(8)
             .background(AssetColor.Background.primary.color)
