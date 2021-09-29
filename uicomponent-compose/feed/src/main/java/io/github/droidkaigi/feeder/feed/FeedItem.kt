@@ -35,6 +35,9 @@ import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.core.NetworkImage
+import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
+import io.github.droidkaigi.feeder.core.animation.painterFavorite
+import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
 import io.github.droidkaigi.feeder.fakeFeedContents
@@ -183,14 +186,14 @@ fun FeedItem(
             content = {
                 if (favorited) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_baseline_favorite_24),
+                        painter = painterFavorite(),
                         contentDescription = "favorite",
                         modifier = Modifier.testTag("Favorite"),
                         tint = Color.Red
                     )
                 } else {
                     Icon(
-                        painter = painterResource(R.drawable.ic_baseline_favorite_border_24),
+                        painter = painterFavoriteBorder(),
                         contentDescription = "favorite",
                         modifier = Modifier.testTag("NotFavorite")
                     )

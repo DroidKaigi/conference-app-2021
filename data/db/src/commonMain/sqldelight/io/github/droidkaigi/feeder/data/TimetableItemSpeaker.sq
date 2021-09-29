@@ -1,14 +1,18 @@
 CREATE TABLE timetableItemSpeaker (
     timetablePrimaryId TEXT NOT NULL,
     name TEXT NOT NULL,
-    iconUrl TEXT
+    iconUrl TEXT NOT NULL,
+    bio TEXT NOT NULL,
+    tagLine TEXT NOT NULL
 );
 
 insert:
 INSERT INTO timetableItemSpeaker(
     timetablePrimaryId,
     name,
-    iconUrl
+    iconUrl,
+    bio,
+    tagLine
 ) VALUES ?;
 
 deleteAll:

@@ -3,70 +3,7 @@ import Model
 import Styleguide
 import SwiftUI
 
-public struct TimetableLoadedState: Equatable {
-    public var timetableItems: [AnyTimetableItem]
-    public var selectedType: SelectedType
-    // TODO: Replace with detail state
-    public var detail: AnyTimetableItem?
-    public var language: Lang
-
-    var isShowingDetail: Bool {
-        detail != nil
-    }
-
-    public var selectedTypeItems: [AnyTimetableItem] {
-        let jaCalendar = Calendar(identifier: .japanese)
-        let selectedDateComponents = selectedType.dateComponents
-        return timetableItems
-            .filter {
-                let month = jaCalendar.component(.month, from: $0.startsAt)
-                let day = jaCalendar.component(.day, from: $0.startsAt)
-                return selectedDateComponents.month == month
-                    && selectedDateComponents.day == day
-            }
-    }
-
-    public init(
-        timetableItems: [AnyTimetableItem] = [],
-        selectedType: SelectedType = .day1,
-        detail: AnyTimetableItem? = nil,
-        language: Lang
-    ) {
-        self.timetableItems = timetableItems
-        self.selectedType = selectedType
-        self.detail = detail
-        self.language = language
-    }
-}
-
-public enum TimetableLoadedAction {
-    case selectedPicker(SelectedType)
-    case content(TimetableContentAction)
-    case hideDetail
-    case none
-}
-
-public struct TimetableLoadedEnvironment {
-    public init() {}
-}
-
-public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoadedAction, TimetableLoadedEnvironment> { state, action, _ in
-    switch action {
-    case let .selectedPicker(type):
-        state.selectedType = type
-        return .none
-    case let .content(.tap(item)):
-        state.detail = item
-        return .none
-    case .hideDetail:
-        state.detail = nil
-        return .none
-    case .none:
-        return .none
-    }
-}
-
-public struct TimetableLoaded: View {
+public struct TimetableLoadedView: View {
     private let store: Store<TimetableLoadedState, TimetableLoadedAction>
 
     public init(store: Store<TimetableLoadedState, TimetableLoadedAction>) {
@@ -120,8 +57,8 @@ public struct TimetableLoaded: View {
                     NavigationLink(
                         destination: IfLetStore(
                             store.scope(
-                                state: TimetableDetailScreen.ViewState.init(state:),
-                                action: TimetableLoadedAction.init(action:)
+                                state: \.detailState,
+                                action: TimetableLoadedAction.detail
                             ),
                             then: TimetableDetailScreen.init(store:)
                         ),
@@ -148,19 +85,6 @@ private extension SelectedType {
         case .day3:
             return L10n.TimetableScreen.SelectedType.day3
         }
-    }
-}
-private extension TimetableDetailScreen.ViewState {
-    init?(state: TimetableLoadedState) {
-        guard let detail = state.detail else { return nil }
-        timetable = detail
-        language = state.language
-    }
-}
-
-private extension TimetableLoadedAction {
-    init(action: TimetableDetailScreen.ViewAction) {
-        self = .none
     }
 }
 
@@ -249,7 +173,7 @@ public struct TimetableLoaded_Previews: PreviewProvider {
         ]
         return ForEach(ColorScheme.allCases, id: \.hashValue) { colorScheme in
             Group {
-                TimetableLoaded(
+                TimetableLoadedView(
                     store: .init(
                         initialState: .init(
                             timetableItems: items,

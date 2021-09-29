@@ -4,6 +4,7 @@ CREATE TABLE timetableItemSession (
     enTitle TEXT NOT NULL,
     startsAt INTEGER NOT NULL,
     endsAt INTEGER NOT NULL,
+    idCategory INTEGER NOT NULL,
     jaCategory TEXT NOT NULL,
     enCategory TEXT NOT NULL,
     targetAudience TEXT NOT NULL,
@@ -22,7 +23,9 @@ selectAllSession:
 SELECT
     timetableItemSession.*,
     timetableItemSpeaker.name speakerName,
-    timetableItemSpeaker.iconUrl speakerIconUrl
+    timetableItemSpeaker.iconUrl speakerIconUrl,
+    timetableItemSpeaker.bio speakerBio,
+    timetableItemSpeaker.tagLine speakerTagLine
 FROM timetableItemSession
 JOIN timetableItemSpeaker ON timetableItemSession.id = timetableItemSpeaker.timetablePrimaryId;
 
@@ -33,6 +36,7 @@ INSERT INTO timetableItemSession(
     enTitle,
     startsAt,
     endsAt,
+    idCategory,
     jaCategory,
     enCategory,
     targetAudience,

@@ -25,7 +25,7 @@ public struct TimetableScreen: View {
                         .background(AssetColor.Background.primary.color.ignoresSafeArea())
                         .onAppear { viewStore.send(.refresh) }
                 case .initialized:
-                    TimetableLoaded(store: store.scope(state: \.loadedState, action: { (action: TimetableLoadedAction) in
+                    TimetableLoadedView(store: store.scope(state: \.loadedState, action: { (action: TimetableLoadedAction) in
                         TimetableAction.loaded(action)
                     }))
                 case .errorOccurred:

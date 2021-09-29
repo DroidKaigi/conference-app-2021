@@ -16,7 +16,6 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -26,6 +25,9 @@ import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.core.NetworkImage
+import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
+import io.github.droidkaigi.feeder.core.animation.painterFavorite
+import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
 import io.github.droidkaigi.feeder.fakeFeedContents
@@ -132,13 +134,13 @@ fun FirstFeedItem(
             content = {
                 if (favorited) {
                     Icon(
-                        painterResource(R.drawable.ic_baseline_favorite_24),
+                        painterFavorite(),
                         "favorite",
                         tint = Color.Red
                     )
                 } else {
                     Icon(
-                        painterResource(R.drawable.ic_baseline_favorite_border_24),
+                        painterFavoriteBorder(),
                         "favorite"
                     )
                 }
