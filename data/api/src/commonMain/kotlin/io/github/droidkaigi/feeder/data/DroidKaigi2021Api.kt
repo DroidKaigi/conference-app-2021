@@ -91,8 +91,8 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
       "sessionCategoryItemId": 28654,
       "interpretationTarget": true,
       "asset": {
-        "videoUrl": null,
-        "slideUrl": null
+        "videoUrl": "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+        "slideUrl": "https://droidkaigi.jp/2021/"
       },
       "message": null,
       "sessionType": "NORMAL",
@@ -435,7 +435,12 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
         .groupBy { it.id!! }
         .mapValues { (_, apiSpeakers) ->
             apiSpeakers.map { apiSpeaker ->
-                TimetableSpeaker(apiSpeaker.fullName!!, apiSpeaker.profilePicture)
+                TimetableSpeaker(
+                    name = apiSpeaker.fullName!!,
+                    bio = apiSpeaker.bio ?: "",
+                    iconUrl = apiSpeaker.profilePicture ?: "",
+                    tagLine = apiSpeaker.tagLine ?: "",
+                )
             }.first()
         }
     val categoryIdToCategory: Map<Int, TimetableCategory> = feedContents.categories!!
@@ -443,7 +448,10 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
         .groupBy { it!!.id!! }
         .mapValues { (_, apiCategories) ->
             apiCategories.map { apiCategory ->
-                TimetableCategory(apiCategory!!.name!!.toMultiLangText())
+                TimetableCategory(
+                    id = apiCategory!!.id!!,
+                    title = apiCategory.name!!.toMultiLangText()
+                )
             }.first()
         }
 

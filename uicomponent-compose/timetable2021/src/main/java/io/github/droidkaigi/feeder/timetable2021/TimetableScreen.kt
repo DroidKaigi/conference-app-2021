@@ -148,8 +148,8 @@ private fun TimetableScreen(
 
 data class TimetableListState(
     val timetableItems: TimetableItemList,
-    val favorites: Set<String>,
     val onDetailClick: (String) -> Unit,
+    val favorites: Set<String>,
     val onFavoriteChange: (TimetableItem) -> Unit,
 )
 

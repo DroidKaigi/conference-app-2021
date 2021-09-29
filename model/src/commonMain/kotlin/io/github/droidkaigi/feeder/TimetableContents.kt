@@ -23,6 +23,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 endsAt = LocalDateTime.parse("2021-10-20T10:20:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 category = TimetableCategory(
+                    id = 28657,
                     title = MultiLangText("その他", "Other"),
                 ),
                 targetAudience = "TBW",
@@ -42,6 +43,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 endsAt = LocalDateTime.parse("2021-10-20T10:50:00")
                     .toInstant(TimeZone.of("UTC+9")),
                 category = TimetableCategory(
+                    id = 28654,
                     title = MultiLangText(
                         "Android FrameworkとJetpack",
                         "Android Framework and Jetpack",
@@ -49,10 +51,23 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                 ),
                 targetAudience = "For App developer アプリ開発者向け",
                 language = "JAPANESE",
-                asset = TimetableAsset(null, null),
+                asset = TimetableAsset(
+                    videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+                    slideUrl = "https://droidkaigi.jp/2021/",
+                ),
                 speakers = listOf(
-                    TimetableSpeaker("taka", "https://github.com/takahirom.png"),
-                    TimetableSpeaker("ry", "https://github.com/ry-itto.png")
+                    TimetableSpeaker(
+                        name = "taka",
+                        iconUrl = "https://github.com/takahirom.png",
+                        bio = "Likes Android",
+                        tagLine = "Android Engineer"
+                    ),
+                    TimetableSpeaker(
+                        name = "ry",
+                        iconUrl = "https://github.com/ry-itto.png",
+                        bio = "Likes iOS",
+                        tagLine = "iOS Engineer",
+                    ),
                 ),
                 description = "これはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。",
                 message = null,
@@ -69,6 +84,7 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
                 targetAudience = "TBW",
                 category = TimetableCategory(
+                    id = 28657,
                     title = MultiLangText("その他", "Other"),
                 ),
                 language = "TBD",

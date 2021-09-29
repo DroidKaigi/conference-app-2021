@@ -4,6 +4,7 @@ CREATE TABLE timetableItemSpecial (
     enTitle TEXT NOT NULL,
     startsAt INTEGER NOT NULL,
     endsAt INTEGER NOT NULL,
+    idCategory INTEGER NOT NULL,
     jaCategory TEXT NOT NULL,
     enCategory TEXT NOT NULL,
     targetAudience TEXT NOT NULL,
@@ -19,7 +20,9 @@ selectAllSpecial:
 SELECT
     timetableItemSpecial.*,
     timetableItemSpeaker.name speakerName,
-    timetableItemSpeaker.iconUrl speakerIconUrl
+    timetableItemSpeaker.bio speakerBio,
+    timetableItemSpeaker.iconUrl speakerIconUrl,
+    timetableItemSpeaker.tagLine speakerTagLine
 FROM timetableItemSpecial
 CROSS JOIN timetableItemSpeaker ON timetableItemSpecial.id = timetableItemSpeaker.timetablePrimaryId;
 
@@ -31,6 +34,7 @@ INSERT INTO timetableItemSpecial(
     startsAt,
     endsAt,
     endsAt,
+    idCategory,
     jaCategory,
     enCategory,
     targetAudience,

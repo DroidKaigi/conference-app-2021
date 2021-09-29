@@ -17,11 +17,12 @@ import kotlinx.datetime.Instant
 
 interface TimetableItemDao {
     fun selectAll(): Flow<List<TimetableItem>>
+    fun replace(items: List<TimetableItem>)
     fun insert(items: List<TimetableItem>)
     fun deleteAll()
 }
 
-internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
+internal class TimetableItemDaoImpl(private val database: Database) : TimetableItemDao {
     private val sessionQueries: TimetableItemSessionQueries = database.timetableItemSessionQueries
     private val specialQueries: TimetableItemSpecialQueries = database.timetableItemSpecialQueries
     private val speakerQueries: TimetableItemSpeakerQueries = database.timetableItemSpeakerQueries
@@ -33,6 +34,13 @@ internal class TimetableItemDaoImpl(database: Database) : TimetableItemDao {
             specialQueries.selectAllSpecial().asFlow().mapToList().map { it.toSpecialItems() }
 
         return allSession.zip(allSpecial) { sessions, specials -> sessions + specials }
+    }
+
+    override fun replace(items: List<TimetableItem>) {
+        database.transaction {
+            deleteAll()
+            insert(items = items)
+        }
     }
 
     override fun insert(items: List<TimetableItem>) {
@@ -77,6 +85,7 @@ private fun TimetableItemSessionQueries.insert(session: TimetableItem.Session) {
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
             endsAt = session.endsAt.toEpochMilliseconds(),
+            idCategory = session.category.id.toLong(),
             jaCategory = session.category.title.jaTitle,
             enCategory = session.category.title.enTitle,
             targetAudience = session.targetAudience,
@@ -99,6 +108,7 @@ private fun TimetableItemSpecialQueries.insert(session: TimetableItem.Special) {
             enTitle = session.title.enTitle,
             startsAt = session.startsAt.toEpochMilliseconds(),
             endsAt = session.endsAt.toEpochMilliseconds(),
+            idCategory = session.category.id.toLong(),
             jaCategory = session.category.title.jaTitle,
             enCategory = session.category.title.enTitle,
             targetAudience = session.targetAudience,
@@ -116,6 +126,8 @@ private fun TimetableItemSpeakerQueries.insert(id: String, speaker: TimetableSpe
             timetablePrimaryId = id,
             name = speaker.name,
             iconUrl = speaker.iconUrl,
+            bio = speaker.bio,
+            tagLine = speaker.tagLine,
         ),
     )
 }
@@ -127,7 +139,9 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
             oldTimetableItem.copy(
                 speakers = oldTimetableItem.speakers + TimetableSpeaker(
                     name = row.speakerName,
+                    bio = row.speakerBio,
                     iconUrl = row.speakerIconUrl,
+                    tagLine = row.speakerTagLine,
                 ),
             )
         } else {
@@ -140,6 +154,7 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
                 category = TimetableCategory(
+                    id = row.idCategory.toInt(),
                     title = MultiLangText(row.jaCategory, row.enCategory),
                 ),
                 targetAudience = row.targetAudience,
@@ -153,8 +168,10 @@ private fun List<SelectAllSession>.toSessionItems(): List<TimetableItem.Session>
                 speakers = listOf(
                     TimetableSpeaker(
                         name = row.speakerName,
+                        bio = row.speakerBio,
                         iconUrl = row.speakerIconUrl,
-                    )
+                        tagLine = row.speakerTagLine,
+                    ),
                 ),
                 message = if (row.jaMessage != null && row.enMessage != null) {
                     MultiLangText(row.jaMessage, row.enMessage)
@@ -174,7 +191,9 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
             oldTimetableItem.copy(
                 speakers = oldTimetableItem.speakers + TimetableSpeaker(
                     name = row.speakerName,
+                    bio = row.speakerBio,
                     iconUrl = row.speakerIconUrl,
+                    tagLine = row.speakerTagLine,
                 ),
             )
         } else {
@@ -187,6 +206,7 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 startsAt = Instant.fromEpochMilliseconds(row.startsAt),
                 endsAt = Instant.fromEpochMilliseconds(row.endsAt),
                 category = TimetableCategory(
+                    id = row.idCategory.toInt(),
                     title = MultiLangText(row.jaCategory, row.enCategory),
                 ),
                 targetAudience = row.targetAudience,
@@ -199,8 +219,10 @@ private fun List<SelectAllSpecial>.toSpecialItems(): List<TimetableItem.Special>
                 speakers = listOf(
                     TimetableSpeaker(
                         name = row.speakerName,
+                        bio = row.speakerBio,
                         iconUrl = row.speakerIconUrl,
-                    )
+                        tagLine = row.speakerTagLine,
+                    ),
                 ),
             )
         }
@@ -224,6 +246,10 @@ fun fakeTimetableItemDao(error: AppError? = null): TimetableItemDao = object : T
         } finally {
             channel.close()
         }
+    }
+
+    override fun replace(items: List<TimetableItem>) {
+        channel.offer((channel.poll() ?: emptyList()) + items)
     }
 
     override fun insert(items: List<TimetableItem>) {
