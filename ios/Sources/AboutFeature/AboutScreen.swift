@@ -48,6 +48,8 @@ public struct AboutScreen: View {
                         ErrorView(tapReload: {
                             viewStore.send(.reload)
                         })
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
+                        .background(AssetColor.Background.primary.color.ignoresSafeArea())
                     }
                 }
             )
