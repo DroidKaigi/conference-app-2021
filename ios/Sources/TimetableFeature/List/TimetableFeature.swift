@@ -25,7 +25,17 @@ public enum TimetableStateType {
 public enum TimetableAction {
     case refresh
     case refreshResponse(Result<[AnyTimetableItem], KotlinError>)
-    case loaded(TimetableLoadedAction)
+    case showSetting
+    case none
+
+    init(action: TimetableLoadedAction) {
+        switch action {
+        case .selectedPicker, .content, .detail, .hideDetail:
+            self = .none
+        case .showSetting:
+            self = .showSetting
+        }
+    }
 }
 
 public struct TimetableEnvironment {
@@ -41,7 +51,7 @@ public struct TimetableEnvironment {
 public let timetableReducer = Reducer<TimetableState, TimetableAction, TimetableEnvironment>.combine(
     timetableLoadedReducer.pullback(
         state: \.loadedState,
-        action: /TimetableAction.loaded,
+        action: /TimetableAction.init(action:),
         environment: {_ in
             .init()
         }
@@ -63,7 +73,9 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
         case let .refreshResponse(.failure(error)):
             state.type = .errorOccurred
             return .none
-        case .loaded:
+        case .showSetting:
+            return .none
+        case .none:
             return .none
         }
     }

@@ -194,7 +194,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case let .favoriteResponse(.failure(error)):
             print(error.localizedDescription)
             return .none
-        case .showSetting, .media(.showSetting):
+        case .showSetting, .media(.showSetting), .timetable(.showSetting):
             state.isSheetPresented = .setting
             return .none
         case .none:
