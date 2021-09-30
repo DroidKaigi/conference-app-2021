@@ -42,7 +42,11 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     .init { state, action, environment in
         switch action {
         case .onAppear:
-            return environment.languageRepository.currentLanguage().catchToEffect().map(AppAction.currentLanguage)
+            return environment.languageRepository
+                .currentLanguage()
+                .receive(on: DispatchQueue.main)
+                .catchToEffect()
+                .map(AppAction.currentLanguage)
         case let .currentLanguage(.success(language)):
             state.language = language ?? .system
             return .none
