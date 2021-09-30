@@ -6,4 +6,6 @@
     <string name="system">Follow the device settings</string>
     <string name="dark">Dark</string>
     <string name="light">Light</string>
+    <string name="ja">Japanese</string>
+    <string name="en">English</string>
 </resources>

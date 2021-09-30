@@ -40,7 +40,7 @@ public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaig
             break
         }
         return .none
-    case .openApplicationSettings(_):
+    case .openApplicationSettings:
         return .none
     }
 }

@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import io.github.droidkaigi.feeder.repository.ContributorRepository
 import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
+import io.github.droidkaigi.feeder.repository.LanguageRepository
 import io.github.droidkaigi.feeder.repository.StaffRepository
 import io.github.droidkaigi.feeder.repository.ThemeRepository
 import io.github.droidkaigi.feeder.repository.TimetableRepository
@@ -93,6 +94,13 @@ class DataModule {
     internal fun provideThemeRepository(
         daggerRepository: DaggerThemeRepositoryImpl,
     ): ThemeRepository {
+        return daggerRepository
+    }
+
+    @Provides
+    internal fun provideLanguageRepository(
+        daggerRepository: DaggerLanguageRepositoryImpl,
+    ): LanguageRepository {
         return daggerRepository
     }
 }

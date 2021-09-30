@@ -44,7 +44,7 @@ public struct TimetableLoadedView: View {
                         TimetableContent(
                             store: store.scope(
                                 state: { state in
-                                    return .init(items: state.selectedTypeItems)
+                                    return .init(items: state.selectedTypeItems, language: state.language)
                                 },
                                 action: TimetableLoadedAction.content
                             )
@@ -176,7 +176,8 @@ public struct TimetableLoaded_Previews: PreviewProvider {
                 TimetableLoadedView(
                     store: .init(
                         initialState: .init(
-                            timetableItems: items
+                            timetableItems: items,
+                            language: .en
                         ),
                         reducer: timetableLoadedReducer,
                         environment: TimetableLoadedEnvironment()

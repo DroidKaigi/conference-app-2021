@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.data
 import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.coroutines.FlowSettings
 import com.russhwolf.settings.coroutines.toFlowSettings
+import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.Theme
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -89,12 +90,24 @@ abstract class UserDataStore {
         )
     }
 
+    fun language(): Flow<Lang?> {
+        return flowSettings.getStringOrNullFlow(KEY_LANGUAGE).map { it?.let { Lang.valueOf(it) } }
+    }
+
+    suspend fun changeLanguage(language: Lang) {
+        flowSettings.putString(
+            KEY_LANGUAGE,
+            language.name
+        )
+    }
+
     companion object {
         private const val KEY_FAVORITES = "KEY_FAVORITES"
         private const val KEY_FAVORITES_TIMETABLE_ITEM_ID = "KEY_FAVORITES_TIMETABLE_ITEM_ID"
         private const val KEY_AUTHENTICATED = "KEY_AUTHENTICATED"
         private const val KEY_DEVICE_ID = "KEY_DEVICE_ID"
         private const val KEY_THEME = "KEY_THEME"
+        private const val KEY_LANGUAGE = "KEY_LANGUAGE"
     }
 }
 

@@ -1,7 +1,9 @@
+import Combine
 import ComposableArchitecture
 import HomeFeature
 import MediaFeature
 import FavoritesFeature
+import SettingFeature
 import AboutFeature
 import SwiftUI
 import Model
@@ -22,6 +24,7 @@ public struct AppTabState: Equatable {
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
+    public var language: Lang
 
     public enum AppTabSheet: Equatable {
         case url(URL)
@@ -30,15 +33,26 @@ public struct AppTabState: Equatable {
 
     public init(
         feedContents: [FeedContent],
+        language: Lang,
         isSheetPresented: AppTabSheet? = nil
     ) {
         self.feedContents = feedContents
         self.isSheetPresented = isSheetPresented
-        self.homeState = HomeState(feedContents: feedContents)
-        self.mediaState = MediaState(feedContents: feedContents)
-        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
+        self.language = language
+        self.homeState = HomeState(feedContents: feedContents, language: language)
+        self.mediaState = MediaState(feedContents: feedContents, language: language)
+        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited), language: language)
         self.aboutState = AboutState()
-        self.timetableState = TimetableState()
+        self.timetableState = TimetableState(language: language)
+    }
+
+    public var settingState: SettingState {
+        get {
+            SettingState(language: language)
+        }
+        set {
+            language = newValue.language
+        }
     }
 }
 
@@ -54,6 +68,7 @@ public enum AppTabAction {
     case media(MediaAction)
     case about(AboutAction)
     case showSetting
+    case setting(SettingAction)
     case none
 
     init(action: HomeAction) {
@@ -114,6 +129,13 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         action: /AppTabAction.init(action:),
         environment: { _ in
             .init()
+        }
+    ),
+    settingReducer.pullback(
+        state: \.settingState,
+        action: /AppTabAction.setting,
+        environment: { environment in
+            .init(languageRepository: environment.languageRepository)
         }
     ),
     aboutReducer.pullback(
@@ -182,6 +204,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .about:
             return .none
         case .timetable:
+            return .none
+        case .setting:
             return .none
         }
     }

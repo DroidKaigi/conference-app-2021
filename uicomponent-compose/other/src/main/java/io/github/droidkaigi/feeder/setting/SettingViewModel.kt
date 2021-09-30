@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.setting
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.compositionLocalOf
 import io.github.droidkaigi.feeder.AppError
+import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.UnidirectionalViewModel
 import kotlinx.coroutines.flow.Flow
@@ -15,6 +16,7 @@ interface SettingViewModel :
         SettingViewModel.State> {
     data class State(
         val theme: Theme? = Theme.SYSTEM,
+        val language: Lang? = Lang.SYSTEM
     )
 
     sealed class Effect {
@@ -23,6 +25,7 @@ interface SettingViewModel :
 
     sealed class Event {
         class ChangeTheme(val theme: Theme?) : Event()
+        class ChangeLanguage(val language: Lang?) : Event()
     }
 
     override val state: StateFlow<State>

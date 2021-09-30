@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.data
 import io.github.droidkaigi.feeder.repository.ContributorRepository
 import io.github.droidkaigi.feeder.repository.DeviceRepository
 import io.github.droidkaigi.feeder.repository.FeedRepository
+import io.github.droidkaigi.feeder.repository.LanguageRepository
 import io.github.droidkaigi.feeder.repository.StaffRepository
 import io.github.droidkaigi.feeder.repository.ThemeRepository
 import io.github.droidkaigi.feeder.repository.TimetableRepository
@@ -32,5 +33,9 @@ val repositoryModule = module {
 
     single<TimetableRepository> {
         TimetableRepositoryImpl(get(), get(), get())
+    }
+
+    single<LanguageRepository> {
+        LanguageRepositoryImpl(get())
     }
 }

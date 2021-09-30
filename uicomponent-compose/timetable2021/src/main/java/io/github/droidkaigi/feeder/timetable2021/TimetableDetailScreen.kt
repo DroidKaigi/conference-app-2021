@@ -290,6 +290,8 @@ private data class TimetableDetailSessionInfoState(
             else -> "未定"
         }
         Lang.EN -> language
+        // TODO: fix system language
+        Lang.SYSTEM -> language
     }
 }
 

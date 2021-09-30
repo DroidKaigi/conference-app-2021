@@ -5,9 +5,11 @@ import Repository
 
 public struct FavoritesState: Equatable {
     public var feedContents: [FeedContent]
+    public var language: Lang
 
-    public init(feedContents: [FeedContent]) {
+    public init(feedContents: [FeedContent], language: Lang) {
         self.feedContents = feedContents
+        self.language = language
     }
 }
 

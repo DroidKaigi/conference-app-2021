@@ -26,4 +26,8 @@ val platformModule = module {
     single<IosThemeRepository> {
         IosThemeRepositoryImpl(get())
     }
+
+    single<IosLanguageRepository> {
+        IosLanguageRepositoryImpl(get())
+    }
 }

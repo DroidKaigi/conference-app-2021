@@ -110,7 +110,7 @@ class FeedViewModelTest(
                 "Real ViewModel and Repository",
                 FeedViewModelFactory { errorFetchData: Boolean ->
                     RealFeedViewModel(
-                        repository = FeedRepositoryImpl(
+                        feedRepository = FeedRepositoryImpl(
                             feedApi = fakeFeedApi(
                                 if (errorFetchData) {
                                     AppError.ApiException.ServerException(null)

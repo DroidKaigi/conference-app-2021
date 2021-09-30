@@ -6,18 +6,18 @@ import Styleguide
 import UIApplicationClient
 
 public struct AboutScreen: View {
-    
+
     private let store: Store<AboutState, AboutAction>
-    
+
     public init(store: Store<AboutState, AboutAction>) {
         self.store = store
     }
-    
+
     internal enum ViewAction {
         case progressViewAppeared
         case reload
     }
-    
+
     public var body: some View {
         SwitchStore(store) {
             CaseLet(
@@ -75,17 +75,17 @@ public struct AboutScreen_Previews: PreviewProvider {
                 aboutScreen(state: .needToInitialize)
                     .previewDevice(.init(rawValue: "iPhone 12"))
                     .environment(\.colorScheme, colorScheme)
-                
+
                 // errorOccured
                 aboutScreen(state: .errorOccurred)
                     .previewDevice(.init(rawValue: "iPhone 12"))
                     .environment(\.colorScheme, colorScheme)
-                
+
                 // initialized with empty staffs
                 aboutScreen(state: .initialized(aboutLoadedState(staffs: [])))
                     .previewDevice(.init(rawValue: "iPhone 12"))
                     .environment(\.colorScheme, colorScheme)
-                
+
                 // initalized with some staffs
                 aboutScreen(state: .initialized(
                                 aboutLoadedState(staffs: [.mock(), .mock(), .mock()])))
@@ -94,7 +94,7 @@ public struct AboutScreen_Previews: PreviewProvider {
             }
         }
     }
-    
+
     private static func aboutScreen(state: AboutState) -> some View {
         AboutScreen(
             store: Store<AboutState, AboutAction>(
@@ -108,7 +108,7 @@ public struct AboutScreen_Previews: PreviewProvider {
             )
         )
     }
-    
+
     private static func aboutLoadedState(staffs: [Staff]) -> AboutLoadedState {
         return AboutLoadedState(
             staffs: staffs,

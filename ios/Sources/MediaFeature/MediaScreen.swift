@@ -55,7 +55,14 @@ public struct MediaScreen: View {
 
                 IfLetStore(
                     store.scope(
-                        state: \.searchedFeedContents,
+                        state: { state in
+                            state.searchedFeedContents.map {
+                                SearchResultScreen.ViewState(
+                                    contents: $0,
+                                    language: state.language
+                                )
+                            }
+                        },
                         action: MediaAction.init(action:)
                     ),
                     then: SearchResultScreen.init(store:)
@@ -132,6 +139,7 @@ private extension MediaAction {
 private extension MediaDetailScreen.ViewState {
     init?(state: MediaState) {
         guard let moreActiveType = state.moreActiveType else { return nil }
+        language = state.language
         switch moreActiveType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
@@ -164,7 +172,8 @@ public struct MediaScreen_Previews: PreviewProvider {
                                 .podcastMock(),
                                 .podcastMock(),
                                 .podcastMock()
-                            ]
+                            ],
+                            language: .ja
                         ),
                         reducer: .empty,
                         environment: {}
@@ -198,6 +207,7 @@ public struct MediaScreen_Previews: PreviewProvider {
                                 .podcastMock()
                             ],
                             searchText: "Search",
+                            language: .ja,
                             isSearchTextEditing: true
                         ),
                         reducer: .empty,
