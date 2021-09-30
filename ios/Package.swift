@@ -169,7 +169,8 @@ var package = Package(
                 .target(name: "Component"),
                 .target(name: "Model"),
                 .target(name: "Repository"),
-                .target(name: "Styleguide")
+                .target(name: "Styleguide"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
         .target(
