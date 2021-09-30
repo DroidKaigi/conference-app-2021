@@ -1,3 +1,4 @@
+import Component
 import ComposableArchitecture
 import Introspect
 import SwiftUI
@@ -73,6 +74,14 @@ public struct AboutDroidKaigiScreen: View {
                 .listStyle(InsetGroupedListStyle())
             }
             .background(AssetColor.Background.primary.color.ignoresSafeArea())
+            .sheet(
+                isPresented: viewStore.binding(
+                    get: \.isPresentingSheet,
+                    send: .hideSheet
+                )
+            ) {
+                WebView(url: viewStore.showingURL!)
+            }
         }
     }
 }
