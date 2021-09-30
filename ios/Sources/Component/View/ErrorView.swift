@@ -9,16 +9,25 @@ public struct ErrorView: View {
     }
 
     public var body: some View {
-        VStack(spacing: 16) {
+        VStack(spacing: 32) {
             Text(L10n.Component.ErrorView.title)
+                .font(.title2)
+                .bold()
+                .foregroundColor(AssetColor.Base.primary.color)
 
-            Button(
-                action: tapReload,
-                label: {
-                    Text(L10n.Component.ErrorView.reload)
-                        .foregroundColor(AssetColor.primary.color)
+            Button(action: tapReload, label: {
+                Text(L10n.Component.ErrorView.reload)
+                    .font(.headline)
+                    .bold()
+                    .foregroundColor(Color.white)
             })
+            .padding(.vertical, 10)
+            .padding(.horizontal, 24)
+            .background(AssetColor.primary.color)
+            .cornerRadius(20)
         }
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
+        .background(AssetColor.Background.primary.color.ignoresSafeArea())
     }
 }
 
