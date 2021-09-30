@@ -8,4 +8,8 @@
     <string name="light">ライト</string>
     <string name="ja">日本語</string>
     <string name="en">英語</string>
+    <!-- Notification -->
+    <string name="notification_channel_name_start_favorite_session">マイセッション開始のお知らせ</string>
+    <string name="notification_message_session_title">%1$s がもうすぐ始まります。</string>
+    <string name="notification_message_session_start_time">%1$s ~ %2$s @ %3$s</string>
 </resources>
