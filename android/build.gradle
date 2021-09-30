@@ -46,6 +46,16 @@ android {
                 mappingFileUploadEnabled false
             }
         }
+        performance {
+            matchingFallbacks = ['release']
+            debuggable false
+            // for using Firebase debug config
+            applicationIdSuffix ".debug"
+            versionNameSuffix "-debug"
+            signingConfig signingConfigs.debug
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
