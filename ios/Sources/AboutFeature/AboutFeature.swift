@@ -4,37 +4,20 @@ import Model
 import Repository
 import UIApplicationClient
 
-public struct AboutState: Equatable {
-    public var staffs: [Staff]
-    public var contributors: [Contributor]
-    public var selectedType: SelectedType
-    public var aboutDroidKaigiState: AboutDroidKaigiState?
-    public var showingURL: URL?
+public enum AboutState: Equatable {
+    case needToInitialize
+    case initialized(AboutLoadedState)
+    case errorOccurred
 
-    public var isShowingSheet: Bool {
-        showingURL != nil || aboutDroidKaigiState != nil
-    }
-
-    public init(
-        staffs: [Staff] = [],
-        contributors: [Contributor] = [],
-        selectedType: SelectedType = .staff
-    ) {
-        self.staffs = staffs
-        self.contributors = contributors
-        self.selectedType = selectedType
+    public init() {
+        self = .needToInitialize
     }
 }
 
 public enum AboutAction {
     case refresh
     case refreshResponse(Result<([Contributor], [Staff]), KotlinError>)
-    case selectedPicker(SelectedType)
-    case tapStaff(Staff)
-    case tapContributor(Contributor)
-    case tapBanner
-    case hideSheet
-    case aboutDroidKaigi(AboutDroidKaigiAction)
+    case loaded(AboutLoadedAction)
 }
 
 public struct AboutEnvironment {
@@ -54,13 +37,11 @@ public struct AboutEnvironment {
 }
 
 public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment>.combine(
-    aboutDroidKaigiReducer.optional().pullback(
-        state: \.aboutDroidKaigiState,
-        action: /AboutAction.aboutDroidKaigi,
+    aboutLoadedReducer.pullback(
+        state: /AboutState.initialized,
+        action: /AboutAction.loaded,
         environment: { environment in
-            .init(
-                applicationClient: environment.applicationClient
-            )
+            .init(applicationClient: environment.applicationClient)
         }
     ),
     .init { state, action, environment in
@@ -73,30 +54,15 @@ public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment>.com
             .catchToEffect()
             .map(AboutAction.refreshResponse)
         case .refreshResponse(.success((let contributors, let staffs))):
-            state.contributors = contributors
-            state.staffs = staffs
+            state = .initialized(AboutLoadedState(
+                staffs: staffs,
+                contributors: contributors
+            ))
             return .none
         case .refreshResponse(.failure):
+            state = .errorOccurred
             return .none
-        case .selectedPicker(let selectedType):
-            state.selectedType = selectedType
-            return .none
-        case let .tapStaff(staff):
-            guard let url = URL(string: staff.profileURLString) else { return .none }
-            state.showingURL = url
-            return .none
-        case let .tapContributor(contributor):
-            guard let url = URL(string: contributor.urlString) else { return .none }
-            state.showingURL = url
-            return .none
-        case .tapBanner:
-            state.aboutDroidKaigiState = .init()
-            return .none
-        case .hideSheet:
-            state.aboutDroidKaigiState = nil
-            state.showingURL = nil
-            return .none
-        case .aboutDroidKaigi:
+        case .loaded:
             return .none
         }
     }

@@ -48,14 +48,48 @@ private extension TimetableAction {
 }
 
 #if DEBUG
+import Model
 import Repository
 
 public struct TimetableScreen_Previews: PreviewProvider {
     public static var previews: some View {
+        let calendar = Calendar.init(identifier: .japanese)
+        let sessionMocks = (0...5).map { num -> AnyTimetableItem in
+            let dateComponents = DateComponents(
+                year: 2021, month: 10, day: 19, hour: 11 + num, minute: 00
+            )
+            return AnyTimetableItem.sessionMock(
+                startsAt: calendar.date(from: dateComponents)!
+            )
+        }
+
+        ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
+            // needToInitialize
+            timeTableScreen(state: .init(type: .needToInitialize, language: .en))
+                .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
+
+            // errorOccurred
+            timeTableScreen(state: .init(type: .errorOccurred, language: .en))
+                .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
+
+            // initialized
+            timeTableScreen(state: .init(type: .initialized, language: .en))
+                .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
+
+            timeTableScreen(state: .init(type: .initialized, timetableItems: sessionMocks, language: .en))
+                .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
+                .environment(\.colorScheme, colorScheme)
+        }
+    }
+
+    private static func timeTableScreen(state: TimetableState) -> some View {
         TimetableScreen(
             store: Store<TimetableState, TimetableAction>(
-                initialState: .init(language: .en),
-                reducer: timetableReducer,
+                initialState: state,
+                reducer: .empty,
                 environment: TimetableEnvironment(
                     timetableRepository: TimetableRepositoryMock()
                 )

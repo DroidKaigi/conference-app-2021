@@ -33,6 +33,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.core.NetworkImage
+import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
+import io.github.droidkaigi.feeder.core.animation.painterFavorite
+import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.fakeTimetableContents
 
 data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
@@ -76,7 +79,7 @@ private fun TimetableItemContent(
             .fillMaxWidth()
             .testTag("TimetableItem")
     ) {
-        val (startsAt, title, speakers, favoriteSpacer, favorite) = createRefs()
+        val (startsAt, title, speakers, favoriteSpacer, favorite, favoriteAnim) = createRefs()
 
         Text(
             timetableItem.startsTimeString,
@@ -114,28 +117,15 @@ private fun TimetableItemContent(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        if (speaker.iconUrl != null) {
-                            NetworkImage(
-                                url = speaker.iconUrl!!,
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape)
-                                    .testTag("Speakers icon"),
-                                contentScale = ContentScale.Fit,
-                                contentDescription = "speakers icon"
-                            )
-                        } else {
-                            Image(
-                                painter = painterResource(
-                                    io.github.droidkaigi.feeder.core.R.drawable.droid_placeholder
-                                ),
-                                modifier = Modifier
-                                    .size(32.dp)
-                                    .clip(CircleShape),
-                                contentScale = ContentScale.Fit,
-                                contentDescription = "speakers icon"
-                            )
-                        }
+                        NetworkImage(
+                            url = speaker.iconUrl,
+                            modifier = Modifier
+                                .size(32.dp)
+                                .clip(CircleShape)
+                                .testTag("Speakers icon"),
+                            contentScale = ContentScale.Fit,
+                            contentDescription = "speakers icon"
+                        )
                         Spacer(Modifier.width(8.dp))
                         Text(
                             speaker.name,
@@ -157,6 +147,18 @@ private fun TimetableItemContent(
             }
         )
 
+        FavoriteAnimation(
+            visible = favorited,
+            modifier = Modifier
+                .constrainAs(favoriteAnim) {
+                    width = Dimension.value(80.dp)
+                    height = Dimension.value(80.dp)
+                    start.linkTo(favorite.start)
+                    end.linkTo(favorite.end)
+                    bottom.linkTo(favorite.bottom)
+                }
+        )
+
         IconToggleButton(
             checked = favorited,
             modifier = Modifier.constrainAs(favorite) {
@@ -167,14 +169,14 @@ private fun TimetableItemContent(
             content = {
                 if (favorited) {
                     Icon(
-                        painter = painterResource(R.drawable.ic_baseline_favorite_24),
+                        painter = painterFavorite(),
                         contentDescription = "favorite",
                         modifier = Modifier.testTag("Favorite"),
                         tint = Color.Red
                     )
                 } else {
                     Icon(
-                        painter = painterResource(R.drawable.ic_baseline_favorite_border_24),
+                        painter = painterFavoriteBorder(),
                         contentDescription = "favorite",
                         modifier = Modifier.testTag("NotFavorite")
                     )

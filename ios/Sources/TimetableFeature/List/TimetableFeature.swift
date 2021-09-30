@@ -7,9 +7,11 @@ public struct TimetableState: Equatable {
     public var loadedState: TimetableLoadedState
     public var language: Lang
 
-    public init(language: Lang) {
-        self.type = .needToInitialize
-        self.loadedState = TimetableLoadedState(language: language)
+    public init(type: TimetableStateType = .needToInitialize,
+                timetableItems: [AnyTimetableItem] = [],
+                language: Lang) {
+        self.type = type
+        self.loadedState = TimetableLoadedState(timetableItems: timetableItems, language: language)
         self.language = language
     }
 }

@@ -68,7 +68,7 @@ public struct AboutDroidKaigiScreen: View {
                 }
                 .introspectTableView { tableView in
                     tableView.isScrollEnabled = false
-                    tableView.backgroundColor = .clear
+                    tableView.backgroundColor = AssetColor.Background.primary.uiColor
                 }
                 .listStyle(InsetGroupedListStyle())
             }
