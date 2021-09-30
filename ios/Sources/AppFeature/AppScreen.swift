@@ -13,37 +13,72 @@ public struct AppScreen: View {
     @State var selection = 0
 
     private let store: Store<AppState, AppAction>
+    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
+        self.viewStore = ViewStore<ViewState, ViewAction>(
+            store.scope(
+                state: ViewState.init(state:),
+                action: AppAction.init(action:)
+            )
+        )
         UITabBar.appearance().configureWithDefaultStyle()
         UINavigationBar.appearance().configureWithDefaultStyle()
     }
 
+    internal struct ViewState: Equatable {
+        init(state: AppState) {}
+    }
+
+    internal enum ViewAction {
+        case progressViewAppeared
+        case reload
+    }
+
     public var body: some View {
-        WithViewStore(store) { viewStore in
-            VStack(alignment: .center, spacing: 0) {
-                switch viewStore.type {
-                case .needToInitialize:
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(AssetColor.Background.primary.color.ignoresSafeArea())
-                        .onAppear { viewStore.send(.refresh) }
-                case .initialized:
-                    AppTabScreen(store: store.scope(state: \.appTabState, action: { (action: AppTabAction) in
-                        AppAction.appTab(action)
-                    }))
-                case .errorOccurred:
+        SwitchStore(store) {
+            CaseLet(
+                state: /AppState.needToInitialize,
+                action: { (action: AppScreen.ViewAction) in
+                    AppAction.init(action: action)
+                },
+                then: { _ in
+                ProgressView()
+                    .frame(maxWidth: .infinity, maxHeight: .infinity)
+                    .background(AssetColor.Background.primary.color.ignoresSafeArea())
+                    .onAppear { viewStore.send(.progressViewAppeared) }
+                }
+            )
+            CaseLet(
+                state: /AppState.initialized,
+                action: AppAction.appTab,
+                then: AppTabScreen.init(store:)
+            )
+            CaseLet(
+                state: /AppState.errorOccurred,
+                action: { (action: AppScreen.ViewAction) in
+                    AppAction.init(action: action)
+                },
+                then: { _ in
                     ErrorView(tapReload: {
-                        viewStore.send(.needRefresh)
+                        viewStore.send(.reload)
                     })
                 }
-            }
-            .accentColor(AssetColor.primary.color)
-            .background(AssetColor.Background.primary.color)
-            .onAppear {
-                viewStore.send(.onAppear)
-            }
+            )
+        }
+        .accentColor(AssetColor.primary.color)
+        .background(AssetColor.Background.primary.color)
+    }
+}
+
+private extension AppAction {
+    init(action: AppScreen.ViewAction) {
+        switch action {
+        case .progressViewAppeared:
+            self = .refresh
+        case .reload:
+            self = .needRefresh
         }
     }
 }
@@ -54,7 +89,7 @@ public struct AppScreen: View {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             AppScreen(
                 store: .init(
-                    initialState: .init(type: .needToInitialize, language: .en),
+                    initialState: .needToInitialize,
                     reducer: .empty,
                     environment: {}
                 )
@@ -64,7 +99,7 @@ public struct AppScreen: View {
 
             AppScreen(
                 store: .init(
-                    initialState: .init(type: .errorOccurred, language: .en),
+                    initialState: .errorOccurred,
                     reducer: .empty,
                     environment: {}
                 )
@@ -74,14 +109,18 @@ public struct AppScreen: View {
 
             AppScreen(
                 store: .init(
-                    initialState: .init(type: .initialized, language: .en, feedContents: [
-                        .blogMock(),
-                        .blogMock(),
-                        .blogMock(),
-                        .blogMock(),
-                        .blogMock(),
-                        .blogMock()
-                    ]),
+                    initialState: .initialized(
+                        .init(
+                            feedContents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ], language: .system
+                        )
+                    ),
                     reducer: .empty,
                     environment: {}
                 )
