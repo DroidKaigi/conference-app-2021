@@ -112,8 +112,8 @@ fun TimetableDetailScreen(
     }
 
     val contents = state.timetableContents
-    val item = contents.timetableItems.firstOrNull { it.id == id } ?: return
-    val isFavorite = contents.favorites.contains(id)
+    val item = contents.timetableItems.firstOrNull { it.id.value == id } ?: return
+    val isFavorite = contents.favorites.any { it.value == id }
 
     TimetableDetailScreen(
         item = item,

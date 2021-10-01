@@ -28,6 +28,7 @@ import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.DroidKaigi2021Day
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableItemList
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
@@ -60,7 +61,7 @@ fun TimetableScreen(
     selectedTab: TimetableTab,
     onSelectedTab: (TimetableTab) -> Unit,
     onNavigationIconClick: () -> Unit,
-    onDetailClick: (String) -> Unit,
+    onDetailClick: (TimetableItemId) -> Unit,
 ) {
     val (state, effectFlow, dispatch) = use(sessionViewModel())
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -95,7 +96,7 @@ private fun TimetableScreen(
     state: TimetableScreenState,
     onNavigationIconClick: () -> Unit,
     onSelectTab: (TimetableTab) -> Unit,
-    onDetailClick: (String) -> Unit,
+    onDetailClick: (TimetableItemId) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     Conference2021Theme() {
@@ -148,8 +149,8 @@ private fun TimetableScreen(
 
 data class TimetableListState(
     val timetableItems: TimetableItemList,
-    val onDetailClick: (String) -> Unit,
-    val favorites: Set<String>,
+    val onDetailClick: (TimetableItemId) -> Unit,
+    val favorites: Set<TimetableItemId>,
     val onFavoriteChange: (TimetableItem) -> Unit,
 )
 
