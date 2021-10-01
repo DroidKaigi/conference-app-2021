@@ -29,7 +29,7 @@ public struct TimetableScreen: View {
                         store: store.scope(
                             state: \.loadedState,
                             action: { (action: TimetableLoadedAction) in
-                                TimetableAction.init(action: action)
+                                TimetableAction.loaded(action)
                             }
                         )
                     )
