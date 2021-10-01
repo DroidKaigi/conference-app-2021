@@ -22,6 +22,18 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
                 endsAt = LocalDateTime.parse("2021-10-20T10:20:00")
                     .toInstant(TimeZone.of("UTC+9")),
+                category = TimetableCategory(
+                    id = 28657,
+                    title = MultiLangText("その他", "Other"),
+                ),
+                targetAudience = "TBW",
+                language = "TBD",
+                asset = TimetableAsset(null, null),
+                levels = listOf(
+                    "BEGINNER",
+                    "INTERMEDIATE",
+                    "ADVANCED",
+                ),
             ),
             TimetableItem.Session(
                 id = TimetableItemId("2"),
@@ -30,9 +42,37 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
                 endsAt = LocalDateTime.parse("2021-10-20T10:50:00")
                     .toInstant(TimeZone.of("UTC+9")),
+                category = TimetableCategory(
+                    id = 28654,
+                    title = MultiLangText(
+                        "Android FrameworkとJetpack",
+                        "Android Framework and Jetpack",
+                    ),
+                ),
+                targetAudience = "For App developer アプリ開発者向け",
+                language = "JAPANESE",
+                asset = TimetableAsset(
+                    videoUrl = "https://www.youtube.com/watch?v=hFdKCyJ-Z9A",
+                    slideUrl = "https://droidkaigi.jp/2021/",
+                ),
                 speakers = listOf(
-                    TimetableSpeaker("taka", "https://github.com/takahirom.png"),
-                    TimetableSpeaker("ry", "https://github.com/ry-itto.png")
+                    TimetableSpeaker(
+                        name = "taka",
+                        iconUrl = "https://github.com/takahirom.png",
+                        bio = "Likes Android",
+                        tagLine = "Android Engineer"
+                    ),
+                    TimetableSpeaker(
+                        name = "ry",
+                        iconUrl = "https://github.com/ry-itto.png",
+                        bio = "Likes iOS",
+                        tagLine = "iOS Engineer",
+                    ),
+                ),
+                description = "これはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。\nこれはディスクリプションです。",
+                message = null,
+                levels = listOf(
+                    "INTERMEDIATE",
                 ),
             ),
             TimetableItem.Special(
@@ -42,8 +82,20 @@ fun fakeTimetableContents(): TimetableContents = TimetableContents(
                     .toInstant(TimeZone.of("UTC+9")),
                 endsAt = LocalDateTime.parse("2021-10-21T18:20:00")
                     .toInstant(TimeZone.of("UTC+9")),
+                targetAudience = "TBW",
+                category = TimetableCategory(
+                    id = 28657,
+                    title = MultiLangText("その他", "Other"),
+                ),
+                language = "TBD",
+                asset = TimetableAsset(null, null),
+                levels = listOf(
+                    "BEGINNER",
+                    "INTERMEDIATE",
+                    "ADVANCED",
+                ),
             ),
         )
     ),
-    setOf()
+    favorites = setOf()
 )

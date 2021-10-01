@@ -6,12 +6,18 @@ import Styleguide
 
 public struct MediaSectionView: View {
     let type: MediaType
-    let store: Store<[FeedContent], ViewAction>
+    let store: Store<ViewState, ViewAction>
+
+    struct ViewState: Equatable {
+        let contents: [FeedContent]
+        let language: Lang
+    }
 
     enum ViewAction {
         case showMore
         case tap(FeedContent)
         case tapFavorite(isFavorited: Bool, id: String)
+        case tapPlay(FeedContent)
     }
 
     public var body: some View {
@@ -23,14 +29,18 @@ public struct MediaSectionView: View {
                 )
                 ScrollView(.horizontal, showsIndicators: false) {
                     LazyHStack(spacing: .zero) {
-                        ForEach(viewStore.state) { content in
+                        ForEach(viewStore.contents) { content in
                             MediumCard(
                                 content: content,
+                                language: viewStore.language,
                                 tapAction: {
                                     viewStore.send(.tap(content))
                                 },
                                 tapFavoriteAction: {
                                     viewStore.send(.tapFavorite(isFavorited: content.isFavorited, id: content.id))
+                                },
+                                tapPlayAction: {
+                                    viewStore.send(.tapPlay(content))
                                 }
                             )
                         }
@@ -44,17 +54,20 @@ public struct MediaSectionView: View {
 private extension MediumCard {
     init(
         content: FeedContent,
+        language: Lang,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         self.init(
-            title: content.item.title.jaTitle,
+            title: content.item.title.get(by: language),
             imageURL: URL(string: content.item.image.largeURLString),
             media: content.item.media,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
-            tapFavoriteAction: tapFavoriteAction
+            tapFavoriteAction: tapFavoriteAction,
+            tapPlayAction: tapPlayAction
         )
     }
 }
@@ -70,7 +83,9 @@ public struct MediaSectionView_Previews: PreviewProvider {
             ForEach(sizeCategories, id: \.self) { sizeCategory in
                 MediaSectionView(
                     type: .blog,
-                    store: .init(initialState: [.blogMock(), .blogMock(), .blogMock(), .blogMock(), .blogMock(), .blogMock()], reducer: .empty, environment: {})
+                    store: .init(initialState: MediaSectionView.ViewState(contents: [.blogMock(), .blogMock(), .blogMock(), .blogMock(), .blogMock(), .blogMock()], language: .en),
+                                 reducer: .empty,
+                                 environment: {})
                 )
                 .background(AssetColor.Background.primary.color)
                 .environment(\.sizeCategory, sizeCategory)

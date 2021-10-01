@@ -25,7 +25,9 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.Theme
+import io.github.droidkaigi.feeder.core.language.getTitle
 import io.github.droidkaigi.feeder.core.theme.getTitle
 import io.github.droidkaigi.feeder.core.theme.typography
 import io.github.droidkaigi.feeder.core.use
@@ -43,13 +45,22 @@ fun Settings() {
     Surface(
         color = MaterialTheme.colors.background,
     ) {
-        ThemeSetting(
-            context = context,
-            theme = state.theme,
-            onClick = {
-                dispatch(SettingViewModel.Event.ChangeTheme(theme = it))
-            }
-        )
+        Column {
+            ThemeSetting(
+                context = context,
+                theme = state.theme,
+                onClick = {
+                    dispatch(SettingViewModel.Event.ChangeTheme(theme = it))
+                }
+            )
+            LanguageSetting(
+                context = context,
+                language = state.language,
+                onClick = {
+                    dispatch(SettingViewModel.Event.ChangeLanguage(language = it))
+                }
+            )
+        }
     }
 }
 
@@ -79,13 +90,59 @@ private fun ThemeSetting(
             style = TextStyle(
                 color = Color.Gray
             ),
-            modifier = Modifier.fillMaxWidth().padding(end = 36.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 36.dp),
             textAlign = TextAlign.Right
         )
         if (openDialog.value) {
             ThemeSelectDialog(
                 onChangeTheme = onClick,
                 theme = theme,
+                context = context,
+                onClick = {
+                    openDialog.value = false
+                }
+            )
+        }
+    }
+}
+
+@Composable
+private fun LanguageSetting(
+    context: Context,
+    language: Lang?,
+    onClick: (Lang?) -> Unit,
+) {
+    val openDialog = remember { mutableStateOf(false) }
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
+        modifier = Modifier
+            .clickable {
+                openDialog.value = true
+            }
+            .fillMaxWidth()
+            .padding(vertical = 24.dp)
+    ) {
+        Text(
+            text = "Language",
+            style = typography.h5,
+            modifier = Modifier.padding(start = 36.dp),
+        )
+        Text(
+            text = language.getTitle(context),
+            style = TextStyle(
+                color = Color.Gray
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(end = 36.dp),
+            textAlign = TextAlign.Right
+        )
+        if (openDialog.value) {
+            LanguageSelectDialog(
+                onChangeLanguage = onClick,
+                language = language,
                 context = context,
                 onClick = {
                     openDialog.value = false
@@ -161,6 +218,80 @@ private fun ThemeSelectRadioButton(
                     )
                     Text(
                         text = theme.getTitle(context),
+                        modifier = Modifier.padding(16.dp),
+                    )
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun LanguageSelectDialog(
+    onChangeLanguage: (Lang?) -> Unit,
+    language: Lang?,
+    context: Context,
+    onClick: () -> Unit,
+) {
+    AlertDialog(
+        onDismissRequest = onClick,
+        title = {
+            Text(text = "Language")
+        },
+        text = {
+            LanguageSelectRadioButton(
+                onChangeLanguage = onChangeLanguage,
+                language = language,
+                context = context
+            )
+        },
+        confirmButton = {
+            Button(
+                onClick = onClick
+            ) {
+                Text("OK")
+            }
+        },
+    )
+}
+
+@Composable
+private fun LanguageSelectRadioButton(
+    onChangeLanguage: (Lang?) -> Unit,
+    language: Lang?,
+    context: Context,
+) {
+    val languages: List<Lang> = Lang.values().toList()
+    var defaultIndex = 0
+    languages.forEachIndexed { index, it -> if (it == language) defaultIndex = index }
+    val (selectedLanguage, onLangSelected) = remember { mutableStateOf(languages[defaultIndex]) }
+    Column(
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Column {
+            languages.forEach { language ->
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .selectable(
+                            selected = (language == selectedLanguage),
+                            onClick = {
+                                onLangSelected(language)
+                                onChangeLanguage(language)
+                            }
+                        )
+                ) {
+                    RadioButton(
+                        selected = (language == selectedLanguage),
+                        modifier = Modifier.padding(16.dp),
+                        onClick = {
+                            onLangSelected(language)
+                            onChangeLanguage(language)
+                        }
+                    )
+                    Text(
+                        text = language.getTitle(context),
                         modifier = Modifier.padding(16.dp),
                     )
                 }

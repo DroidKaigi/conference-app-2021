@@ -10,11 +10,13 @@ public struct MediaDetailScreen: View {
     struct ViewState: Equatable {
         var title: String
         var contents: [FeedContent]
+        var language: Lang
     }
 
     enum ViewAction {
         case tap(FeedContent)
         case tapFavorite(isFavorited: Bool, id: String)
+        case tapPlay(FeedContent)
     }
 
     public var body: some View {
@@ -22,11 +24,15 @@ public struct MediaDetailScreen: View {
             ScrollView {
                 FeedContentListView(
                     feedContents: viewStore.contents,
+                    language: viewStore.language,
                     tapContent: { content in
                         viewStore.send(.tap(content))
                     },
                     tapFavorite: { isFavorited, contentId in
                         viewStore.send(.tapFavorite(isFavorited: isFavorited, id: contentId))
+                    },
+                    tapPlay: { content in
+                        viewStore.send(.tapPlay(content))
                     }
                 )
             }
@@ -50,7 +56,8 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
                         .blogMock(),
                         .blogMock(),
                         .blogMock()
-                    ]
+                    ],
+                    language: .ja
                 ),
                 reducer: .empty,
                 environment: {}
@@ -70,7 +77,8 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
                         .blogMock(),
                         .blogMock(),
                         .blogMock()
-                    ]
+                    ],
+                    language: .ja
                 ),
                 reducer: .empty,
                 environment: {}

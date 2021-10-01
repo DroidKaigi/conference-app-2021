@@ -5,6 +5,12 @@
 
 // MARK: Timetable
 "TimetableScreen.Title" = "Timetable";
+"TimetableScreen.SelectedType.Day1" = "Day1";
+"TimetableScreen.SelectedType.Day2" = "Day2";
+"TimetableScreen.SelectedType.Day3" = "Day3";
+"TimetableScreen.Detail.IntendedAudience" = "受講対象者 / Intended Audience";
+"TimetableScreen.Detail.Description" = "説明 / Description";
+"TimetableScreen.Detail.WatchThisVideo" = "Watch this Video";
 
 // MARK: Media
 "MediaScreen.Title" = "Media";
@@ -34,9 +40,14 @@
 "SettingScreen.Title" = "Setting";
 "SettingScreen.ListItem.DarkMode" = "ダークモード";
 "SettingScreen.ListItem.Language" = "言語設定";
+"SettingScreen.ListItem.LanguageType.System" = "端末設定に従う";
+"SettingScreen.ListItem.LanguageType.Japanese" = "日本語";
+"SettingScreen.ListItem.LanguageType.English" = "English";
 
 // MARK: Component
 "Component.Tag.DroidKaigiFm" = "DroidKaigi.fm";
 "Component.Tag.Medium" = "Medium";
 "Component.Tag.Youtube" = "Youtube";
 "Component.Tag.Other" = "Other";
+"Component.ErrorView.Title" = "エラーが発生しました";
+"Component.ErrorView.Reload" = "再度読み込み";

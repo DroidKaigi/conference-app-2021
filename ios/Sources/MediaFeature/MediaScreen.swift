@@ -55,7 +55,14 @@ public struct MediaScreen: View {
 
                 IfLetStore(
                     store.scope(
-                        state: \.searchedFeedContents,
+                        state: { state in
+                            state.searchedFeedContents.map {
+                                SearchResultScreen.ViewState(
+                                    contents: $0,
+                                    language: state.language
+                                )
+                            }
+                        },
                         action: MediaAction.init(action:)
                     ),
                     then: SearchResultScreen.init(store:)
@@ -112,6 +119,8 @@ private extension MediaAction {
             self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        case .tapPlay(let content):
+            self = .tapPlay(content)
         }
     }
 
@@ -121,6 +130,8 @@ private extension MediaAction {
             self = .tap(content)
         case .tapFavorite(let isFavorited, let contentId):
             self = .tapFavorite(isFavorited: isFavorited, id: contentId)
+        case .tapPlay(let content):
+            self = .tapPlay(content)
         }
     }
 }
@@ -128,6 +139,7 @@ private extension MediaAction {
 private extension MediaDetailScreen.ViewState {
     init?(state: MediaState) {
         guard let moreActiveType = state.moreActiveType else { return nil }
+        language = state.language
         switch moreActiveType {
         case .blog:
             title = L10n.MediaScreen.Section.Blog.title
@@ -160,7 +172,8 @@ public struct MediaScreen_Previews: PreviewProvider {
                                 .podcastMock(),
                                 .podcastMock(),
                                 .podcastMock()
-                            ]
+                            ],
+                            language: .ja
                         ),
                         reducer: .empty,
                         environment: {}
@@ -173,24 +186,28 @@ public struct MediaScreen_Previews: PreviewProvider {
                     store: .init(
                         initialState: .init(
                             feedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .videoMock(),
-                                .videoMock(),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .blogMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .videoMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
+                                .videoMock(
+                                    title: .init(enTitle: "", jaTitle: "ForSearch")
+                                ),
                                 .videoMock(),
                                 .podcastMock(),
                                 .podcastMock(),
                                 .podcastMock()
                             ],
-                            searchedFeedContents: [
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock(),
-                                .blogMock()
-                            ],
+                            searchText: "Search",
+                            language: .ja,
                             isSearchTextEditing: true
                         ),
                         reducer: .empty,

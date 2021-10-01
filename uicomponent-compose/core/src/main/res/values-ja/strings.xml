@@ -6,4 +6,6 @@
     <string name="system">端末設定に従う</string>
     <string name="dark">ダーク</string>
     <string name="light">ライト</string>
+    <string name="ja">日本語</string>
+    <string name="en">英語</string>
 </resources>

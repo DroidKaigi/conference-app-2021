@@ -1,4 +1,5 @@
 import DroidKaigiMPP
+import Foundation
 
 public struct MultiLangText: Equatable {
     public var enTitle: String
@@ -23,6 +24,9 @@ public struct MultiLangText: Equatable {
             return enTitle
         case .ja:
             return jaTitle
+        case .system:
+            let locale = Foundation.Locale(identifier: Foundation.Locale.preferredLanguages[0])
+            return locale.languageCode == "ja" ? jaTitle : enTitle
         }
     }
 }

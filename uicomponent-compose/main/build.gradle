@@ -46,7 +46,7 @@ dependencies {
     kaptTest Dep.Dagger.hiltAndroidCompiler
 
     implementation Dep.Jetpack.appcompat
-    implementation Dep.Accompanist.coil
+    implementation Dep.coil
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.systemuicontroller
 

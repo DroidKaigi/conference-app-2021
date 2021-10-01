@@ -21,11 +21,15 @@ public struct HomeScreen: View {
                             if let topic = viewStore.topic {
                                 LargeCard(
                                     content: topic,
+                                    language: viewStore.language,
                                     tapAction: {
                                         viewStore.send(.tap(topic))
                                     },
                                     tapFavoriteAction: {
                                         viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
+                                    },
+                                    tapPlayAction: {
+                                        viewStore.send(.tapPlay(topic))
                                     }
                                 )
                             }
@@ -37,11 +41,15 @@ public struct HomeScreen: View {
                             ForEach(viewStore.listFeedContents) { feedContent in
                                 ListItem(
                                     content: feedContent,
+                                    language: viewStore.language,
                                     tapAction: {
                                         viewStore.send(.tap(feedContent))
                                     },
                                     tapFavoriteAction: {
                                         viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))
+                                    },
+                                    tapPlayAction: {
+                                        viewStore.send(.tapPlay(feedContent))
                                     }
                                 )
                             }
@@ -72,17 +80,20 @@ public struct HomeScreen: View {
 private extension LargeCard {
     init(
         content: FeedContent,
+        language: Lang,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         self.init(
-            title: content.item.title.jaTitle,
+            title: content.item.title.get(by: language),
             imageURL: URL(string: content.item.image.largeURLString),
             media: content.item.media,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
-            tapFavoriteAction: tapFavoriteAction
+            tapFavoriteAction: tapFavoriteAction,
+            tapPlayAction: tapPlayAction
         )
     }
 }
@@ -90,19 +101,22 @@ private extension LargeCard {
 private extension ListItem {
     init(
         content: FeedContent,
+        language: Lang,
         tapAction: @escaping () -> Void,
-        tapFavoriteAction: @escaping () -> Void
+        tapFavoriteAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) {
         let speakers = (content.item.wrappedValue as? Podcast)?.speakers ?? []
         self.init(
-            title: content.item.title.jaTitle,
+            title: content.item.title.get(by: language),
             media: content.item.media,
             imageURL: URL(string: content.item.image.smallURLString),
             speakers: speakers,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapFavoriteAction: tapFavoriteAction,
-            tapAction: tapAction
+            tapAction: tapAction,
+            tapPlayAction: tapPlayAction
         )
     }
 }
@@ -121,7 +135,8 @@ public struct HomeScreen_Previews: PreviewProvider {
                             .blogMock(),
                             .blogMock(),
                             .blogMock()
-                        ]
+                        ],
+                        language: .en
                     ),
                     reducer: .empty,
                     environment: {}

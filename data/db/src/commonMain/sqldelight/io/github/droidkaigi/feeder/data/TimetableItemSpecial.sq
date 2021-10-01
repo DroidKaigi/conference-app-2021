@@ -3,7 +3,15 @@ CREATE TABLE timetableItemSpecial (
     jaTitle TEXT NOT NULL,
     enTitle TEXT NOT NULL,
     startsAt INTEGER NOT NULL,
-    endsAt INTEGER NOT NULL
+    endsAt INTEGER NOT NULL,
+    idCategory INTEGER NOT NULL,
+    jaCategory TEXT NOT NULL,
+    enCategory TEXT NOT NULL,
+    targetAudience TEXT NOT NULL,
+    language TEXT NOT NULL,
+    assetSlideUrl TEXT,
+    assetVideoUrl TEXT,
+    levels TEXT NOT NULL
 );
 
 CREATE INDEX timetableItemSpecial_id ON timetableItemSpecial(id);
@@ -12,7 +20,9 @@ selectAllSpecial:
 SELECT
     timetableItemSpecial.*,
     timetableItemSpeaker.name speakerName,
-    timetableItemSpeaker.iconUrl speakerIconUrl
+    timetableItemSpeaker.bio speakerBio,
+    timetableItemSpeaker.iconUrl speakerIconUrl,
+    timetableItemSpeaker.tagLine speakerTagLine
 FROM timetableItemSpecial
 CROSS JOIN timetableItemSpeaker ON timetableItemSpecial.id = timetableItemSpeaker.timetablePrimaryId;
 
@@ -22,7 +32,16 @@ INSERT INTO timetableItemSpecial(
     jaTitle,
     enTitle,
     startsAt,
-    endsAt
+    endsAt,
+    endsAt,
+    idCategory,
+    jaCategory,
+    enCategory,
+    targetAudience,
+    language,
+    assetSlideUrl,
+    assetVideoUrl,
+    levels
 ) VALUES ?;
 
 deleteAll:

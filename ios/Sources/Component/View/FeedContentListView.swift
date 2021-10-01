@@ -4,17 +4,23 @@ import SwiftUI
 
 public struct FeedContentListView: View {
     private var feedContents: [FeedContent]
+    private var language: Lang
     private let tapContent: (FeedContent) -> Void
     private let tapFavorite: (_ isFavorited: Bool, _ id: String) -> Void
+    private let tapPlay: (FeedContent) -> Void
 
     public init(
         feedContents: [FeedContent],
+        language: Lang,
         tapContent: @escaping (FeedContent) -> Void,
-        tapFavorite: @escaping (_ isFavorited: Bool, _ id: String) -> Void
+        tapFavorite: @escaping (_ isFavorited: Bool, _ id: String) -> Void,
+        tapPlay: @escaping (FeedContent) -> Void
     ) {
         self.feedContents = feedContents
+        self.language = language
         self.tapContent = tapContent
         self.tapFavorite = tapFavorite
+        self.tapPlay = tapPlay
     }
 
     public var body: some View {
@@ -33,6 +39,9 @@ public struct FeedContentListView: View {
                     },
                     tapFavoritesAction: {
                         tapFavorite(content.isFavorited, content.id)
+                    },
+                    tapPlayAction: {
+
                     }
                 )
             }
@@ -45,16 +54,18 @@ extension FeedContentListView {
     private func createCard(
         content: FeedContent,
         tapAction: @escaping () -> Void,
-        tapFavoritesAction: @escaping () -> Void
+        tapFavoritesAction: @escaping () -> Void,
+        tapPlayAction: @escaping () -> Void
     ) -> some View {
         SmallCard(
-            title: content.item.title.jaTitle,
+            title: content.item.title.get(by: language),
             imageURL: URL(string: content.item.image.smallURLString),
             media: content.item.media,
             date: content.item.publishedAt,
             isFavorited: content.isFavorited,
             tapAction: tapAction,
-            tapFavoriteAction: tapFavoritesAction
+            tapFavoriteAction: tapFavoritesAction,
+            tapPlay: tapPlayAction
         )
     }
 }
@@ -72,8 +83,10 @@ public struct FeedContentListView_Previews: PreviewProvider {
                     .podcastMock(),
                     .podcastMock()
                 ],
+                language: .ja,
                 tapContent: { _ in },
-                tapFavorite: { _, _ in }
+                tapFavorite: { _, _ in },
+                tapPlay: { _ in }
             )
             .background(AssetColor.Background.primary.color)
             .previewDevice(.init(rawValue: "iPhone 12"))

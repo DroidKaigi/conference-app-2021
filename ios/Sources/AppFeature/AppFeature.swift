@@ -1,4 +1,5 @@
 import AboutFeature
+import Combine
 import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
@@ -19,7 +20,7 @@ public enum AppState: Equatable {
 public enum AppAction {
     case refresh
     case needRefresh
-    case refreshResponse(Result<[FeedContent], KotlinError>)
+    case refreshResponse(Result<([FeedContent], Lang?), KotlinError>)
     case appTab(AppTabAction)
 }
 
@@ -32,14 +33,17 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     .init { state, action, environment in
         switch action {
         case .refresh:
-            return environment.feedRepository.feedContents()
+            return Publishers.CombineLatest(
+                environment.feedRepository.feedContents(),
+                environment.languageRepository.currentLanguage()
+            )
                 .catchToEffect()
                 .map(AppAction.refreshResponse)
         case .needRefresh:
             state = .needToInitialize
             return .none
-        case let .refreshResponse(.success(feedContents)):
-            state = .initialized(.init(feedContents: feedContents))
+        case let .refreshResponse(.success((feedContents, language))):
+            state = .initialized(.init(feedContents: feedContents, language: language ?? .system))
             return .none
         case let .refreshResponse(.failure(error)):
             state = .errorOccurred

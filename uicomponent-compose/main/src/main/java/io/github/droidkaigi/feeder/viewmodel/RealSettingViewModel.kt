@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.cash.exhaustive.Exhaustive
 import dagger.hilt.android.lifecycle.HiltViewModel
+import io.github.droidkaigi.feeder.repository.LanguageRepository
 import io.github.droidkaigi.feeder.repository.ThemeRepository
 import io.github.droidkaigi.feeder.setting.SettingViewModel
 import javax.inject.Inject
@@ -18,13 +19,14 @@ import kotlinx.coroutines.launch
 
 @HiltViewModel
 class RealSettingViewModel @Inject constructor(
-    private val repository: ThemeRepository,
+    private val themeRepository: ThemeRepository,
+    private val languageRepository: LanguageRepository,
 ) : ViewModel(), SettingViewModel {
     private val effectChannel = Channel<SettingViewModel.Effect>(Channel.UNLIMITED)
     override val effect: Flow<SettingViewModel.Effect> = effectChannel.receiveAsFlow()
 
     override val state: StateFlow<SettingViewModel.State> =
-        repository.theme().map { SettingViewModel.State(theme = it) }
+        themeRepository.theme().map { SettingViewModel.State(theme = it) }
             .stateIn(
                 scope = viewModelScope,
                 started = SharingStarted.Eagerly,
@@ -36,7 +38,10 @@ class RealSettingViewModel @Inject constructor(
             @Exhaustive
             when (event) {
                 is SettingViewModel.Event.ChangeTheme -> {
-                    event.theme?.let { repository.changeTheme(theme = it) }
+                    event.theme?.let { themeRepository.changeTheme(theme = it) }
+                }
+                is SettingViewModel.Event.ChangeLanguage -> {
+                    event.language?.let { languageRepository.changeLanguage(language = it) }
                 }
             }
         }

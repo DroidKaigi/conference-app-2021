@@ -1,6 +1,6 @@
 import DroidKaigiMPP
 
-public struct Speaker: Equatable {
+public struct Speaker: Equatable, Hashable {
     public var name: String
     public var iconURLString: String
 
@@ -15,6 +15,11 @@ public struct Speaker: Equatable {
     public init(from model: DroidKaigiMPP.Speaker) {
         self.name = model.name
         self.iconURLString = model.iconUrl
+    }
+
+    public init(from model: DroidKaigiMPP.TimetableSpeaker) {
+        self.name = model.name
+        self.iconURLString = model.iconUrl ?? ""
     }
 }
 

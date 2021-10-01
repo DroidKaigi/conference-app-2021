@@ -13,7 +13,7 @@ open class TimetableRepositoryImpl(
     private val dataStore: UserDataStore,
 ) : TimetableRepository {
     override fun timetableContents(): Flow<TimetableContents> {
-        return dataStore.favorites()
+        return dataStore.favoriteTimetableItemIds()
             .combine(timetableItemDao.selectAll()) { favorites, dbtimetable ->
                 TimetableContents(
                     timetableItems = TimetableItemList(
@@ -26,8 +26,7 @@ open class TimetableRepositoryImpl(
 
     override suspend fun refresh() {
         val newtimetables = droidKaigi2021Api.fetch().timetableItems
-        timetableItemDao.deleteAll()
-        timetableItemDao.insert(newtimetables)
+        timetableItemDao.replace(newtimetables)
     }
 
     override suspend fun addFavorite(id: TimetableItemId) {

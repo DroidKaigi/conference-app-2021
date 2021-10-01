@@ -30,6 +30,7 @@ object ApiHttpClient {
                             contextual(InstantSerializer)
                         }
                         ignoreUnknownKeys = true
+                        useAlternativeNames = false
                     }
                 )
             }

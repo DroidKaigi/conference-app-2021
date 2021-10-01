@@ -25,7 +25,10 @@ extension Array where Element == FeedContent {
 
 #if DEBUG
 public extension FeedContent {
-    static func blogMock(id: UUID = UUID()) -> Self {
+    static func blogMock(
+        id: UUID = UUID(),
+        title: MultiLangText = .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて")
+    ) -> Self {
         .init(
             item: AnyFeedItem(
                 Blog(
@@ -35,7 +38,7 @@ public extension FeedContent {
                     media: .medium,
                     publishedAt: Date(timeIntervalSince1970: 0),
                     summary: .init(enTitle: "", jaTitle: ""),
-                    title: .init(enTitle: "", jaTitle: "DroidKaigi 2020でのCodelabsについて"),
+                    title: title,
                     author: .init(link: "", name: ""),
                     language: ""
                 )
@@ -44,7 +47,10 @@ public extension FeedContent {
         )
     }
 
-    static func podcastMock(id: UUID = UUID()) -> Self {
+    static func podcastMock(
+        id: UUID = UUID(),
+        title: MultiLangText = .init(enTitle: "", jaTitle: "2. Android 11 Talks")
+    ) -> Self {
         .init(
             item: AnyFeedItem(
                 Podcast(
@@ -56,14 +62,17 @@ public extension FeedContent {
                     publishedAt: Date(timeIntervalSince1970: 0),
                     speakers: [],
                     summary: .init(enTitle: "", jaTitle: ""),
-                    title: .init(enTitle: "", jaTitle: "2. Android 11 Talks")
+                    title: title
                 )
             ),
             isFavorited: false
         )
     }
 
-    static func videoMock(id: UUID = UUID()) -> Self {
+    static func videoMock(
+        id: UUID = UUID(),
+        title: MultiLangText = .init(enTitle: "", jaTitle: "DroidKaigi 2020 Lite - KotlinのDelegated Propertiesを活用してAndroidアプリ開発をもっと便利にする / chibatching [JA]")
+    ) -> Self {
         .init(
             item: AnyFeedItem(
                 Video(
