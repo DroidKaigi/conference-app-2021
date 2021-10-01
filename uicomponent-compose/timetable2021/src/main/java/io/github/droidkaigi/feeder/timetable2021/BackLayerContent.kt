@@ -26,12 +26,12 @@ enum class FilterState(val text: String) {
 }
 
 @Composable
-fun BackLayerContent (
+fun BackLayerContent(
     filterState: Filters,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
 ) {
     Column(
-    modifier = Modifier.padding(vertical = 12.dp)
+        modifier = Modifier.padding(vertical = 12.dp)
     ) {
         Input(
             text = FilterState.Favorite.text,

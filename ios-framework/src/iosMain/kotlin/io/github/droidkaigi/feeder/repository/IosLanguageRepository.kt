@@ -1,8 +1,8 @@
 package io.github.droidkaigi.feeder.repository
 
+import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.NonNullSuspendWrapper
 import io.github.droidkaigi.feeder.NullableFlowWrapper
-import io.github.droidkaigi.feeder.Lang
 
 interface IosLanguageRepository {
     fun changeLanguage(language: Lang): NonNullSuspendWrapper<Unit>
