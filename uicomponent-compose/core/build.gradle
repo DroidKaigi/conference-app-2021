@@ -5,6 +5,8 @@ plugins {
     id 'com.android.library'
     id 'kotlin-android'
     id 'app.cash.exhaustive'
+    id 'kotlin-kapt'
+    id 'dagger.hilt.android.plugin'
 }
 
 apply from: rootProject.file("gradle/android.gradle")
@@ -57,4 +59,16 @@ dependencies {
 
     // Android
     implementation Dep.Jetpack.browser
+
+    // Hilt
+    implementation Dep.Dagger.hiltAndroid
+    kapt Dep.Dagger.hiltAndroidCompiler
+
+    // For instrumentation tests
+    androidTestImplementation Dep.Dagger.hiltAndroidTesting
+    kaptAndroidTest Dep.Dagger.hiltAndroidCompiler
+
+    // For local unit tests
+    testImplementation Dep.Dagger.hiltAndroidTesting
+    kaptTest Dep.Dagger.hiltAndroidCompiler
 }
