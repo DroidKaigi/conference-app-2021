@@ -1,13 +1,12 @@
 package io.github.droidkaigi.feeder.notification
 
 import android.app.PendingIntent
-import android.app.TaskStackBuilder
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import io.github.droidkaigi.feeder.MainActivity
-import io.github.droidkaigi.feeder.core.R
 import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_CHANNEL_ID
 import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_SESSION_ID
 import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_TEXT
@@ -24,23 +23,23 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
         val channelId = intent.getStringExtra(EXTRA_CHANNEL_ID) ?: ""
         val sessionDetailIntent = Intent(
             Intent.ACTION_VIEW,
-            createDeepLink(context, sessionId).toUri(),
+            createDeepLink(sessionId),
             context,
             MainActivity::class.java
         )
-        val deepLinkPendingIntent: PendingIntent = TaskStackBuilder.create(context).run {
+        TaskStackBuilder.create(context).run {
             addNextIntentWithParentStack(sessionDetailIntent)
             getPendingIntent(sessionId.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT)
+        }?.let {
+            NotificationUtil.showSessionNotification(
+                context,
+                title,
+                text,
+                it,
+                channelId
+            )
         }
-        NotificationUtil.showSessionNotification(context,
-            title,
-            text,
-            deepLinkPendingIntent,
-            channelId)
     }
 
-    private fun createDeepLink(context: Context, id: String): String {
-        return "https://" + context.getString(R.string.deep_link_host) +
-            context.getString(R.string.deep_link_path) + "/timetable/detail/${id}"
-    }
+    private fun createDeepLink(id: String) = "https://droidkaigi.jp/2021/timetable/detail/${id}".toUri()
 }
