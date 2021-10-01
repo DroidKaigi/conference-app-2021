@@ -111,6 +111,9 @@ fun AppContent(
                     },
                     onDetailClick = { feedItem: FeedItem ->
                         actions.showChromeCustomTabs(feedItem.link)
+                    },
+                    onDroidKaigi2021ArticleClick = {
+                        actions.onSelectDrawerItem(DrawerContents.TIMETABLE)
                     }
                 )
             }

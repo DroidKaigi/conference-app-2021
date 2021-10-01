@@ -98,6 +98,7 @@ fun FeedScreen(
     selectedTab: FeedTab,
     onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onDroidKaigi2021ArticleClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -165,6 +166,7 @@ fun FeedScreen(
         onClickPlayPodcastButton = {
             fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
+        onClickDroidKaigi2021Article = onDroidKaigi2021ArticleClick
     )
 }
 
@@ -186,6 +188,7 @@ private fun FeedScreen(
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
+    onClickDroidKaigi2021Article: () -> Unit
 ) {
     val density = LocalDensity.current
     BackdropScaffold(
@@ -217,6 +220,7 @@ private fun FeedScreen(
                     onFavoriteChange = onFavoriteChange,
                     listState = tabLazyListStates.getValue(selectedTab),
                     onClickPlayPodcastButton = onClickPlayPodcastButton,
+                    onClickArticleItem = onClickDroidKaigi2021Article,
                     isFilterState = filters.filterFavorite,
                 )
             }
@@ -290,6 +294,7 @@ private fun FeedList(
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
+    onClickArticleItem: () -> Unit,
     listState: LazyListState,
     isFilterState: Boolean,
 ) {
@@ -317,32 +322,29 @@ private fun FeedList(
                 items = feedContents.contents,
                 key = { _, item -> item.first.id }
             ) { index, (feedItem, favorited) ->
-                if (isHome && index == 0) {
+                if (isHome && index==0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
                     }
-                    FirstFeedItem(
-                        feedItem = feedItem,
-                        favorited = favorited,
-                        onClick = onClickFeed,
-                        showMediaLabel = isHome,
-                        onFavoriteChange = onFavoriteChange,
+                    DroidKaigi2021ArticleItem(
+                        favorited = false,
+                        onClick = onClickArticleItem,
+                        onFavoriteChange = {},
                         shouldPadding = isFilterState
                     )
-                } else {
-                    FeedItemRow(
-                        item = feedItem,
-                        favorited = favorited,
-                        onClickFeed = onClickFeed,
-                        showMediaLabel = isHome,
-                        onFavoriteChange = onFavoriteChange,
-                        showDivider = index != 0,
-                        isPlayingPodcast = (feedItem as? FeedItem.Podcast)
-                            ?.podcastLink == fmPlayerState?.url &&
-                            fmPlayerState?.isPlaying() == true,
-                        onClickPlayPodcastButton = onClickPlayPodcastButton
-                    )
                 }
+                FeedItemRow(
+                    item = feedItem,
+                    favorited = favorited,
+                    onClickFeed = onClickFeed,
+                    showMediaLabel = isHome,
+                    onFavoriteChange = onFavoriteChange,
+                    showDivider = index != 0,
+                    isPlayingPodcast = (feedItem as? FeedItem.Podcast)
+                        ?.podcastLink == fmPlayerState?.url &&
+                        fmPlayerState?.isPlaying() == true,
+                    onClickPlayPodcastButton = onClickPlayPodcastButton
+                )
                 if (index == feedContents.lastIndex) {
                     val robotAnimValue by animateFloatAsState(
                         targetValue = if (isListFinished) 0f else 10f,
@@ -461,8 +463,8 @@ fun PreviewFeedScreen() {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
             ) { feedItem: FeedItem ->
             }
         }
@@ -482,8 +484,8 @@ fun PreviewDarkFeedScreen() {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
             ) { feedItem: FeedItem ->
             }
         }
@@ -501,8 +503,8 @@ fun PreviewFeedScreenWithStartBlog() {
             FeedScreen(
                 selectedTab = FeedTab.FilteredFeed.Blog,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
             ) { feedItem: FeedItem ->
             }
         }
