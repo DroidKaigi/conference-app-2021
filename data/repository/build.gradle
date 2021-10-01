@@ -67,7 +67,7 @@ kotlin {
         androidTest.dependencies {
             implementation Dep.KotlinTest.junit
             implementation Dep.Kotlin.reflect
-//            implementation Dep.ktlint
+            implementation Dep.ktlint
         }
         androidAndroidTest {
             kotlin {
