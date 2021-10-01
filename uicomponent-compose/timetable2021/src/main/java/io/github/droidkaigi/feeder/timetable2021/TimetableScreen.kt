@@ -158,7 +158,6 @@ data class TimetableListState(
 private fun TimetableList(
     state: TimetableListState,
 ) {
-    println(state.timetableItems)
     LazyColumn {
         itemsIndexed(
             items = state.timetableItems,
