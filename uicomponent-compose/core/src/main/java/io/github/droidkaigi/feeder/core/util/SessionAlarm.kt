@@ -10,6 +10,7 @@ import androidx.core.app.AlarmManagerCompat
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.core.R
 import io.github.droidkaigi.feeder.defaultLang
+import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
@@ -47,10 +48,8 @@ class SessionAlarm @Inject constructor(private val app: Application) {
 
     private fun createAlarmIntent(session: TimetableItem): PendingIntent {
         val formatter = DateTimeFormatter.ofPattern(PATTERN)
-        val startsTime = session.startsAt.toLocalDateTime(TimeZone.currentSystemDefault())
-            .toJavaLocalDateTime().format(formatter)
-        val endsTime = session.endsAt.toLocalDateTime(TimeZone.currentSystemDefault())
-            .toJavaLocalDateTime().format(formatter)
+        val startsTime = session.startsAt.toLocalDateTimeWithFormatter(formatter)
+        val endsTime = session.endsAt.toLocalDateTimeWithFormatter(formatter)
 
         val speakers = when (session) {
             is TimetableItem.Session -> session.speakers
@@ -110,6 +109,9 @@ class SessionAlarm @Inject constructor(private val app: Application) {
             putExtra(EXTRA_CHANNEL_ID, FAVORITE_SESSION_START_CHANNEL_ID)
         }
     }
+
+    private fun Instant.toLocalDateTimeWithFormatter(formatter: DateTimeFormatter) =
+        toLocalDateTime(TimeZone.currentSystemDefault()).toJavaLocalDateTime().format(formatter)
 
     companion object {
         private const val PATTERN = "HH:mm"
