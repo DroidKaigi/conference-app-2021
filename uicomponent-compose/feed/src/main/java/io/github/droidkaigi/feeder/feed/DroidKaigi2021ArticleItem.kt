@@ -102,7 +102,7 @@ fun DroidKaigi2021ArticleItem(
                     bottom.linkTo(parent.bottom, 12.dp)
                     start.linkTo(media.end, 12.dp)
                 },
-                text = publishedDateString(Instant.fromEpochMilliseconds(1583544379858)),
+                text = publishedDateString(Instant.fromEpochMilliseconds(1634482800000)),
                 style = typography.caption
             )
         }
