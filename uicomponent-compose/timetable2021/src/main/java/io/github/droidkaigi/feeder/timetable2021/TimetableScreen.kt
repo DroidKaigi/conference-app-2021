@@ -9,7 +9,6 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHost
-import androidx.compose.material.Text
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
@@ -26,6 +25,7 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.DroidKaigi2021Day
+import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemList
@@ -83,6 +83,14 @@ fun TimetableScreen(
                 TimetableViewModel.Event.ToggleFavorite(timetableItem = timetableItem)
             )
         },
+        filters = state.filters,
+        onFavoriteFilterChanged = {
+            dispatch(
+                TimetableViewModel.Event.ChangeFavoriteFilter(
+                    filters = state.filters.copy(filterFavorite = it)
+                )
+            )
+        }
     )
 }
 
@@ -97,6 +105,8 @@ private fun TimetableScreen(
     onSelectTab: (TimetableTab) -> Unit,
     onDetailClick: (String) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
+    filters: Filters,
+    onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
 ) {
     Conference2021Theme() {
         val density = LocalDensity.current
@@ -104,8 +114,7 @@ private fun TimetableScreen(
             backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
             scaffoldState = state.scaffoldState,
             backLayerContent = {
-                // TODO
-                Text(text = "Implement me!!!!")
+                BackLayerContent(filters, onFavoriteFilterChanged)
             },
             frontLayerShape = MaterialTheme.shapes.large,
             peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
