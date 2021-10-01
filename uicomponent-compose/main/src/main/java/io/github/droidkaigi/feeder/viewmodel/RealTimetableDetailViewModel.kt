@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.AppError
 import io.github.droidkaigi.feeder.TimetableContents
+import io.github.droidkaigi.feeder.core.util.SessionAlarm
 import io.github.droidkaigi.feeder.repository.TimetableRepository
 import io.github.droidkaigi.feeder.timetable2021.TimetableDetailViewModel
 import javax.annotation.meta.Exhaustive
@@ -21,6 +22,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class RealTimetableDetailViewModel @Inject constructor(
     private val repository: TimetableRepository,
+    private val sessionAlarm: SessionAlarm,
 ) : ViewModel(), TimetableDetailViewModel {
 
     private val effectChannel = Channel<TimetableDetailViewModel.Effect>(Channel.UNLIMITED)
@@ -66,6 +68,7 @@ class RealTimetableDetailViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(event.timetableItem.id)
                     }
+                    sessionAlarm.toggleRegister(event.timetableItem, favorite)
                 }
             }
         }
