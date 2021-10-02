@@ -42,5 +42,5 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun createDeepLink(id: String) =
-        "https://droidkaigi.jp/2021/timetable/detail/${id}".toUri()
+        "https://droidkaigi.jp/2021/timetable/detail/$id".toUri()
 }
