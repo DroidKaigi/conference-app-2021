@@ -16,7 +16,8 @@ interface TimetableViewModel :
         .State> {
     data class State(
         val showProgress: Boolean = false,
-        val timetableContents: TimetableContents = fakeTimetableContents(),
+        val filters: Filters = Filters(),
+        val filteredTimetableContents: TimetableContents = fakeTimetableContents(),
     )
 
     sealed class Effect {

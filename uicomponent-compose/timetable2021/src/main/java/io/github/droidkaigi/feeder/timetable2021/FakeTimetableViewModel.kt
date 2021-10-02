@@ -58,9 +58,11 @@ class FakeTimetableViewModel(val errorFetchData: Boolean) : TimetableViewModel {
     private val filters: MutableStateFlow<Filters> = MutableStateFlow(Filters())
 
     override val state: StateFlow<TimetableViewModel.State> =
-        combine(mTimetableContents, filters) { feedContents, _ ->
+        combine(mTimetableContents, filters) { timetableContents, filters ->
+            val filteredTimetableContents = timetableContents.filtered(filters)
             TimetableViewModel.State(
-                timetableContents = feedContents,
+                filters = filters,
+                filteredTimetableContents = filteredTimetableContents,
             )
         }
             .stateIn(coroutineScope, SharingStarted.Eagerly, TimetableViewModel.State())
