@@ -49,6 +49,7 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
@@ -169,12 +170,16 @@ fun TimetableDetailScreen(
                  * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
                  */
                 val margin = when {
-                    maxWidth < 599.dp -> 16.dp
-                    maxWidth < 904.dp -> 32.dp
-                    maxWidth < 1239.dp -> (maxWidth - 840.dp) / 2
-                    maxWidth < 1439.dp -> 200.dp
+                    maxWidth <= 599.dp -> 16.dp
+                    maxWidth <= 904.dp -> 32.dp
+                    maxWidth <= 1239.dp -> (maxWidth - 840.dp) / 2
+                    maxWidth <= 1439.dp -> 200.dp
                     else -> (maxHeight - 1040.dp) / 2
                 } + 8.dp
+                val buttonWidth = when {
+                    maxWidth <= 599.dp -> ((maxWidth - margin * 2) - 16.dp) / 2
+                    else -> 144.dp
+                }
 
                 Column(
                     modifier = Modifier
@@ -206,6 +211,7 @@ fun TimetableDetailScreen(
                         modifier = Modifier.padding(horizontal = margin),
                         asset = item.asset,
                         onOpenUrl = onOpenUrl,
+                        buttonWidth = buttonWidth,
                     )
                     if (item is TimetableItem.Session) {
                         TimetableDetailSpeakers(
@@ -435,6 +441,7 @@ private fun TimetableDetailAsset(
     modifier: Modifier = Modifier,
     asset: TimetableAsset,
     onOpenUrl: (Uri) -> Unit,
+    buttonWidth: Dp,
 ) {
     Divider(
         modifier = modifier.padding(
@@ -455,7 +462,7 @@ private fun TimetableDetailAsset(
     ) {
         if (showVideoButton) {
             Button(
-                modifier = Modifier.width(144.dp),
+                modifier = Modifier.width(buttonWidth),
                 colors = buttonColors(
                     backgroundColor = MaterialTheme.colors.secondary,
                     contentColor = MaterialTheme.colors.onSecondary,
@@ -472,7 +479,7 @@ private fun TimetableDetailAsset(
         }
         if (showSlidesButton) {
             Button(
-                modifier = Modifier.width(144.dp),
+                modifier = Modifier.width(buttonWidth),
                 colors = buttonColors(
                     backgroundColor = MaterialTheme.colors.secondary,
                     contentColor = MaterialTheme.colors.onSecondary,
