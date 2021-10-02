@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.1.0-alpha04"
+    const val compose = "1.1.0-alpha05"
     const val coroutines = "1.5.0-native-mt"
 }
 
@@ -53,13 +53,13 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.30"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.31"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.30"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.31"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
@@ -96,6 +96,7 @@ object Dep {
 
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
     const val ktlint = "com.pinterest:ktlint:0.40.0"
+    const val exhaustivePlugin = "app.cash.exhaustive:exhaustive-gradle:0.2.0"
 
     object Dagger {
         const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.37"
@@ -122,6 +123,7 @@ object Dep {
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
 
+    const val playServicesOssLicensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.4"
     const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object SQLDelight {
