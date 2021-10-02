@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 object Versions {
-    const val compose = "1.1.0-alpha04"
+    const val compose = "1.1.0-alpha05"
     const val coroutines = "1.5.0-native-mt"
 }
 
@@ -53,13 +53,13 @@ object Dep {
     }
 
     object Kotlin {
-        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.30"
+        const val bom = "org.jetbrains.kotlin:kotlin-bom:1.5.31"
 
         // bom import does not working...
-        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.30"
-        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.30"
+        const val plugin = "org.jetbrains.kotlin:kotlin-gradle-plugin:1.5.31"
+        const val serializationPlugin = "org.jetbrains.kotlin:kotlin-serialization:1.5.31"
         const val stdlib = "org.jetbrains.kotlin:kotlin-stdlib"
-        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.30"
+        const val stdlibJdk8 = "org.jetbrains.kotlin:kotlin-stdlib-jdk8:1.5.31"
         const val reflect = "org.jetbrains.kotlin:kotlin-reflect"
     }
 
