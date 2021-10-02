@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -69,6 +70,7 @@ import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -309,6 +311,7 @@ private fun FeedList(
                     .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             }
         }
+        val isDroidKaigiEnd = remember { mutableStateOf(DroidKaigi2021.isArticleEnd()) }
         LazyColumn(
             contentPadding = rememberInsetsPaddingValues(
                 insets = LocalWindowInsets.current.systemBars,
@@ -325,24 +328,36 @@ private fun FeedList(
                 if (isHome && index == 0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
+                    } else if (!isDroidKaigiEnd.value) {
+                        DroidKaigi2021ArticleItem(
+                            onClick = onClickArticleItem,
+                            shouldPadding = isFilterState
+                        )
                     }
-                    DroidKaigi2021ArticleItem(
-                        onClick = onClickArticleItem,
+                }
+                if (isDroidKaigiEnd.value && isHome && index == 0) {
+                    FirstFeedItem(
+                        feedItem = feedItem,
+                        favorited = favorited,
+                        onClick = onClickFeed,
+                        showMediaLabel = isHome,
+                        onFavoriteChange = onFavoriteChange,
                         shouldPadding = isFilterState
                     )
+                } else {
+                    FeedItemRow(
+                        item = feedItem,
+                        favorited = favorited,
+                        onClickFeed = onClickFeed,
+                        showMediaLabel = isHome,
+                        onFavoriteChange = onFavoriteChange,
+                        showDivider = index != 0,
+                        isPlayingPodcast = (feedItem as? FeedItem.Podcast)
+                            ?.podcastLink == fmPlayerState?.url &&
+                            fmPlayerState?.isPlaying() == true,
+                        onClickPlayPodcastButton = onClickPlayPodcastButton
+                    )
                 }
-                FeedItemRow(
-                    item = feedItem,
-                    favorited = favorited,
-                    onClickFeed = onClickFeed,
-                    showMediaLabel = isHome,
-                    onFavoriteChange = onFavoriteChange,
-                    showDivider = index != 0,
-                    isPlayingPodcast = (feedItem as? FeedItem.Podcast)
-                        ?.podcastLink == fmPlayerState?.url &&
-                        fmPlayerState?.isPlaying() == true,
-                    onClickPlayPodcastButton = onClickPlayPodcastButton
-                )
                 if (index == feedContents.lastIndex) {
                     val robotAnimValue by animateFloatAsState(
                         targetValue = if (isListFinished) 0f else 10f,
@@ -448,6 +463,10 @@ fun FilterItemCountRow(count: String) {
             text = "該当アイテム:$count"
         )
     }
+}
+
+object DroidKaigi2021 {
+    fun isArticleEnd() = Instant.now().isAfter(Instant.ofEpochMilli(1635692400000))
 }
 
 @Preview(showBackground = true)
