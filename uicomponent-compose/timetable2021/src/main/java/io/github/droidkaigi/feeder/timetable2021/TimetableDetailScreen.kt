@@ -54,7 +54,9 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import androidx.core.content.ContextCompat.startActivity
 import androidx.core.net.toUri
+import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.statusBarsPadding
+import com.google.accompanist.insets.systemBarsPadding
 import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableAsset
@@ -164,7 +166,13 @@ fun TimetableDetailScreen(
                 )
             },
         ) { innerPadding ->
-            BoxWithConstraints {
+            BoxWithConstraints(
+                modifier = Modifier.systemBarsPadding(
+                    top = false,
+                    start = false,
+                    end = false,
+                )
+            ) {
                 /**
                  * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
                  */
