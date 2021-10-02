@@ -53,6 +53,15 @@ public struct TimetableLoadedView: View {
                 }
                 .background(AssetColor.Background.primary.color.ignoresSafeArea())
                 .navigationTitle(L10n.TimetableScreen.title)
+                .navigationBarItems(
+                    trailing: Button(action: {
+                        viewStore.send(.showSetting)
+                    }, label: {
+                        AssetImage.iconSetting.image
+                            .renderingMode(.template)
+                            .foregroundColor(AssetColor.Base.primary.color)
+                    })
+                )
                 .background(
                     NavigationLink(
                         destination: IfLetStore(

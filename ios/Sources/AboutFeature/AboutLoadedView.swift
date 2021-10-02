@@ -5,8 +5,11 @@ import SwiftUI
 import Styleguide
 
 public struct AboutLoadedView: View {
-
     private let store: Store<AboutLoadedState, AboutLoadedAction>
+
+    private enum Const {
+        static let bannerHeight: CGFloat = 100
+    }
 
     public init(store: Store<AboutLoadedState, AboutLoadedAction>) {
         self.store = store
@@ -110,6 +113,7 @@ private extension AboutLoadedView {
                     }
                 }
                 .padding(.top, 20)
+                .padding(.bottom, Const.bannerHeight)
             case .contributor:
                 LazyVGrid(
                     columns: Array(repeating: .init(), count: 3),
@@ -121,6 +125,7 @@ private extension AboutLoadedView {
                 }
                 .listStyle(PlainListStyle())
                 .padding(.top, 20)
+                .padding(.bottom, Const.bannerHeight)
             }
         }
     }

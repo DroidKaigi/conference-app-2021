@@ -41,6 +41,7 @@ public enum TimetableLoadedAction {
     case content(TimetableContentAction)
     case detail(TimetableDetailAction)
     case hideDetail
+    case showSetting
 }
 
 public struct TimetableLoadedEnvironment {
@@ -65,6 +66,8 @@ public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoade
             state.detailState = nil
             return .none
         case .detail:
+            return .none
+        case .showSetting:
             return .none
         }
     }
