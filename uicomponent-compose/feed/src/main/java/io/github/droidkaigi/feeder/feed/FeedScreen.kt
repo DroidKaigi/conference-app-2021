@@ -327,9 +327,7 @@ private fun FeedList(
                         FilterItemCountRow(feedContents.size.toString())
                     }
                     DroidKaigi2021ArticleItem(
-                        favorited = false,
                         onClick = onClickArticleItem,
-                        onFavoriteChange = {},
                         shouldPadding = isFilterState
                     )
                 }

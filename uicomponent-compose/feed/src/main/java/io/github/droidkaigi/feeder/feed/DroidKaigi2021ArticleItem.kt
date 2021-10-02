@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material.Icon
-import androidx.compose.material.IconToggleButton
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -24,7 +22,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
-import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
@@ -34,9 +31,7 @@ import kotlinx.datetime.toLocalDateTime
 
 @Composable
 fun DroidKaigi2021ArticleItem(
-    favorited: Boolean,
     onClick: () -> Unit,
-    onFavoriteChange: (FeedItem) -> Unit,
     shouldPadding: Boolean,
 ) {
     ConstraintLayout(
@@ -106,39 +101,6 @@ fun DroidKaigi2021ArticleItem(
                 style = typography.caption
             )
         }
-        FavoriteAnimation(
-            visible = favorited,
-            modifier = Modifier
-                .constrainAs(favoriteAnim) {
-                    width = Dimension.value(80.dp)
-                    height = Dimension.value(80.dp)
-                    start.linkTo(favorite.start)
-                    end.linkTo(favorite.end)
-                    bottom.linkTo(favorite.bottom, 12.dp)
-                }
-        )
-        IconToggleButton(
-            checked = false,
-            modifier = Modifier.constrainAs(favorite) {
-                top.linkTo(image.bottom, 36.dp)
-                end.linkTo(parent.end, 20.dp)
-            },
-            content = {
-                if (favorited) {
-                    Icon(
-                        painterResource(R.drawable.ic_baseline_favorite_24),
-                        "favorite",
-                        tint = Color.Red
-                    )
-                } else {
-                    Icon(
-                        painterResource(R.drawable.ic_baseline_favorite_border_24),
-                        "favorite"
-                    )
-                }
-            },
-            onCheckedChange = { }
-        )
     }
 }
 
@@ -153,9 +115,7 @@ fun publishedDateString(publishedAt: Instant): String {
 fun PreviewDroidKaigi2021ArticleItem() {
     ConferenceAppFeederTheme {
         DroidKaigi2021ArticleItem(
-            favorited = false,
             onClick = { },
-            onFavoriteChange = { },
             shouldPadding = false
         )
     }
@@ -166,9 +126,7 @@ fun PreviewDroidKaigi2021ArticleItem() {
 fun PreviewDroidKaigi2021ArticleItemWithFiltered() {
     ConferenceAppFeederTheme {
         DroidKaigi2021ArticleItem(
-            favorited = false,
             onClick = { },
-            onFavoriteChange = { },
             shouldPadding = true
         )
     }
