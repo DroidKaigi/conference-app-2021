@@ -322,7 +322,7 @@ private fun FeedList(
                 items = feedContents.contents,
                 key = { _, item -> item.first.id }
             ) { index, (feedItem, favorited) ->
-                if (isHome && index==0) {
+                if (isHome && index == 0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
                     }
