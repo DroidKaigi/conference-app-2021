@@ -23,9 +23,9 @@ buildscript {
         classpath Dep.PlayServices.plugin
         classpath Dep.Dagger.plugin
         classpath Dep.FirebaseCrashlytics.plugin
-        classpath 'app.cash.exhaustive:exhaustive-gradle:0.1.1'
+        classpath Dep.exhaustivePlugin
         classpath Dep.SQLDelight.plugin
-        classpath 'com.google.android.gms:oss-licenses-plugin:0.10.4'
+        classpath Dep.playServicesOssLicensesPlugin
     }
 }
 

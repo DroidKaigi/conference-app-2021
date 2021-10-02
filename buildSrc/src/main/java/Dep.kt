@@ -96,6 +96,7 @@ object Dep {
 
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
     const val ktlint = "com.pinterest:ktlint:0.40.0"
+    const val exhaustivePlugin = "app.cash.exhaustive:exhaustive-gradle:0.2.0"
 
     object Dagger {
         const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.37"
@@ -122,6 +123,7 @@ object Dep {
     const val firebaseAuth = "dev.gitlive:firebase-auth:1.2.0"
     const val firebaseMessaging = "com.google.firebase:firebase-messaging-ktx:21.0.1"
 
+    const val playServicesOssLicensesPlugin = "com.google.android.gms:oss-licenses-plugin:0.10.4"
     const val playServicesOssLicenses = "com.google.android.gms:play-services-oss-licenses:17.0.0"
 
     object SQLDelight {
