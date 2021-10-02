@@ -17,13 +17,13 @@ import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
 
-class SessionAlarm @Inject constructor(private val app: Application) {
+class TimetableItemAlarm @Inject constructor(private val app: Application) {
 
-    fun toggleRegister(session: TimetableItem, isFavorite: Boolean) {
+    fun toggleRegister(timetableItem: TimetableItem, isFavorite: Boolean) {
         if (isFavorite) {
-            unregister(session)
+            unregister(timetableItem)
         } else {
-            register(session)
+            register(timetableItem)
         }
     }
 

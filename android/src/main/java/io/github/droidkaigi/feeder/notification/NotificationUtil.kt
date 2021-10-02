@@ -74,7 +74,7 @@ object NotificationUtil {
     }
 
     @JvmStatic
-    fun showSessionNotification(
+    fun showTimetableItemNotification(
         context: Context,
         title: String,
         text: String,

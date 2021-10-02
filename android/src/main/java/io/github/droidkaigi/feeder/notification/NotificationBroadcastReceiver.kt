@@ -7,10 +7,10 @@ import android.content.Intent
 import androidx.core.app.TaskStackBuilder
 import androidx.core.net.toUri
 import io.github.droidkaigi.feeder.MainActivity
-import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_CHANNEL_ID
-import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_SESSION_ID
-import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_TEXT
-import io.github.droidkaigi.feeder.core.util.SessionAlarm.Companion.EXTRA_TITLE
+import io.github.droidkaigi.feeder.core.util.TimetableItemAlarm.Companion.EXTRA_CHANNEL_ID
+import io.github.droidkaigi.feeder.core.util.TimetableItemAlarm.Companion.EXTRA_SESSION_ID
+import io.github.droidkaigi.feeder.core.util.TimetableItemAlarm.Companion.EXTRA_TEXT
+import io.github.droidkaigi.feeder.core.util.TimetableItemAlarm.Companion.EXTRA_TITLE
 
 class NotificationBroadcastReceiver : BroadcastReceiver() {
 
@@ -31,7 +31,7 @@ class NotificationBroadcastReceiver : BroadcastReceiver() {
             addNextIntentWithParentStack(sessionDetailIntent)
             getPendingIntent(sessionId.hashCode(), PendingIntent.FLAG_UPDATE_CURRENT)
         }?.let {
-            NotificationUtil.showSessionNotification(
+            NotificationUtil.showTimetableItemNotification(
                 context,
                 title,
                 text,

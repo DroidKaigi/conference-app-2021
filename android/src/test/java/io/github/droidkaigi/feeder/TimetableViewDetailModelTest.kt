@@ -1,7 +1,7 @@
 package io.github.droidkaigi.feeder
 
 import android.app.Application
-import io.github.droidkaigi.feeder.core.util.SessionAlarm
+import io.github.droidkaigi.feeder.core.util.TimetableItemAlarm
 import io.github.droidkaigi.feeder.data.TimetableRepositoryImpl
 import io.github.droidkaigi.feeder.data.fakeDroidKaigi2021Api
 import io.github.droidkaigi.feeder.data.fakeTimetableItemDao
@@ -86,7 +86,7 @@ class TimetableDetailViewModelTest(
                             ),
                             dataStore = fakeUserDataStore()
                         ),
-                        sessionAlarm = SessionAlarm(
+                        timetableItemAlarm = TimetableItemAlarm(
                             Application()
                         )
                     )
