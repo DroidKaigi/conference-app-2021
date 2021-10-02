@@ -457,6 +457,7 @@ private fun TimetableDetailAsset(
             modifier = modifier,
         ) {
             val buttonModifier = when {
+                // If there is only one, fill
                 boxMaxWidth <= 599.dp -> Modifier.weight(1f)
                 else -> Modifier.width(144.dp)
             }
