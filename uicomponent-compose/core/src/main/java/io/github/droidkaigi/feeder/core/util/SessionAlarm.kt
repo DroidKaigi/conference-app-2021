@@ -35,7 +35,7 @@ class SessionAlarm @Inject constructor(private val app: Application) {
             AlarmManagerCompat.setAndAllowWhileIdle(
                 alarmManager,
                 AlarmManager.RTC_WAKEUP,
-                System.currentTimeMillis() + 100,
+                time,
                 createAlarmIntent(session)
             )
         }
