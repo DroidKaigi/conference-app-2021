@@ -36,6 +36,7 @@ public struct AppTabState: Equatable {
         feedContents: [FeedContent],
         language: Lang
     ) {
+        L10n.languageCode = language.value
         self.feedContents = feedContents
         self.language = language
         self.homeState = HomeState(feedContents: feedContents, language: language)

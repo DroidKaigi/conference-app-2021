@@ -33,6 +33,7 @@ public let settingReducer = Reducer<SettingState, SettingAction, SettingEnvironm
     case let .changeLanguage(language):
         return environment.languageRepository.changeLanguage(language: language)
             .map { language }
+            .receive(on: environment.mainQueue)
             .catchToEffect(SettingAction.changeLaunguageResponse)
     case let .changeLaunguageResponse(.success(language)):
         state.language = language

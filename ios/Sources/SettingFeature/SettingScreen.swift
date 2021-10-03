@@ -50,7 +50,7 @@ public struct SettingScreen: View {
                 .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
                 .navigationBarItems(
                     trailing: Button(action: {
-//                        presentationMode.wrappedValue.dismiss()
+                        presentationMode.wrappedValue.dismiss()
                     }, label: {
                         AssetImage.iconClose.image
                             .renderingMode(.template)
