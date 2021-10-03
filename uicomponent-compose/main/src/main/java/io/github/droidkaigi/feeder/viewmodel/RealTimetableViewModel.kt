@@ -8,6 +8,7 @@ import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
+import io.github.droidkaigi.feeder.core.util.TimetableItemAlarm
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.TimetableRepository
@@ -29,6 +30,7 @@ import kotlinx.coroutines.launch
 @HiltViewModel
 class RealTimetableViewModel @Inject constructor(
     private val repository: TimetableRepository,
+    private val timetableItemAlarm: TimetableItemAlarm,
 ) : ViewModel(), TimetableViewModel {
 
     private val effectChannel = Channel<TimetableViewModel.Effect>(Channel.UNLIMITED)
@@ -95,6 +97,7 @@ class RealTimetableViewModel @Inject constructor(
                     } else {
                         repository.addFavorite(event.timetableItem.id)
                     }
+                    timetableItemAlarm.toggleRegister(event.timetableItem, favorite)
                 }
                 is TimetableViewModel.Event.ReloadContent -> {
                     refreshRepository()

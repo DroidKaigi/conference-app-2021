@@ -34,6 +34,10 @@
                     android:host="@string/deep_link_host"
                     android:pathPattern="@string/deep_link_path_pattern_other"
                     android:scheme="https" />
+                <data
+                    android:host="@string/deep_link_host"
+                    android:pathPattern="@string/deep_link_path_pattern_timetable_detail"
+                    android:scheme="https" />
             </intent-filter>
         </activity>
         <activity
@@ -77,6 +81,7 @@
                 <action android:name="android.intent.action.LOCALE_CHANGED" />
             </intent-filter>
         </receiver>
+        <receiver android:name=".notification.NotificationBroadcastReceiver" />
     </application>
 
 </manifest>

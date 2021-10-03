@@ -74,6 +74,31 @@ object NotificationUtil {
     }
 
     @JvmStatic
+    fun showTimetableItemNotification(
+        context: Context,
+        title: String,
+        text: String,
+        pendingIntent: PendingIntent,
+        channelId: String,
+    ) {
+        val channel = AppNotificationChannel.fromId(channelId)
+        val manager = NotificationManagerCompat.from(context)
+        val notification = NotificationCompat.Builder(context, channel.id)
+            .setSmallIcon(MainR.drawable.ic_logo)
+            .setContentTitle(title)
+            .setContentText(text)
+            .setAutoCancel(true)
+            .setStyle(
+                NotificationCompat.BigTextStyle()
+                    .setBigContentTitle(title)
+                    .bigText(text)
+            )
+            .setContentIntent(pendingIntent)
+            .build()
+        manager.notify(channel.id.hashCode(), notification)
+    }
+
+    @JvmStatic
     private fun getPendingIntent(
         context: Context,
         link: Uri?,
