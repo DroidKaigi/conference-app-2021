@@ -9,6 +9,7 @@ import SwiftUI
 import Model
 import Repository
 import TimetableFeature
+import Styleguide
 
 public struct AppTabState: Equatable {
     public var feedContents: [FeedContent] {
@@ -18,41 +19,30 @@ public struct AppTabState: Equatable {
             favoritesState.feedContents = feedContents.filter(\.isFavorited)
         }
     }
-    public var isSheetPresented: AppTabSheet?
     public var homeState: HomeState
     public var timetableState: TimetableState
     public var mediaState: MediaState
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
-    public var language: Lang
-
-    public enum AppTabSheet: Equatable {
-        case url(URL)
-        case setting
+    public var settingState: SettingState?
+    public var language: Lang {
+        didSet {
+            L10n.languageCode = language.value
+        }
     }
+    public var showingURL: URL?
 
     public init(
         feedContents: [FeedContent],
-        language: Lang,
-        isSheetPresented: AppTabSheet? = nil
+        language: Lang
     ) {
         self.feedContents = feedContents
-        self.isSheetPresented = isSheetPresented
         self.language = language
         self.homeState = HomeState(feedContents: feedContents, language: language)
         self.mediaState = MediaState(feedContents: feedContents, language: language)
         self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited), language: language)
         self.aboutState = AboutState()
         self.timetableState = TimetableState(language: language)
-    }
-
-    public var settingState: SettingState {
-        get {
-            SettingState(language: language)
-        }
-        set {
-            language = newValue.language
-        }
     }
 }
 
@@ -131,7 +121,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             .init()
         }
     ),
-    settingReducer.pullback(
+    settingReducer.optional().pullback(
         state: \.settingState,
         action: /AppTabAction.setting,
         environment: { environment in
@@ -154,10 +144,11 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .reload:
             return .none
         case .tap(let feedContent), .media(.tap(let feedContent)):
-            state.isSheetPresented = .url(URL(string: feedContent.item.link)!)
+            state.showingURL = URL(string: feedContent.item.link)
             return .none
         case .hideSheet:
-            state.isSheetPresented = nil
+            state.showingURL = nil
+            state.settingState = nil
             return .none
         case .answerQuestionnaire:
             return .none
@@ -195,7 +186,14 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             print(error.localizedDescription)
             return .none
         case .showSetting, .media(.showSetting), .timetable(.loaded(.showSetting)):
-            state.isSheetPresented = .setting
+            state.settingState = .init(language: state.language)
+            return .none
+        case let .setting(.changeLaunguageResponse(.success(language))):
+            state.language = language
+            state.homeState.language = language
+            state.favoritesState.language = language
+            state.timetableState.language = language
+            state.mediaState.language = language
             return .none
         case .none:
             return .none

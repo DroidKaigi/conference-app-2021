@@ -1,5 +1,4 @@
 import ComposableArchitecture
-import Dispatch
 import Model
 import Repository
 
@@ -14,7 +13,7 @@ public struct SettingState: Equatable {
 public enum SettingAction {
     case changeTheme(Theme)
     case changeLanguage(Lang)
-    case onChangeLanguage(Result<Lang, KotlinError>)
+    case changeLaunguageResponse(Result<Lang, KotlinError>)
 }
 
 public struct SettingEnvironment {
@@ -27,19 +26,18 @@ public struct SettingEnvironment {
     }
 }
 
-public let settingReducer = Reducer<SettingState, SettingAction, SettingEnvironment> { _, action, environment in
+public let settingReducer = Reducer<SettingState, SettingAction, SettingEnvironment> { state, action, environment in
     switch action {
     case let .changeTheme(theme):
         return .none
     case let .changeLanguage(language):
-        return environment
-            .languageRepository
-            .changeLanguage(language: language)
+        return environment.languageRepository.changeLanguage(language: language)
             .map { language }
-            .receive(on: environment.mainQueue)
-            .catchToEffect()
-            .map(SettingAction.onChangeLanguage)
-    case .onChangeLanguage:
+            .catchToEffect(SettingAction.changeLaunguageResponse)
+    case let .changeLaunguageResponse(.success(language)):
+        state.language = language
+        return .none
+    case .changeLaunguageResponse(.failure):
         return .none
     }
 }

@@ -8,7 +8,6 @@ import Styleguide
 
 public struct SettingScreen: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingActionSheet = false
 
     private let store: Store<SettingState, SettingAction>
 
@@ -19,64 +18,39 @@ public struct SettingScreen: View {
     public var body: some View {
         WithViewStore(store) { viewStore in
             NavigationView {
-                InlineTitleNavigationBarScrollView {
-                    LazyVStack(spacing: 0) {
-                        ZStack(alignment: .bottom) {
-                            SettingToggleItem(
-                                title: L10n.SettingScreen.ListItem.darkMode,
-                                isOn: Binding(get: {
-                                    true
-                                }, set: { isOn in
-                                    print(isOn)
-                                    // TODO: add darkMode setting implementation
-                                })
-                            )
-                            .frame(minHeight: 44)
-                            Separator()
-                        }
-                        .padding(.horizontal, 16)
-                        .background(AssetColor.Background.contents.color)
-
-                        Button {
-                            showingActionSheet = true
-                        } label: {
-                            ZStack(alignment: .bottom) {
-                                HStack {
-                                    Text(L10n.SettingScreen.ListItem.language)
-                                    Spacer()
-                                    Text(viewStore.language.type).font(.caption)
+                List {
+                    Section(
+                        header: Text(L10n.SettingScreen.ListItem.darkMode)
+                    ) {
+                        Text("Not Implemented!")
+                    }
+                    Section(
+                        header: Text(L10n.SettingScreen.ListItem.language)
+                    ) {
+                        ForEach(Lang.allCases, id: \.self) { lang in
+                            HStack {
+                                Button {
+                                    viewStore.send(.changeLanguage(lang))
+                                } label: {
+                                    Text(lang.type)
+                                        .foregroundColor(AssetColor.Base.secondary.color)
                                 }
-                                .frame(minHeight: 44)
-                                Separator()
+
+                                Spacer()
+                                if viewStore.language == lang {
+                                    Image(systemName: "checkmark")
+                                        .foregroundColor(AssetColor.primary.color)
+                                }
                             }
-                            .padding(.horizontal, 16)
-                            .background(AssetColor.Background.contents.color)
-                        }
-                        .actionSheet(isPresented: $showingActionSheet) {
-                            ActionSheet(
-                                title: Text(L10n.SettingScreen.ListItem.language),
-                                buttons: [
-                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.system)) {
-                                        viewStore.send(.changeLanguage(.system))
-                                    },
-                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.japanese)) {
-                                        viewStore.send(.changeLanguage(.ja))
-                                    },
-                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.english)) {
-                                        viewStore.send(.changeLanguage(.en))
-                                    },
-                                    .cancel()
-                                ]
-                            )
                         }
                     }
-                    .padding(.top, 24)
                 }
+                .listStyle(InsetGroupedListStyle())
                 .background(AssetColor.Background.primary.color.ignoresSafeArea())
                 .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
                 .navigationBarItems(
                     trailing: Button(action: {
-                        presentationMode.wrappedValue.dismiss()
+//                        presentationMode.wrappedValue.dismiss()
                     }, label: {
                         AssetImage.iconClose.image
                             .renderingMode(.template)

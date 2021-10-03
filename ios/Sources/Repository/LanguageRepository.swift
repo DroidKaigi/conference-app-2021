@@ -19,11 +19,13 @@ public struct LanguageRepository: LanguageRepositoryProtocol, KMMRepositoryProto
     }
 
     public func changeLanguage(language: Model.Lang) -> AnyPublisher<Void, KotlinError> {
-        SuspendWrapperPublisher(
-            suspendWrapper: repository.changeLanguage(language: language.kmmLang),
-            scopeProvider: scopeProvider
-        )
-        .map { _ in }
+        Future { promise in
+            repository.changeLanguage(language: language.kmmLang).subscribe(scope: scopeProvider.scope) { _ in
+                promise(.success(()))
+            } onFailure: { error in
+                promise(.failure(KotlinError.fetchFailed(error.description())))
+            }
+        }
         .eraseToAnyPublisher()
     }
 

@@ -1,6 +1,6 @@
 import DroidKaigiMPP
 
-public enum Lang: Equatable {
+public enum Lang: Equatable, CaseIterable {
     case system
     case ja
     case en
@@ -27,6 +27,17 @@ public enum Lang: Equatable {
             return .en
         case .system:
             return .system
+        }
+    }
+
+    public var value: String? {
+        switch self {
+        case .system:
+            return nil
+        case .ja:
+            return "ja"
+        case .en:
+            return "en"
         }
     }
 }
