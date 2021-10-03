@@ -4,6 +4,7 @@ sealed class Media(val text: String) {
     object YouTube : Media("YouTube")
     object DroidKaigiFM : Media("DroidKaigi.FM")
     object Medium : Media("Medium")
+    object Conference : Media("Conference")
     object Other : Media("Other")
 
     companion object {
@@ -11,6 +12,7 @@ sealed class Media(val text: String) {
             "YouTube" -> YouTube
             "DroidKaigi.FM" -> DroidKaigiFM
             "Medium" -> Medium
+            "Conference" -> Conference
             else -> Other
         }
     }

@@ -33,6 +33,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -69,6 +70,7 @@ import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import java.time.Instant
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -98,6 +100,7 @@ fun FeedScreen(
     selectedTab: FeedTab,
     onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
+    onDroidKaigi2021ArticleClick: () -> Unit,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -165,6 +168,7 @@ fun FeedScreen(
         onClickPlayPodcastButton = {
             fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
+        onClickDroidKaigi2021Article = onDroidKaigi2021ArticleClick
     )
 }
 
@@ -186,6 +190,7 @@ private fun FeedScreen(
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
+    onClickDroidKaigi2021Article: () -> Unit
 ) {
     val density = LocalDensity.current
     BackdropScaffold(
@@ -217,6 +222,7 @@ private fun FeedScreen(
                     onFavoriteChange = onFavoriteChange,
                     listState = tabLazyListStates.getValue(selectedTab),
                     onClickPlayPodcastButton = onClickPlayPodcastButton,
+                    onClickArticleItem = onClickDroidKaigi2021Article,
                     isFilterState = filters.filterFavorite,
                 )
             }
@@ -290,6 +296,7 @@ private fun FeedList(
     onClickFeed: (FeedItem) -> Unit,
     onFavoriteChange: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
+    onClickArticleItem: () -> Unit,
     listState: LazyListState,
     isFilterState: Boolean,
 ) {
@@ -304,6 +311,7 @@ private fun FeedList(
                     .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             }
         }
+        val isDroidKaigiEnd = remember { mutableStateOf(DroidKaigi2021.isArticleEnd()) }
         LazyColumn(
             contentPadding = rememberInsetsPaddingValues(
                 insets = LocalWindowInsets.current.systemBars,
@@ -320,7 +328,14 @@ private fun FeedList(
                 if (isHome && index == 0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
+                    } else if (!isDroidKaigiEnd.value) {
+                        DroidKaigi2021ArticleItem(
+                            onClick = onClickArticleItem,
+                            shouldPadding = isFilterState
+                        )
                     }
+                }
+                if (isDroidKaigiEnd.value && isHome && index == 0) {
                     FirstFeedItem(
                         feedItem = feedItem,
                         favorited = favorited,
@@ -450,6 +465,10 @@ fun FilterItemCountRow(count: String) {
     }
 }
 
+object DroidKaigi2021 {
+    fun isArticleEnd() = Instant.now().isAfter(Instant.ofEpochMilli(1635692400000))
+}
+
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
@@ -461,8 +480,8 @@ fun PreviewFeedScreen() {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
             ) { feedItem: FeedItem ->
             }
         }
@@ -482,8 +501,8 @@ fun PreviewDarkFeedScreen() {
             FeedScreen(
                 selectedTab = FeedTab.Home,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
             ) { feedItem: FeedItem ->
             }
         }
@@ -501,8 +520,8 @@ fun PreviewFeedScreenWithStartBlog() {
             FeedScreen(
                 selectedTab = FeedTab.FilteredFeed.Blog,
                 onSelectedTab = {},
-                onNavigationIconClick = {
-                }
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
             ) { feedItem: FeedItem ->
             }
         }
