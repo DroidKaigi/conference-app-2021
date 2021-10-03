@@ -169,10 +169,10 @@ fun TimetableDetailScreen(
                  * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
                  */
                 val margin = when {
-                    maxWidth < 599.dp -> 16.dp
-                    maxWidth < 904.dp -> 32.dp
-                    maxWidth < 1239.dp -> (maxWidth - 840.dp) / 2
-                    maxWidth < 1439.dp -> 200.dp
+                    maxWidth <= 599.dp -> 16.dp
+                    maxWidth <= 904.dp -> 32.dp
+                    maxWidth <= 1239.dp -> (maxWidth - 840.dp) / 2
+                    maxWidth <= 1439.dp -> 200.dp
                     else -> (maxHeight - 1040.dp) / 2
                 } + 8.dp
 
@@ -450,40 +450,52 @@ private fun TimetableDetailAsset(
         return
     }
 
-    Row(
-        modifier = modifier,
-    ) {
-        if (showVideoButton) {
-            Button(
-                modifier = Modifier.width(144.dp),
-                colors = buttonColors(
-                    backgroundColor = MaterialTheme.colors.secondary,
-                    contentColor = MaterialTheme.colors.onSecondary,
-                ),
-                onClick = {
-                    onOpenUrl(asset.videoUrl!!.toUri())
-                }
-            ) {
-                Icon(Icons.Outlined.Videocam, contentDescription = "Open Video")
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "MOVIE")
+    BoxWithConstraints {
+        val boxMaxWidth = maxWidth
+
+        Row(
+            modifier = modifier,
+        ) {
+            val buttonModifier = when {
+                // If there is only one, fill
+                boxMaxWidth <= 599.dp -> Modifier.weight(1f)
+                else -> Modifier.width(144.dp)
             }
-            Spacer(modifier = Modifier.width(16.dp))
-        }
-        if (showSlidesButton) {
-            Button(
-                modifier = Modifier.width(144.dp),
-                colors = buttonColors(
-                    backgroundColor = MaterialTheme.colors.secondary,
-                    contentColor = MaterialTheme.colors.onSecondary,
-                ),
-                onClick = {
-                    onOpenUrl(asset.slideUrl!!.toUri())
+
+            if (showVideoButton) {
+                Button(
+                    modifier = buttonModifier,
+                    colors = buttonColors(
+                        backgroundColor = MaterialTheme.colors.secondary,
+                        contentColor = MaterialTheme.colors.onSecondary,
+                    ),
+                    onClick = {
+                        onOpenUrl(asset.videoUrl!!.toUri())
+                    }
+                ) {
+                    Icon(Icons.Outlined.Videocam, contentDescription = "Open Video")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "MOVIE")
                 }
-            ) {
-                Icon(Icons.Outlined.PhotoLibrary, contentDescription = "Open Slides")
-                Spacer(modifier = Modifier.width(8.dp))
-                Text(text = "SLIDES")
+            }
+            if (showVideoButton && showSlidesButton) {
+                Spacer(modifier = Modifier.width(16.dp))
+            }
+            if (showSlidesButton) {
+                Button(
+                    modifier = buttonModifier,
+                    colors = buttonColors(
+                        backgroundColor = MaterialTheme.colors.secondary,
+                        contentColor = MaterialTheme.colors.onSecondary,
+                    ),
+                    onClick = {
+                        onOpenUrl(asset.slideUrl!!.toUri())
+                    }
+                ) {
+                    Icon(Icons.Outlined.PhotoLibrary, contentDescription = "Open Slides")
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Text(text = "SLIDES")
+                }
             }
         }
     }
