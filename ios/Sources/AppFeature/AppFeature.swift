@@ -48,9 +48,6 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         case let .refreshResponse(.failure(error)):
             state = .errorOccurred
             return .none
-        case .appTab(.setting(.changeLaunguageResponse(.success))):
-            state = .needToInitialize
-            return .none
         case .appTab:
             return .none
         }

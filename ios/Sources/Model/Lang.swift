@@ -29,15 +29,4 @@ public enum Lang: Equatable, CaseIterable {
             return .system
         }
     }
-
-    public var value: String? {
-        switch self {
-        case .system:
-            return nil
-        case .ja:
-            return "ja"
-        case .en:
-            return "en"
-        }
-    }
 }

@@ -10,7 +10,6 @@ public struct MediaDetailScreen: View {
     struct ViewState: Equatable {
         var title: String
         var contents: [FeedContent]
-        var language: Lang
     }
 
     enum ViewAction {
@@ -24,7 +23,6 @@ public struct MediaDetailScreen: View {
             ScrollView {
                 FeedContentListView(
                     feedContents: viewStore.contents,
-                    language: viewStore.language,
                     tapContent: { content in
                         viewStore.send(.tap(content))
                     },
@@ -56,8 +54,7 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
                         .blogMock(),
                         .blogMock(),
                         .blogMock()
-                    ],
-                    language: .ja
+                    ]
                 ),
                 reducer: .empty,
                 environment: {}
@@ -77,8 +74,7 @@ public struct MediaDetailScreen_Previews: PreviewProvider {
                         .blogMock(),
                         .blogMock(),
                         .blogMock()
-                    ],
-                    language: .ja
+                    ]
                 ),
                 reducer: .empty,
                 environment: {}

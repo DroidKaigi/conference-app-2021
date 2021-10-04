@@ -23,7 +23,9 @@ public struct TimetableDetailScreen: View {
         ZStack {
             ScrollView {
                 WithViewStore(store) { viewStore in
-                    Text(viewStore.timetable.title.get(by: viewStore.language))
+                    Text(viewStore.timetable.title.get(
+                            by: Foundation.Locale.current.language
+                    ))
                         .font(.title)
                         .foregroundColor(AssetColor.Base.primary.color)
                         .lineLimit(nil)
@@ -31,7 +33,7 @@ public struct TimetableDetailScreen: View {
 
                     speakers(viewStore.timetable.speakers)
 
-                    descriptions(timetable: viewStore.timetable, language: viewStore.language)
+                    descriptions(timetable: viewStore.timetable)
 
                     body(timetable: viewStore.timetable)
                 }
@@ -86,7 +88,7 @@ private extension TimetableDetailScreen {
         .padding(.bottom, 24)
     }
 
-    func descriptions(timetable: AnyTimetableItem, language: Lang) -> some View {
+    func descriptions(timetable: AnyTimetableItem) -> some View {
         VStack(alignment: .leading, spacing: 4) {
             ForEach(DesciptionType.allCases, id: \.self) { type in
                 HStack(spacing: 8) {
@@ -94,7 +96,7 @@ private extension TimetableDetailScreen {
                         .foregroundColor(AssetColor.Base.primary.color)
                         .frame(width: Const.iconSize, height: Const.iconSize)
 
-                    Text(type.value(timetable: timetable, language: language))
+                    Text(type.value(timetable: timetable))
                         .font(.footnote)
                         .foregroundColor(AssetColor.Base.secondary.color)
 
@@ -205,14 +207,14 @@ private enum DesciptionType: CaseIterable {
         }
     }
 
-    func value(timetable: AnyTimetableItem, language: Lang) -> String {
+    func value(timetable: AnyTimetableItem) -> String {
         switch self {
         case .schedule:
             return "\(timetable.startsAt.formatToDate) \(timetable.startsAt.formatToTime) ~ \(timetable.endsAt.formatToTime)"
         case .length:
             return "\(getMinDiffFrom(startAt: timetable.startsAt, endAt: timetable.endsAt))min"
         case .category:
-            return timetable.category.get(by: language)
+            return timetable.category.get(by: Foundation.Locale.current.language)
         case .language:
             return timetable.lang
         }
@@ -249,8 +251,7 @@ public struct TimetableDetailScreen_Previews: PreviewProvider {
             TimetableDetailScreen(
                 store: .init(
                     initialState: .init(
-                        timetable: .sessionMock(),
-                        language: .en
+                        timetable: .sessionMock()
                     ),
                     reducer: .empty,
                     environment: {}

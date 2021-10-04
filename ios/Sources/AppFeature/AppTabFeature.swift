@@ -25,25 +25,18 @@ public struct AppTabState: Equatable {
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
     public var settingState: SettingState?
-    public var language: Lang {
-        didSet {
-            L10n.languageCode = language.value
-        }
-    }
     public var showingURL: URL?
 
     public init(
         feedContents: [FeedContent],
         language: Lang
     ) {
-        L10n.languageCode = language.value
         self.feedContents = feedContents
-        self.language = language
-        self.homeState = HomeState(feedContents: feedContents, language: language)
-        self.mediaState = MediaState(feedContents: feedContents, language: language)
-        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited), language: language)
+        self.homeState = HomeState(feedContents: feedContents)
+        self.mediaState = MediaState(feedContents: feedContents)
+        self.favoritesState = FavoritesState(feedContents: feedContents.filter(\.isFavorited))
         self.aboutState = AboutState()
-        self.timetableState = TimetableState(language: language)
+        self.timetableState = TimetableState()
     }
 }
 
@@ -125,8 +118,8 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
     settingReducer.optional().pullback(
         state: \.settingState,
         action: /AppTabAction.setting,
-        environment: { environment in
-            .init(languageRepository: environment.languageRepository)
+        environment: { _ in
+            .init()
         }
     ),
     aboutReducer.pullback(
@@ -187,14 +180,7 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
             print(error.localizedDescription)
             return .none
         case .showSetting, .media(.showSetting), .timetable(.loaded(.showSetting)):
-            state.settingState = .init(language: state.language)
-            return .none
-        case let .setting(.changeLaunguageResponse(.success(language))):
-            state.language = language
-            state.homeState.language = language
-            state.favoritesState.language = language
-            state.timetableState.language = language
-            state.mediaState.language = language
+            state.settingState = SettingState()
             return .none
         case .none:
             return .none

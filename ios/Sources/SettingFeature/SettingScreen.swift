@@ -16,33 +16,13 @@ public struct SettingScreen: View {
     }
 
     public var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store) { _ in
             NavigationView {
                 List {
                     Section(
                         header: Text(L10n.SettingScreen.ListItem.darkMode)
                     ) {
                         Text("Not Implemented!")
-                    }
-                    Section(
-                        header: Text(L10n.SettingScreen.ListItem.language)
-                    ) {
-                        ForEach(Lang.allCases, id: \.self) { lang in
-                            HStack {
-                                Button {
-                                    viewStore.send(.changeLanguage(lang))
-                                } label: {
-                                    Text(lang.type)
-                                        .foregroundColor(AssetColor.Base.secondary.color)
-                                }
-
-                                Spacer()
-                                if viewStore.language == lang {
-                                    Image(systemName: "checkmark")
-                                        .foregroundColor(AssetColor.primary.color)
-                                }
-                            }
-                        }
                     }
                 }
                 .listStyle(InsetGroupedListStyle())
@@ -66,7 +46,7 @@ public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
             store: .init(
-                initialState: .init(language: .system),
+                initialState: .init(),
                 reducer: .empty,
                 environment: {}
             )

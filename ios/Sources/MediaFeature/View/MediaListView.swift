@@ -38,7 +38,7 @@ struct MediaListView: View {
                 MediaSectionView(
                     type: .blog,
                     store: store.scope(
-                        state: { .init(contents: $0.blogs, language: $0.language) },
+                        state: { .init(contents: $0.blogs) },
                         action: { .init(action: $0, for: .blog) }
                     )
                 )
@@ -48,7 +48,7 @@ struct MediaListView: View {
                 MediaSectionView(
                     type: .video,
                     store: store.scope(
-                        state: { .init(contents: $0.videos, language: $0.language) },
+                        state: { .init(contents: $0.videos) },
                         action: { .init(action: $0, for: .video) }
                     )
                 )
@@ -58,7 +58,7 @@ struct MediaListView: View {
                 MediaSectionView(
                     type: .podcast,
                     store: store.scope(
-                        state: { .init(contents: $0.podcasts, language: $0.language) },
+                        state: { .init(contents: $0.podcasts) },
                         action: { .init(action: $0, for: .podcast) }
                     )
                 )
@@ -115,7 +115,7 @@ public struct MediaListView_Previews: PreviewProvider {
                             .videoMock(),
                             .podcastMock(),
                             .podcastMock()
-                        ], language: .ja
+                        ]
                     ),
                     reducer: .empty,
                     environment: {}

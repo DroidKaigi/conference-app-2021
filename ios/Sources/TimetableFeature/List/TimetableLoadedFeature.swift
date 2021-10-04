@@ -5,7 +5,6 @@ public struct TimetableLoadedState: Equatable {
     public var timetableItems: [AnyTimetableItem]
     public var selectedType: SelectedType
     public var detailState: TimetableDetailState?
-    public var language: Lang
 
     var isShowingDetail: Bool {
         detailState != nil
@@ -25,12 +24,10 @@ public struct TimetableLoadedState: Equatable {
 
     public init(
         timetableItems: [AnyTimetableItem] = [],
-        language: Lang,
         selectedType: SelectedType = .day1,
         detailState: TimetableDetailState? = nil
     ) {
         self.timetableItems = timetableItems
-        self.language = language
         self.selectedType = selectedType
         self.detailState = detailState
     }
@@ -60,7 +57,7 @@ public let timetableLoadedReducer = Reducer<TimetableLoadedState, TimetableLoade
             state.selectedType = type
             return .none
         case let .content(.tap(item)):
-            state.detailState = TimetableDetailState(timetable: item, language: state.language)
+            state.detailState = TimetableDetailState(timetable: item)
             return .none
         case .hideDetail:
             state.detailState = nil

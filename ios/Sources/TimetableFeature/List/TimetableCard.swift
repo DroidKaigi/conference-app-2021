@@ -5,11 +5,9 @@ import SwiftUI
 
 public struct TimetableCard: View {
     private let item: AnyTimetableItem
-    private let language: Lang
 
-    public init(item: AnyTimetableItem, language: Lang) {
+    public init(item: AnyTimetableItem) {
         self.item = item
-        self.language = language
     }
 
     private var isSpecial: Bool {
@@ -25,11 +23,11 @@ public struct TimetableCard: View {
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
                 .background(isSpecial ? AssetColor.Separate.navigation.color : AssetColor.Background.secondary.color)
                 .clipShape(Capsule())
-            Text(item.title.get(by: language))
+            Text(item.title.get(by: Foundation.Locale.current.language))
                 .lineLimit(3)
                 .font(.subheadline)
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.primary.color)
-            Text("#" + item.category.get(by: language))
+            Text("#" + item.category.get(by: Foundation.Locale.current.language))
                 .font(.caption2)
                 .foregroundColor(isSpecial ? AssetColor.Base.white.color : AssetColor.Base.secondary.color)
             VStack {
@@ -65,13 +63,13 @@ public struct TimetableCard_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             Group {
                 TimetableCard(
-                    item: .specialMock(), language: .en
+                    item: .specialMock()
                 )
                 .frame(width: 300, height: 250, alignment: .center)
                 .environment(\.colorScheme, colorScheme)
                 .previewLayout(.sizeThatFits)
                 TimetableCard(
-                    item: .specialMock(), language: .en
+                    item: .specialMock()
                 )
                 .frame(width: 300, height: 250, alignment: .center)
                 .environment(\.colorScheme, colorScheme)
@@ -82,8 +80,7 @@ public struct TimetableCard_Previews: PreviewProvider {
                             .mock(name: "Speaker 1"),
                             .mock(name: "Speaker 2"),
                         ]
-                    ),
-                    language: .en
+                    )
                 )
                 .frame(width: 300, height: 250, alignment: .center)
                 .environment(\.colorScheme, colorScheme)
@@ -94,8 +91,7 @@ public struct TimetableCard_Previews: PreviewProvider {
                             .mock(name: "Speaker 1"),
                             .mock(name: "Speaker 2"),
                         ]
-                    ),
-                    language: .en
+                    )
                 )
                 .frame(width: 300, height: 250, alignment: .center)
                 .environment(\.colorScheme, colorScheme)

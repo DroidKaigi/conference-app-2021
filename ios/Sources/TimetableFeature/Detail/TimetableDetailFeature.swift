@@ -3,7 +3,6 @@ import Foundation
 import Model
 
 public struct TimetableDetailState: Equatable {
-    public var language: Lang
     public var timetable: AnyTimetableItem
     public var showingURL: URL?
 
@@ -13,10 +12,8 @@ public struct TimetableDetailState: Equatable {
 
     public init(
         timetable: AnyTimetableItem,
-        language: Lang,
         showingURL: URL? = nil
     ) {
-        self.language = language
         self.timetable = timetable
         self.showingURL = showingURL
     }

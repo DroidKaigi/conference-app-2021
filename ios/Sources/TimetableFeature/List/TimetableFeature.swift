@@ -5,14 +5,13 @@ import Repository
 public struct TimetableState: Equatable {
     public var type: TimetableStateType = .needToInitialize
     public var loadedState: TimetableLoadedState
-    public var language: Lang
 
-    public init(type: TimetableStateType = .needToInitialize,
-                timetableItems: [AnyTimetableItem] = [],
-                language: Lang) {
+    public init(
+        type: TimetableStateType = .needToInitialize,
+        timetableItems: [AnyTimetableItem] = []
+    ) {
         self.type = type
-        self.loadedState = TimetableLoadedState(timetableItems: timetableItems, language: language)
-        self.language = language
+        self.loadedState = TimetableLoadedState(timetableItems: timetableItems)
     }
 }
 
@@ -56,8 +55,7 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
         case let .refreshResponse(.success(items)):
             state.type = .initialized
             state.loadedState = TimetableLoadedState(
-                timetableItems: items.sorted { $0.startsAt < $1.startsAt },
-                language: state.language
+                timetableItems: items.sorted { $0.startsAt < $1.startsAt }
             )
             return .none
         case let .refreshResponse(.failure(error)):
