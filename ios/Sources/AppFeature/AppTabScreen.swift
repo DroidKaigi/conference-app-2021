@@ -116,7 +116,7 @@ private extension AppTabState {
                             .blogMock(),
                             .blogMock(),
                             .blogMock()
-                        ], language: .en
+                        ]
                     ),
                     reducer: .empty,
                     environment: {}

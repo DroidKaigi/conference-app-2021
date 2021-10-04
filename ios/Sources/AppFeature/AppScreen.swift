@@ -118,7 +118,7 @@ private extension AppAction {
                                 .blogMock(),
                                 .blogMock(),
                                 .blogMock()
-                            ], language: .system
+                            ]
                         )
                     ),
                     reducer: .empty,

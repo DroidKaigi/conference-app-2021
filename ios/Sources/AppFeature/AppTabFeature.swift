@@ -28,8 +28,7 @@ public struct AppTabState: Equatable {
     public var showingURL: URL?
 
     public init(
-        feedContents: [FeedContent],
-        language: Lang
+        feedContents: [FeedContent]
     ) {
         self.feedContents = feedContents
         self.homeState = HomeState(feedContents: feedContents)
