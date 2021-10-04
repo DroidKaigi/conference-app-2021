@@ -20,6 +20,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.insets.LocalWindowInsets
 import com.google.accompanist.insets.navigationBarsPadding
+import com.google.accompanist.insets.rememberInsetsPaddingValues
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.PagerState
@@ -166,7 +167,14 @@ data class TimetableListState(
 private fun TimetableList(
     state: TimetableListState,
 ) {
-    LazyColumn {
+    LazyColumn(
+        contentPadding = rememberInsetsPaddingValues(
+            insets = LocalWindowInsets.current.systemBars,
+            applyStart = false,
+            applyTop = false,
+            applyEnd = false
+        ),
+    ) {
         itemsIndexed(
             items = state.timetableItems,
             key = { _, item -> item.id }
