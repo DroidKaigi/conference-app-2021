@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.timetable2021
 
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -168,6 +169,7 @@ private fun TimetableList(
     state: TimetableListState,
 ) {
     LazyColumn(
+        modifier = Modifier.fillMaxHeight(),
         contentPadding = rememberInsetsPaddingValues(
             insets = LocalWindowInsets.current.systemBars,
             applyStart = false,
