@@ -19,7 +19,7 @@ install Git LFS and `git lfs pull`
 
 ## Requirements
 
-Xcode version is 12.4
+Xcode version is 13.0
 
 ## Project structure
 
