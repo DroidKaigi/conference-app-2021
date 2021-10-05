@@ -11,6 +11,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
@@ -21,6 +22,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
+import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalPagerApi::class)
 @Stable
@@ -35,6 +37,7 @@ fun AppBar(
     onNavigationIconClick: () -> Unit,
     onSelectTab: (TimetableTab) -> Unit,
 ) {
+    val coroutineScope = rememberCoroutineScope()
     TopAppBar(
         modifier = Modifier.statusBarsPadding(),
         title = {
@@ -72,6 +75,9 @@ fun AppBar(
                 },
                 onClick = {
                     onSelectTab(tab)
+                    coroutineScope.launch {
+                        appBarState.pagerState.animateScrollToPage(index)
+                    }
                 },
                 // For tabs to draw in front of indicators
                 modifier = Modifier.zIndex(1f),
