@@ -1,6 +1,6 @@
 import DroidKaigiMPP
 
-public enum Lang: Equatable {
+public enum Lang: Equatable, CaseIterable {
     case system
     case ja
     case en

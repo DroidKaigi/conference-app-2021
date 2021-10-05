@@ -11,6 +11,7 @@
 		80823BBE56026449A5FE87E6 /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */; };
 		8BAA8C7C006D04516B3DC1A0 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */; };
 		E821C040265FFEA500C3785D /* AppFeature in Frameworks */ = {isa = PBXBuildFile; productRef = E821C03F265FFEA500C3785D /* AppFeature */; };
+		E8F80F82270A17C900B8921D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = E8F80F84270A17C900B8921D /* Localizable.strings */; };
 		F5F0C7DFD8E5A02F9AB34F74 /* DroidKaigi_2021App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7CF1B5E8B91A5006C726F449 /* DroidKaigi_2021App.swift */; };
 /* End PBXBuildFile section */
 
@@ -22,6 +23,8 @@
 		938D98FE0EC7B3BB8CBEA8A5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD8B7D08C51A116EC6F86327 /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
 		DD4A5CEA61EB3D46200CC240 /* DroidKaigi 2021.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DroidKaigi 2021.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		E8F80F83270A17C900B8921D /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
+		E8F80F85270A17CC00B8921D /* ja */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ja; path = ja.lproj/Localizable.strings; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +56,7 @@
 				2B29CA0397EABB180818B44B /* Info.plist */,
 				50BC33E72674C9DF00EB7285 /* GoogleService-Info-Stating-Debug.plist */,
 				1632D25082D97FDCF82D3510 /* Preview Content */,
+				E8F80F84270A17C900B8921D /* Localizable.strings */,
 			);
 			path = "DroidKaigi 2021";
 			sourceTree = "<group>";
@@ -113,6 +117,7 @@
 			knownRegions = (
 				Base,
 				en,
+				ja,
 			);
 			mainGroup = C5A11EC49CBBA23CC4AF4983;
 			projectDirPath = "";
@@ -129,6 +134,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				8BAA8C7C006D04516B3DC1A0 /* Assets.xcassets in Resources */,
+				E8F80F82270A17C900B8921D /* Localizable.strings in Resources */,
 				4369C90E267A3922000631D6 /* Settings.bundle in Resources */,
 				80823BBE56026449A5FE87E6 /* Preview Assets.xcassets in Resources */,
 			);
@@ -185,6 +191,18 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		E8F80F84270A17C900B8921D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				E8F80F83270A17C900B8921D /* en */,
+				E8F80F85270A17CC00B8921D /* ja */,
+			);
+			name = Localizable.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		8040E65244471F2E7734D133 /* Debug */ = {

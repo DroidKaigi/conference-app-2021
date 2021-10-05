@@ -21,7 +21,6 @@ public struct HomeScreen: View {
                             if let topic = viewStore.topic {
                                 LargeCard(
                                     content: topic,
-                                    language: viewStore.language,
                                     tapAction: {
                                         viewStore.send(.tap(topic))
                                     },
@@ -41,7 +40,6 @@ public struct HomeScreen: View {
                             ForEach(viewStore.listFeedContents) { feedContent in
                                 ListItem(
                                     content: feedContent,
-                                    language: viewStore.language,
                                     tapAction: {
                                         viewStore.send(.tap(feedContent))
                                     },
@@ -80,13 +78,12 @@ public struct HomeScreen: View {
 private extension LargeCard {
     init(
         content: FeedContent,
-        language: Lang,
         tapAction: @escaping () -> Void,
         tapFavoriteAction: @escaping () -> Void,
         tapPlayAction: @escaping () -> Void
     ) {
         self.init(
-            title: content.item.title.get(by: language),
+            title: content.item.title.get(by: Foundation.Locale.current.language),
             imageURL: URL(string: content.item.image.largeURLString),
             media: content.item.media,
             date: content.item.publishedAt,
@@ -101,14 +98,13 @@ private extension LargeCard {
 private extension ListItem {
     init(
         content: FeedContent,
-        language: Lang,
         tapAction: @escaping () -> Void,
         tapFavoriteAction: @escaping () -> Void,
         tapPlayAction: @escaping () -> Void
     ) {
         let speakers = (content.item.wrappedValue as? Podcast)?.speakers ?? []
         self.init(
-            title: content.item.title.get(by: language),
+            title: content.item.title.get(by: Foundation.Locale.current.language),
             media: content.item.media,
             imageURL: URL(string: content.item.image.smallURLString),
             speakers: speakers,
@@ -135,8 +131,7 @@ public struct HomeScreen_Previews: PreviewProvider {
                             .blogMock(),
                             .blogMock(),
                             .blogMock()
-                        ],
-                        language: .en
+                        ]
                     ),
                     reducer: .empty,
                     environment: {}

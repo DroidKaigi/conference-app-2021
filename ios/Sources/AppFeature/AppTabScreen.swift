@@ -19,20 +19,8 @@ public struct AppTabScreen: View {
         UINavigationBar.appearance().configureWithDefaultStyle()
     }
 
-    struct ViewState: Equatable {
-        var isShowingSheet: Bool
-
-        init(state: AppTabState) {
-            isShowingSheet = state.isShowingSheet
-        }
-    }
-
-    public enum ViewAction {
-        case reload
-    }
-
     public var body: some View {
-        WithViewStore(store.scope(state: ViewState.init(state:))) { viewStore in
+        WithViewStore(store) { viewStore in
             TabView(
                 selection: $selection,
                 content: {
@@ -58,14 +46,16 @@ public struct AppTabScreen: View {
                     get: \.isShowingSheet,
                     send: .hideSheet
                 ), content: {
-                    IfLetStore(store.scope(state: \.isSheetPresented)) { sheetStore in
+                    IfLetStore(
+                        store.scope(
+                            state: \.settingState,
+                            action: AppTabAction.setting
+                        ),
+                        then: SettingScreen.init(store:)
+                    )
+                    IfLetStore(store.scope(state: \.showingURL)) { sheetStore in
                         WithViewStore(sheetStore) { viewStore in
-                            switch viewStore.state {
-                            case .url(let url):
-                                WebView(url: url)
-                            case .setting:
-                                SettingScreen(store: store.scope(state: \.settingState, action: AppTabAction.setting))
-                            }
+                            WebView(url: viewStore.state)
                         }
                     }
                 }
@@ -108,7 +98,7 @@ private extension AppTab {
 
 private extension AppTabState {
     var isShowingSheet: Bool {
-        isSheetPresented != nil
+        showingURL != nil || settingState != nil
     }
 }
 
@@ -126,7 +116,7 @@ private extension AppTabState {
                             .blogMock(),
                             .blogMock(),
                             .blogMock()
-                        ], language: .en
+                        ]
                     ),
                     reducer: .empty,
                     environment: {}

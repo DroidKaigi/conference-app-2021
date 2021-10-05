@@ -70,21 +70,21 @@ public struct TimetableScreen_Previews: PreviewProvider {
 
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             // needToInitialize
-            timeTableScreen(state: .init(type: .needToInitialize, language: .en))
+            timeTableScreen(state: .init(type: .needToInitialize))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, colorScheme)
 
             // errorOccurred
-            timeTableScreen(state: .init(type: .errorOccurred, language: .en))
+            timeTableScreen(state: .init(type: .errorOccurred))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, colorScheme)
 
             // initialized
-            timeTableScreen(state: .init(type: .initialized, language: .en))
+            timeTableScreen(state: .init(type: .initialized))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, colorScheme)
 
-            timeTableScreen(state: .init(type: .initialized, timetableItems: sessionMocks, language: .en))
+            timeTableScreen(state: .init(type: .initialized, timetableItems: sessionMocks))
                 .previewDevice(PreviewDevice(rawValue: "iPhone 12"))
                 .environment(\.colorScheme, colorScheme)
         }

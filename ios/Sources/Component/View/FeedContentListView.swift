@@ -4,20 +4,17 @@ import SwiftUI
 
 public struct FeedContentListView: View {
     private var feedContents: [FeedContent]
-    private var language: Lang
     private let tapContent: (FeedContent) -> Void
     private let tapFavorite: (_ isFavorited: Bool, _ id: String) -> Void
     private let tapPlay: (FeedContent) -> Void
 
     public init(
         feedContents: [FeedContent],
-        language: Lang,
         tapContent: @escaping (FeedContent) -> Void,
         tapFavorite: @escaping (_ isFavorited: Bool, _ id: String) -> Void,
         tapPlay: @escaping (FeedContent) -> Void
     ) {
         self.feedContents = feedContents
-        self.language = language
         self.tapContent = tapContent
         self.tapFavorite = tapFavorite
         self.tapPlay = tapPlay
@@ -58,7 +55,7 @@ extension FeedContentListView {
         tapPlayAction: @escaping () -> Void
     ) -> some View {
         SmallCard(
-            title: content.item.title.get(by: language),
+            title: content.item.title.get(by: Foundation.Locale.current.language),
             imageURL: URL(string: content.item.image.smallURLString),
             media: content.item.media,
             date: content.item.publishedAt,
@@ -83,7 +80,6 @@ public struct FeedContentListView_Previews: PreviewProvider {
                     .podcastMock(),
                     .podcastMock()
                 ],
-                language: .ja,
                 tapContent: { _ in },
                 tapFavorite: { _, _ in },
                 tapPlay: { _ in }

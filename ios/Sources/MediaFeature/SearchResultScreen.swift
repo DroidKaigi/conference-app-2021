@@ -14,7 +14,6 @@ public struct SearchResultScreen: View {
 
     struct ViewState: Equatable {
         var contents: [FeedContent]
-        var language: Lang
     }
 
     enum ViewAction: Equatable {
@@ -33,7 +32,6 @@ public struct SearchResultScreen: View {
                     ScrollView {
                         FeedContentListView(
                             feedContents: viewStore.contents,
-                            language: viewStore.language,
                             tapContent: { viewStore.send(.tap($0)) },
                             tapFavorite: { viewStore.send(.tapFavorite(isFavorited: $0, id: $1)) },
                             tapPlay: { viewStore.send(.tapPlay($0)) }
@@ -78,7 +76,7 @@ public struct SearchResultScreen_Previews: PreviewProvider {
         ForEach(ColorScheme.allCases, id: \.self) { colorScheme in
             SearchResultScreen(
                 store: .init(
-                    initialState: .init(contents: [], language: .ja),
+                    initialState: .init(contents: []),
                     reducer: .empty,
                     environment: ()
                 )
@@ -95,7 +93,7 @@ public struct SearchResultScreen_Previews: PreviewProvider {
                         .blogMock(),
                         .blogMock(),
                         .blogMock()
-                    ], language: .ja),
+                    ]),
                     reducer: .empty,
                     environment: ()
                 )

@@ -8,7 +8,6 @@ import Styleguide
 
 public struct SettingScreen: View {
     @Environment(\.presentationMode) var presentationMode
-    @State private var showingActionSheet = false
 
     private let store: Store<SettingState, SettingAction>
 
@@ -17,61 +16,16 @@ public struct SettingScreen: View {
     }
 
     public var body: some View {
-        WithViewStore(store) { viewStore in
+        WithViewStore(store) { _ in
             NavigationView {
-                InlineTitleNavigationBarScrollView {
-                    LazyVStack(spacing: 0) {
-                        ZStack(alignment: .bottom) {
-                            SettingToggleItem(
-                                title: L10n.SettingScreen.ListItem.darkMode,
-                                isOn: Binding(get: {
-                                    true
-                                }, set: { isOn in
-                                    print(isOn)
-                                    // TODO: add darkMode setting implementation
-                                })
-                            )
-                            .frame(minHeight: 44)
-                            Separator()
-                        }
-                        .padding(.horizontal, 16)
-                        .background(AssetColor.Background.contents.color)
-
-                        Button {
-                            showingActionSheet = true
-                        } label: {
-                            ZStack(alignment: .bottom) {
-                                HStack {
-                                    Text(L10n.SettingScreen.ListItem.language)
-                                    Spacer()
-                                    Text(viewStore.language.type).font(.caption)
-                                }
-                                .frame(minHeight: 44)
-                                Separator()
-                            }
-                            .padding(.horizontal, 16)
-                            .background(AssetColor.Background.contents.color)
-                        }
-                        .actionSheet(isPresented: $showingActionSheet) {
-                            ActionSheet(
-                                title: Text(L10n.SettingScreen.ListItem.language),
-                                buttons: [
-                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.system)) {
-                                        viewStore.send(.changeLanguage(.system))
-                                    },
-                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.japanese)) {
-                                        viewStore.send(.changeLanguage(.ja))
-                                    },
-                                    .default(Text(L10n.SettingScreen.ListItem.LanguageType.english)) {
-                                        viewStore.send(.changeLanguage(.en))
-                                    },
-                                    .cancel()
-                                ]
-                            )
-                        }
+                List {
+                    Section(
+                        header: Text(L10n.SettingScreen.ListItem.darkMode)
+                    ) {
+                        Text("Not Implemented!")
                     }
-                    .padding(.top, 24)
                 }
+                .listStyle(InsetGroupedListStyle())
                 .background(AssetColor.Background.primary.color.ignoresSafeArea())
                 .navigationBarTitle(L10n.SettingScreen.title, displayMode: .inline)
                 .navigationBarItems(
@@ -92,7 +46,7 @@ public struct SettingScreen_Previews: PreviewProvider {
     public static var previews: some View {
         SettingScreen(
             store: .init(
-                initialState: .init(language: .system),
+                initialState: .init(),
                 reducer: .empty,
                 environment: {}
             )

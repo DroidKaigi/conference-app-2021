@@ -10,7 +10,6 @@ public struct MediaSectionView: View {
 
     struct ViewState: Equatable {
         let contents: [FeedContent]
-        let language: Lang
     }
 
     enum ViewAction {
@@ -32,7 +31,6 @@ public struct MediaSectionView: View {
                         ForEach(viewStore.contents) { content in
                             MediumCard(
                                 content: content,
-                                language: viewStore.language,
                                 tapAction: {
                                     viewStore.send(.tap(content))
                                 },
@@ -54,13 +52,12 @@ public struct MediaSectionView: View {
 private extension MediumCard {
     init(
         content: FeedContent,
-        language: Lang,
         tapAction: @escaping () -> Void,
         tapFavoriteAction: @escaping () -> Void,
         tapPlayAction: @escaping () -> Void
     ) {
         self.init(
-            title: content.item.title.get(by: language),
+            title: content.item.title.get(by: Foundation.Locale.current.language),
             imageURL: URL(string: content.item.image.largeURLString),
             media: content.item.media,
             date: content.item.publishedAt,
@@ -83,9 +80,20 @@ public struct MediaSectionView_Previews: PreviewProvider {
             ForEach(sizeCategories, id: \.self) { sizeCategory in
                 MediaSectionView(
                     type: .blog,
-                    store: .init(initialState: MediaSectionView.ViewState(contents: [.blogMock(), .blogMock(), .blogMock(), .blogMock(), .blogMock(), .blogMock()], language: .en),
-                                 reducer: .empty,
-                                 environment: {})
+                    store: .init(
+                        initialState: MediaSectionView.ViewState(
+                            contents: [
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock(),
+                                .blogMock()
+                            ]
+                        ),
+                        reducer: .empty,
+                        environment: {}
+                    )
                 )
                 .background(AssetColor.Background.primary.color)
                 .environment(\.sizeCategory, sizeCategory)
