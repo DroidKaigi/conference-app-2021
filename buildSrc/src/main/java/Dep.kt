@@ -95,7 +95,7 @@ object Dep {
     }
 
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
-    const val ktlint = "com.pinterest:ktlint:0.40.0"
+    const val ktlint = "com.pinterest:ktlint:0.42.1"
     const val exhaustivePlugin = "app.cash.exhaustive:exhaustive-gradle:0.2.0"
 
     object Dagger {
