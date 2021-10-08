@@ -13,4 +13,6 @@ data class MultiLangText(
             enTitle
         }
     }
+
+    companion object
 }

@@ -34,6 +34,7 @@ import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
 import io.github.droidkaigi.feeder.core.animation.painterFavorite
 import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
+import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.fakeTimetableContents
 
 data class TimetableItemState(val timetableItem: TimetableItem, val favorited: Boolean)
@@ -88,7 +89,7 @@ private fun TimetableItemContent(
             }
         )
         Text(
-            timetableItem.title.currentLangTitle,
+            timetableItem.title.getTextWithSetting(),
             style = TextStyle(fontSize = 20.sp),
             modifier = Modifier.constrainAs(title) {
                 end.linkTo(parent.end, 48.dp)

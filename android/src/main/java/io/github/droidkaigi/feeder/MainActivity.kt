@@ -8,9 +8,12 @@ import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.browser.customtabs.CustomTabsIntent
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.core.view.WindowCompat
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import io.github.droidkaigi.feeder.core.language.ProvideLangSetting
 import io.github.droidkaigi.feeder.viewmodel.ProvideViewModels
 import io.github.droidkaigi.feeder.viewmodel.RealAppViewModel
 import kotlinx.coroutines.flow.launchIn
@@ -58,8 +61,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun setup() {
         setContent {
+            val state by appViewModel.state.collectAsState()
             ProvideViewModels {
-                DroidKaigiApp()
+                ProvideLangSetting(state.language) {
+                    DroidKaigiApp()
+                }
             }
         }
     }

@@ -67,16 +67,18 @@ import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
 import io.github.droidkaigi.feeder.core.animation.painterFavorite
 import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.core.getReadableMessage
+import io.github.droidkaigi.feeder.core.language.LocalLangSetting
+import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import io.github.droidkaigi.feeder.defaultLang
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
  * stateful
@@ -283,23 +285,28 @@ private data class TimetableDetailSessionInfoState(
     val language: String,
     val category: TimetableCategory,
 ) {
-    val currentLangTitle: String = title.currentLangTitle
+    val titleWithSetting: String
+        @Composable get() = title.getTextWithSetting()
 
     val dateTime: String = createSessionDate(
         startsAt = startsAt,
         endsAt = endsAt,
     )
 
-    val currentLangLanguage: String = when (defaultLang()) {
-        Lang.JA -> when (language) {
-            "JAPANESE" -> "日本語"
-            "ENGLISH" -> "英語"
-            else -> "未定"
+    val currentLangLanguage: String
+        @Composable get() {
+            val lang = if (LocalLangSetting.current == Lang.SYSTEM) defaultLang()
+            else LocalLangSetting.current
+            return if (lang == Lang.JA) {
+                when (language) {
+                    "JAPANESE" -> "日本語"
+                    "ENGLISH" -> "英語"
+                    else -> "未定"
+                }
+            } else {
+                language
+            }
         }
-        Lang.EN -> language
-        // TODO: fix system language
-        Lang.SYSTEM -> language
-    }
 }
 
 @Composable
@@ -309,7 +316,7 @@ private fun TimetableDetailSessionInfo(
 ) {
     Text(
         modifier = modifier,
-        text = state.currentLangTitle,
+        text = state.titleWithSetting,
         style = MaterialTheme.typography.h5,
     )
     Spacer(
@@ -391,7 +398,7 @@ private fun TimetableDetailSessionInfo(
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
-                    text = state.category.title.currentLangTitle,
+                    text = state.category.title.getTextWithSetting(),
                     style = MaterialTheme.typography.body1,
                 )
             }

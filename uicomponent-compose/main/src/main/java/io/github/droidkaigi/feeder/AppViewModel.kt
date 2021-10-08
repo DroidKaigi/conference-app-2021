@@ -13,6 +13,7 @@ interface AppViewModel :
         AppViewModel.State> {
     data class State(
         val theme: Theme? = Theme.SYSTEM,
+        val language: Lang? = Lang.SYSTEM,
     )
 
     sealed class Effect {
