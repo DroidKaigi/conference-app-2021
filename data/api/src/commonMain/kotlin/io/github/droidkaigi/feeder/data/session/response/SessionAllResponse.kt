@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 internal data class SessionAllResponse(
-    val sessions: List<SessionResponse>,
-    val rooms: List<RoomResponse>?,
-    val speakers: List<SpeakerResponse>?,
-    val categories: List<CategoryResponse>?
+    val sessions: List<SessionResponse> = emptyList(),
+    val rooms: List<RoomResponse> = emptyList(),
+    val speakers: List<SpeakerResponse> = emptyList(),
+    val categories: List<CategoryResponse> = emptyList(),
 )
