@@ -1,5 +1,6 @@
 import ComposableArchitecture
 import UIApplicationClient
+import Component
 
 public enum AboutDroidKaigiModel: CaseIterable {
     case behaviorCode
@@ -8,17 +9,13 @@ public enum AboutDroidKaigiModel: CaseIterable {
 }
 
 public struct AboutDroidKaigiState: Equatable {
-    public var showingURL: URL?
+    public var webViewState: WebViewState?
 
     public var isPresentingSheet: Bool {
-        showingURL != nil
+        webViewState != nil
     }
 
-    public init(
-        showingURL: URL? = nil
-    ) {
-        self.showingURL = showingURL
-    }
+    public init() {}
 }
 
 public enum AboutDroidKaigiAction {
@@ -41,20 +38,22 @@ public let aboutDroidKaigiReducer = Reducer<AboutDroidKaigiState, AboutDroidKaig
     case .tap(let model):
         switch model {
         case .behaviorCode:
-            state.showingURL = URL(string: "http://www.association.droidkaigi.jp/code-of-conduct.html")
+            state.webViewState = URL(string: "http://www.association.droidkaigi.jp/code-of-conduct.html")
+                .map(WebViewState.init(url:))
             return .none
         case .opensourceLicense:
             return environment.applicationClient
                 .openSettings()
                 .catchToEffect(AboutDroidKaigiAction.openApplicationSettings)
         case .privacyPolicy:
-            state.showingURL = URL(string: "http://www.association.droidkaigi.jp/privacy.html")
+            state.webViewState = URL(string: "http://www.association.droidkaigi.jp/privacy.html")
+                .map(WebViewState.init(url:))
             return .none
         }
     case .openApplicationSettings:
         return .none
     case .hideSheet:
-        state.showingURL = nil
+        state.webViewState = nil
         return .none
     }
 }

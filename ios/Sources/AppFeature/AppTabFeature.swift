@@ -1,4 +1,5 @@
 import Combine
+import Component
 import ComposableArchitecture
 import HomeFeature
 import MediaFeature
@@ -25,7 +26,7 @@ public struct AppTabState: Equatable {
     public var favoritesState: FavoritesState
     public var aboutState: AboutState
     public var settingState: SettingState?
-    public var showingURL: URL?
+    public var webViewState: WebViewState?
 
     public init(
         feedContents: [FeedContent]
@@ -137,10 +138,10 @@ public let appTabReducer = Reducer<AppTabState, AppTabAction, AppEnvironment>.co
         case .reload:
             return .none
         case .tap(let feedContent), .media(.tap(let feedContent)):
-            state.showingURL = URL(string: feedContent.item.link)
+            state.webViewState = URL(string: feedContent.item.link).map(WebViewState.init(url:))
             return .none
         case .hideSheet:
-            state.showingURL = nil
+            state.webViewState = nil
             state.settingState = nil
             return .none
         case .answerQuestionnaire:

@@ -53,11 +53,10 @@ public struct AppTabScreen: View {
                         ),
                         then: SettingScreen.init(store:)
                     )
-                    IfLetStore(store.scope(state: \.showingURL)) { sheetStore in
-                        WithViewStore(sheetStore) { viewStore in
-                            WebView(url: viewStore.state)
-                        }
-                    }
+                    IfLetStore(
+                        store.scope(state: \.webViewState).actionless,
+                        then: WebView.init(store:)
+                    )
                 }
             )
         }
@@ -98,7 +97,7 @@ private extension AppTab {
 
 private extension AppTabState {
     var isShowingSheet: Bool {
-        showingURL != nil || settingState != nil
+        webViewState != nil || settingState != nil
     }
 }
 

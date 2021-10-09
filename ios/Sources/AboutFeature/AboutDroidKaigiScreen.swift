@@ -80,7 +80,10 @@ public struct AboutDroidKaigiScreen: View {
                     send: .hideSheet
                 )
             ) {
-                WebView(url: viewStore.showingURL!)
+                IfLetStore(
+                    store.scope(state: \.webViewState).actionless,
+                    then: WebView.init(store:)
+                )
             }
         }
     }

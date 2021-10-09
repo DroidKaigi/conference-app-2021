@@ -1,16 +1,17 @@
 import ComposableArchitecture
 import Model
 import UIApplicationClient
+import Component
 
 public struct AboutLoadedState: Equatable {
     public var staffs: [Staff]
     public var contributors: [Contributor]
     public var selectedType: SelectedType
     public var aboutDroidKaigiState: AboutDroidKaigiState?
-    public var showingURL: URL?
+    public var webViewState: WebViewState?
 
     public var isShowingSheet: Bool {
-        showingURL != nil || aboutDroidKaigiState != nil
+        webViewState != nil || aboutDroidKaigiState != nil
     }
 
     public init(
@@ -60,18 +61,18 @@ public let aboutLoadedReducer = Reducer<AboutLoadedState, AboutLoadedAction, Abo
             return .none
         case let .tapStaff(staff):
             guard let url = URL(string: staff.profileURLString) else { return .none }
-            state.showingURL = url
+            state.webViewState = .init(url: url)
             return .none
         case let .tapContributor(contributor):
             guard let url = URL(string: contributor.urlString) else { return .none }
-            state.showingURL = url
+            state.webViewState = .init(url: url)
             return .none
         case .tapBanner:
             state.aboutDroidKaigiState = .init()
             return .none
         case .hideSheet:
             state.aboutDroidKaigiState = nil
-            state.showingURL = nil
+            state.webViewState = nil
             return .none
         case .aboutDroidKaigi:
             return .none

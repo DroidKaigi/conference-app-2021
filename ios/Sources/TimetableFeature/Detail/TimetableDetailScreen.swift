@@ -53,9 +53,10 @@ public struct TimetableDetailScreen: View {
                 get: \.isSheetPresented,
                 send: .hideSheet
             ), content: {
-                IfLetStore(store.scope(state: \.showingURL)) { _ in
-                    WebView(url: viewStore.showingURL.unsafelyUnwrapped)
-                }
+                IfLetStore(
+                    store.scope(state: \.webViewState).actionless,
+                    then: WebView.init(store:)
+                )
             }
         )
     }

@@ -1,21 +1,20 @@
 import ComposableArchitecture
+import Component
 import Foundation
 import Model
 
 public struct TimetableDetailState: Equatable {
     public var timetable: AnyTimetableItem
-    public var showingURL: URL?
+    public var webViewState: WebViewState?
 
     var isSheetPresented: Bool {
-        showingURL != nil
+        webViewState != nil
     }
 
     public init(
-        timetable: AnyTimetableItem,
-        showingURL: URL? = nil
+        timetable: AnyTimetableItem
     ) {
         self.timetable = timetable
-        self.showingURL = showingURL
     }
 }
 
@@ -27,10 +26,10 @@ public enum TimetableDetailAction {
 public let timetableDetailReducer = Reducer<TimetableDetailState, TimetableDetailAction, Void> { state, action, _ in
     switch action {
     case .tapLink(let link):
-        state.showingURL = link
+        state.webViewState = .init(url: link)
         return .none
     case .hideSheet:
-        state.showingURL = nil
+        state.webViewState = nil
         return .none
     }
 }
