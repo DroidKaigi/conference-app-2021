@@ -417,6 +417,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
                 contextual(InstantSerializer)
             }
             ignoreUnknownKeys = true
+            coerceInputValues = true
         }.decodeFromString<SessionAllResponse>(
             responseText
         )
@@ -431,26 +432,26 @@ private fun String.toInstantAsJST(): Instant {
 
 internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
     val feedContents = this
-    val speakerIdToSpeaker: Map<String, TimetableSpeaker> = feedContents.speakers!!
-        .groupBy { it.id!! }
+    val speakerIdToSpeaker: Map<String, TimetableSpeaker> = feedContents.speakers
+        .groupBy { it.id }
         .mapValues { (_, apiSpeakers) ->
             apiSpeakers.map { apiSpeaker ->
                 TimetableSpeaker(
-                    name = apiSpeaker.fullName!!,
-                    bio = apiSpeaker.bio ?: "",
-                    iconUrl = apiSpeaker.profilePicture ?: "",
-                    tagLine = apiSpeaker.tagLine ?: "",
+                    name = apiSpeaker.fullName,
+                    bio = apiSpeaker.bio,
+                    iconUrl = apiSpeaker.profilePicture,
+                    tagLine = apiSpeaker.tagLine,
                 )
             }.first()
         }
-    val categoryIdToCategory: Map<Int, TimetableCategory> = feedContents.categories!!
-        .flatMap { it.items!! }
-        .groupBy { it!!.id!! }
+    val categoryIdToCategory: Map<Int, TimetableCategory> = feedContents.categories
+        .flatMap { it.items }
+        .groupBy { it.id }
         .mapValues { (_, apiCategories) ->
             apiCategories.map { apiCategory ->
                 TimetableCategory(
-                    id = apiCategory!!.id!!,
-                    title = apiCategory.name!!.toMultiLangText()
+                    id = apiCategory.id,
+                    title = apiCategory.name.toMultiLangText()
                 )
             }.first()
         }
@@ -461,14 +462,14 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
                 if (!apiSession.isServiceSession) {
                     TimetableItem.Session(
                         id = apiSession.id,
-                        title = apiSession.title!!.toMultiLangText(),
-                        startsAt = apiSession.startsAt!!.toInstantAsJST(),
-                        endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                        title = apiSession.title.toMultiLangText(),
+                        startsAt = apiSession.startsAt.toInstantAsJST(),
+                        endsAt = apiSession.endsAt.toInstantAsJST(),
                         category = categoryIdToCategory[apiSession.sessionCategoryItemId]!!,
                         targetAudience = apiSession.targetAudience,
-                        language = apiSession.language!!,
+                        language = apiSession.language,
                         asset = apiSession.asset.toTimetableAsset(),
-                        description = apiSession.description!!,
+                        description = apiSession.description,
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! },
                         message = apiSession.message?.toMultiLangText(),
                         levels = apiSession.levels,
@@ -476,12 +477,12 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
                 } else {
                     TimetableItem.Special(
                         id = apiSession.id,
-                        title = apiSession.title!!.toMultiLangText(),
-                        startsAt = apiSession.startsAt!!.toInstantAsJST(),
-                        endsAt = apiSession.endsAt!!.toInstantAsJST(),
+                        title = apiSession.title.toMultiLangText(),
+                        startsAt = apiSession.startsAt.toInstantAsJST(),
+                        endsAt = apiSession.endsAt.toInstantAsJST(),
                         category = categoryIdToCategory[apiSession.sessionCategoryItemId]!!,
                         targetAudience = apiSession.targetAudience,
-                        language = apiSession.language!!,
+                        language = apiSession.language,
                         asset = apiSession.asset.toTimetableAsset(),
                         speakers = apiSession.speakers.map { speakerIdToSpeaker[it]!! },
                         levels = apiSession.levels,
@@ -492,6 +493,6 @@ internal fun SessionAllResponse.toTimetableContents(): TimetableContents {
     )
 }
 
-private fun LocaledResponse.toMultiLangText() = MultiLangText(jaTitle = ja!!, enTitle = en!!)
-private fun SessionMessageResponse.toMultiLangText() = MultiLangText(jaTitle = ja!!, enTitle = en!!)
+private fun LocaledResponse.toMultiLangText() = MultiLangText(jaTitle = ja, enTitle = en)
+private fun SessionMessageResponse.toMultiLangText() = MultiLangText(jaTitle = ja, enTitle = en)
 private fun SessionAssetResponse.toTimetableAsset() = TimetableAsset(videoUrl, slideUrl)

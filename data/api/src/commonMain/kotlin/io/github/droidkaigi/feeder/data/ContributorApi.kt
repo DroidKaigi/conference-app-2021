@@ -36,6 +36,8 @@ fun fakeContributorApi(error: AppError? = null): ContributorApi = object : Contr
                 ]
             }
         """.trimIndent()
-        Json {}.decodeFromString<ContributorsResponse>(responseText).toContributorList()
+        Json {
+            coerceInputValues = true
+        }.decodeFromString<ContributorsResponse>(responseText).toContributorList()
     }
 }
