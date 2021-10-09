@@ -28,7 +28,7 @@ jobs:
         with:
           java-version: '11'
       - name: Select Xcode Version
-        run: sudo xcode-select -s '/Applications/Xcode_12.5.1.app'
+        run: sudo xcode-select -s '/Applications/Xcode_13.0.app'
       - name: Show Xcode Version
         run: xcodebuild -version
       - uses: eskatos/gradle-command-action@v1
