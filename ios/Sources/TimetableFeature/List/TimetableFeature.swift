@@ -34,21 +34,19 @@ public let timetableReducer = Reducer<TimetableState, TimetableAction, Timetable
     timetableLoadedReducer.pullback(
         state: /TimetableState.initialized,
         action: /TimetableAction.loaded,
-        environment: {_ in
+        environment: { _ in
             .init()
         }
     ),
     loadingReducer.pullback(
         state: /TimetableState.needToInitialize,
         action: /TimetableAction.loading,
-        environment: {_ in}
+        environment: { _ in }
     ),
     errorViewReducer.pullback(
         state: /TimetableState.errorOccurred,
         action: /TimetableAction.error,
-        environment: { _ in
-
-        }
+        environment: { _ in }
     ),
     .init { state, action, environment in
         switch action {

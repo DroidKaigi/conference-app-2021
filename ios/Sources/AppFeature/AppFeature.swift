@@ -40,7 +40,7 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
     errorViewReducer.pullback(
         state: /AppState.errorOccurred,
         action: /AppAction.error,
-        environment: {_ in}
+        environment: { _ in }
     ),
     .init { state, action, environment in
         switch action {
