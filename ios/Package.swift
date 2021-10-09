@@ -111,6 +111,7 @@ var package = Package(
                 .target(name: "Styleguide"),
                 .product(name: "Introspect", package: "Introspect"),
                 .product(name: "NukeUI", package: "NukeUI"),
+                .product(name: "ComposableArchitecture", package: "swift-composable-architecture"),
             ]
         ),
         .target(
