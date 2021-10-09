@@ -6,95 +6,95 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
 @Serializable
-class ExternalId(
-    var value: String,
-    var serviceName: String,
+data class ExternalId(
+    val value: String,
+    val serviceName: String,
 )
 
 @Serializable
-class Thumbnail(
-    var smallUrl: String,
-    var standardUrl: String,
-    var largeUrl: String,
+data class Thumbnail(
+    val smallUrl: String,
+    val standardUrl: String,
+    val largeUrl: String,
 )
 
 @Serializable
-class Article(
-    var id: String,
-    var externalId: ExternalId,
-    var title: String,
-    var summary: String,
-    var authorName: String,
-    var authorUrl: String,
-    var thumbnail: Thumbnail,
-    var link: String,
+data class Article(
+    val id: String,
+    val externalId: ExternalId,
+    val title: String,
+    val summary: String,
+    val authorName: String,
+    val authorUrl: String,
+    val thumbnail: Thumbnail,
+    val link: String,
     @Contextual
-    var publishedAt: Instant,
-    var status: String,
-    var language: String,
+    val publishedAt: Instant,
+    val status: String,
+    val language: String,
 )
 
 @Serializable
-class Speaker(
-    var name: String,
-    var iconUrl: String,
+data class Speaker(
+    val name: String,
+    val iconUrl: String,
 )
 
 @Serializable
-class Episode(
-    var id: String,
-    var externalId: ExternalId,
-    var title: String,
-    var summary: String,
-    var duration: Double = 0.0,
-    var durationLabel: String,
-    var speakers: List<Speaker>,
-    var thumbnail: Thumbnail,
-    var link: String,
+data class Episode(
+    val id: String,
+    val externalId: ExternalId,
+    val title: String,
+    val summary: String,
+    val duration: Double = 0.0,
+    val durationLabel: String,
+    val speakers: List<Speaker>,
+    val thumbnail: Thumbnail,
+    val link: String,
     @Contextual
-    var publishedAt: Instant,
-    var status: String,
+    val publishedAt: Instant,
+    val status: String,
 )
 
 @Serializable
-class MultiLangTitle(
-    var japanese: String,
-    var english: String,
+data class MultiLangTitle(
+    val japanese: String,
+    val english: String,
 )
 
 @Serializable
-class MultiLangSummary(
-    var japanese: String,
-    var english: String,
+data class MultiLangSummary(
+    val japanese: String,
+    val english: String,
 )
 
 @Serializable
-class AspectRatio(
-    var width: Int = 0,
-    var height: Int = 0,
+data class AspectRatio(
+    val width: Int = 0,
+    val height: Int = 0,
 )
 
 @Serializable
-class Recording(
-    var id: String,
-    var externalId: ExternalId,
+data class Recording(
+    val id: String,
+    val externalId: ExternalId,
     @SerialName("title")
-    var multiLangTitle: MultiLangTitle,
+    val multiLangTitle: MultiLangTitle,
     @SerialName("summary")
-    var multiLangSummary: MultiLangSummary,
-    var thumbnail: Thumbnail,
-    var aspectRatio: AspectRatio,
-    var link: String,
+    val multiLangSummary: MultiLangSummary,
+    val thumbnail: Thumbnail,
+    val aspectRatio: AspectRatio,
+    val link: String,
     @Contextual
-    var publishedAt: Instant,
-    var status: String,
-    var language: String,
+    val publishedAt: Instant,
+    val status: String,
+    val language: String,
 )
 
 @Serializable
-class FeedsResponse(
-    var status: String,
-    var articles: List<Article>,
-    var episodes: List<Episode>,
-    var recordings: List<Recording>,
+data class FeedsResponse(
+    val status: String,
+    val articles: List<Article>,
+    val episodes: List<Episode>,
+    val recordings: List<Recording>,
 )
