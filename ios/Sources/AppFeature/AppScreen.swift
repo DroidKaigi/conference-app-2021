@@ -13,43 +13,19 @@ public struct AppScreen: View {
     @State var selection = 0
 
     private let store: Store<AppState, AppAction>
-    @ObservedObject private var viewStore: ViewStore<ViewState, ViewAction>
 
     public init(store: Store<AppState, AppAction>) {
         self.store = store
-        self.viewStore = ViewStore<ViewState, ViewAction>(
-            store.scope(
-                state: ViewState.init(state:),
-                action: AppAction.init(action:)
-            )
-        )
         UITabBar.appearance().configureWithDefaultStyle()
         UINavigationBar.appearance().configureWithDefaultStyle()
-    }
-
-    internal struct ViewState: Equatable {
-        init(state: AppState) {}
-    }
-
-    internal enum ViewAction {
-        case progressViewAppeared
-        case reload
     }
 
     public var body: some View {
         SwitchStore(store) {
             CaseLet(
                 state: /AppState.needToInitialize,
-                action: { (action: AppScreen.ViewAction) in
-                    AppAction.init(action: action)
-                },
-                then: { _ in
-                ProgressView()
-                    .frame(maxWidth: .infinity, maxHeight: .infinity)
-                    .background(AssetColor.Background.primary.color.ignoresSafeArea())
-                    .onAppear { viewStore.send(.progressViewAppeared) }
-                }
-            )
+                action: AppAction.loading,
+                then: LoadingView.init(store:))
             CaseLet(
                 state: /AppState.initialized,
                 action: AppAction.appTab,
@@ -57,29 +33,12 @@ public struct AppScreen: View {
             )
             CaseLet(
                 state: /AppState.errorOccurred,
-                action: { (action: AppScreen.ViewAction) in
-                    AppAction.init(action: action)
-                },
-                then: { _ in
-                    ErrorView(tapReload: {
-                        viewStore.send(.reload)
-                    })
-                }
+                action: AppAction.error,
+                then: ErrorView.init(store:)
             )
         }
         .accentColor(AssetColor.primary.color)
         .background(AssetColor.Background.primary.color)
-    }
-}
-
-private extension AppAction {
-    init(action: AppScreen.ViewAction) {
-        switch action {
-        case .progressViewAppeared:
-            self = .refresh
-        case .reload:
-            self = .needRefresh
-        }
     }
 }
 
