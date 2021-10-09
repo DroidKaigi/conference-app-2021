@@ -417,6 +417,7 @@ fun fakeDroidKaigi2021Api(error: AppError? = null): DroidKaigi2021Api = object :
                 contextual(InstantSerializer)
             }
             ignoreUnknownKeys = true
+            coerceInputValues = true
         }.decodeFromString<SessionAllResponse>(
             responseText
         )
