@@ -70,7 +70,7 @@ object Dep {
     }
 
     object Serialization {
-        const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
+        const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.0"
     }
 
     object KotlinTest {
