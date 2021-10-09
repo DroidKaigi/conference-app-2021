@@ -8,7 +8,7 @@ open class KtorStaffApi(
 ) : StaffApi {
 
     override suspend fun fetch(): List<Staff> = networkService.get<StaffResponse>(
-        "https://ssot-api-staging.an.r.appspot.com/events/droidkaigi2021/staff",
+        "https://${BuildKonfig.API_END_PONT}/events/droidkaigi2021/staff",
         needAuth = true
     ).toStaffList()
 }

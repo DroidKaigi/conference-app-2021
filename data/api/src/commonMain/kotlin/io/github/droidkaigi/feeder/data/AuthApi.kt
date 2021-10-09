@@ -39,7 +39,7 @@ class AuthApi(
         runCatching {
             // Use httpClient for bypass auth process
             httpClient
-                .post<String>("https://ssot-api-staging.an.r.appspot.com/accounts") {
+                .post<String>("https://${BuildKonfig.API_END_PONT}/accounts") {
                     header(HttpHeaders.Authorization, "Bearer $createdIdToken")
                     contentType(ContentType.Application.Json)
                     body = "{}"

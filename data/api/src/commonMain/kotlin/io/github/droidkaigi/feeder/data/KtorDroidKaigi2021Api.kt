@@ -8,7 +8,7 @@ open class KtorDroidKaigi2021Api(
 ) : DroidKaigi2021Api {
 
     override suspend fun fetch(): TimetableContents = networkService.get<SessionAllResponse>(
-        "https://ssot-api-staging.an.r.appspot.com/events/droidkaigi2021/timetable",
+        "https://${BuildKonfig.API_END_PONT}/events/droidkaigi2021/timetable",
         needAuth = true
     ).toTimetableContents()
 }

@@ -6,6 +6,7 @@ plugins {
     id("kotlinx-serialization")
     id("kotlin-kapt")
     id("com.android.library")
+    id("com.codingfeline.buildkonfig")
 }
 
 apply from: rootProject.file("gradle/android.gradle")
@@ -97,6 +98,17 @@ kotlin {
             implementation Dep.Koin.core
         }
         iosArm64Main.dependsOn(iosMain)
+    }
+}
+
+buildkonfig {
+    packageName = 'io.github.droidkaigi.feeder.data'
+
+    defaultConfigs {
+        buildConfigField 'STRING', 'API_END_PONT', 'ssot-api.droidkaigi.jp'
+    }
+    defaultConfigs("dev") {
+        buildConfigField 'STRING', 'API_END_PONT', 'ssot-api-staging.an.r.appspot.com'
     }
 }
 
