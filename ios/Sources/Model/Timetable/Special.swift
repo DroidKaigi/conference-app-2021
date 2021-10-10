@@ -38,7 +38,7 @@ public struct Special: TimetableItem, Equatable {
 
     public init(from model: DroidKaigiMPP.TimetableItem.Special) {
         self.init(
-            id: model.id,
+            id: model.id as? String ?? "", // non-null Kotlin String is always passed
             lang: model.language,
             title: MultiLangText(from: model.title),
             category: MultiLangText(from: model.category.title),
