@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.data
 
+import io.github.droidkaigi.feeder.FeedItemId
 import kotlin.test.AfterTest
 import kotlin.test.Test
 import kotlin.test.assertEquals
@@ -24,14 +25,21 @@ class DataStoreUserDataStoreTest {
 
         // when
         runBlocking {
-            dataStore.addFavorite("1")
-            dataStore.addFavorite("2")
-            dataStore.addFavorite("3")
+            dataStore.addFavorite(FeedItemId("1"))
+            dataStore.addFavorite(FeedItemId("2"))
+            dataStore.addFavorite(FeedItemId("3"))
         }
 
         // then
         runBlocking {
-            assertEquals(dataStore.favorites().first(), setOf("1", "2", "3"))
+            assertEquals(
+                dataStore.favorites().first(),
+                setOf(
+                    FeedItemId("1"),
+                    FeedItemId("2"),
+                    FeedItemId("3"),
+                )
+            )
         }
     }
 
