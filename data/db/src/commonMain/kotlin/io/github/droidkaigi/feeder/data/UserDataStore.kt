@@ -30,14 +30,20 @@ abstract class UserDataStore {
     suspend fun addFavorite(id: FeedItemId) {
         flowSettings.putString(
             KEY_FAVORITES,
-            (favorites().first() + id).map { it.value }.toSet().joinToString(","),
+            (favorites().first() + id)
+                .map { it.value }
+                .toSet()
+                .joinToString(","),
         )
     }
 
     suspend fun removeFavorite(id: FeedItemId) {
         flowSettings.putString(
             KEY_FAVORITES,
-            (favorites().first() - id).map { it.value }.toSet().joinToString(","),
+            (favorites().first() - id)
+                .map { it.value }
+                .toSet()
+                .joinToString(","),
         )
     }
 
@@ -56,14 +62,20 @@ abstract class UserDataStore {
     suspend fun addFavoriteTimetableItemId(id: TimetableItemId) {
         flowSettings.putString(
             KEY_FAVORITES_TIMETABLE_ITEM_ID,
-            (favoriteTimetableItemIds().first() + id).map { it.value }.toSet().joinToString(","),
+            (favoriteTimetableItemIds().first() + id)
+                .map { it.value }
+                .toSet()
+                .joinToString(","),
         )
     }
 
     suspend fun removeFavoriteTimetableItemId(id: TimetableItemId) {
         flowSettings.putString(
             KEY_FAVORITES_TIMETABLE_ITEM_ID,
-            (favoriteTimetableItemIds().first() - id).map { it.value }.toSet().joinToString(","),
+            (favoriteTimetableItemIds().first() - id)
+                .map { it.value }
+                .toSet()
+                .joinToString(","),
         )
     }
 

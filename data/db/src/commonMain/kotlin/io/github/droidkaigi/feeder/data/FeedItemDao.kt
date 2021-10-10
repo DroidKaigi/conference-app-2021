@@ -90,8 +90,7 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
                 publishedAt = Instant.fromEpochMilliseconds(publishedAt),
                 image = Image(
                     smallUrl = imageSmallUrl, standardUrl = imageStandardUrl,
-                    largeUrl =
-                    imageLargeUrl
+                    largeUrl = imageLargeUrl
                 ),
                 media = Media.parse(media),
                 title = MultiLangText(jaTitle = jaTitle, enTitle = enTitle),
@@ -120,8 +119,7 @@ internal class FeedItemDaoImpl(database: Database) : FeedItemDao {
                 publishedAt = Instant.fromEpochMilliseconds(publishedAt),
                 image = Image(
                     smallUrl = imageSmallUrl, standardUrl = imageStandardUrl,
-                    largeUrl =
-                    imageLargeUrl
+                    largeUrl = imageLargeUrl
                 ),
                 media = Media.parse(media),
                 title = MultiLangText(jaTitle = jaTitle, enTitle = enTitle),
