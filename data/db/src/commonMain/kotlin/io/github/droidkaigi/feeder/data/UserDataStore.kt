@@ -3,6 +3,7 @@ package io.github.droidkaigi.feeder.data
 import com.russhwolf.settings.MockSettings
 import com.russhwolf.settings.coroutines.FlowSettings
 import com.russhwolf.settings.coroutines.toFlowSettings
+import io.github.droidkaigi.feeder.FeedItemId
 import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.TimetableItemId
@@ -14,23 +15,29 @@ import kotlinx.coroutines.flow.map
 
 abstract class UserDataStore {
     protected abstract val flowSettings: FlowSettings
-    fun favorites(): Flow<Set<String>> {
+    fun favorites(): Flow<Set<FeedItemId>> {
         return flowSettings
             .getStringFlow(KEY_FAVORITES)
-            .map { favorites -> favorites.split(",").filter { it.isNotBlank() }.toSet() }
+            .map { favorites ->
+                favorites
+                    .split(",")
+                    .filter { it.isNotBlank() }
+                    .map { FeedItemId(it) }
+                    .toSet()
+            }
     }
 
-    suspend fun addFavorite(id: String) {
+    suspend fun addFavorite(id: FeedItemId) {
         flowSettings.putString(
             KEY_FAVORITES,
-            (favorites().first() + id).toSet().joinToString(","),
+            (favorites().first() + id).map { it.value }.toSet().joinToString(","),
         )
     }
 
-    suspend fun removeFavorite(id: String) {
+    suspend fun removeFavorite(id: FeedItemId) {
         flowSettings.putString(
             KEY_FAVORITES,
-            (favorites().first() - id).toSet().joinToString(","),
+            (favorites().first() - id).map { it.value }.toSet().joinToString(","),
         )
     }
 
