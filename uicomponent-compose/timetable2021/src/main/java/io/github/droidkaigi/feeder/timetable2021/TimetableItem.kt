@@ -30,6 +30,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
 import io.github.droidkaigi.feeder.core.animation.painterFavorite
@@ -42,7 +43,7 @@ data class TimetableItemState(val timetableItem: TimetableItem, val favorited: B
 @Composable
 fun TimetableItem(
     timetableItemState: TimetableItemState,
-    onDetailClick: (String) -> Unit,
+    onDetailClick: (TimetableItemId) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
     showDivider: Boolean
 ) {
@@ -61,7 +62,7 @@ fun TimetableItem(
 private fun TimetableItemContent(
     timetableItem: TimetableItem,
     favorited: Boolean,
-    onDetailClick: (String) -> Unit,
+    onDetailClick: (TimetableItemId) -> Unit,
     onFavoriteChange: (TimetableItem) -> Unit,
 ) {
     ConstraintLayout(
