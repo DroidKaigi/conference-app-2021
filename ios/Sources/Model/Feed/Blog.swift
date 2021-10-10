@@ -34,7 +34,7 @@ public struct Blog: FeedItem, Equatable {
     }
 
     public init(from model: DroidKaigiMPP.FeedItem.Blog) {
-        self.id = model.id
+        self.id = model.id as? String ?? ""  // non-null Kotlin String is always passed
         self.image = Image(from: model.image)
         self.link = model.link
         self.media = Media.from(model.media)
