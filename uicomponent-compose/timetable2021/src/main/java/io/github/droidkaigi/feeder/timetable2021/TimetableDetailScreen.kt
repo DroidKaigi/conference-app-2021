@@ -61,6 +61,7 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
@@ -73,19 +74,19 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import io.github.droidkaigi.feeder.defaultLang
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 
 /**
  * stateful
  */
 @Composable
 fun TimetableDetailScreen(
-    id: String,
+    id: TimetableItemId,
     onNavigationIconClick: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -611,7 +612,7 @@ fun PreviewTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {},
             )
         }
@@ -630,7 +631,7 @@ fun PreviewSmallTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
@@ -645,7 +646,7 @@ fun PreviewTabletTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
@@ -660,7 +661,7 @@ fun PreviewLargeTabletTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }

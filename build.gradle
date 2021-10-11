@@ -67,7 +67,7 @@ allprojects {
             targetExclude('bin/**/*.kt')
             targetExclude("**/generated/**/*.kt")
 
-            ktlint("0.42.1")
+            ktlint(Dep.ktlint.split(":").last())
                     .userData([android: "true", experimental: "true"])
         }
     }

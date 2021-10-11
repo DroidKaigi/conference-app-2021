@@ -8,6 +8,7 @@ import android.content.Intent
 import android.os.Build
 import androidx.core.app.AlarmManagerCompat
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.core.R
 import io.github.droidkaigi.feeder.defaultLang
 import java.time.format.DateTimeFormatter
@@ -93,7 +94,7 @@ class TimetableItemAlarm @Inject constructor(private val app: Application) {
 
     private fun createNotificationIntentForSessionStart(
         context: Context,
-        sessionId: String,
+        sessionId: TimetableItemId,
         title: String,
         text: String,
     ): Intent {
@@ -101,9 +102,8 @@ class TimetableItemAlarm @Inject constructor(private val app: Application) {
             context,
             Class.forName(BROADCAST_RECEIVER_CLASS_NAME)
         ).apply {
-            action =
-                ACTION_FAVORITED_SESSION_START
-            putExtra(EXTRA_SESSION_ID, sessionId)
+            action = ACTION_FAVORITED_SESSION_START
+            putExtra(EXTRA_SESSION_ID, sessionId.value)
             putExtra(EXTRA_TITLE, title)
             putExtra(EXTRA_TEXT, text)
             putExtra(EXTRA_CHANNEL_ID, FAVORITE_SESSION_START_CHANNEL_ID)
