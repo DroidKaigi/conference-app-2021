@@ -1,14 +1,20 @@
 package io.github.droidkaigi.feeder
 
-// FIXME: replace with library
+import io.github.aakira.napier.Antilog
+import io.github.aakira.napier.DebugAntilog
+import io.github.aakira.napier.Napier
+
 object Logger {
-    fun init() {
+    fun init(antilog: Antilog = DebugAntilog()) {
         // for future changes
+        Napier.base(antilog)
     }
 
-    fun d(message: String) = println(message)
+    fun d(message: String) {
+        Napier.d(message)
+    }
+
     fun d(e: Throwable, message: String) {
-        println(message)
-        e.printStackTrace()
+        Napier.d(throwable = e, message = message)
     }
 }

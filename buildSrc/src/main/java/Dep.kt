@@ -147,4 +147,6 @@ object Dep {
     }
 
     const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
+
+    const val napier = "io.github.aakira:napier:2.1.0"
 }
