@@ -35,7 +35,6 @@ class LoggerInitializer : Initializer<Unit> {
                             }
                         }
                     }
-
                 }
             }
         )
