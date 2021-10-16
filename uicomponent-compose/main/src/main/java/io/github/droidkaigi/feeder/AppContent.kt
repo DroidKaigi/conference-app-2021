@@ -151,7 +151,7 @@ fun AppContent(
                 route = "$TIMETABLE_DETAIL_PATH{id}",
                 deepLinks = listOf(
                     navDeepLink {
-                        uriPattern = "$deepLinkUri/$TIMETABLE_DETAIL_PATH/{id}"
+                        uriPattern = "$deepLinkUri/$TIMETABLE_DETAIL_PATH{id}"
                     }
                 ),
                 arguments = listOf(
