@@ -1,12 +1,19 @@
 package io.github.droidkaigi.feeder.core.theme
 
-import android.content.Context
+import androidx.compose.runtime.Composable
+import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.R
+import io.github.droidkaigi.feeder.core.language.from
+import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 
-fun Theme?.getTitle(context: Context): String = when (this) {
-    Theme.SYSTEM -> context.getString(R.string.system)
-    Theme.DARK -> context.getString(R.string.dark)
-    Theme.LIGHT -> context.getString(R.string.light)
-    else -> context.getString(R.string.system)
+@Composable
+fun Theme?.getTitle(): String {
+    val res = when (this) {
+        Theme.SYSTEM -> R.string.system
+        Theme.DARK -> R.string.dark
+        Theme.LIGHT -> R.string.light
+        else -> R.string.system
+    }
+    return MultiLangText.from(res).getTextWithSetting()
 }

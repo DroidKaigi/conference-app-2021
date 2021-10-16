@@ -51,6 +51,7 @@ fun fakeStaffApi(error: AppError? = null): StaffApi = object : StaffApi {
             serializersModule = SerializersModule {
                 contextual(InstantSerializer)
             }
+            coerceInputValues = true
         }.decodeFromString<StaffResponse>(
             responseText
         ).toStaffList()

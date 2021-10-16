@@ -15,5 +15,5 @@ open class KtorStaffApi(
 
 fun StaffResponse.toStaffList() =
     staff.map {
-        Staff(it.id, it.username, it.profileUrl ?: "", it.iconUrl)
+        Staff(it.id, it.username, it.profileUrl, it.iconUrl)
     }

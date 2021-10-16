@@ -1,6 +1,5 @@
 package io.github.droidkaigi.feeder.setting
 
-import android.content.Context
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -20,7 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,21 +38,18 @@ fun Settings() {
         _,
         dispatch,
     ) = use(settingViewModel())
-    val context = LocalContext.current
 
     Surface(
         color = MaterialTheme.colors.background,
     ) {
         Column {
             ThemeSetting(
-                context = context,
                 theme = state.theme,
                 onClick = {
                     dispatch(SettingViewModel.Event.ChangeTheme(theme = it))
                 }
             )
             LanguageSetting(
-                context = context,
                 language = state.language,
                 onClick = {
                     dispatch(SettingViewModel.Event.ChangeLanguage(language = it))
@@ -66,7 +61,6 @@ fun Settings() {
 
 @Composable
 private fun ThemeSetting(
-    context: Context,
     theme: Theme?,
     onClick: (Theme?) -> Unit,
 ) {
@@ -86,7 +80,7 @@ private fun ThemeSetting(
             modifier = Modifier.padding(start = 36.dp),
         )
         Text(
-            text = theme.getTitle(context),
+            text = theme.getTitle(),
             style = TextStyle(
                 color = Color.Gray
             ),
@@ -99,7 +93,6 @@ private fun ThemeSetting(
             ThemeSelectDialog(
                 onChangeTheme = onClick,
                 theme = theme,
-                context = context,
                 onClick = {
                     openDialog.value = false
                 }
@@ -110,7 +103,6 @@ private fun ThemeSetting(
 
 @Composable
 private fun LanguageSetting(
-    context: Context,
     language: Lang?,
     onClick: (Lang?) -> Unit,
 ) {
@@ -130,7 +122,7 @@ private fun LanguageSetting(
             modifier = Modifier.padding(start = 36.dp),
         )
         Text(
-            text = language.getTitle(context),
+            text = language.getTitle(),
             style = TextStyle(
                 color = Color.Gray
             ),
@@ -143,7 +135,6 @@ private fun LanguageSetting(
             LanguageSelectDialog(
                 onChangeLanguage = onClick,
                 language = language,
-                context = context,
                 onClick = {
                     openDialog.value = false
                 }
@@ -156,7 +147,6 @@ private fun LanguageSetting(
 private fun ThemeSelectDialog(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
-    context: Context,
     onClick: () -> Unit,
 ) {
     AlertDialog(
@@ -168,7 +158,6 @@ private fun ThemeSelectDialog(
             ThemeSelectRadioButton(
                 onChangeTheme = onChangeTheme,
                 theme = theme,
-                context = context
             )
         },
         confirmButton = {
@@ -185,7 +174,6 @@ private fun ThemeSelectDialog(
 private fun ThemeSelectRadioButton(
     onChangeTheme: (Theme?) -> Unit,
     theme: Theme?,
-    context: Context,
 ) {
     val themes: List<Theme> = Theme.values().toList()
     var defaultIndex = 0
@@ -217,7 +205,7 @@ private fun ThemeSelectRadioButton(
                         }
                     )
                     Text(
-                        text = theme.getTitle(context),
+                        text = theme.getTitle(),
                         modifier = Modifier.padding(16.dp),
                     )
                 }
@@ -230,7 +218,6 @@ private fun ThemeSelectRadioButton(
 private fun LanguageSelectDialog(
     onChangeLanguage: (Lang?) -> Unit,
     language: Lang?,
-    context: Context,
     onClick: () -> Unit,
 ) {
     AlertDialog(
@@ -242,7 +229,6 @@ private fun LanguageSelectDialog(
             LanguageSelectRadioButton(
                 onChangeLanguage = onChangeLanguage,
                 language = language,
-                context = context
             )
         },
         confirmButton = {
@@ -259,7 +245,6 @@ private fun LanguageSelectDialog(
 private fun LanguageSelectRadioButton(
     onChangeLanguage: (Lang?) -> Unit,
     language: Lang?,
-    context: Context,
 ) {
     val languages: List<Lang> = Lang.values().toList()
     var defaultIndex = 0
@@ -291,7 +276,7 @@ private fun LanguageSelectRadioButton(
                         }
                     )
                     Text(
-                        text = language.getTitle(context),
+                        text = language.getTitle(),
                         modifier = Modifier.padding(16.dp),
                     )
                 }

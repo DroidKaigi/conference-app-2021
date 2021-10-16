@@ -70,7 +70,7 @@ object Dep {
     }
 
     object Serialization {
-        const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.0.1"
+        const val core = "org.jetbrains.kotlinx:kotlinx-serialization-core:1.3.0"
     }
 
     object KotlinTest {
@@ -95,7 +95,7 @@ object Dep {
     }
 
     const val datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.1.1"
-    const val ktlint = "com.pinterest:ktlint:0.40.0"
+    const val ktlint = "com.pinterest:ktlint:0.42.1"
     const val exhaustivePlugin = "app.cash.exhaustive:exhaustive-gradle:0.2.0"
 
     object Dagger {

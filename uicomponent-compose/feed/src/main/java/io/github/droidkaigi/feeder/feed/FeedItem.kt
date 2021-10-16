@@ -38,6 +38,7 @@ import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
 import io.github.droidkaigi.feeder.core.animation.painterFavorite
 import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
+import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
 import io.github.droidkaigi.feeder.fakeFeedContents
@@ -136,7 +137,7 @@ fun FeedItem(
                 end.linkTo(parent.end, 16.dp)
                 width = Dimension.fillToConstraints
             },
-            text = feedItem.title.currentLangTitle,
+            text = feedItem.title.getTextWithSetting(),
             style = TextStyle(fontWeight = FontWeight.Bold, fontSize = 16.sp),
             maxLines = 2,
             overflow = TextOverflow.Ellipsis

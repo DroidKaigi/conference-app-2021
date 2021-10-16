@@ -68,9 +68,9 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import java.time.Instant
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
-import java.time.Instant
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -323,7 +323,7 @@ private fun FeedList(
         ) {
             itemsIndexed(
                 items = feedContents.contents,
-                key = { _, item -> item.first.id }
+                key = { _, item -> item.first.id.value }
             ) { index, (feedItem, favorited) ->
                 if (isHome && index == 0) {
                     if (isFilterState) {

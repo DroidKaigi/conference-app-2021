@@ -10,5 +10,5 @@ data class DeviceResponse(
 @Serializable
 data class Device(
     val id: String,
-    val isPushSupported: Boolean
+    val isPushSupported: Boolean,
 )

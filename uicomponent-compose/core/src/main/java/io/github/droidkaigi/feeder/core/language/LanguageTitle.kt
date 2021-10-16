@@ -1,12 +1,17 @@
 package io.github.droidkaigi.feeder.core.language
 
-import android.content.Context
+import androidx.compose.runtime.Composable
 import io.github.droidkaigi.feeder.Lang
+import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.core.R
 
-fun Lang?.getTitle(context: Context): String = when (this) {
-    Lang.SYSTEM -> context.getString(R.string.system)
-    Lang.JA -> context.getString(R.string.ja)
-    Lang.EN -> context.getString(R.string.en)
-    else -> context.getString(R.string.system)
+@Composable
+fun Lang?.getTitle(): String {
+    val res = when (this) {
+        Lang.SYSTEM -> R.string.system
+        Lang.JA -> R.string.ja
+        Lang.EN -> R.string.en
+        else -> R.string.system
+    }
+    return MultiLangText.from(res).getTextWithSetting()
 }

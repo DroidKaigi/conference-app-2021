@@ -7,7 +7,7 @@ import kotlinx.datetime.toLocalDateTime
 
 @OptIn(ExperimentalTime::class)
 sealed class TimetableItem(
-    open val id: String,
+    open val id: TimetableItemId,
     open val title: MultiLangText,
     open val startsAt: Instant,
     open val endsAt: Instant,
@@ -18,7 +18,7 @@ sealed class TimetableItem(
     open val levels: List<String>,
 ) {
     data class Session(
-        override val id: String,
+        override val id: TimetableItemId,
         override val title: MultiLangText,
         override val startsAt: Instant,
         override val endsAt: Instant,
@@ -43,7 +43,7 @@ sealed class TimetableItem(
     )
 
     data class Special(
-        override val id: String,
+        override val id: TimetableItemId,
         override val title: MultiLangText,
         override val startsAt: Instant,
         override val endsAt: Instant,

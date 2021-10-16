@@ -165,7 +165,7 @@ fun AppContent(
                 )
                 val id = routePath.value
                 TimetableDetailScreen(
-                    id = id,
+                    id = TimetableItemId(id),
                     onNavigationIconClick = {
                         actions.onBackFromTimetableDetail()
                     },
@@ -235,8 +235,8 @@ private class AppActions(navController: NavHostController) {
         }
     }
 
-    val onSelectTimetableDetail: (String) -> Unit = { id ->
-        navController.navigate(TIMETABLE_DETAIL_PATH + id)
+    val onSelectTimetableDetail: (TimetableItemId) -> Unit = { id ->
+        navController.navigate(TIMETABLE_DETAIL_PATH + id.value)
     }
 
     val onBackFromTimetableDetail: () -> Unit = {

@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults.buttonColors
@@ -47,6 +48,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -61,12 +67,15 @@ import io.github.droidkaigi.feeder.MultiLangText
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
 import io.github.droidkaigi.feeder.core.animation.painterFavorite
 import io.github.droidkaigi.feeder.core.animation.painterFavoriteBorder
 import io.github.droidkaigi.feeder.core.getReadableMessage
+import io.github.droidkaigi.feeder.core.language.LocalLangSetting
+import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
@@ -83,7 +92,7 @@ import kotlinx.datetime.toLocalDateTime
  */
 @Composable
 fun TimetableDetailScreen(
-    id: String,
+    id: TimetableItemId,
     onNavigationIconClick: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -218,6 +227,7 @@ fun TimetableDetailScreen(
                         TimetableDetailSpeakers(
                             modifier = Modifier.padding(horizontal = margin),
                             speakers = item.speakers,
+                            onOpenUrl = onOpenUrl,
                         )
                     }
                 }
@@ -283,23 +293,28 @@ private data class TimetableDetailSessionInfoState(
     val language: String,
     val category: TimetableCategory,
 ) {
-    val currentLangTitle: String = title.currentLangTitle
+    val titleWithSetting: String
+        @Composable get() = title.getTextWithSetting()
 
     val dateTime: String = createSessionDate(
         startsAt = startsAt,
         endsAt = endsAt,
     )
 
-    val currentLangLanguage: String = when (defaultLang()) {
-        Lang.JA -> when (language) {
-            "JAPANESE" -> "日本語"
-            "ENGLISH" -> "英語"
-            else -> "未定"
+    val currentLangLanguage: String
+        @Composable get() {
+            val lang = if (LocalLangSetting.current == Lang.SYSTEM) defaultLang()
+            else LocalLangSetting.current
+            return if (lang == Lang.JA) {
+                when (language) {
+                    "JAPANESE" -> "日本語"
+                    "ENGLISH" -> "英語"
+                    else -> "未定"
+                }
+            } else {
+                language
+            }
         }
-        Lang.EN -> language
-        // TODO: fix system language
-        Lang.SYSTEM -> language
-    }
 }
 
 @Composable
@@ -309,7 +324,7 @@ private fun TimetableDetailSessionInfo(
 ) {
     Text(
         modifier = modifier,
-        text = state.currentLangTitle,
+        text = state.titleWithSetting,
         style = MaterialTheme.typography.h5,
     )
     Spacer(
@@ -391,7 +406,7 @@ private fun TimetableDetailSessionInfo(
                 )
                 Spacer(modifier = Modifier.width(2.dp))
                 Text(
-                    text = state.category.title.currentLangTitle,
+                    text = state.category.title.getTextWithSetting(),
                     style = MaterialTheme.typography.body1,
                 )
             }
@@ -513,6 +528,7 @@ private fun TimetableDetailAsset(
 private fun TimetableDetailSpeakers(
     modifier: Modifier = Modifier,
     speakers: List<TimetableSpeaker>,
+    onOpenUrl: (Uri) -> Unit,
 ) {
     Text(
         modifier = modifier,
@@ -552,10 +568,17 @@ private fun TimetableDetailSpeakers(
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
         )
-        Text(
+        val styledBio = createAutoLinkedText(speaker.bio)
+        ClickableText(
             modifier = modifier,
-            text = speaker.bio,
+            text = styledBio,
             style = MaterialTheme.typography.body1,
+            onClick = { pos ->
+                styledBio.getStringAnnotations(start = pos, end = pos).firstOrNull()
+                    ?.let { range ->
+                        onOpenUrl(range.item.toUri())
+                    }
+            }
         )
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
@@ -574,6 +597,28 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
+}
+
+private fun createAutoLinkedText(text: String): AnnotatedString {
+    val regexp = Regex("""(https?://[^\s\t\n]+)|(`[^`]+`)|(@\w+)|(\*[\w]+\*)|(_[\w]+_)|(~[\w]+~)""")
+    val annotatedString = buildAnnotatedString {
+        val tokens = regexp.findAll(text)
+        var cursorPosition = 0
+        tokens.forEach { token ->
+            append(text.slice(cursorPosition until token.range.first))
+            pushStringAnnotation(
+                tag = "URL",
+                annotation = token.value
+            )
+            withStyle(SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                append(token.value)
+            }
+            pop()
+            cursorPosition = token.range.last + 1
+        }
+        append(text.slice(cursorPosition until text.length))
+    }
+    return annotatedString
 }
 
 private val TimetableCategory.iconResId: Int
@@ -604,7 +649,7 @@ fun PreviewTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {},
             )
         }
@@ -623,7 +668,7 @@ fun PreviewSmallTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
@@ -638,7 +683,7 @@ fun PreviewTabletTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
@@ -653,7 +698,7 @@ fun PreviewLargeTabletTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }

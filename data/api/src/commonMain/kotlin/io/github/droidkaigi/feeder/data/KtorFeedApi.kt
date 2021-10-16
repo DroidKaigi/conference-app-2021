@@ -2,6 +2,7 @@ package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.Author
 import io.github.droidkaigi.feeder.FeedItem
+import io.github.droidkaigi.feeder.FeedItemId
 import io.github.droidkaigi.feeder.Image
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.MultiLangText
@@ -25,7 +26,7 @@ open class KtorFeedApi(
 fun FeedsResponse.toFeedList() =
     articles.map { article ->
         FeedItem.Blog(
-            id = article.id,
+            id = FeedItemId(article.id),
             publishedAt = article.publishedAt,
             image = article.thumbnail.toImage(),
             media = Media.Medium,
@@ -47,7 +48,7 @@ fun FeedsResponse.toFeedList() =
     } +
         recordings.map { recording ->
             FeedItem.Video(
-                id = recording.id,
+                id = FeedItemId(recording.id),
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
                 media = Media.YouTube,
@@ -64,7 +65,7 @@ fun FeedsResponse.toFeedList() =
         } +
         episodes.map { recording ->
             FeedItem.Podcast(
-                id = recording.id,
+                id = FeedItemId(recording.id),
                 publishedAt = recording.publishedAt,
                 image = recording.thumbnail.toImage(),
                 media = Media.DroidKaigiFM,

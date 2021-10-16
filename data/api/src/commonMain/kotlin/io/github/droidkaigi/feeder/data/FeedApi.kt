@@ -380,6 +380,7 @@ fun fakeFeedApi(error: AppError? = null): FeedApi = object : FeedApi {
             serializersModule = SerializersModule {
                 contextual(InstantSerializer)
             }
+            coerceInputValues = true
         }.decodeFromString<FeedsResponse>(
             responseText
         ).toFeedList()
