@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults.buttonColors
@@ -47,6 +48,11 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -221,6 +227,7 @@ fun TimetableDetailScreen(
                         TimetableDetailSpeakers(
                             modifier = Modifier.padding(horizontal = margin),
                             speakers = item.speakers,
+                            onOpenUrl = onOpenUrl,
                         )
                     }
                 }
@@ -521,6 +528,7 @@ private fun TimetableDetailAsset(
 private fun TimetableDetailSpeakers(
     modifier: Modifier = Modifier,
     speakers: List<TimetableSpeaker>,
+    onOpenUrl: (Uri) -> Unit,
 ) {
     Text(
         modifier = modifier,
@@ -560,10 +568,17 @@ private fun TimetableDetailSpeakers(
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
         )
-        Text(
+        val styledBio = createAutoLinkedText(speaker.bio)
+        ClickableText(
             modifier = modifier,
-            text = speaker.bio,
+            text = styledBio,
             style = MaterialTheme.typography.body1,
+            onClick = { pos ->
+                styledBio.getStringAnnotations(start = pos, end = pos).firstOrNull()
+                    ?.let { range ->
+                        onOpenUrl(range.item.toUri())
+                    }
+            }
         )
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
@@ -582,6 +597,28 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
+}
+
+private fun createAutoLinkedText(text: String): AnnotatedString {
+    val regexp = Regex("""(https?://[^\s\t\n]+)|(`[^`]+`)|(@\w+)|(\*[\w]+\*)|(_[\w]+_)|(~[\w]+~)""")
+    val annotatedString = buildAnnotatedString {
+        val tokens = regexp.findAll(text)
+        var cursorPosition = 0
+        tokens.forEach { token ->
+            append(text.slice(cursorPosition until token.range.first))
+            pushStringAnnotation(
+                tag = "URL",
+                annotation = token.value
+            )
+            withStyle(SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
+                append(token.value)
+            }
+            pop()
+            cursorPosition = token.range.last + 1
+        }
+        append(text.slice(cursorPosition until text.length))
+    }
+    return annotatedString
 }
 
 private val TimetableCategory.iconResId: Int
