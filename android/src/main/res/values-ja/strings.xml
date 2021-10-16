@@ -1,4 +1,6 @@
 <resources>
+    <string name="app_name">DroidKaigiフィード</string>
+
     <!-- Notification -->
     <string name="notification_channel_name_announcement">運営からの広報</string>
     <string name="notification_channel_name_blog">ブログ更新</string>

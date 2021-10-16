@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name" translatable="false">DroidKaigi 2021</string>
+    <string name="app_name">DroidKaigi Feeder</string>
 
     <!-- Notification -->
     <string name="notification_channel_name_announcement">Announcement</string>
