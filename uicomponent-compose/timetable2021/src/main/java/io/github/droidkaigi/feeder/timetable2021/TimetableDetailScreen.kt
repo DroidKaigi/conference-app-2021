@@ -64,6 +64,7 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.MultiLangText
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
@@ -150,86 +151,84 @@ fun TimetableDetailScreen(
     toggleFavorite: (Boolean) -> Unit,
     onOpenUrl: (Uri) -> Unit,
 ) {
-    Conference2021Theme {
-        Scaffold(
-            topBar = {
-                TopAppBar(
-                    modifier = Modifier.statusBarsPadding(),
-                    title = {
-                        // empty
-                    },
-                    navigationIcon = {
-                        IconButton(onClick = onNavigationIconClick) {
-                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                        }
-                    },
-                    actions = {
-                        FavoriteIcon(
-                            isFavorite = isFavorite,
-                            toggleFavorite = toggleFavorite,
-                        )
-                    },
-                    backgroundColor = MaterialTheme.colors.surface,
-                    elevation = 0.dp
-                )
-            },
-        ) { innerPadding ->
-            BoxWithConstraints(
-                modifier = Modifier.systemBarsPadding(
-                    top = false,
-                    start = false,
-                    end = false,
-                )
-            ) {
-                /**
-                 * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
-                 */
-                val margin = when {
-                    maxWidth <= 599.dp -> 16.dp
-                    maxWidth <= 904.dp -> 32.dp
-                    maxWidth <= 1239.dp -> (maxWidth - 840.dp) / 2
-                    maxWidth <= 1439.dp -> 200.dp
-                    else -> (maxHeight - 1040.dp) / 2
-                } + 8.dp
-
-                Column(
-                    modifier = Modifier
-                        .padding(innerPadding)
-                        .verticalScroll(rememberScrollState()),
-                ) {
-                    TimetableDetailSessionInfo(
-                        modifier = Modifier.padding(horizontal = margin),
-                        state = TimetableDetailSessionInfoState(
-                            title = item.title,
-                            startsAt = item.startsAt,
-                            endsAt = item.endsAt,
-                            language = item.language,
-                            category = item.category,
-                        ),
-                    )
-
-                    if (item is TimetableItem.Session) {
-                        TimetableDetailDescription(
-                            modifier = Modifier.padding(horizontal = margin),
-                            description = item.description,
-                        )
+    Scaffold(
+        topBar = {
+            TopAppBar(
+                modifier = Modifier.statusBarsPadding(),
+                title = {
+                    // empty
+                },
+                navigationIcon = {
+                    IconButton(onClick = onNavigationIconClick) {
+                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
                     }
-                    TimetableDetailTargetAudience(
-                        modifier = Modifier.padding(horizontal = margin),
-                        targetAudience = item.targetAudience,
+                },
+                actions = {
+                    FavoriteIcon(
+                        isFavorite = isFavorite,
+                        toggleFavorite = toggleFavorite,
                     )
-                    TimetableDetailAsset(
+                },
+                backgroundColor = MaterialTheme.colors.surface,
+                elevation = 0.dp
+            )
+        },
+    ) { innerPadding ->
+        BoxWithConstraints(
+            modifier = Modifier.systemBarsPadding(
+                top = false,
+                start = false,
+                end = false,
+            )
+        ) {
+            /**
+             * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
+             */
+            val margin = when {
+                maxWidth <= 599.dp -> 16.dp
+                maxWidth <= 904.dp -> 32.dp
+                maxWidth <= 1239.dp -> (maxWidth - 840.dp) / 2
+                maxWidth <= 1439.dp -> 200.dp
+                else -> (maxHeight - 1040.dp) / 2
+            } + 8.dp
+
+            Column(
+                modifier = Modifier
+                    .padding(innerPadding)
+                    .verticalScroll(rememberScrollState()),
+            ) {
+                TimetableDetailSessionInfo(
+                    modifier = Modifier.padding(horizontal = margin),
+                    state = TimetableDetailSessionInfoState(
+                        title = item.title,
+                        startsAt = item.startsAt,
+                        endsAt = item.endsAt,
+                        language = item.language,
+                        category = item.category,
+                    ),
+                )
+
+                if (item is TimetableItem.Session) {
+                    TimetableDetailDescription(
                         modifier = Modifier.padding(horizontal = margin),
-                        asset = item.asset,
+                        description = item.description,
+                    )
+                }
+                TimetableDetailTargetAudience(
+                    modifier = Modifier.padding(horizontal = margin),
+                    targetAudience = item.targetAudience,
+                )
+                TimetableDetailAsset(
+                    modifier = Modifier.padding(horizontal = margin),
+                    asset = item.asset,
+                    onOpenUrl = onOpenUrl,
+                )
+                if (item is TimetableItem.Session) {
+                    TimetableDetailSpeakers(
+                        modifier = Modifier.padding(horizontal = margin),
+                        speakers = item.speakers,
                         onOpenUrl = onOpenUrl,
                     )
-                    if (item is TimetableItem.Session) {
-                        TimetableDetailSpeakers(
-                            modifier = Modifier.padding(horizontal = margin),
-                            speakers = item.speakers,
-                            onOpenUrl = onOpenUrl,
-                        )
-                    }
                 }
             }
         }
@@ -694,6 +693,21 @@ fun PreviewTabletTimetableDetailScreen() {
 @Composable
 fun PreviewLargeTabletTimetableDetailScreen() {
     AppThemeWithBackground {
+        CompositionLocalProvider(
+            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
+        ) {
+            TimetableDetailScreen(
+                id = TimetableItemId("2"),
+                onNavigationIconClick = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDarkTimetableDetailScreen() {
+    AppThemeWithBackground(theme = Theme.DARK) {
         CompositionLocalProvider(
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
