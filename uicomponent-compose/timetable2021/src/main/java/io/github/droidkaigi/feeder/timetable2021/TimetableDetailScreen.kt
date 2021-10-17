@@ -80,6 +80,7 @@ import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import io.github.droidkaigi.feeder.core.util.createAutoLinkedAnnotateString
 import io.github.droidkaigi.feeder.defaultLang
 import java.time.format.DateTimeFormatter
 import java.time.format.FormatStyle
@@ -567,7 +568,10 @@ private fun TimetableDetailSpeakers(
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
         )
-        val styledBio = createAutoLinkedText(speaker.bio, MaterialTheme.colors.onBackground)
+        val styledBio = createAutoLinkedAnnotateString(
+            text = speaker.bio,
+            textColor = MaterialTheme.colors.onSecondary
+        )
         ClickableText(
             modifier = modifier,
             text = styledBio,
@@ -596,32 +600,6 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
-}
-
-private fun createAutoLinkedText(text: String, color: Color): AnnotatedString {
-    val regexp = Regex("""(https?://[^\s\t\n]+)|(`[^`]+`)|(@\w+)|(\*[\w]+\*)|(_[\w]+_)|(~[\w]+~)""")
-    val annotatedString = buildAnnotatedString {
-        val tokens = regexp.findAll(text)
-        var cursorPosition = 0
-        tokens.forEach { token ->
-            withStyle(SpanStyle(color = color)) {
-                append(text.slice(cursorPosition until token.range.first))
-            }
-            pushStringAnnotation(
-                tag = "URL",
-                annotation = token.value
-            )
-            withStyle(SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
-                append(token.value)
-            }
-            pop()
-            cursorPosition = token.range.last + 1
-        }
-        withStyle(SpanStyle(color = color)) {
-            append(text.slice(cursorPosition until text.length))
-        }
-    }
-    return annotatedString
 }
 
 private val TimetableCategory.iconResId: Int
