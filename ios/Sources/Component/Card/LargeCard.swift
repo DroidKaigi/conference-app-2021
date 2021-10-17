@@ -60,13 +60,12 @@ public struct LargeCard: View {
                     .onTapGesture(perform: tapPlayAction)
                 }
             }
-            Group {
+            VStack(alignment: .leading, spacing: 13) {
                 Text(title)
                     .font(.headline)
                     .foregroundColor(AssetColor.Base.primary.color)
                     .lineLimit(2)
-
-                Spacer(minLength: 13)
+                    .frame(height: 44, alignment: .top)
 
                 HStack(spacing: 8) {
                     Tag(media: media)
