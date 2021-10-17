@@ -16,12 +16,14 @@ private val DarkColorPalette = darkColors(
     primary = blue200,
     primaryVariant = blue700,
     secondary = green200,
+    onSecondary = Color.White
 )
 
 private val LightColorPalette = lightColors(
     primary = blue200,
     primaryVariant = blue700,
     secondary = green200,
+    onSecondary = Color.White
 )
 
 private val DarkFilterMuskColor = gray

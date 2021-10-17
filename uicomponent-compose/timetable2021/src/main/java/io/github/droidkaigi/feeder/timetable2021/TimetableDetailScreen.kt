@@ -496,7 +496,7 @@ private fun TimetableDetailAsset(
                 ) {
                     Icon(Icons.Outlined.Videocam, contentDescription = "Open Video")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "MOVIE")
+                    Text(text = "MOVIE", color = MaterialTheme.colors.onSecondary)
                 }
             }
             if (showVideoButton && showSlidesButton) {
@@ -515,7 +515,7 @@ private fun TimetableDetailAsset(
                 ) {
                     Icon(Icons.Outlined.PhotoLibrary, contentDescription = "Open Slides")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "SLIDES")
+                    Text(text = "SLIDES", color = MaterialTheme.colors.onSecondary)
                 }
             }
         }
