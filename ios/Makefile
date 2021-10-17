@@ -1,5 +1,5 @@
 SWIFT_RUN=swift run -c release --package-path Tools
-WORKSPACE=DroidKaigi2021.xcworkspace
+WORKSPACE=DroidKaigiFeeder.xcworkspace
 
 .PHONY: open
 open:

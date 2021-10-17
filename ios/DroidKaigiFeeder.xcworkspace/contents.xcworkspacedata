@@ -2,10 +2,10 @@
 <Workspace
    version = "1.0">
    <FileRef
-      location = "group:DroidKaigi 2021/Debug.xcodeproj">
+      location = "group:DroidKaigi Feeder/Debug.xcodeproj">
    </FileRef>
    <FileRef
-      location = "group:DroidKaigi 2021/Release.xcodeproj">
+      location = "group:DroidKaigi Feeder/Release.xcodeproj">
    </FileRef>
    <FileRef
       location = "group:">
