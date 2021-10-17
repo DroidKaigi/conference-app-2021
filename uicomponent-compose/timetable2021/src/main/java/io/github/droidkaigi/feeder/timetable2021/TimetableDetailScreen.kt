@@ -567,7 +567,7 @@ private fun TimetableDetailSpeakers(
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
         )
-        val styledBio = createAutoLinkedText(speaker.bio)
+        val styledBio = createAutoLinkedText(speaker.bio, MaterialTheme.colors.onBackground)
         ClickableText(
             modifier = modifier,
             text = styledBio,
@@ -598,13 +598,15 @@ private fun createSessionDate(
     return "$day $startTime-$endTime"
 }
 
-private fun createAutoLinkedText(text: String): AnnotatedString {
+private fun createAutoLinkedText(text: String, color: Color): AnnotatedString {
     val regexp = Regex("""(https?://[^\s\t\n]+)|(`[^`]+`)|(@\w+)|(\*[\w]+\*)|(_[\w]+_)|(~[\w]+~)""")
     val annotatedString = buildAnnotatedString {
         val tokens = regexp.findAll(text)
         var cursorPosition = 0
         tokens.forEach { token ->
-            append(text.slice(cursorPosition until token.range.first))
+            withStyle(SpanStyle(color = color)) {
+                append(text.slice(cursorPosition until token.range.first))
+            }
             pushStringAnnotation(
                 tag = "URL",
                 annotation = token.value
@@ -615,7 +617,9 @@ private fun createAutoLinkedText(text: String): AnnotatedString {
             pop()
             cursorPosition = token.range.last + 1
         }
-        append(text.slice(cursorPosition until text.length))
+        withStyle(SpanStyle(color = color)) {
+            append(text.slice(cursorPosition until text.length))
+        }
     }
     return annotatedString
 }
