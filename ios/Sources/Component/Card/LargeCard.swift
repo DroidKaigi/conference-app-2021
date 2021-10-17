@@ -65,7 +65,6 @@ public struct LargeCard: View {
                     .font(.headline)
                     .foregroundColor(AssetColor.Base.primary.color)
                     .lineLimit(2)
-                    .frame(height: 44, alignment: .top)
 
                 HStack(spacing: 8) {
                     Tag(media: media)
