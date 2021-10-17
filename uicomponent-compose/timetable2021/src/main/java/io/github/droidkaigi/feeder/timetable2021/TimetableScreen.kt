@@ -10,6 +10,7 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHost
+import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
@@ -111,51 +112,49 @@ private fun TimetableScreen(
     filters: Filters,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
 ) {
-    Conference2021Theme() {
-        val density = LocalDensity.current
-        BackdropScaffold(
-            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
-            scaffoldState = state.scaffoldState,
-            backLayerContent = {
-                BackLayerContent(filters, onFavoriteFilterChanged)
-            },
-            frontLayerShape = MaterialTheme.shapes.large,
-            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
-            appBar = {
-                AppBar(
-                    appBarState = AppBarState(
-                        pagerState = state.tabPagerState,
+    val density = LocalDensity.current
+    BackdropScaffold(
+        backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
+        scaffoldState = state.scaffoldState,
+        backLayerContent = {
+            BackLayerContent(filters, onFavoriteFilterChanged)
+        },
+        frontLayerShape = MaterialTheme.shapes.large,
+        peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+        appBar = {
+            AppBar(
+                appBarState = AppBarState(
+                    pagerState = state.tabPagerState,
+                ),
+                onNavigationIconClick = onNavigationIconClick,
+                onSelectTab = onSelectTab
+            )
+        },
+        frontLayerContent = {
+            HorizontalPager(
+                state = state.tabPagerState,
+                modifier = Modifier.fillMaxSize()
+            ) { page ->
+                val selectedTab = TimetableTab.values()[page]
+                TimetableList(
+                    state = TimetableListState(
+                        timetableItems = state.timeTableContents
+                            .timetableItems
+                            .getDayTimetableItems(selectedTab.day),
+                        favorites = state.timeTableContents.favorites,
+                        onDetailClick = onDetailClick,
+                        onFavoriteChange = onFavoriteChange,
                     ),
-                    onNavigationIconClick = onNavigationIconClick,
-                    onSelectTab = onSelectTab
-                )
-            },
-            frontLayerContent = {
-                HorizontalPager(
-                    state = state.tabPagerState,
-                    modifier = Modifier.fillMaxSize()
-                ) { page ->
-                    val selectedTab = TimetableTab.values()[page]
-                    TimetableList(
-                        state = TimetableListState(
-                            timetableItems = state.timeTableContents
-                                .timetableItems
-                                .getDayTimetableItems(selectedTab.day),
-                            favorites = state.timeTableContents.favorites,
-                            onDetailClick = onDetailClick,
-                            onFavoriteChange = onFavoriteChange,
-                        ),
-                    )
-                }
-            },
-            snackbarHost = {
-                SnackbarHost(
-                    hostState = it,
-                    modifier = Modifier.navigationBarsPadding()
                 )
             }
-        )
-    }
+        },
+        snackbarHost = {
+            SnackbarHost(
+                hostState = it,
+                modifier = Modifier.navigationBarsPadding()
+            )
+        }
+    )
 }
 
 data class TimetableListState(
@@ -169,28 +168,30 @@ data class TimetableListState(
 private fun TimetableList(
     state: TimetableListState,
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxHeight(),
-        contentPadding = rememberInsetsPaddingValues(
-            insets = LocalWindowInsets.current.systemBars,
-            applyStart = false,
-            applyTop = false,
-            applyEnd = false
-        ),
-    ) {
-        itemsIndexed(
-            items = state.timetableItems,
-            key = { _, item -> item.id.value }
-        ) { index, timetableItem ->
-            TimetableItem(
-                timetableItemState = TimetableItemState(
-                    timetableItem,
-                    state.favorites.contains(timetableItem.id)
-                ),
-                onDetailClick = state.onDetailClick,
-                onFavoriteChange = state.onFavoriteChange,
-                showDivider = index > 0
-            )
+    Surface(color = MaterialTheme.colors.background) {
+        LazyColumn(
+            modifier = Modifier.fillMaxHeight(),
+            contentPadding = rememberInsetsPaddingValues(
+                insets = LocalWindowInsets.current.systemBars,
+                applyStart = false,
+                applyTop = false,
+                applyEnd = false
+            ),
+        ) {
+            itemsIndexed(
+                items = state.timetableItems,
+                key = { _, item -> item.id.value }
+            ) { index, timetableItem ->
+                TimetableItem(
+                    timetableItemState = TimetableItemState(
+                        timetableItem,
+                        state.favorites.contains(timetableItem.id)
+                    ),
+                    onDetailClick = state.onDetailClick,
+                    onFavoriteChange = state.onFavoriteChange,
+                    showDivider = index > 0
+                )
+            }
         }
     }
 }
