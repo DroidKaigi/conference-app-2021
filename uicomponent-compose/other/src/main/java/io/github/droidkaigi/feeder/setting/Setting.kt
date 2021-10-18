@@ -194,7 +194,8 @@ private fun ThemeSelectRadioButton(
                                 oThemeSelected(theme)
                                 onChangeTheme(theme)
                             }
-                        )
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = (theme == selectedTheme),
