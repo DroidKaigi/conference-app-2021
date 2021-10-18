@@ -154,7 +154,8 @@ flycheck_*.el
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
+
 
 # Thumbnails
 ._*
@@ -312,7 +313,7 @@ fabric.properties
 ./gh-actions/
 
 # Decrypted files
-ios/DroidKaigi 2021/DroidKaigi 2021/GoogleService-Info-Production-Release.plist
+ios/DroidKaigi Feeder/DroidKaigi Feeder/GoogleService-Info-Production-Release.plist
 android/src/release/google-services.json
 android/release.keystore
 android/signing.properties
