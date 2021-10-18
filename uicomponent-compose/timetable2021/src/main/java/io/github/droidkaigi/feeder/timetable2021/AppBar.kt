@@ -22,10 +22,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import io.github.droidkaigi.feeder.Theme
-import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
-import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import kotlinx.coroutines.launch
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 @OptIn(ExperimentalPagerApi::class)
 @Stable
@@ -94,7 +93,7 @@ fun AppBar(
 @Preview(showBackground = true)
 @Composable
 fun PreviewAppBar() {
-    ConferenceAppFeederTheme {
+    Conference2021Theme {
         AppBar(
             appBarState = AppBarState(
                 pagerState = PagerState(3),
@@ -108,7 +107,7 @@ fun PreviewAppBar() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewDarkAppBar() {
-    ConferenceAppFeederTheme(theme = Theme.DARK) {
+    Conference2021Theme(theme = Theme.DARK) {
         AppBar(
             appBarState = AppBarState(
                 pagerState = PagerState(3),

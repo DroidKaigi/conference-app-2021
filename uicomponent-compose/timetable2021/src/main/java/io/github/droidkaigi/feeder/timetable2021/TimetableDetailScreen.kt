@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.timetable2021
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -152,84 +153,86 @@ fun TimetableDetailScreen(
     toggleFavorite: (Boolean) -> Unit,
     onOpenUrl: (Uri) -> Unit,
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                modifier = Modifier.statusBarsPadding(),
-                title = {
-                    // empty
-                },
-                navigationIcon = {
-                    IconButton(onClick = onNavigationIconClick) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                },
-                actions = {
-                    FavoriteIcon(
-                        isFavorite = isFavorite,
-                        toggleFavorite = toggleFavorite,
-                    )
-                },
-                backgroundColor = MaterialTheme.colors.surface,
-                elevation = 0.dp
-            )
-        },
-    ) { innerPadding ->
-        BoxWithConstraints(
-            modifier = Modifier.systemBarsPadding(
-                top = false,
-                start = false,
-                end = false,
-            )
-        ) {
-            /**
-             * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
-             */
-            val margin = when {
-                maxWidth <= 599.dp -> 16.dp
-                maxWidth <= 904.dp -> 32.dp
-                maxWidth <= 1239.dp -> (maxWidth - 840.dp) / 2
-                maxWidth <= 1439.dp -> 200.dp
-                else -> (maxHeight - 1040.dp) / 2
-            } + 8.dp
-
-            Column(
-                modifier = Modifier
-                    .padding(innerPadding)
-                    .verticalScroll(rememberScrollState()),
+    Conference2021Theme(theme = Theme.SYSTEM) {
+        Scaffold(
+            topBar = {
+                TopAppBar(
+                    modifier = Modifier.statusBarsPadding(),
+                    title = {
+                        // empty
+                    },
+                    navigationIcon = {
+                        IconButton(onClick = onNavigationIconClick) {
+                            Icon(Icons.Default.ArrowBack, contentDescription = "Back")
+                        }
+                    },
+                    actions = {
+                        FavoriteIcon(
+                            isFavorite = isFavorite,
+                            toggleFavorite = toggleFavorite,
+                        )
+                    },
+                    backgroundColor = MaterialTheme.colors.surface,
+                    elevation = 0.dp
+                )
+            },
+        ) { innerPadding ->
+            BoxWithConstraints(
+                modifier = Modifier.systemBarsPadding(
+                    top = false,
+                    start = false,
+                    end = false,
+                )
             ) {
-                TimetableDetailSessionInfo(
-                    modifier = Modifier.padding(horizontal = margin),
-                    state = TimetableDetailSessionInfoState(
-                        title = item.title,
-                        startsAt = item.startsAt,
-                        endsAt = item.endsAt,
-                        language = item.language,
-                        category = item.category,
-                    ),
-                )
+                /**
+                 * see [Breakpoints](https://material.io/design/layout/responsive-layout-grid.html#breakpoints)
+                 */
+                val margin = when {
+                    maxWidth <= 599.dp -> 16.dp
+                    maxWidth <= 904.dp -> 32.dp
+                    maxWidth <= 1239.dp -> (maxWidth - 840.dp) / 2
+                    maxWidth <= 1439.dp -> 200.dp
+                    else -> (maxHeight - 1040.dp) / 2
+                } + 8.dp
 
-                if (item is TimetableItem.Session) {
-                    TimetableDetailDescription(
+                Column(
+                    modifier = Modifier
+                        .padding(innerPadding)
+                        .verticalScroll(rememberScrollState()),
+                ) {
+                    TimetableDetailSessionInfo(
                         modifier = Modifier.padding(horizontal = margin),
-                        description = item.description,
+                        state = TimetableDetailSessionInfoState(
+                            title = item.title,
+                            startsAt = item.startsAt,
+                            endsAt = item.endsAt,
+                            language = item.language,
+                            category = item.category,
+                        ),
                     )
-                }
-                TimetableDetailTargetAudience(
-                    modifier = Modifier.padding(horizontal = margin),
-                    targetAudience = item.targetAudience,
-                )
-                TimetableDetailAsset(
-                    modifier = Modifier.padding(horizontal = margin),
-                    asset = item.asset,
-                    onOpenUrl = onOpenUrl,
-                )
-                if (item is TimetableItem.Session) {
-                    TimetableDetailSpeakers(
+
+                    if (item is TimetableItem.Session) {
+                        TimetableDetailDescription(
+                            modifier = Modifier.padding(horizontal = margin),
+                            description = item.description,
+                        )
+                    }
+                    TimetableDetailTargetAudience(
                         modifier = Modifier.padding(horizontal = margin),
-                        speakers = item.speakers,
+                        targetAudience = item.targetAudience,
+                    )
+                    TimetableDetailAsset(
+                        modifier = Modifier.padding(horizontal = margin),
+                        asset = item.asset,
                         onOpenUrl = onOpenUrl,
                     )
+                    if (item is TimetableItem.Session) {
+                        TimetableDetailSpeakers(
+                            modifier = Modifier.padding(horizontal = margin),
+                            speakers = item.speakers,
+                            onOpenUrl = onOpenUrl,
+                        )
+                    }
                 }
             }
         }
@@ -686,10 +689,10 @@ fun PreviewLargeTabletTimetableDetailScreen() {
     }
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewDarkTimetableDetailScreen() {
-    AppThemeWithBackground(theme = Theme.DARK) {
+    AppThemeWithBackground {
         CompositionLocalProvider(
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {

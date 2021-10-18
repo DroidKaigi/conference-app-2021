@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.timetable2021
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -29,6 +30,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.DroidKaigi2021Day
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemId
@@ -112,49 +114,51 @@ private fun TimetableScreen(
     filters: Filters,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
 ) {
-    val density = LocalDensity.current
-    BackdropScaffold(
-        backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
-        scaffoldState = state.scaffoldState,
-        backLayerContent = {
-            BackLayerContent(filters, onFavoriteFilterChanged)
-        },
-        frontLayerShape = MaterialTheme.shapes.large,
-        peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
-        appBar = {
-            AppBar(
-                appBarState = AppBarState(
-                    pagerState = state.tabPagerState,
-                ),
-                onNavigationIconClick = onNavigationIconClick,
-                onSelectTab = onSelectTab
-            )
-        },
-        frontLayerContent = {
-            HorizontalPager(
-                state = state.tabPagerState,
-                modifier = Modifier.fillMaxSize()
-            ) { page ->
-                val selectedTab = TimetableTab.values()[page]
-                TimetableList(
-                    state = TimetableListState(
-                        timetableItems = state.timeTableContents
-                            .timetableItems
-                            .getDayTimetableItems(selectedTab.day),
-                        favorites = state.timeTableContents.favorites,
-                        onDetailClick = onDetailClick,
-                        onFavoriteChange = onFavoriteChange,
+    Conference2021Theme(theme = Theme.SYSTEM) {
+        val density = LocalDensity.current
+        BackdropScaffold(
+            backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
+            scaffoldState = state.scaffoldState,
+            backLayerContent = {
+                BackLayerContent(filters, onFavoriteFilterChanged)
+            },
+            frontLayerShape = MaterialTheme.shapes.large,
+            peekHeight = 104.dp + (LocalWindowInsets.current.systemBars.top / density.density).dp,
+            appBar = {
+                AppBar(
+                    appBarState = AppBarState(
+                        pagerState = state.tabPagerState,
                     ),
+                    onNavigationIconClick = onNavigationIconClick,
+                    onSelectTab = onSelectTab
+                )
+            },
+            frontLayerContent = {
+                HorizontalPager(
+                    state = state.tabPagerState,
+                    modifier = Modifier.fillMaxSize()
+                ) { page ->
+                    val selectedTab = TimetableTab.values()[page]
+                    TimetableList(
+                        state = TimetableListState(
+                            timetableItems = state.timeTableContents
+                                .timetableItems
+                                .getDayTimetableItems(selectedTab.day),
+                            favorites = state.timeTableContents.favorites,
+                            onDetailClick = onDetailClick,
+                            onFavoriteChange = onFavoriteChange,
+                        ),
+                    )
+                }
+            },
+            snackbarHost = {
+                SnackbarHost(
+                    hostState = it,
+                    modifier = Modifier.navigationBarsPadding()
                 )
             }
-        },
-        snackbarHost = {
-            SnackbarHost(
-                hostState = it,
-                modifier = Modifier.navigationBarsPadding()
-            )
-        }
-    )
+        )
+    }
 }
 
 data class TimetableListState(
@@ -199,6 +203,23 @@ private fun TimetableList(
 @Preview(showBackground = true)
 @Composable
 fun PreviewTimetableScreen() {
+    AppThemeWithBackground {
+        CompositionLocalProvider(
+            provideTimetableViewModelFactory { fakeTimetableViewModel() },
+        ) {
+            TimetableScreen(
+                selectedTab = TimetableTab.Day1,
+                onSelectedTab = {},
+                onNavigationIconClick = {},
+                onDetailClick = {},
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewDarkTimetableScreen() {
     AppThemeWithBackground {
         CompositionLocalProvider(
             provideTimetableViewModelFactory { fakeTimetableViewModel() },
