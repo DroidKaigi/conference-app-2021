@@ -49,11 +49,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -83,12 +78,12 @@ import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
 import io.github.droidkaigi.feeder.core.util.createAutoLinkedAnnotateString
 import io.github.droidkaigi.feeder.defaultLang
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
  * stateful
@@ -573,7 +568,7 @@ private fun TimetableDetailSpeakers(
         )
         val styledBio = createAutoLinkedAnnotateString(
             text = speaker.bio,
-            textColor = MaterialTheme.colors.onSecondary
+            textColor = MaterialTheme.colors.onBackground
         )
         ClickableText(
             modifier = modifier,
