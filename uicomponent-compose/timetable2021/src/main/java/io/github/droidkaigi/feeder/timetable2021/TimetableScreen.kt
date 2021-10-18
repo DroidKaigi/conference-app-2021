@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder.timetable2021
 
+import android.content.res.Configuration.UI_MODE_NIGHT_YES
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.lazy.LazyColumn
@@ -10,6 +11,7 @@ import androidx.compose.material.BackdropValue
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.SnackbarHost
+import androidx.compose.material.Surface
 import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
@@ -28,6 +30,7 @@ import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.rememberPagerState
 import io.github.droidkaigi.feeder.DroidKaigi2021Day
 import io.github.droidkaigi.feeder.Filters
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.TimetableContents
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemId
@@ -111,7 +114,7 @@ private fun TimetableScreen(
     filters: Filters,
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
 ) {
-    Conference2021Theme() {
+    Conference2021Theme(theme = Theme.SYSTEM) {
         val density = LocalDensity.current
         BackdropScaffold(
             backLayerBackgroundColor = MaterialTheme.colors.primarySurface,
@@ -169,28 +172,30 @@ data class TimetableListState(
 private fun TimetableList(
     state: TimetableListState,
 ) {
-    LazyColumn(
-        modifier = Modifier.fillMaxHeight(),
-        contentPadding = rememberInsetsPaddingValues(
-            insets = LocalWindowInsets.current.systemBars,
-            applyStart = false,
-            applyTop = false,
-            applyEnd = false
-        ),
-    ) {
-        itemsIndexed(
-            items = state.timetableItems,
-            key = { _, item -> item.id.value }
-        ) { index, timetableItem ->
-            TimetableItem(
-                timetableItemState = TimetableItemState(
-                    timetableItem,
-                    state.favorites.contains(timetableItem.id)
-                ),
-                onDetailClick = state.onDetailClick,
-                onFavoriteChange = state.onFavoriteChange,
-                showDivider = index > 0
-            )
+    Surface(color = MaterialTheme.colors.background) {
+        LazyColumn(
+            modifier = Modifier.fillMaxHeight(),
+            contentPadding = rememberInsetsPaddingValues(
+                insets = LocalWindowInsets.current.systemBars,
+                applyStart = false,
+                applyTop = false,
+                applyEnd = false
+            ),
+        ) {
+            itemsIndexed(
+                items = state.timetableItems,
+                key = { _, item -> item.id.value }
+            ) { index, timetableItem ->
+                TimetableItem(
+                    timetableItemState = TimetableItemState(
+                        timetableItem,
+                        state.favorites.contains(timetableItem.id)
+                    ),
+                    onDetailClick = state.onDetailClick,
+                    onFavoriteChange = state.onFavoriteChange,
+                    showDivider = index > 0
+                )
+            }
         }
     }
 }
@@ -198,6 +203,23 @@ private fun TimetableList(
 @Preview(showBackground = true)
 @Composable
 fun PreviewTimetableScreen() {
+    AppThemeWithBackground {
+        CompositionLocalProvider(
+            provideTimetableViewModelFactory { fakeTimetableViewModel() },
+        ) {
+            TimetableScreen(
+                selectedTab = TimetableTab.Day1,
+                onSelectedTab = {},
+                onNavigationIconClick = {},
+                onDetailClick = {},
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewDarkTimetableScreen() {
     AppThemeWithBackground {
         CompositionLocalProvider(
             provideTimetableViewModelFactory { fakeTimetableViewModel() },
