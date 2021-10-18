@@ -82,7 +82,7 @@ public struct AboutLoadedView: View {
                                 then: AboutDroidKaigiScreen.init(store:)
                             )
                             IfLetStore(
-                                store.actionless.scope(state: \.webViewState).actionless,
+                                store.scope(state: \.webViewState).actionless,
                                 then: WebView.init(store:)
                             )
                         }
