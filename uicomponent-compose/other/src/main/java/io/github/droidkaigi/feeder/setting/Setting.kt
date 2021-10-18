@@ -265,7 +265,8 @@ private fun LanguageSelectRadioButton(
                                 onLangSelected(language)
                                 onChangeLanguage(language)
                             }
-                        )
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = (language == selectedLanguage),
