@@ -42,7 +42,7 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
 
     public func addFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
         SuspendWrapperPublisher(
-            suspendWrapper: repository.addFavorite(id: id),
+            suspendWrapper: repository.addFavorite(id_: id),
             scopeProvider: scopeProvider
         )
         .map { _ in }
@@ -51,7 +51,7 @@ public struct TimetableRepository: TimetableRepositoryProtocol, KMMRepositoryPro
 
     public func removeFavorite(id: String) -> AnyPublisher<Void, KotlinError> {
         SuspendWrapperPublisher(
-            suspendWrapper: repository.removeFavorite(id: id),
+            suspendWrapper: repository.removeFavorite(id_: id),
             scopeProvider: scopeProvider
         )
         .map { _ in }

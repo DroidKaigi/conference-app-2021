@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.FeedContents
+import io.github.droidkaigi.feeder.FeedItemId
 import io.github.droidkaigi.feeder.repository.FeedRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
@@ -23,11 +24,11 @@ open class FeedRepositoryImpl(
         feedItemDao.insert(newFeeds)
     }
 
-    override suspend fun addFavorite(id: String) {
+    override suspend fun addFavorite(id: FeedItemId) {
         dataStore.addFavorite(id)
     }
 
-    override suspend fun removeFavorite(id: String) {
+    override suspend fun removeFavorite(id: FeedItemId) {
         dataStore.removeFavorite(id)
     }
 }

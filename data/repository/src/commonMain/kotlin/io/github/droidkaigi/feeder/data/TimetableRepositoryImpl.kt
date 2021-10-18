@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.data
 
 import io.github.droidkaigi.feeder.TimetableContents
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableItemList
 import io.github.droidkaigi.feeder.repository.TimetableRepository
 import kotlinx.coroutines.flow.Flow
@@ -28,11 +29,11 @@ open class TimetableRepositoryImpl(
         timetableItemDao.replace(newtimetables)
     }
 
-    override suspend fun addFavorite(id: String) {
+    override suspend fun addFavorite(id: TimetableItemId) {
         dataStore.addFavoriteTimetableItemId(id)
     }
 
-    override suspend fun removeFavorite(id: String) {
+    override suspend fun removeFavorite(id: TimetableItemId) {
         dataStore.removeFavoriteTimetableItemId(id)
     }
 }

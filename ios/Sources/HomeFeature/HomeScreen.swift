@@ -32,11 +32,16 @@ public struct HomeScreen: View {
                                 }
                             )
                         }
+                        
                         Separator()
-                        QuestionnaireView(tapAnswerAction: {
-                            viewStore.send(.answerQuestionnaire)
-                        })
+                        
+                        // FIXME: when url is ready
+                        // QuestionnaireView(tapAnswerAction: {
+                        //     viewStore.send(.answerQuestionnaire)
+                        // })
+                        
                         Separator()
+                        
                         ForEach(viewStore.listFeedContents) { feedContent in
                             ListItem(
                                 content: feedContent,

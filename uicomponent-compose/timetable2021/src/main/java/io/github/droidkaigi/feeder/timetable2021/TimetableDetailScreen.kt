@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.timetable2021
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.Button
 import androidx.compose.material.ButtonDefaults.buttonColors
@@ -58,9 +60,11 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.MultiLangText
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
+import io.github.droidkaigi.feeder.TimetableItemId
 import io.github.droidkaigi.feeder.TimetableSpeaker
 import io.github.droidkaigi.feeder.core.NetworkImage
 import io.github.droidkaigi.feeder.core.animation.FavoriteAnimation
@@ -72,6 +76,7 @@ import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import io.github.droidkaigi.feeder.core.util.createAutoLinkedAnnotateString
 import io.github.droidkaigi.feeder.defaultLang
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
@@ -85,7 +90,7 @@ import java.time.format.FormatStyle
  */
 @Composable
 fun TimetableDetailScreen(
-    id: String,
+    id: TimetableItemId,
     onNavigationIconClick: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -143,7 +148,7 @@ fun TimetableDetailScreen(
     toggleFavorite: (Boolean) -> Unit,
     onOpenUrl: (Uri) -> Unit,
 ) {
-    Conference2021Theme {
+    Conference2021Theme(theme = Theme.SYSTEM) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -220,6 +225,7 @@ fun TimetableDetailScreen(
                         TimetableDetailSpeakers(
                             modifier = Modifier.padding(horizontal = margin),
                             speakers = item.speakers,
+                            onOpenUrl = onOpenUrl,
                         )
                     }
                 }
@@ -489,7 +495,7 @@ private fun TimetableDetailAsset(
                 ) {
                     Icon(Icons.Outlined.Videocam, contentDescription = "Open Video")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "MOVIE")
+                    Text(text = "MOVIE", color = MaterialTheme.colors.onSecondary)
                 }
             }
             if (showVideoButton && showSlidesButton) {
@@ -508,7 +514,7 @@ private fun TimetableDetailAsset(
                 ) {
                     Icon(Icons.Outlined.PhotoLibrary, contentDescription = "Open Slides")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "SLIDES")
+                    Text(text = "SLIDES", color = MaterialTheme.colors.onSecondary)
                 }
             }
         }
@@ -520,6 +526,7 @@ private fun TimetableDetailAsset(
 private fun TimetableDetailSpeakers(
     modifier: Modifier = Modifier,
     speakers: List<TimetableSpeaker>,
+    onOpenUrl: (Uri) -> Unit,
 ) {
     Text(
         modifier = modifier,
@@ -559,10 +566,20 @@ private fun TimetableDetailSpeakers(
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
         )
-        Text(
-            modifier = modifier,
+        val styledBio = createAutoLinkedAnnotateString(
             text = speaker.bio,
+            textColor = MaterialTheme.colors.onBackground
+        )
+        ClickableText(
+            modifier = modifier,
+            text = styledBio,
             style = MaterialTheme.typography.body1,
+            onClick = { pos ->
+                styledBio.getStringAnnotations(start = pos, end = pos).firstOrNull()
+                    ?.let { range ->
+                        onOpenUrl(range.item.toUri())
+                    }
+            }
         )
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
@@ -611,7 +628,7 @@ fun PreviewTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {},
             )
         }
@@ -630,7 +647,7 @@ fun PreviewSmallTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
@@ -645,7 +662,7 @@ fun PreviewTabletTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
@@ -660,7 +677,22 @@ fun PreviewLargeTabletTimetableDetailScreen() {
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
         ) {
             TimetableDetailScreen(
-                id = "2",
+                id = TimetableItemId("2"),
+                onNavigationIconClick = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewDarkTimetableDetailScreen() {
+    AppThemeWithBackground {
+        CompositionLocalProvider(
+            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
+        ) {
+            TimetableDetailScreen(
+                id = TimetableItemId("2"),
                 onNavigationIconClick = {}
             )
         }
