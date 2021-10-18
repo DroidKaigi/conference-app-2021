@@ -1,6 +1,7 @@
 package io.github.droidkaigi.feeder.timetable2021
 
 import android.content.Intent
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -48,11 +49,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Devices
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -64,6 +60,7 @@ import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.insets.systemBarsPadding
 import io.github.droidkaigi.feeder.Lang
 import io.github.droidkaigi.feeder.MultiLangText
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.TimetableAsset
 import io.github.droidkaigi.feeder.TimetableCategory
 import io.github.droidkaigi.feeder.TimetableItem
@@ -79,13 +76,14 @@ import io.github.droidkaigi.feeder.core.language.getTextWithSetting
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
+import io.github.droidkaigi.feeder.core.util.createAutoLinkedAnnotateString
 import io.github.droidkaigi.feeder.defaultLang
-import java.time.format.DateTimeFormatter
-import java.time.format.FormatStyle
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone.Companion.currentSystemDefault
 import kotlinx.datetime.toJavaLocalDateTime
 import kotlinx.datetime.toLocalDateTime
+import java.time.format.DateTimeFormatter
+import java.time.format.FormatStyle
 
 /**
  * stateful
@@ -150,7 +148,7 @@ fun TimetableDetailScreen(
     toggleFavorite: (Boolean) -> Unit,
     onOpenUrl: (Uri) -> Unit,
 ) {
-    Conference2021Theme {
+    Conference2021Theme(theme = Theme.SYSTEM) {
         Scaffold(
             topBar = {
                 TopAppBar(
@@ -497,7 +495,7 @@ private fun TimetableDetailAsset(
                 ) {
                     Icon(Icons.Outlined.Videocam, contentDescription = "Open Video")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "MOVIE")
+                    Text(text = "MOVIE", color = MaterialTheme.colors.onSecondary)
                 }
             }
             if (showVideoButton && showSlidesButton) {
@@ -516,7 +514,7 @@ private fun TimetableDetailAsset(
                 ) {
                     Icon(Icons.Outlined.PhotoLibrary, contentDescription = "Open Slides")
                     Spacer(modifier = Modifier.width(8.dp))
-                    Text(text = "SLIDES")
+                    Text(text = "SLIDES", color = MaterialTheme.colors.onSecondary)
                 }
             }
         }
@@ -568,7 +566,10 @@ private fun TimetableDetailSpeakers(
         Spacer(
             modifier = modifier.padding(vertical = 16.dp),
         )
-        val styledBio = createAutoLinkedText(speaker.bio)
+        val styledBio = createAutoLinkedAnnotateString(
+            text = speaker.bio,
+            textColor = MaterialTheme.colors.onBackground
+        )
         ClickableText(
             modifier = modifier,
             text = styledBio,
@@ -597,28 +598,6 @@ private fun createSessionDate(
     val endTime = DateTimeFormatter.ofLocalizedTime(FormatStyle.SHORT).format(end)
 
     return "$day $startTime-$endTime"
-}
-
-private fun createAutoLinkedText(text: String): AnnotatedString {
-    val regexp = Regex("""(https?://[^\s\t\n]+)|(`[^`]+`)|(@\w+)|(\*[\w]+\*)|(_[\w]+_)|(~[\w]+~)""")
-    val annotatedString = buildAnnotatedString {
-        val tokens = regexp.findAll(text)
-        var cursorPosition = 0
-        tokens.forEach { token ->
-            append(text.slice(cursorPosition until token.range.first))
-            pushStringAnnotation(
-                tag = "URL",
-                annotation = token.value
-            )
-            withStyle(SpanStyle(color = Color.Blue, textDecoration = TextDecoration.Underline)) {
-                append(token.value)
-            }
-            pop()
-            cursorPosition = token.range.last + 1
-        }
-        append(text.slice(cursorPosition until text.length))
-    }
-    return annotatedString
 }
 
 private val TimetableCategory.iconResId: Int
@@ -693,6 +672,21 @@ fun PreviewTabletTimetableDetailScreen() {
 @Preview(device = Devices.NEXUS_10)
 @Composable
 fun PreviewLargeTabletTimetableDetailScreen() {
+    AppThemeWithBackground {
+        CompositionLocalProvider(
+            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
+        ) {
+            TimetableDetailScreen(
+                id = TimetableItemId("2"),
+                onNavigationIconClick = {}
+            )
+        }
+    }
+}
+
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
+@Composable
+fun PreviewDarkTimetableDetailScreen() {
     AppThemeWithBackground {
         CompositionLocalProvider(
             provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },

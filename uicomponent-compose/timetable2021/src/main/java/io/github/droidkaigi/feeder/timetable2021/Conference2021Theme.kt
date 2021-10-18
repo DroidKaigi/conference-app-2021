@@ -1,8 +1,10 @@
 package io.github.droidkaigi.feeder.timetable2021
 
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.Colors
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Typography
+import androidx.compose.material.darkColors
 import androidx.compose.material.lightColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
@@ -33,12 +35,28 @@ private val LightColorPalette = lightColors(
     onSecondary = Color.White,
 )
 
+private val DarkColorPalette = darkColors(
+    primary = Color(0xFFFFECE6),
+    onPrimary = Color(0xFFF8572B),
+    secondary = Color(0xFFF8572B),
+    onSecondary = Color.White,
+)
+
+@Composable
 private fun colorPalette(theme: Theme?): Colors {
     return when (theme) {
-        // TODO: Adapt dark theme
-        Theme.SYSTEM -> LightColorPalette
-        Theme.DARK -> LightColorPalette
+        Theme.SYSTEM -> systemColorPalette()
+        Theme.DARK -> DarkColorPalette
         Theme.LIGHT -> LightColorPalette
-        else -> LightColorPalette
+        else -> systemColorPalette()
+    }
+}
+
+@Composable
+private fun systemColorPalette(): Colors {
+    return if (isSystemInDarkTheme()) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
     }
 }

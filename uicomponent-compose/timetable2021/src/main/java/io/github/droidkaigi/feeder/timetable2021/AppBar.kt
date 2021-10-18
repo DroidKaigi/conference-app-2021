@@ -14,15 +14,17 @@ import androidx.compose.runtime.Stable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.google.accompanist.insets.statusBarsPadding
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
-import io.github.droidkaigi.feeder.core.R as CoreR
+import io.github.droidkaigi.feeder.Theme
 import io.github.droidkaigi.feeder.core.TabIndicator
 import kotlinx.coroutines.launch
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 @OptIn(ExperimentalPagerApi::class)
 @Stable
@@ -85,5 +87,33 @@ fun AppBar(
                 unselectedContentColor = MaterialTheme.colors.secondary,
             )
         }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewAppBar() {
+    Conference2021Theme {
+        AppBar(
+            appBarState = AppBarState(
+                pagerState = PagerState(3),
+            ),
+            onNavigationIconClick = {},
+            onSelectTab = {}
+        )
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDarkAppBar() {
+    Conference2021Theme(theme = Theme.DARK) {
+        AppBar(
+            appBarState = AppBarState(
+                pagerState = PagerState(3),
+            ),
+            onNavigationIconClick = {},
+            onSelectTab = {}
+        )
     }
 }
