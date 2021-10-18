@@ -60,21 +60,23 @@ public struct LargeCard: View {
                     .onTapGesture(perform: tapPlayAction)
                 }
             }
-            Group {
+
+            VStack(alignment: .leading, spacing: 13) {
                 Text(title)
                     .font(.headline)
                     .foregroundColor(AssetColor.Base.primary.color)
                     .lineLimit(2)
 
-                Spacer(minLength: 13)
-
                 HStack(spacing: 8) {
                     Tag(media: media)
+                        .frame(height: 24)
 
                     Text(date.formatted)
                         .font(.caption)
                         .foregroundColor(AssetColor.Base.tertiary.color)
+
                     Spacer()
+
                     Button(action: tapFavoriteAction, label: {
                         let image = isFavorited ? AssetImage.iconFavorite.image : AssetImage.iconFavoriteOff.image
                         image
