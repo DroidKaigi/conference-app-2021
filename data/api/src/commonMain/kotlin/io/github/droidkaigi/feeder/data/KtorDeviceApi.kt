@@ -23,7 +23,7 @@ open class KtorDeviceApi(
 
     override suspend fun update(deviceId: String, deviceToken: String?): DeviceInfo =
         networkService.put<DeviceResponse>(
-            "https://ssot-api-staging.an.r.appspot.com/devices/$deviceId",
+            "https://${BuildKonfig.API_END_PONT}/devices/$deviceId",
             needAuth = true
         ) {
             contentType(ContentType.Application.Json)

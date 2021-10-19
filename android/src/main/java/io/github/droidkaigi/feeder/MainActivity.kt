@@ -45,6 +45,10 @@ class MainActivity : AppCompatActivity() {
         val link = intent?.data?.toString() // used when app foreground
             ?: intent?.getStringExtra("link") // used when app background
         if (link != null) {
+            if (link.contains("2021/timetable/detail")) {
+                // handle in Navigation Compose
+                return
+            }
             // Currently deeplinks are not supported
             val builder = CustomTabsIntent.Builder()
                 .setShowTitle(true)
@@ -58,6 +62,19 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+//    // for notification debug
+//    override fun onResume() {
+//        super.onResume()
+//        sendBroadcast(
+//            TimetableItemAlarm(application).createNotificationIntentForSessionStart(
+//                context = application,
+//                sessionId = "277266",
+//                title = "title",
+//                text = "text"
+//            )
+//        )
+//    }
 
     private fun setup() {
         setContent {

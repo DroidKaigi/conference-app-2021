@@ -21,6 +21,7 @@ kotlin {
                 }
             }
             api Dep.datetime
+            api Dep.napier
         }
         android {}
         commonTest.dependencies {

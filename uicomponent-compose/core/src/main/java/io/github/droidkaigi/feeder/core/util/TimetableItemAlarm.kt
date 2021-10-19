@@ -6,6 +6,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Build
+import androidx.annotation.VisibleForTesting
 import androidx.core.app.AlarmManagerCompat
 import io.github.droidkaigi.feeder.TimetableItem
 import io.github.droidkaigi.feeder.TimetableItemId
@@ -92,7 +93,8 @@ class TimetableItemAlarm @Inject constructor(private val app: Application) {
         )
     }
 
-    private fun createNotificationIntentForSessionStart(
+    @VisibleForTesting
+    fun createNotificationIntentForSessionStart(
         context: Context,
         sessionId: TimetableItemId,
         title: String,

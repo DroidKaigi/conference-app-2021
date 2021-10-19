@@ -7,7 +7,7 @@ open class KtorContributorApi(
     private val networkService: NetworkService,
 ) : ContributorApi {
     override suspend fun fetch(): List<Contributor> = networkService.get<ContributorsResponse>(
-        "https://ssot-api-staging.an.r.appspot.com/events/droidkaigi2021/contributors",
+        "https://${BuildKonfig.API_END_PONT}/events/droidkaigi2021/contributors",
         needAuth = true
     ).toContributorList()
 }

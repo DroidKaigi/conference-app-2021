@@ -18,7 +18,7 @@ open class KtorFeedApi(
 ) : FeedApi {
 
     override suspend fun fetch(): List<FeedItem> = networkService.get<FeedsResponse>(
-        "https://ssot-api-staging.an.r.appspot.com/feeds/recent",
+        "https://${BuildKonfig.API_END_PONT}/feeds/recent",
         needAuth = true
     ).toFeedList()
 }

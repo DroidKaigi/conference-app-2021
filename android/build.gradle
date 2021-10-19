@@ -1,6 +1,7 @@
 import io.github.droidkaigi.feeder.AppVersions
 import io.github.droidkaigi.feeder.Dep
 import io.github.droidkaigi.feeder.Versions
+
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
@@ -34,6 +35,20 @@ android {
             keyAlias "androiddebugkey"
             keyPassword "android"
         }
+        release {
+            def signingPropertyFile = file('signing.properties')
+            if (signingPropertyFile.exists()) {
+                def fileInputStream = new FileInputStream(signingPropertyFile)
+                def props = new Properties()
+                props.load(fileInputStream)
+                fileInputStream.close()
+
+                storeFile file("release.keystore")
+                storePassword props['storePassword']
+                keyAlias props['keyAlias']
+                keyPassword  props['keyPassword']
+            }
+        }
     }
     buildTypes {
         debug {
@@ -49,6 +64,7 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
