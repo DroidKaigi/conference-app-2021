@@ -23,9 +23,9 @@ public struct TimetableScreen: View {
                 then: TimetableLoadedView.init(store:)
             )
             CaseLet(
-                state: /TimetableState.needToInitialize,
-                action: TimetableAction.loading,
-                then: LoadingView.init(store:)
+                state: /TimetableState.errorOccurred,
+                action: TimetableAction.error,
+                then: ErrorView.init(store:)
             )
         }
     }
