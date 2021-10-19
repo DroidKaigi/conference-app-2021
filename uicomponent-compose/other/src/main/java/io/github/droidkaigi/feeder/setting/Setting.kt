@@ -194,7 +194,8 @@ private fun ThemeSelectRadioButton(
                                 oThemeSelected(theme)
                                 onChangeTheme(theme)
                             }
-                        )
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = (theme == selectedTheme),
@@ -265,7 +266,8 @@ private fun LanguageSelectRadioButton(
                                 onLangSelected(language)
                                 onChangeLanguage(language)
                             }
-                        )
+                        ),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
                     RadioButton(
                         selected = (language == selectedLanguage),
