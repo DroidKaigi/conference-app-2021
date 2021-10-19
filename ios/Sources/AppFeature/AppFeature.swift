@@ -1,5 +1,6 @@
 import AboutFeature
 import Combine
+import Component
 import ComposableArchitecture
 import FavoritesFeature
 import HomeFeature
@@ -18,10 +19,11 @@ public enum AppState: Equatable {
 }
 
 public enum AppAction {
-    case refresh
     case needRefresh
     case refreshResponse(Result<[FeedContent], KotlinError>)
     case appTab(AppTabAction)
+    case loading(LoadingViewAciton)
+    case error(ErrorViewAction)
 }
 
 public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
@@ -30,12 +32,18 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
         action: /AppAction.appTab,
         environment: { $0 }
     ),
+    loadingReducer.pullback(
+        state: /AppState.needToInitialize,
+        action: /AppAction.loading,
+        environment: { _ in }
+    ),
+    errorViewReducer.pullback(
+        state: /AppState.errorOccurred,
+        action: /AppAction.error,
+        environment: { _ in }
+    ),
     .init { state, action, environment in
         switch action {
-        case .refresh:
-            return environment.feedRepository.feedContents()            
-                .catchToEffect()
-                .map(AppAction.refreshResponse)
         case .needRefresh:
             state = .needToInitialize
             return .none
@@ -46,6 +54,13 @@ public let appReducer = Reducer<AppState, AppAction, AppEnvironment>.combine(
             state = .errorOccurred
             return .none
         case .appTab:
+            return .none
+        case .loading(.onAppeared):
+            return environment.feedRepository.feedContents()
+                .catchToEffect()
+                .map(AppAction.refreshResponse)
+        case .error(.reload):
+            state = .needToInitialize
             return .none
         }
     }

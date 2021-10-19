@@ -15,49 +15,49 @@ public struct HomeScreen: View {
     public var body: some View {
         NavigationView {
             InlineTitleNavigationBarScrollView {
-                    WithViewStore(store) { viewStore in
-                        VStack(alignment: .trailing, spacing: 0) {
-                            Spacer(minLength: 16)
-                            if let topic = viewStore.topic {
-                                LargeCard(
-                                    content: topic,
-                                    tapAction: {
-                                        viewStore.send(.tap(topic))
-                                    },
-                                    tapFavoriteAction: {
-                                        viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
-                                    },
-                                    tapPlayAction: {
-                                        viewStore.send(.tapPlay(topic))
-                                    }
-                                )
-                            }
-
-                            Separator()
-
-                            // FIXME: when url is ready
-                            // QuestionnaireView(tapAnswerAction: {
-                            //     viewStore.send(.answerQuestionnaire)
-                            // })
-
-                            Separator()
-
-                            ForEach(viewStore.listFeedContents) { feedContent in
-                                ListItem(
-                                    content: feedContent,
-                                    tapAction: {
-                                        viewStore.send(.tap(feedContent))
-                                    },
-                                    tapFavoriteAction: {
-                                        viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))
-                                    },
-                                    tapPlayAction: {
-                                        viewStore.send(.tapPlay(feedContent))
-                                    }
-                                )
-                            }
+                WithViewStore(store) { viewStore in
+                    VStack(alignment: .trailing, spacing: 0) {
+                        Spacer(minLength: 16)
+                        if let topic = viewStore.topic {
+                            LargeCard(
+                                content: topic,
+                                tapAction: {
+                                    viewStore.send(.tap(topic))
+                                },
+                                tapFavoriteAction: {
+                                    viewStore.send(.tapFavorite(isFavorited: topic.isFavorited, id: topic.id))
+                                },
+                                tapPlayAction: {
+                                    viewStore.send(.tapPlay(topic))
+                                }
+                            )
                         }
-                        .separatorStyle(ThickSeparatorStyle())
+                        
+                        Separator()
+                        
+                        // FIXME: when url is ready
+                        // QuestionnaireView(tapAnswerAction: {
+                        //     viewStore.send(.answerQuestionnaire)
+                        // })
+                        
+                        Separator()
+                        
+                        ForEach(viewStore.listFeedContents) { feedContent in
+                            ListItem(
+                                content: feedContent,
+                                tapAction: {
+                                    viewStore.send(.tap(feedContent))
+                                },
+                                tapFavoriteAction: {
+                                    viewStore.send(.tapFavorite(isFavorited: feedContent.isFavorited, id: feedContent.id))
+                                },
+                                tapPlayAction: {
+                                    viewStore.send(.tapPlay(feedContent))
+                                }
+                            )
+                        }
+                    }
+                    .separatorStyle(ThickSeparatorStyle())
                 }
             }
             .background(AssetColor.Background.primary.color.ignoresSafeArea())

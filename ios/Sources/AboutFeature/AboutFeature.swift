@@ -1,4 +1,5 @@
 import Combine
+import Component
 import ComposableArchitecture
 import Model
 import Repository
@@ -18,6 +19,8 @@ public enum AboutAction {
     case refresh
     case refreshResponse(Result<([Contributor], [Staff]), KotlinError>)
     case loaded(AboutLoadedAction)
+    case loading(LoadingViewAciton)
+    case error(ErrorViewAction)
 }
 
 public struct AboutEnvironment {
@@ -44,6 +47,16 @@ public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment>.com
             .init(applicationClient: environment.applicationClient)
         }
     ),
+    loadingReducer.pullback(
+        state: /AboutState.needToInitialize,
+        action: /AboutAction.loading,
+        environment: {_ in}
+    ),
+    errorViewReducer.pullback(
+        state: /AboutState.errorOccurred,
+        action: /AboutAction.error,
+        environment: { _ in }
+    ),
     .init { state, action, environment in
         switch action {
         case .refresh:
@@ -63,6 +76,11 @@ public let aboutReducer = Reducer<AboutState, AboutAction, AboutEnvironment>.com
             state = .errorOccurred
             return .none
         case .loaded:
+            return .none
+        case .loading(.onAppeared):
+            return .init(value: .refresh)
+        case .error(.reload):
+            state = .needToInitialize
             return .none
         }
     }

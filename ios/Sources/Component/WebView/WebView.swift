@@ -1,15 +1,29 @@
+import ComposableArchitecture
 import SafariServices
 import SwiftUI
 
-public struct WebView: UIViewControllerRepresentable {
-    public let url: URL
+public struct WebViewState: Equatable {
+    public var url: URL
 
     public init(url: URL) {
         self.url = url
     }
+}
+
+public struct WebView: UIViewControllerRepresentable {
+    public let store: Store<WebViewState, Never>
+    private let viewStore: ViewStore<WebViewState, Never>
+
+    public init(store: Store<WebViewState, Never>) {
+        self.store = store
+        self.viewStore = ViewStore(store)
+    }
 
     public func makeUIViewController(context: Context) -> some UIViewController {
-        let safariViewController = SFSafariViewController(url: url, configuration: .init())
+        let safariViewController = SFSafariViewController(
+            url: viewStore.url,
+            configuration: .init()
+        )
         return safariViewController
     }
 
@@ -19,6 +33,10 @@ public struct WebView: UIViewControllerRepresentable {
 
 public struct WebView_Previews: PreviewProvider {
     public static var previews: some View {
-        WebView(url: URL(string: "https://example.com")!)
+        WebView(store: .init(
+            initialState: .init(url: URL(string: "https://example.com")!),
+            reducer: .empty,
+            environment: {}
+        ))
     }
 }

@@ -22,44 +22,19 @@ public struct AboutScreen: View {
         SwitchStore(store) {
             CaseLet(
                 state: /AboutState.needToInitialize,
-                action: AboutAction.init(action:)
-            ) { store in
-                WithViewStore(store) { viewStore in
-                    ProgressView()
-                        .frame(maxWidth: .infinity, maxHeight: .infinity)
-                        .background(AssetColor.Background.primary.color.ignoresSafeArea())
-                        .onAppear { viewStore.send(.progressViewAppeared) }
-                }
-            }
+                action: AboutAction.loading,
+                then: LoadingView.init(store:)
+            )
             CaseLet(
                 state: /AboutState.initialized,
                 action: AboutAction.loaded,
-                then: { store in
-                    AboutLoadedView(store: store)
-                }
+                then: AboutLoadedView.init(store:)
             )
             CaseLet(
                 state: /AboutState.errorOccurred,
-                action: { (action: AboutScreen.ViewAction) in
-                    AboutAction(action: action)
-                },
-                then: { store in
-                    WithViewStore(store) { viewStore in
-                        ErrorView(tapReload: {
-                            viewStore.send(.reload)
-                        })
-                    }
-                }
+                action: AboutAction.error,
+                then: ErrorView.init(store:)
             )
-        }
-    }
-}
-
-private extension AboutAction {
-    init(action: AboutScreen.ViewAction) {
-        switch action {
-        case .progressViewAppeared, .reload:
-            self = .refresh
         }
     }
 }

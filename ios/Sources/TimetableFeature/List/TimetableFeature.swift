@@ -1,30 +1,23 @@
+import Component
 import ComposableArchitecture
 import Model
 import Repository
 
-public struct TimetableState: Equatable {
-    public var type: TimetableStateType = .needToInitialize
-    public var loadedState: TimetableLoadedState
+public enum TimetableState: Equatable {
+    case needToInitialize
+    case initialized(TimetableLoadedState)
+    case errorOccurred
 
-    public init(
-        type: TimetableStateType = .needToInitialize,
-        timetableItems: [AnyTimetableItem] = []
-    ) {
-        self.type = type
-        self.loadedState = TimetableLoadedState(timetableItems: timetableItems)
+    public init() {
+        self = .needToInitialize
     }
 }
 
-public enum TimetableStateType {
-    case needToInitialize
-    case initialized
-    case errorOccurred
-}
-
 public enum TimetableAction {
-    case refresh
     case refreshResponse(Result<[AnyTimetableItem], KotlinError>)
     case loaded(TimetableLoadedAction)
+    case loading(LoadingViewAciton)
+    case error(ErrorViewAction)
 }
 
 public struct TimetableEnvironment {
@@ -39,29 +32,41 @@ public struct TimetableEnvironment {
 
 public let timetableReducer = Reducer<TimetableState, TimetableAction, TimetableEnvironment>.combine(
     timetableLoadedReducer.pullback(
-        state: \.loadedState,
+        state: /TimetableState.initialized,
         action: /TimetableAction.loaded,
-        environment: {_ in
+        environment: { _ in
             .init()
         }
     ),
+    loadingReducer.pullback(
+        state: /TimetableState.needToInitialize,
+        action: /TimetableAction.loading,
+        environment: { _ in }
+    ),
+    errorViewReducer.pullback(
+        state: /TimetableState.errorOccurred,
+        action: /TimetableAction.error,
+        environment: { _ in }
+    ),
     .init { state, action, environment in
         switch action {
-        case .refresh:
+        case let .refreshResponse(.success(items)):
+            state = .initialized(
+                .init(timetableItems: items.sorted { $0.startsAt < $1.startsAt })
+            )
+            return .none
+        case let .refreshResponse(.failure(error)):
+            state = .errorOccurred
+            return .none
+        case .loaded:
+            return .none
+        case .loading(.onAppeared):
             return environment.timetableRepository.timetableContents()
                 .receive(on: DispatchQueue.main)
                 .catchToEffect()
                 .map(TimetableAction.refreshResponse)
-        case let .refreshResponse(.success(items)):
-            state.type = .initialized
-            state.loadedState = TimetableLoadedState(
-                timetableItems: items.sorted { $0.startsAt < $1.startsAt }
-            )
-            return .none
-        case let .refreshResponse(.failure(error)):
-            state.type = .errorOccurred
-            return .none
-        case .loaded:
+        case .error(.reload):
+            state = .needToInitialize
             return .none
         }
     }
