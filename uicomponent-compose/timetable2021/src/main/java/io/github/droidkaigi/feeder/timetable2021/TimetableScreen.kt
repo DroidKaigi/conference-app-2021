@@ -172,7 +172,10 @@ data class TimetableListState(
 private fun TimetableList(
     state: TimetableListState,
 ) {
-    Surface(color = MaterialTheme.colors.background) {
+    Surface(
+        modifier = Modifier.fillMaxSize(),
+        color = MaterialTheme.colors.background
+    ) {
         LazyColumn(
             modifier = Modifier.fillMaxHeight(),
             contentPadding = rememberInsetsPaddingValues(
