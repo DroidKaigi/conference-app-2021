@@ -32,6 +32,7 @@ android {
 dependencies {
     api projects.uicomponentCompose.core
     api projects.model
+    lintChecks project(":checks")
 
     // Java 8+ API desugaring support
     coreLibraryDesugaring Dep.desugarJdkLibs
