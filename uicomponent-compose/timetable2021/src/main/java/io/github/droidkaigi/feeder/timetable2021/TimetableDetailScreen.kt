@@ -621,6 +621,10 @@ private val TimetableCategory.iconResId: Int
 // region default preview
 
 @Preview
+@Preview(widthDp = 360)
+@Preview(device = Devices.NEXUS_7_2013)
+@Preview(device = Devices.NEXUS_10)
+@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
 @Composable
 fun PreviewTimetableDetailScreen() {
     AppThemeWithBackground {
@@ -630,70 +634,6 @@ fun PreviewTimetableDetailScreen() {
             TimetableDetailScreen(
                 id = TimetableItemId("2"),
                 onNavigationIconClick = {},
-            )
-        }
-    }
-}
-
-// endregion
-
-// region optional preview
-
-@Preview(widthDp = 360)
-@Composable
-fun PreviewSmallTimetableDetailScreen() {
-    AppThemeWithBackground {
-        CompositionLocalProvider(
-            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
-        ) {
-            TimetableDetailScreen(
-                id = TimetableItemId("2"),
-                onNavigationIconClick = {}
-            )
-        }
-    }
-}
-
-@Preview(device = Devices.NEXUS_7_2013)
-@Composable
-fun PreviewTabletTimetableDetailScreen() {
-    AppThemeWithBackground {
-        CompositionLocalProvider(
-            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
-        ) {
-            TimetableDetailScreen(
-                id = TimetableItemId("2"),
-                onNavigationIconClick = {}
-            )
-        }
-    }
-}
-
-@Preview(device = Devices.NEXUS_10)
-@Composable
-fun PreviewLargeTabletTimetableDetailScreen() {
-    AppThemeWithBackground {
-        CompositionLocalProvider(
-            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
-        ) {
-            TimetableDetailScreen(
-                id = TimetableItemId("2"),
-                onNavigationIconClick = {}
-            )
-        }
-    }
-}
-
-@Preview(showBackground = true, uiMode = Configuration.UI_MODE_NIGHT_YES)
-@Composable
-fun PreviewDarkTimetableDetailScreen() {
-    AppThemeWithBackground {
-        CompositionLocalProvider(
-            provideTimetableDetailViewModelFactory { fakeTimetableDetailViewModel() },
-        ) {
-            TimetableDetailScreen(
-                id = TimetableItemId("2"),
-                onNavigationIconClick = {}
             )
         }
     }
