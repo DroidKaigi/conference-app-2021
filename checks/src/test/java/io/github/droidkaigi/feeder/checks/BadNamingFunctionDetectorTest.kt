@@ -16,7 +16,7 @@ fun SpeakersItemPreview() {
 }
                 """
             )
-            )
+        )
             .allowMissingSdk()
             .issues(BadNamingFunctionDetector.ISSUE)
             .run()

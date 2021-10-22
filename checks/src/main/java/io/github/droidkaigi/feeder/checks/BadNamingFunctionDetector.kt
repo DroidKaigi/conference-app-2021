@@ -46,7 +46,8 @@ class BadNamingFunctionDetector : Detector(), SourceCodeScanner {
                     ISSUE,
                     node,
                     context.getNameLocation(node),
-                    "The name of function for preview must start with \"Preview\".")
+                    "The name of function for preview must start with \"Preview\"."
+                )
             }
         }
     }
