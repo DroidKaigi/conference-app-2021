@@ -10,5 +10,6 @@ include ':data:repository'
 include ':data:api'
 include ':data:db'
 include ':ios-framework'
+include ':checks'
 
 enableFeaturePreview("TYPESAFE_PROJECT_ACCESSORS")
