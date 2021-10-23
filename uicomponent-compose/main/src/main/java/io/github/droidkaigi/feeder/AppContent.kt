@@ -34,8 +34,8 @@ import io.github.droidkaigi.feeder.other.OtherTab
 import io.github.droidkaigi.feeder.timetable2021.TimetableDetailScreen
 import io.github.droidkaigi.feeder.timetable2021.TimetableScreen
 import io.github.droidkaigi.feeder.timetable2021.TimetableTab
-import kotlinx.coroutines.launch
 import java.time.Instant
+import kotlinx.coroutines.launch
 
 private const val FEED_PATH = "feed/"
 private const val OTHER_PATH = "other/"
