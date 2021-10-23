@@ -89,7 +89,8 @@ jobs:
       - name: Build Test Modules
         working-directory: ./ios
         run: make test-modules
-      - name: uses: kishikawakatsumi/xcresulttool@v1.0.3
+      - name: Show XCResult
+        uses: kishikawakatsumi/xcresulttool@v1.0.3
         with:
           path: |
             BuildResults-ModuleTest-Debug
