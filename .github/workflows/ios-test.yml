@@ -92,8 +92,7 @@ jobs:
       - name: Show XCResult
         uses: kishikawakatsumi/xcresulttool@v1.0.3
         with:
-          path: |
-            BuildResults-ModuleTest-Debug
+          path: 'ios/BuildResults-ModuleTest-Debug'
         if: success() || failure()
 
   build-app-debug:
