@@ -31,6 +31,7 @@ import androidx.compose.material.primarySurface
 import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -68,7 +69,6 @@ import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import java.time.Instant
 import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
 
@@ -101,6 +101,7 @@ fun FeedScreen(
     onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDroidKaigi2021ArticleClick: () -> Unit,
+    isDroidKaigiEnd: MutableState<Boolean>,
     onDetailClick: (FeedItem) -> Unit,
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
@@ -168,7 +169,8 @@ fun FeedScreen(
         onClickPlayPodcastButton = {
             fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
         },
-        onClickDroidKaigi2021Article = onDroidKaigi2021ArticleClick
+        onClickDroidKaigi2021Article = onDroidKaigi2021ArticleClick,
+        isDroidKaigiEnd = isDroidKaigiEnd
     )
 }
 
@@ -190,7 +192,8 @@ private fun FeedScreen(
     onFavoriteFilterChanged: (filtered: Boolean) -> Unit,
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
-    onClickDroidKaigi2021Article: () -> Unit
+    onClickDroidKaigi2021Article: () -> Unit,
+    isDroidKaigiEnd: MutableState<Boolean>,
 ) {
     val density = LocalDensity.current
     BackdropScaffold(
@@ -224,6 +227,7 @@ private fun FeedScreen(
                     onClickPlayPodcastButton = onClickPlayPodcastButton,
                     onClickArticleItem = onClickDroidKaigi2021Article,
                     isFilterState = filters.filterFavorite,
+                    isDroidKaigiEnd = isDroidKaigiEnd
                 )
             }
         },
@@ -299,6 +303,7 @@ private fun FeedList(
     onClickArticleItem: () -> Unit,
     listState: LazyListState,
     isFilterState: Boolean,
+    isDroidKaigiEnd: MutableState<Boolean>,
 ) {
     val isHome = feedTab is FeedTab.Home
     Surface(
@@ -311,7 +316,6 @@ private fun FeedList(
                     .visibleItemsInfo.size == listState.layoutInfo.totalItemsCount
             }
         }
-        val isDroidKaigiEnd = remember { mutableStateOf(DroidKaigi2021.isArticleEnd()) }
         LazyColumn(
             contentPadding = rememberInsetsPaddingValues(
                 insets = LocalWindowInsets.current.systemBars,
@@ -331,7 +335,7 @@ private fun FeedList(
                     } else if (!isDroidKaigiEnd.value) {
                         DroidKaigi2021ArticleItem(
                             onClick = onClickArticleItem,
-                            shouldPadding = isFilterState
+                            shouldPadding = isFilterState,
                         )
                     }
                 }
@@ -342,7 +346,7 @@ private fun FeedList(
                         onClick = onClickFeed,
                         showMediaLabel = isHome,
                         onFavoriteChange = onFavoriteChange,
-                        shouldPadding = isFilterState
+                        shouldPadding = isFilterState,
                     )
                 } else {
                     FeedItemRow(
@@ -355,7 +359,7 @@ private fun FeedList(
                         isPlayingPodcast = (feedItem as? FeedItem.Podcast)
                             ?.podcastLink == fmPlayerState?.url &&
                             fmPlayerState?.isPlaying() == true,
-                        onClickPlayPodcastButton = onClickPlayPodcastButton
+                        onClickPlayPodcastButton = onClickPlayPodcastButton,
                     )
                 }
                 if (index == feedContents.lastIndex) {
@@ -370,8 +374,7 @@ private fun FeedList(
                         robotText = "Finished!",
                         robotIcon = painterResource(id = CoreR.drawable.ic_android_green_24dp),
                         robotIconColor = greenDroid,
-                        targetValue = robotAnimValue.dp
-
+                        targetValue = robotAnimValue.dp,
                     )
                 }
             }
@@ -465,10 +468,6 @@ fun FilterItemCountRow(count: String) {
     }
 }
 
-object DroidKaigi2021 {
-    fun isArticleEnd() = Instant.now().isAfter(Instant.ofEpochMilli(1635692400000))
-}
-
 @Preview(showBackground = true)
 @Composable
 fun PreviewFeedScreen() {
@@ -482,6 +481,7 @@ fun PreviewFeedScreen() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
+                isDroidKaigiEnd = remember { mutableStateOf(false) },
             ) { feedItem: FeedItem ->
             }
         }
@@ -503,6 +503,49 @@ fun PreviewDarkFeedScreen() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
+                isDroidKaigiEnd = remember { mutableStateOf(false) },
+            ) { feedItem: FeedItem ->
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewFeedScreenWhenDroidKaigiEnd() {
+    AppThemeWithBackground {
+        CompositionLocalProvider(
+            provideFeedViewModelFactory { fakeFeedViewModel() },
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
+        ) {
+            FeedScreen(
+                selectedTab = FeedTab.Home,
+                onSelectedTab = {},
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
+                isDroidKaigiEnd = remember { mutableStateOf(true) },
+            ) { feedItem: FeedItem ->
+            }
+        }
+    }
+}
+
+@Preview(showBackground = true)
+@Composable
+fun PreviewDarkFeedScreenWhenDroidKaigiEnd() {
+    AppThemeWithBackground(
+        theme = Theme.DARK
+    ) {
+        CompositionLocalProvider(
+            provideFeedViewModelFactory { fakeFeedViewModel() },
+            provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
+        ) {
+            FeedScreen(
+                selectedTab = FeedTab.Home,
+                onSelectedTab = {},
+                onNavigationIconClick = {},
+                onDroidKaigi2021ArticleClick = {},
+                isDroidKaigiEnd = remember { mutableStateOf(true) },
             ) { feedItem: FeedItem ->
             }
         }
@@ -522,6 +565,7 @@ fun PreviewFeedScreenWithStartBlog() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
+                isDroidKaigiEnd = remember { mutableStateOf(false) },
             ) { feedItem: FeedItem ->
             }
         }

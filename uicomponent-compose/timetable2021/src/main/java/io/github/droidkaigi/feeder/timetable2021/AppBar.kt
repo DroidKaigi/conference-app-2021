@@ -22,9 +22,9 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.pagerTabIndicatorOffset
 import io.github.droidkaigi.feeder.Theme
+import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
 import kotlinx.coroutines.launch
-import io.github.droidkaigi.feeder.core.R as CoreR
 
 @OptIn(ExperimentalPagerApi::class)
 @Stable

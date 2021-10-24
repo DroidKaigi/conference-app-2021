@@ -34,6 +34,7 @@ import io.github.droidkaigi.feeder.other.OtherTab
 import io.github.droidkaigi.feeder.timetable2021.TimetableDetailScreen
 import io.github.droidkaigi.feeder.timetable2021.TimetableScreen
 import io.github.droidkaigi.feeder.timetable2021.TimetableTab
+import java.time.Instant
 import kotlinx.coroutines.launch
 
 private const val FEED_PATH = "feed/"
@@ -116,7 +117,8 @@ fun AppContent(
                     },
                     onDroidKaigi2021ArticleClick = {
                         actions.onSelectDrawerItem(DrawerContents.TIMETABLE)
-                    }
+                    },
+                    isDroidKaigiEnd = remember { mutableStateOf(DroidKaigi2021.isArticleEnd()) },
                 )
             }
             composable(
@@ -253,4 +255,8 @@ fun rememberRoutePath(
     initialRoutePath: String,
 ) = rememberSaveable {
     mutableStateOf(initialRoutePath)
+}
+
+object DroidKaigi2021 {
+    fun isArticleEnd() = Instant.now().isAfter(Instant.ofEpochMilli(1635692400000))
 }
