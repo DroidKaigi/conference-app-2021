@@ -14,5 +14,5 @@ set -o pipefail && xcodebuild $TYPE \
 -workspace $WORKSPACE \
 -scheme "$SCHEME" \
 -configuration $CONFIGURATION \
--resultBundlePath $RESULT_BUNDLE_PATH \
+-resultBundlePath "$RESULT_BUNDLE_PATH" \
 -destination platform="$PLATFORM_IOS" | $SWIFT_RUN xcbeautify --quiet
