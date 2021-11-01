@@ -62,15 +62,15 @@ import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.Theme
-import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
 import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
 import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -106,7 +106,6 @@ fun FeedScreen(
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val pagerState = rememberPagerState(
-        pageCount = FeedTab.values().size,
         initialPage = FeedTab.values().indexOf(selectedTab)
     )
 
@@ -210,7 +209,8 @@ private fun FeedScreen(
         frontLayerContent = {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                count = FeedTab.values().size,
             ) { page ->
                 val selectedTab = FeedTab.values()[page]
                 FeedList(

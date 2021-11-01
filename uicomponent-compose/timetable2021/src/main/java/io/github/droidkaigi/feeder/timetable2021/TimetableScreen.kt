@@ -71,7 +71,6 @@ fun TimetableScreen(
     val (state, effectFlow, dispatch) = use(sessionViewModel())
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val pagerState = rememberPagerState(
-        pageCount = TimetableTab.values().size,
         initialPage = TimetableTab.values().indexOf(selectedTab)
     )
 
@@ -136,7 +135,8 @@ private fun TimetableScreen(
             frontLayerContent = {
                 HorizontalPager(
                     state = state.tabPagerState,
-                    modifier = Modifier.fillMaxSize()
+                    modifier = Modifier.fillMaxSize(),
+                    count = TimetableTab.values().size,
                 ) { page ->
                     val selectedTab = TimetableTab.values()[page]
                     TimetableList(
