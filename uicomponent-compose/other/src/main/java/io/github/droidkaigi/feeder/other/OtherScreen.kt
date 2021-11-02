@@ -75,7 +75,6 @@ fun OtherScreen(
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val pagerState = rememberPagerState(
-        pageCount = OtherTab.values().size,
         initialPage = OtherTab.values().indexOf(selectedTab)
     )
 
@@ -93,7 +92,7 @@ fun OtherScreen(
 /**
  * stateless
  */
-@OptIn(ExperimentalPagerApi::class)
+@OptIn(ExperimentalPagerApi::class, androidx.compose.material.ExperimentalMaterialApi::class)
 @Composable
 fun OtherScreen(
     scaffoldState: BackdropScaffoldState,
@@ -193,7 +192,8 @@ private fun BackdropFrontLayerContent(
     HorizontalPager(
         state = pagerState,
         modifier = Modifier.fillMaxSize(),
-        verticalAlignment = Alignment.Top
+        verticalAlignment = Alignment.Top,
+        count = OtherTab.values().size,
     ) { page ->
         when (OtherTab.values()[page]) {
             OtherTab.AboutThisApp -> AboutThisApp(onPrivacyPolicyClick)

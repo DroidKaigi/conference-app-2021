@@ -106,7 +106,6 @@ fun FeedScreen(
 ) {
     val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
     val pagerState = rememberPagerState(
-        pageCount = FeedTab.values().size,
         initialPage = FeedTab.values().indexOf(selectedTab)
     )
 
@@ -210,7 +209,8 @@ private fun FeedScreen(
         frontLayerContent = {
             HorizontalPager(
                 state = pagerState,
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize(),
+                count = FeedTab.values().size,
             ) { page ->
                 val selectedTab = FeedTab.values()[page]
                 FeedList(
