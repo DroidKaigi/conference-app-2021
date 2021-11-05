@@ -28,6 +28,18 @@ inline fun <reified STATE, EFFECT, EVENT> use(
     )
 }
 
+@Composable
+inline fun <reified STATE> UnidirectionalViewModel<*, *, STATE>.state(): STATE {
+    val state by state.collectAsState()
+    return state
+}
+
+inline fun <reified EVENT> UnidirectionalViewModel<EVENT, *, *>.dispatcher(): (EVENT) -> Unit {
+    return { event ->
+        event(event)
+    }
+}
+
 interface UnidirectionalViewModel<EVENT, EFFECT, STATE> {
     val state: StateFlow<STATE>
     val effect: Flow<EFFECT>

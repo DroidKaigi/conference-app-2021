@@ -22,6 +22,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import androidx.navigation.navDeepLink
+import com.google.accompanist.pager.ExperimentalPagerApi
+import com.google.accompanist.pager.rememberPagerState
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.navigation.chromeCustomTabs
@@ -44,6 +46,7 @@ private const val TIMETABLE_DETAIL_PATH = "timetable/detail/"
 
 private val drawerOpenedStatusBarColor = Color.Black.copy(alpha = 0.48f)
 
+@OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppContent(
     modifier: Modifier = Modifier,
@@ -104,9 +107,12 @@ fun AppContent(
                 )
                 val selectedTab = FeedTab.ofRoutePath(routePath.value)
                 drawerContentState.onSelectDrawerContent(selectedTab)
+                val pagerState = rememberPagerState(
+                    initialPage = FeedTab.values().indexOf(selectedTab)
+                )
                 FeedScreen(
                     onNavigationIconClick = onNavigationIconClick,
-                    selectedTab = selectedTab,
+                    pagerState = pagerState,
                     onSelectedTab = { feedTab ->
                         // We don't use navigation component transitions here for animation.
                         routePath.value = feedTab.routePath

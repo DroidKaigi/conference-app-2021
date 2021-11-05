@@ -11,10 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyListState
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.BackdropScaffold
 import androidx.compose.material.BackdropScaffoldState
-import androidx.compose.material.BackdropValue
 import androidx.compose.material.Divider
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.Icon
@@ -22,13 +20,11 @@ import androidx.compose.material.IconButton
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.ScrollableTabRow
 import androidx.compose.material.SnackbarHost
-import androidx.compose.material.SnackbarResult
 import androidx.compose.material.Surface
 import androidx.compose.material.Tab
 import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
-import androidx.compose.material.rememberBackdropScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -40,7 +36,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.semantics.semantics
@@ -62,15 +57,13 @@ import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.FeedItem
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.Theme
-import io.github.droidkaigi.feeder.core.R as CoreR
 import io.github.droidkaigi.feeder.core.TabIndicator
-import io.github.droidkaigi.feeder.core.getReadableMessage
 import io.github.droidkaigi.feeder.core.theme.AppThemeWithBackground
 import io.github.droidkaigi.feeder.core.theme.greenDroid
-import io.github.droidkaigi.feeder.core.use
 import io.github.droidkaigi.feeder.core.util.collectInLaunchedEffect
-import kotlin.reflect.KClass
 import kotlinx.coroutines.launch
+import kotlin.reflect.KClass
+import io.github.droidkaigi.feeder.core.R as CoreR
 
 sealed class FeedTab(val name: String, val routePath: String) {
     object Home : FeedTab("Home", "home")
@@ -97,76 +90,43 @@ sealed class FeedTab(val name: String, val routePath: String) {
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun FeedScreen(
-    selectedTab: FeedTab,
+    pagerState: PagerState,
     onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDroidKaigi2021ArticleClick: () -> Unit,
     isDroidKaigiEnd: MutableState<Boolean>,
     onDetailClick: (FeedItem) -> Unit,
 ) {
-    val scaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed)
-    val pagerState = rememberPagerState(
-        initialPage = FeedTab.values().indexOf(selectedTab)
-    )
+    val feedScreenState: FeedScreenState = rememberFeedScreenState()
 
-    val (
-        state,
-        effectFlow,
-        dispatch,
-    ) = use(feedViewModel())
-
-    val (
-        fmPlayerState,
-        fmPlayerEffectFlow,
-        fmPlayerDispatch,
-    ) = use(fmPlayerViewModel())
-
-    val context = LocalContext.current
-
-    effectFlow.collectInLaunchedEffect { effect ->
+    feedScreenState.effect.collectInLaunchedEffect { effect ->
         when (effect) {
             is FeedViewModel.Effect.ErrorMessage -> {
-                when (
-                    scaffoldState.snackbarHostState.showSnackbar(
-                        message = effect.appError.getReadableMessage(context),
-                        actionLabel = "Reload",
-                    )
-                ) {
-                    SnackbarResult.ActionPerformed -> {
-                        dispatch(FeedViewModel.Event.ReloadContent)
-                    }
-                    SnackbarResult.Dismissed -> {
-                    }
-                }
+                feedScreenState.onErrorMessage(effect)
+
             }
         }
     }
-    val tabLazyListStates = FeedTab.values()
-        .map { it to rememberLazyListState() }
-        .toMap()
 
+    val uiState = feedScreenState.uiState
     FeedScreen(
-        scaffoldState = scaffoldState,
+        scaffoldState = feedScreenState.scaffoldState,
         pagerState = pagerState,
-        tabLazyListStates = tabLazyListStates,
-        feedContents = state.filteredFeedContents,
-        fmPlayerState = fmPlayerState,
-        filters = state.filters,
+        tabLazyListStates = feedScreenState.tabLazyListStates,
+        feedContents = uiState.filteredFeedContents,
+        fmPlayerState = feedScreenState.fmPlayerUiState,
+        filters = uiState.filters,
         onSelectTab = onSelectedTab,
         onNavigationIconClick = onNavigationIconClick,
         onFavoriteChange = {
-            dispatch(FeedViewModel.Event.ToggleFavorite(feedItem = it))
+            feedScreenState.onFavoriteChange(it)
         },
         onFavoriteFilterChanged = {
-            dispatch(
-                FeedViewModel.Event.ChangeFavoriteFilter(
-                    filters = state.filters.copy(filterFavorite = it)
-                )
-            )
+            feedScreenState.onFavoriteFilterChange(uiState.filters, it)
         },
         onClickFeed = onDetailClick,
         onClickPlayPodcastButton = {
-            fmPlayerDispatch(FmPlayerViewModel.Event.ChangePlayerState(it.podcastLink))
+            feedScreenState.onPotcastPlayButtonClick(it)
         },
         onClickDroidKaigi2021Article = onDroidKaigi2021ArticleClick,
         isDroidKaigiEnd = isDroidKaigiEnd
@@ -477,7 +437,9 @@ fun PreviewFeedScreen() {
             provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
-                selectedTab = FeedTab.Home,
+                pagerState = rememberPagerState(
+                    initialPage = FeedTab.values().indexOf(FeedTab.Home)
+                ),
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
@@ -499,7 +461,9 @@ fun PreviewDarkFeedScreen() {
             provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
-                selectedTab = FeedTab.Home,
+                pagerState = rememberPagerState(
+                    initialPage = FeedTab.values().indexOf(FeedTab.Home)
+                ),
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
@@ -519,7 +483,9 @@ fun PreviewFeedScreenWhenDroidKaigiEnd() {
             provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
-                selectedTab = FeedTab.Home,
+                pagerState = rememberPagerState(
+                    initialPage = FeedTab.values().indexOf(FeedTab.Home)
+                ),
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
@@ -541,7 +507,9 @@ fun PreviewDarkFeedScreenWhenDroidKaigiEnd() {
             provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
-                selectedTab = FeedTab.Home,
+                pagerState = rememberPagerState(
+                    initialPage = FeedTab.values().indexOf(FeedTab.Home)
+                ),
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
@@ -561,7 +529,9 @@ fun PreviewFeedScreenWithStartBlog() {
             provideFmPlayerViewModelFactory { fakeFmPlayerViewModel() }
         ) {
             FeedScreen(
-                selectedTab = FeedTab.FilteredFeed.Blog,
+                pagerState = rememberPagerState(
+                    initialPage = FeedTab.values().indexOf(FeedTab.FilteredFeed.Blog)
+                ),
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
