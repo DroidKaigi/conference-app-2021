@@ -37,7 +37,6 @@ class FeedScreenState(
             .map { it to rememberLazyListState() }
             .toMap()
 
-
     suspend fun onErrorMessage(effect: FeedViewModel.Effect.ErrorMessage) {
         when (
             scaffoldState.snackbarHostState.showSnackbar(
