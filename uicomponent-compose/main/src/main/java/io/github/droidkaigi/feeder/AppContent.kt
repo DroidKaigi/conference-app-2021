@@ -124,7 +124,7 @@ fun AppContent(
                     onDroidKaigi2021ArticleClick = {
                         actions.onSelectDrawerItem(DrawerContents.TIMETABLE)
                     },
-                    isDroidKaigiEnd = remember { mutableStateOf(DroidKaigi2021.isArticleEnd()) },
+                    isDroidKaigiEnd = DroidKaigi2021.isArticleEnd(),
                 )
             }
             composable(

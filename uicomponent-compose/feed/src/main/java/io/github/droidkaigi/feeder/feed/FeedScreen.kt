@@ -27,10 +27,8 @@ import androidx.compose.material.TopAppBar
 import androidx.compose.material.primarySurface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
@@ -90,14 +88,14 @@ sealed class FeedTab(val name: String, val routePath: String) {
 @OptIn(ExperimentalPagerApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun FeedScreen(
+    feedScreenState: FeedScreenState = rememberFeedScreenState(),
     pagerState: PagerState,
     onSelectedTab: (FeedTab) -> Unit,
     onNavigationIconClick: () -> Unit,
     onDroidKaigi2021ArticleClick: () -> Unit,
-    isDroidKaigiEnd: MutableState<Boolean>,
+    isDroidKaigiEnd: Boolean,
     onDetailClick: (FeedItem) -> Unit,
 ) {
-    val feedScreenState: FeedScreenState = rememberFeedScreenState()
 
     feedScreenState.effect.collectInLaunchedEffect { effect ->
         when (effect) {
@@ -151,7 +149,7 @@ private fun FeedScreen(
     onClickFeed: (FeedItem) -> Unit,
     onClickPlayPodcastButton: (FeedItem.Podcast) -> Unit,
     onClickDroidKaigi2021Article: () -> Unit,
-    isDroidKaigiEnd: MutableState<Boolean>,
+    isDroidKaigiEnd: Boolean,
 ) {
     val density = LocalDensity.current
     BackdropScaffold(
@@ -262,7 +260,7 @@ private fun FeedList(
     onClickArticleItem: () -> Unit,
     listState: LazyListState,
     isFilterState: Boolean,
-    isDroidKaigiEnd: MutableState<Boolean>,
+    isDroidKaigiEnd: Boolean,
 ) {
     val isHome = feedTab is FeedTab.Home
     Surface(
@@ -291,14 +289,14 @@ private fun FeedList(
                 if (isHome && index == 0) {
                     if (isFilterState) {
                         FilterItemCountRow(feedContents.size.toString())
-                    } else if (!isDroidKaigiEnd.value) {
+                    } else if (!isDroidKaigiEnd) {
                         DroidKaigi2021ArticleItem(
                             onClick = onClickArticleItem,
                             shouldPadding = isFilterState,
                         )
                     }
                 }
-                if (isDroidKaigiEnd.value && isHome && index == 0) {
+                if (isDroidKaigiEnd && isHome && index == 0) {
                     FirstFeedItem(
                         feedItem = feedItem,
                         favorited = favorited,
@@ -442,7 +440,7 @@ fun PreviewFeedScreen() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
-                isDroidKaigiEnd = remember { mutableStateOf(false) },
+                isDroidKaigiEnd = false,
             ) { feedItem: FeedItem ->
             }
         }
@@ -466,7 +464,7 @@ fun PreviewDarkFeedScreen() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
-                isDroidKaigiEnd = remember { mutableStateOf(false) },
+                isDroidKaigiEnd = false,
             ) { feedItem: FeedItem ->
             }
         }
@@ -488,7 +486,7 @@ fun PreviewFeedScreenWhenDroidKaigiEnd() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
-                isDroidKaigiEnd = remember { mutableStateOf(true) },
+                isDroidKaigiEnd = true,
             ) { feedItem: FeedItem ->
             }
         }
@@ -512,7 +510,7 @@ fun PreviewDarkFeedScreenWhenDroidKaigiEnd() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
-                isDroidKaigiEnd = remember { mutableStateOf(true) },
+                isDroidKaigiEnd = true,
             ) { feedItem: FeedItem ->
             }
         }
@@ -534,7 +532,7 @@ fun PreviewFeedScreenWithStartBlog() {
                 onSelectedTab = {},
                 onNavigationIconClick = {},
                 onDroidKaigi2021ArticleClick = {},
-                isDroidKaigiEnd = remember { mutableStateOf(false) },
+                isDroidKaigiEnd = false,
             ) { feedItem: FeedItem ->
             }
         }

@@ -77,8 +77,6 @@ fun rememberFeedScreenState(
     fmPlayerViewModel: FmPlayerViewModel = fmPlayerViewModel(),
     scaffoldState: BackdropScaffoldState = rememberBackdropScaffoldState(BackdropValue.Concealed),
     context: Context = LocalContext.current,
-): FeedScreenState {
-    return remember {
-        FeedScreenState(feedViewModel, fmPlayerViewModel, scaffoldState, context)
-    }
+): FeedScreenState = remember {
+    FeedScreenState(feedViewModel, fmPlayerViewModel, scaffoldState, context)
 }
