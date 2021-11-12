@@ -115,16 +115,12 @@ fun FeedScreen(
         filters = uiState.filters,
         onSelectTab = onSelectedTab,
         onNavigationIconClick = onNavigationIconClick,
-        onFavoriteChange = {
-            feedScreenState.onFavoriteChange(it)
-        },
+        onFavoriteChange = feedScreenState::onFavoriteChange,
         onFavoriteFilterChanged = {
             feedScreenState.onFavoriteFilterChange(uiState.filters, it)
         },
         onClickFeed = onDetailClick,
-        onClickPlayPodcastButton = {
-            feedScreenState.onPotcastPlayButtonClick(it)
-        },
+        onClickPlayPodcastButton = feedScreenState::onPotcastPlayButtonClick,
         onClickDroidKaigi2021Article = onDroidKaigi2021ArticleClick,
         isDroidKaigiEnd = isDroidKaigiEnd
     )
