@@ -50,6 +50,8 @@ dependencies {
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.systemuicontroller
 
+    implementation Dep.Accompanist.pager
+
     implementation (Dep.Coroutines.core) {
         version {
             strictly Versions.coroutines
