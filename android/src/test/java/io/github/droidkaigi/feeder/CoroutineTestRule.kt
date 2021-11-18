@@ -36,6 +36,7 @@ class CoroutineTestRule(val testDispatcher: TestCoroutineDispatcher = TestCorout
         super.finished(description)
         Dispatchers.resetMain()
         testDispatcher.cleanupTestCoroutines()
+        overrideDefaultContext = null
     }
 }
 
