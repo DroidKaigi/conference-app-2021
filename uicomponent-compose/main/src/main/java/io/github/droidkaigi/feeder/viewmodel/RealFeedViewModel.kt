@@ -24,6 +24,8 @@ import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.FeedRepository
 import io.github.droidkaigi.feeder.toLoadState
+import javax.annotation.meta.Exhaustive
+import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
@@ -32,8 +34,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
-import javax.annotation.meta.Exhaustive
-import javax.inject.Inject
 
 @HiltViewModel
 class RealFeedViewModel @Inject constructor(
@@ -54,7 +54,9 @@ class RealFeedViewModel @Inject constructor(
     val flow = feedRepository.feedContents().toLoadState()
 
     override val state: StateFlow<FeedViewModel.State> = viewModelScopeWithClock.launchMolecule {
-        val feedContentsLoadState by produceState<LoadState<FeedContents>>(initialValue = LoadState.Loading) {
+        val feedContentsLoadState by produceState<LoadState<FeedContents>>(
+            initialValue = LoadState.Loading
+        ) {
             feedRepository.feedContents()
                 .catch { value = LoadState.Error(it) }
                 .collect {

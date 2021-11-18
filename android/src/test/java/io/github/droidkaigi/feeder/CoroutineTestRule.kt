@@ -20,7 +20,7 @@ class CoroutineTestRule(val testDispatcher: TestCoroutineDispatcher = TestCorout
     TestWatcher() {
     private lateinit var clock: BroadcastFrameClock
 
-    suspend fun awaitFrame(){
+    suspend fun awaitFrame() {
         yield()
         clock.awaitFrame()
     }

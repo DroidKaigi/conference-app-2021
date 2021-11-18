@@ -1,11 +1,11 @@
 package androidx.lifecycle
 
 import app.cash.molecule.AndroidUiDispatcher
+import java.io.Closeable
+import kotlin.coroutines.CoroutineContext
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
-import java.io.Closeable
-import kotlin.coroutines.CoroutineContext
 
 private const val JOB_KEY = "io.github.droidkaigi.feeder.ViewModelCoroutineScope.JOB_KEY"
 
@@ -20,8 +20,10 @@ public val ViewModel.viewModelScopeWithClock: CoroutineScope
         }
         return setTagIfAbsent(
             JOB_KEY,
-            CloseableCoroutineScope(SupervisorJob() +
-                (overrideDefaultContext ?: defaultDispatcher))
+            CloseableCoroutineScope(
+                SupervisorJob() +
+                    (overrideDefaultContext ?: defaultDispatcher)
+            )
         )
     }
 
