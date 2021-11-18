@@ -1,8 +1,6 @@
 package io.github.droidkaigi.feeder.viewmodel
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
@@ -55,21 +53,14 @@ class RealFeedViewModel @Inject constructor(
 
     val flow = feedRepository.feedContents().toLoadState()
 
-    @Composable
-    fun contentsLoadState(): State<LoadState<FeedContents>> {
-        return produceState<LoadState<FeedContents>>(initialValue = LoadState.Loading) {
-            println("launch")
+    override val state: StateFlow<FeedViewModel.State> = viewModelScopeWithClock.launchMolecule {
+        val feedContentsLoadState by produceState<LoadState<FeedContents>>(initialValue = LoadState.Loading) {
             feedRepository.feedContents()
                 .catch { value = LoadState.Error(it) }
-                .collect{
-                    println("collect")
+                .collect {
                     value = LoadState.Loaded(it)
                 }
         }
-    }
-
-    override val state: StateFlow<FeedViewModel.State> = viewModelScopeWithClock.launchMolecule {
-        val feedContentsLoadState by contentsLoadState()
         val showProgress by showProgressLatch.toggleState.collectAsState()
         var filters by remember { mutableStateOf(Filters()) }
         val filteredFeed by derivedStateOf {
