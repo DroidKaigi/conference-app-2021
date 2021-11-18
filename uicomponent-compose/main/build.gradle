@@ -7,6 +7,7 @@ plugins {
     id 'kotlin-kapt'
     id 'app.cash.exhaustive'
     id 'dagger.hilt.android.plugin'
+    id 'app.cash.molecule'
 }
 
 apply from: rootProject.file("gradle/android.gradle")
@@ -14,7 +15,8 @@ apply from: rootProject.file("gradle/compose.gradle")
 
 android {
     compileOptions {
-        coreLibraryDesugaringEnabled true // need for test. https://github.com/DroidKaigi/conference-app-2021/issues/373
+        coreLibraryDesugaringEnabled true
+        // need for test. https://github.com/DroidKaigi/conference-app-2021/issues/373
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -50,7 +52,7 @@ dependencies {
     implementation Dep.Accompanist.insets
     implementation Dep.Accompanist.systemuicontroller
 
-    implementation (Dep.Coroutines.core) {
+    implementation(Dep.Coroutines.core) {
         version {
             strictly Versions.coroutines
         }

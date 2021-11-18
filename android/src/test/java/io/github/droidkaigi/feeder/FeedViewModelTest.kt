@@ -1,5 +1,6 @@
 package io.github.droidkaigi.feeder
 
+import app.cash.turbine.test
 import io.github.droidkaigi.feeder.data.FeedRepositoryImpl
 import io.github.droidkaigi.feeder.data.fakeFeedApi
 import io.github.droidkaigi.feeder.data.fakeFeedItemDao
@@ -32,63 +33,79 @@ class FeedViewModelTest(
     val coroutineTestRule = CoroutineTestRule()
 
     @Test
-    fun contents() = coroutineTestRule.testDispatcher.runBlockingTest {
-        // Replace when it fixed https://github.com/cashapp/turbine/issues/10
-        val feedViewModel = feedViewModelFactory.create()
-
-        val firstContent = feedViewModel.state.value.filteredFeedContents
-
-        firstContent.size shouldBeGreaterThan 1
+    fun contents() {
+        coroutineTestRule.testDispatcher.runBlockingTest {
+            val feedViewModel = feedViewModelFactory.create()
+            feedViewModel.state.test {
+                coroutineTestRule.awaitFrame()
+                expectMostRecentItem().filteredFeedContents.size shouldBeGreaterThan 1
+            }
+        }
     }
 
     @Test
     fun favorite_Add() = coroutineTestRule.testDispatcher.runBlockingTest {
         val feedViewModel = feedViewModelFactory.create()
-        val firstContent = feedViewModel.state.value.filteredFeedContents
-        firstContent.favorites shouldBe setOf()
+        feedViewModel.state.test {
+            coroutineTestRule.awaitFrame()
+            val firstContent = expectMostRecentItem().filteredFeedContents
+            firstContent.favorites shouldBe setOf()
 
-        feedViewModel.event(ToggleFavorite(firstContent.feedItemContents[0]))
+            feedViewModel.event(ToggleFavorite(firstContent.feedItemContents[0]))
 
-        val secondContent = feedViewModel.state.value.filteredFeedContents
-        secondContent.favorites shouldBe setOf(firstContent.feedItemContents[0].id)
+            coroutineTestRule.awaitFrame()
+            val secondContent = awaitItem().filteredFeedContents
+            secondContent.favorites shouldBe setOf(firstContent.feedItemContents[0].id)
+        }
     }
 
     @Test
     fun favorite_Remove() = coroutineTestRule.testDispatcher.runBlockingTest {
         val feedViewModel = feedViewModelFactory.create()
-        val firstContent = feedViewModel.state.value.filteredFeedContents
-        firstContent.favorites shouldBe setOf()
+        feedViewModel.state.test {
+            coroutineTestRule.awaitFrame()
+            val firstContent = expectMostRecentItem().filteredFeedContents
+            firstContent.favorites shouldBe setOf()
 
-        feedViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
-        feedViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
+            feedViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
+            coroutineTestRule.awaitFrame()
+            feedViewModel.event(ToggleFavorite(feedItem = firstContent.feedItemContents[0]))
+            coroutineTestRule.awaitFrame()
 
-        val secondContent = feedViewModel.state.value.filteredFeedContents
-        secondContent.favorites shouldBe setOf()
+            val secondContent = expectMostRecentItem().filteredFeedContents
+            secondContent.favorites shouldBe setOf()
+        }
     }
 
     @Test
     fun favorite_Filter() = coroutineTestRule.testDispatcher.runBlockingTest {
         val feedViewModel = feedViewModelFactory.create()
-        val firstContent = feedViewModel.state.value.filteredFeedContents
-        firstContent.favorites shouldBe setOf()
-        val favoriteContents = firstContent.feedItemContents[1]
+        feedViewModel.state.test {
+            coroutineTestRule.awaitFrame()
+            val firstContent = expectMostRecentItem().filteredFeedContents
+            firstContent.favorites shouldBe setOf()
+            val favoriteContents = firstContent.feedItemContents[1]
 
-        feedViewModel.event(ToggleFavorite(feedItem = favoriteContents))
-        feedViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
+            feedViewModel.event(ToggleFavorite(feedItem = favoriteContents))
+            feedViewModel.event(ChangeFavoriteFilter(Filters(filterFavorite = true)))
+            coroutineTestRule.awaitFrame()
 
-        val secondContent = feedViewModel.state.value.filteredFeedContents
-        secondContent.contents[0].first.id shouldBe favoriteContents.id
+            val secondContent = expectMostRecentItem().filteredFeedContents
+            secondContent.contents[0].first.id shouldBe favoriteContents.id
+        }
     }
 
     @Test
     fun errorWhenFetch() = coroutineTestRule.testDispatcher.runBlockingTest {
         val feedViewModel = feedViewModelFactory.create(errorFetchData = true)
-        val firstContent = feedViewModel.state.value.filteredFeedContents
-        firstContent.favorites shouldBe setOf()
+        feedViewModel.state.test {
+            val firstContent = expectMostRecentItem().filteredFeedContents
+            firstContent.favorites shouldBe setOf()
 
-        val firstEffect = feedViewModel.effect.first()
+            val firstEffect = feedViewModel.effect.first()
 
-        firstEffect.shouldBeInstanceOf<FeedViewModel.Effect.ErrorMessage>()
+            firstEffect.shouldBeInstanceOf<FeedViewModel.Effect.ErrorMessage>()
+        }
     }
 
     class FeedViewModelFactory(

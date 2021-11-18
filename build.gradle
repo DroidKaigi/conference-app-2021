@@ -27,6 +27,7 @@ buildscript {
         classpath Dep.SQLDelight.plugin
         classpath Dep.playServicesOssLicensesPlugin
         classpath Dep.buildKonfig
+        classpath Dep.Molecule.plugin
     }
 }
 

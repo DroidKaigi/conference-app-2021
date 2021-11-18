@@ -150,4 +150,11 @@ object Dep {
     const val desugarJdkLibs = "com.android.tools:desugar_jdk_libs:1.1.5"
 
     const val napier = "io.github.aakira:napier:2.1.0"
+
+    object Molecule {
+        const val plugin = "app.cash.molecule:molecule-gradle-plugin:0.1.0"
+        const val runtime = "app.cash.molecule:molecule-runtime"
+        const val testing = "app.cash.molecule:molecule-testing:0.1.0"
+    }
+    val turbine = "app.cash.turbine:turbine:0.7.0"
 }
