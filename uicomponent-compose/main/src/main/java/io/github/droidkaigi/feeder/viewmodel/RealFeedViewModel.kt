@@ -5,7 +5,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.produceState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
@@ -15,22 +14,20 @@ import androidx.lifecycle.viewModelScopeWithClock
 import app.cash.molecule.launchMolecule
 import dagger.hilt.android.lifecycle.HiltViewModel
 import io.github.droidkaigi.feeder.AppError
-import io.github.droidkaigi.feeder.FeedContents
 import io.github.droidkaigi.feeder.Filters
 import io.github.droidkaigi.feeder.LoadState
 import io.github.droidkaigi.feeder.core.util.ProgressTimeLatch
+import io.github.droidkaigi.feeder.core.util.collectAsLoadState
 import io.github.droidkaigi.feeder.feed.FeedViewModel
 import io.github.droidkaigi.feeder.getContents
 import io.github.droidkaigi.feeder.orEmptyContents
 import io.github.droidkaigi.feeder.repository.FeedRepository
-import io.github.droidkaigi.feeder.toLoadState
 import javax.annotation.meta.Exhaustive
 import javax.inject.Inject
 import kotlinx.coroutines.channels.Channel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableSharedFlow
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.receiveAsFlow
 import kotlinx.coroutines.launch
@@ -51,18 +48,8 @@ class RealFeedViewModel @Inject constructor(
         }
     }
 
-    val flow = feedRepository.feedContents().toLoadState()
-
     override val state: StateFlow<FeedViewModel.State> = viewModelScopeWithClock.launchMolecule {
-        val feedContentsLoadState by produceState<LoadState<FeedContents>>(
-            initialValue = LoadState.Loading
-        ) {
-            feedRepository.feedContents()
-                .catch { value = LoadState.Error(it) }
-                .collect {
-                    value = LoadState.Loaded(it)
-                }
-        }
+        val feedContentsLoadState by feedRepository.feedContents().collectAsLoadState()
         val showProgress by showProgressLatch.toggleState.collectAsState()
         var filters by remember { mutableStateOf(Filters()) }
         val filteredFeed by derivedStateOf {
