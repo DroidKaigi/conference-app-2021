@@ -57,6 +57,11 @@ dependencies {
             strictly Versions.coroutines
         }
     }
+    testImplementation(Dep.Coroutines.core) {
+        version {
+            strictly Versions.coroutines
+        }
+    }
 
     // Write here to get from JetNews
     // https://github.com/android/compose-samples/blob/master/JetNews/app/build.gradle#L66
