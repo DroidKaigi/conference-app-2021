@@ -25,12 +25,13 @@ import androidx.constraintlayout.compose.Dimension
 import io.github.droidkaigi.feeder.Media
 import io.github.droidkaigi.feeder.core.theme.ConferenceAppFeederTheme
 import io.github.droidkaigi.feeder.core.theme.typography
+import io.github.droidkaigi.feeder.core.R
 import kotlinx.datetime.Instant
 import kotlinx.datetime.TimeZone
 import kotlinx.datetime.toLocalDateTime
 
 @Composable
-fun DroidKaigi2021ArticleItem(
+fun PickupArticleItem(
     onClick: () -> Unit,
     shouldPadding: Boolean,
 ) {
@@ -46,7 +47,7 @@ fun DroidKaigi2021ArticleItem(
         val horizontalPadding = if (shouldPadding) 20.dp else 0.dp
         val verticalPadding = if (shouldPadding) 48.dp else 0.dp
         Image(
-            painterResource(id = R.drawable.article_droidkaigi_2021),
+            painterResource(id = R.drawable.droid_placeholder),
             contentDescription = null,
             modifier = Modifier
                 .constrainAs(image) {
@@ -70,7 +71,7 @@ fun DroidKaigi2021ArticleItem(
                 end.linkTo(favorite.start, 20.dp)
                 width = Dimension.fillToConstraints
             },
-            text = "DroidKaigi 2021 2021/10/19~",
+            text = "Title",
             style = typography.h5,
             maxLines = 2,
             overflow = TextOverflow.Ellipsis
@@ -112,9 +113,9 @@ fun publishedDateString(publishedAt: Instant): String {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewDroidKaigi2021ArticleItem() {
+fun PickupArticleItem() {
     ConferenceAppFeederTheme {
-        DroidKaigi2021ArticleItem(
+        PickupArticleItem(
             onClick = { },
             shouldPadding = false
         )
@@ -123,9 +124,9 @@ fun PreviewDroidKaigi2021ArticleItem() {
 
 @Preview(showBackground = true)
 @Composable
-fun PreviewDroidKaigi2021ArticleItemWithFiltered() {
+fun PickupArticleItemWithFiltered() {
     ConferenceAppFeederTheme {
-        DroidKaigi2021ArticleItem(
+        PickupArticleItem(
             onClick = { },
             shouldPadding = true
         )
