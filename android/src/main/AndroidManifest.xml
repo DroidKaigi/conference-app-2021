@@ -42,11 +42,13 @@
         </activity>
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesMenuActivity"
-            android:theme="@style/Theme.ConferenceAppFeeder" />
+            android:theme="@style/Theme.ConferenceAppFeeder"
+            tools:ignore="MissingClass" /><!-- False positive MissingClass lint error if using AGP 7.1.0-rc1 -->
 
         <activity
             android:name="com.google.android.gms.oss.licenses.OssLicensesActivity"
-            android:theme="@style/Theme.ConferenceAppFeeder" />
+            android:theme="@style/Theme.ConferenceAppFeeder"
+            tools:ignore="MissingClass" /><!-- False positive MissingClass lint error if using AGP 7.1.0-rc1 -->
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
