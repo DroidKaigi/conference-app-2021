@@ -99,10 +99,10 @@ object Dep {
     const val exhaustivePlugin = "app.cash.exhaustive:exhaustive-gradle:0.2.0"
 
     object Dagger {
-        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.37"
-        const val hiltAndroid = "com.google.dagger:hilt-android:2.37"
-        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.37"
-        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.37"
+        const val plugin = "com.google.dagger:hilt-android-gradle-plugin:2.40.5"
+        const val hiltAndroid = "com.google.dagger:hilt-android:2.40.5"
+        const val hiltAndroidTesting = "com.google.dagger:hilt-android-testing:2.40.5"
+        const val hiltAndroidCompiler = "com.google.dagger:hilt-android-compiler:2.40.5"
     }
 
     object Accompanist {
