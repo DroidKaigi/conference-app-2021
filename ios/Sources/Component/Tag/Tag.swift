@@ -15,8 +15,6 @@ public struct Tag: View {
         Text(media.title)
             .font(.caption)
             .foregroundColor(AssetColor.Base.white.color)
-            .padding(.vertical, 4)
-            .padding(.horizontal, 12)
             .background(media.backgroundColor)
             .clipShape(
                 CutCornerRectangle(

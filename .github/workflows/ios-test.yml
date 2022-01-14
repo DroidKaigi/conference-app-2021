@@ -89,6 +89,11 @@ jobs:
       - name: Build Test Modules
         working-directory: ./ios
         run: make test-modules
+      - name: Show XCResult
+        uses: kishikawakatsumi/xcresulttool@v1.0.3
+        with:
+          path: 'ios/BuildResults-ModuleTest-Debug'
+        if: success() || failure()
 
   build-app-debug:
     name: "iOS Buid Test on Debug Configuration"
