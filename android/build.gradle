@@ -46,7 +46,7 @@ android {
                 storeFile file("release.keystore")
                 storePassword props['storePassword']
                 keyAlias props['keyAlias']
-                keyPassword  props['keyPassword']
+                keyPassword props['keyPassword']
             }
         }
     }
@@ -68,7 +68,8 @@ android {
         }
     }
     compileOptions {
-        coreLibraryDesugaringEnabled true // https://github.com/DroidKaigi/conference-app-2021/issues/373
+        // https://github.com/DroidKaigi/conference-app-2021/issues/373
+        coreLibraryDesugaringEnabled true
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
@@ -131,7 +132,12 @@ dependencies {
     implementation Dep.Kotlin.bom
     implementation Dep.Kotlin.stdlib
 
-    implementation (Dep.Coroutines.core) {
+    implementation(Dep.Coroutines.core) {
+        version {
+            strictly Versions.coroutines
+        }
+    }
+    testImplementation(Dep.Coroutines.core) {
         version {
             strictly Versions.coroutines
         }
@@ -165,7 +171,7 @@ dependencies {
     testImplementation 'io.kotest:kotest-assertions-core:4.3.2'
     // https://github.com/cashapp/turbine/issues/10
     testImplementation 'app.cash.turbine:turbine:0.2.1'
-
+    testImplementation Dep.turbine
     androidTestImplementation Dep.Jetpack.Test.ext
     androidTestImplementation Dep.Jetpack.Test.espresso
 }
